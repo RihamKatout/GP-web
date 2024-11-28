@@ -13,7 +13,9 @@ function CreamTopping({ position = [0, 0, 0], scale = [2.5, 2.5, 2.5] , color='#
 
   return (
     <mesh geometry={geometry} position={position} scale={scale}>
-      <meshStandardMaterial color={color} />
+      <meshPhysicalMaterial
+        color={color}
+        />
     </mesh>
   );
 }

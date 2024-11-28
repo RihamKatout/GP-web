@@ -5,8 +5,8 @@ import {Layer , FullLayer} from './LayerFunction/Layar'; // Ensure the file './L
 import {LayerHeart, FullLayerHeart} from './LayerFunction/LayerHeart'; 
 import {LayerSquare, FullLayerSquare} from './LayerFunction/LayerSquare';
 import { HeartTop, FullMixTopping, FullTopping, FullSmallTopping, FullBottom ,HeartTopSmallRound , HeartTopLargRound , FullSmallToppingLarg , FullToppingLarg , FullMixToppingLarg , FullToppingSmall , FullMixToppingSmall , FullSmallToppingSmall , Cramel , CramelSmall , CramelLarge , StarTop  , StarTopSmall , StarTopLarge} from './ToppingFunction/Topping';
-import {ToppingSide, ToppingSideSmall, ToppingSideLarg , ToppingStarSide, ToppingStarSideSmall, ToppingStarSideLarge} from './ToppingFunction/ToppingSide';
-import {  HeartTopSquare, FullSmallToppingSquare, FullToppingSquare, FullMixToppingSquare ,FullBottomSquare , HeartTopSmallSquare , HeartTopLargSquare , FullToppingLargSquare , FullMixToppingLargSquare , FullSmallToppingLargSquare , FullToppingSmallSquare , FullMixToppingSmallSquare , FullSmallToppingSmallSquare } from './ToppingFunction/ToppingSquare';
+import {ToppingSide, ToppingSideSmall, ToppingSideLarg , ToppingStarSide, ToppingStarSideSmall, ToppingStarSideLarge, ToppingStarSideSquare, ToppingStarSideSquareSmall , ToppingStarSideSquareLarge}  from './ToppingFunction/ToppingSide';
+import {  HeartTopSquare, FullSmallToppingSquare, FullToppingSquare, FullMixToppingSquare ,FullBottomSquare , HeartTopSmallSquare , HeartTopLargSquare , FullToppingLargSquare , FullMixToppingLargSquare , FullSmallToppingLargSquare , FullToppingSmallSquare , FullMixToppingSmallSquare , FullSmallToppingSmallSquare , StarTopSquare, StarTopSmallSquare, StarTopLargeSquare, CramelSquare, CramelSquareSmall , CramelSquareLarge} from './ToppingFunction/ToppingSquare';
 import {  HeartTopHeart, FullSmallToppingHeart, FullToppingHeart, FullMixToppingHeart ,FullBottomHeart , HeartTopSmallHeart , HeartTopLargHeart , FullToppingLargHeart , FullMixToppingLargHeart , FullSmallToppingLargHeart , FullToppingSmallHeart , FullMixToppingSmallHeart , FullSmallToppingSmallHeart } from './ToppingFunction/ToppingHeart';
 
 import CakeFont from './Font';
@@ -153,11 +153,25 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');
             {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedTopping === 'heart' && numLayers === 3 &&<HeartTopSquare color={toppingColor} />}
             {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedTopping === 'heart' && numLayers === 2 && <HeartTopSmallSquare color={toppingColor} />}
             {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedTopping === 'heart' && numLayers === 4 && <HeartTopLargSquare color={toppingColor} />}
+            
+
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedTopping === 'star' && numLayers === 3 &&<StarTopSquare color={toppingColor} />}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedTopping === 'star' && numLayers === 2 && <StarTopSmallSquare color={toppingColor} />}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedTopping === 'star' && numLayers === 4 && <StarTopLargeSquare color={toppingColor} />}
+            
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedTopping === 'cramel' && numLayers === 3 &&<CramelSquare color={toppingColor} />}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedTopping === 'cramel' && numLayers === 2 && <CramelSquareSmall color={toppingColor} />}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedTopping === 'cramel' && numLayers === 4 && <CramelSquareLarge color={toppingColor} />}
 
 
             {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedSide === 'heartSide' &&  numLayers === 3 &&<ToppingSide color={toppingColor}/>}
             {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedSide === 'heartSide' &&  numLayers === 2 &&<ToppingSideSmall color={toppingColor}/>}
             {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedSide === 'heartSide' &&  numLayers === 4 &&<ToppingSideLarg color={toppingColor}/>}
+
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedSide === 'starSide' &&  numLayers === 3 &&<ToppingStarSideSquare color={toppingColor}/>}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedSide === 'starSide' &&  numLayers === 2 &&<ToppingStarSideSquareSmall color={toppingColor}/>}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedSide === 'starSide' &&  numLayers === 4 &&<ToppingStarSideSquareLarge color={toppingColor}/>}
+            
 
 
             {(currentStage === 2 || currentStage === 3) && layerShape === 'square' && selectedBottom === 'bottom' && <FullBottomSquare color={toppingColor}/>}

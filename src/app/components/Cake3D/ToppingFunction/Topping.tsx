@@ -309,22 +309,22 @@ function FullSmallTopping({ color }: { color: string }) {
 
 function FullMixTopping({ color }: { color: string }) {
     const fullToppingPositions: [number, number, number][] = [
-        [-0.65, 1.6, -1.6],
-    [0.65, 1.6, -1.6],
-    [-0.65, 1.6, 1.6],
-    [0.65, 1.6, 1.6],
-    [-1.6, 1.6, -0.7],
-    [1.6, 1.6, -0.7],
-    [-1.6, 1.6, 0.7],
-    [1.6, 1.6, 0.7],
-    [1.7, 1.6, 0],
-    [-1.7, 1.6, 0],
-    [0, 1.6, 1.7],
-    [0, 1.6, -1.7],
-    [1.2, 1.6, 1.2],
-    [-1.2, 1.6, 1.2],
-    [1.2, 1.6, -1.2],
-    [-1.2, 1.6, -1.2],
+      [-0.7, 1.6, -1.7],
+      [0.7, 1.6, -1.7],
+      [-0.7, 1.6, 1.7],
+      [0.7, 1.6, 1.7],
+      [-1.7, 1.6, -0.7],
+      [1.7, 1.6, -0.7],
+      [-1.7, 1.6, 0.7],
+      [1.7, 1.6, 0.7],
+      [1.8, 1.6, 0],
+      [-1.8, 1.6, 0],
+      [0, 1.6, 1.8],
+      [0, 1.6, -1.8],
+      [1.3, 1.6, 1.3],
+      [-1.3, 1.6, 1.3],
+      [1.3, 1.6, -1.3],
+      [-1.3, 1.6, -1.3],
         
     ];
   
@@ -332,7 +332,7 @@ function FullMixTopping({ color }: { color: string }) {
         <>
             
             {fullToppingPositions.map((position, index) => (
-                <CreamTopping key={index} position={position} color={color} scale={[0.8, 0.8, 0.8]} />
+                <CreamTopping key={index} position={position} color={color} scale={[0.4, 0.4, 0.4]} />
             ))}
             
         </>
@@ -343,22 +343,22 @@ function FullMixTopping({ color }: { color: string }) {
 
   function FullMixToppingSmall({ color }: { color: string }) {
     const fullToppingPositions: [number, number, number][] = [
-        [-0.65, 0.6, -1.6],
-        [0.65, 0.6, -1.6],
-        [-0.65, 0.6, 1.6],
-        [0.65, 0.6, 1.6],
-        [-1.6, 0.6, -0.7],
-        [1.6, 0.6, -0.7],
-        [-1.6, 0.6, 0.7],
-        [1.6, 0.6, 0.7],
-        [1.7, 0.6, 0],
-        [-1.7, 0.6, 0],
-        [0, 0.6, 1.7],
-        [0, 0.6, -1.7],
-        [1.2, 0.6, 1.2],
-        [-1.2, 0.6, 1.2],
-        [1.2, 0.6, -1.2],
-        [-1.2, 0.6, -1.2],
+      [-0.7, 0.6, -1.7],
+      [0.7, 0.6, -1.7],
+      [-0.7, 0.6, 1.7],
+      [0.7, 0.6, 1.7],
+      [-1.7, 0.6, -0.7],
+      [1.7, 0.6, -0.7],
+      [-1.7, 0.6, 0.7],
+      [1.7, 0.6, 0.7],
+      [1.8, 0.6, 0],
+      [-1.8, 0.6, 0],
+      [0, 0.6, 1.8],
+      [0, 0.6, -1.8],
+      [1.3, 0.6, 1.3],
+      [-1.3, 0.6, 1.3],
+      [1.3, 0.6, -1.3],
+      [-1.3, 0.6, -1.3],
         
     ];
   
@@ -366,7 +366,7 @@ function FullMixTopping({ color }: { color: string }) {
         <>
             
             {fullToppingPositions.map((position, index) => (
-                <CreamTopping key={index} position={position} color={color} scale={[0.8, 0.8, 0.8]} />
+                <CreamTopping key={index} position={position} color={color} scale={[0.4, 0.4, 0.4]} />
             ))}
             
         </>
@@ -376,22 +376,22 @@ function FullMixTopping({ color }: { color: string }) {
 
   function FullMixToppingLarg({ color }: { color: string }) {
     const fullToppingPositions: [number, number, number][] = [
-        [-0.65, 2.6, -1.6],
-        [0.65, 2.6, -1.6],
-        [-0.65, 2.6, 1.6],
-        [0.65, 2.6, 1.6],
-        [-1.6, 2.6, -0.7],
-        [1.6, 2.6, -0.7],
-        [-1.6, 2.6, 0.7],
-        [1.6, 2.6, 0.7],
-        [1.7, 2.6, 0],
-        [-1.7, 2.6, 0],
-        [0, 2.6, 1.7],
-        [0, 2.6, -1.7],
-        [1.2, 2.6, 1.2],
-        [-1.2, 2.6, 1.2],
-        [1.2, 2.6, -1.2],
-        [-1.2, 2.6, -1.2],
+      [-0.7, 2.6, -1.7],
+      [0.7, 2.6, -1.7],
+      [-0.7, 2.6, 1.7],
+      [0.7, 2.6, 1.7],
+      [-1.7, 2.6, -0.7],
+      [1.7, 2.6, -0.7],
+      [-1.7, 2.6, 0.7],
+      [1.7, 2.6, 0.7],
+      [1.8, 2.6, 0],
+      [-1.8, 2.6, 0],
+      [0, 2.6, 1.8],
+      [0, 2.6, -1.8],
+      [1.3, 2.6, 1.3],
+      [-1.3, 2.6, 1.3],
+      [1.3, 2.6, -1.3],
+      [-1.3, 2.6, -1.3],
         
     ];
   
@@ -399,7 +399,7 @@ function FullMixTopping({ color }: { color: string }) {
         <>
             
             {fullToppingPositions.map((position, index) => (
-                <CreamTopping key={index} position={position} color={color} scale={[0.8, 0.8, 0.8]} />
+                <CreamTopping key={index} position={position} color={color} scale={[0.4, 0.4, 0.4]} />
             ))}
             
         </>
@@ -428,8 +428,7 @@ function FullMixTopping({ color }: { color: string }) {
 
   return (
     <>
-    <BottomCream position={[0, -2.3, 0]} scale={[2.36, 2.36, 2.36]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
-    <Star position={[0, 1.5, 1.5]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+    <Hearty position={[0, 1.5, 1.5]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
     <Hearty position={[0, 1.5, -1.5]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       

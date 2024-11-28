@@ -1,151 +1,157 @@
 
-import { MeshProps } from '@react-three/fiber';
-import * as THREE from 'three';
-import Heart from '../Heart'
+
+import SquareCream from '../../../3D-component/SquareCream';
+import Cream from '../../../3D-component/Cream';
+import SquareBottom from '../../../3D-component/SquareBottom';
+import CreamTopping from '../../../3D-component/CreamTopping';
+import Hearty from '../../../3D-component/Hearty';
+import Star from '../../../3D-component/Star';
+import Line from '../../../3D-component/Line';
 
 
-interface ToppingPieceProps extends MeshProps {
-    position: [number, number, number];
-    rotation?: [number, number, number];
-    color?: string;
-}
 
-function ToppingPiece({ position, rotation = [Math.PI / 2, 0, 0], color = "#fb87c3" }: ToppingPieceProps) {
-  return (
-      <mesh position={position} rotation={new THREE.Euler(...rotation)}>
-          <torusKnotGeometry args={[0.18, 0.18, 111, 20, 1, 11]} />
-          <meshStandardMaterial color={color} roughness={0.3} metalness={0.6} />
-      </mesh>
-  );
-}
-
-function SmallTopping({ position, rotation = [Math.PI / 2, 0, 0], color = "#fb87c3" }: ToppingPieceProps) {
-    return (
-        <mesh position={position} rotation={new THREE.Euler(...rotation)}>
-            <torusKnotGeometry args={[0.23, 0.15, 140, 10, 2, 3]} />
-            <meshStandardMaterial color={color} roughness={0.3} metalness={0.6} />
-        </mesh>
-    );
-}
-//For Bottom Cream//
-function Bottom({ position, rotation = [Math.PI / 2, 0, 0], color = "#ea89bb" }: ToppingPieceProps) {
-    return (
-        <mesh position={position} rotation={new THREE.Euler(...rotation)}>
-            <torusKnotGeometry args={[0.34, 0.34, 140, 10, 1, 5]} />
-            <meshStandardMaterial color={color} roughness={0.3} metalness={0.6} />
-        </mesh>
-    );
-}
-
-function ToppingCorners({ color }: { color: string }) {
-  const cornerPositions: [number, number, number][] = [
-      [1.7, 1.6, 0],
-      [-1.7, 1.6, 0],
-      [0, 1.6, 1.7],
-      [0, 1.6, -1.7],
-  ];
-
-  return (
-      <>
-          {cornerPositions.map((position, index) => (
-              <ToppingPiece key={index} position={position} color={color}/>
-          ))}
-      </>
-  );
-}
-
-function ToppingCornersSmall({ color }: { color: string }) {
-    const cornerPositions: [number, number, number][] = [
-        [1.7, 0.6, 0],
-        [-1.7, 0.6, 0],
-        [0, 0.6, 1.7],
-        [0, 0.6, -1.7],
+ 
+function CramelSquare({ color }: { color: string }) {
+    const fullToppingPositions: [number, number, number][] = [
+        [-0.5, 1.5, -1.2],
+        [0.5, 1.5, -1.2],
+        [-0.5, 1.5, 1.2],
+        [0.5, 1.5, 1.2],
+        [-1.1, 1.5, -0.6],
+        [1.1, 1.5, -0.6],
+        [-1.1, 1.5, 0.6],
+        [1.1, 1.5, 0.6],
+  
+        [1.7, 1.5, 0],
+        [-1.7, 1.5, 0],
+        [0, 1.5, 1.7],
+        [0, 1.5, -1.7],
+        
     ];
   
     return (
         <>
-            {cornerPositions.map((position, index) => (
-                <ToppingPiece key={index} position={position} color={color}/>
+            <Line  position={[0, -2 , 0]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, Math.PI / 4, 0]} />
+          <Line  position={[0.2, -2 , 0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[0.4, -2 , 0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[0.6, -2 , 0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          
+          <Line  position={[-0.2, -2 , -0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[-0.4, -2 , -0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[-0.6, -2 , -0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          
+          <Line  position={[0, -2 , 0]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[0.2, -2 , -0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[0.4, -2 , -0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]} />
+          <Line  position={[0.6, -2 ,- 0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          
+          <Line  position={[-0.2, -2 , 0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[-0.4, -2 , 0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[-0.6, -2 , 0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]} />
+         
+          
+            {fullToppingPositions.map((position, index) => (
+                <Cream key={index} position={position} color={color} scale={[0.43, 0.43, 0.43]} />
             ))}
+            
         </>
     );
   }
-
-function ToppingCornersLarg({ color }: { color: string }) {
-    const cornerPositions: [number, number, number][] = [
-        [1.7, 2.6, 0],
-        [-1.7, 2.6, 0],
-        [0, 2.6, 1.7],
-        [0, 2.6, -1.7],
-    ];
   
-    return (
-        <>
-            {cornerPositions.map((position, index) => (
-                <ToppingPiece key={index} position={position} color={color}/>
+  
+  function CramelSquareSmall({ color }: { color: string }) {
+      const fullToppingPositions: [number, number, number][] = [
+          [-0.5, 0.5, -1.2],
+          [0.5, 0.5, -1.2],
+          [-0.5, 0.5, 1.2],
+          [0.5, 0.5, 1.2],
+          [-1.1, 0.5, -0.6],
+          [1.1, 0.5, -0.6],
+          [-1.1, 0.5, 0.6],
+          [1.1, 0.5, 0.6],
+    
+          [1.7, 0.5, 0],
+          [-1.7, 0.5, 0],
+          [0, 0.5, 1.7],
+          [0, 0.5, -1.7],
+          
+      ];
+    
+      return (
+          <> <Line  position={[0, -3 , 0]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, Math.PI / 4, 0]} />
+          <Line  position={[0.2, -3 , 0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[0.4, -3 , 0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[0.6, -3 , 0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          
+          <Line  position={[-0.2, -3 , -0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[-0.4, -3 , -0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[-0.6, -3 , -0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          
+          <Line  position={[0, -3 , 0]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[0.2, -3 , -0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[0.4, -3 , -0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]} />
+          <Line  position={[0.6, -3 ,- 0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          
+          <Line  position={[-0.2, -3 , 0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[-0.4, -3 , 0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[-0.6, -3 , 0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]} />
+         
+          
+            {fullToppingPositions.map((position, index) => (
+                <Cream key={index} position={position} color={color} scale={[0.43, 0.43, 0.43]} />
             ))}
-        </>
-    );
-  }
-
-
-function ToppingSmallCorners({ color }: { color: string }) {
-    const cornerPositions: [number, number, number][] = [
-        [1.7, 1.6, 0],
-        [-1.7, 1.6, 0],
-        [0, 1.6, 1.7],
-        [0, 1.6, -1.7],
-    ];
+              
+          </>
+      );
+    }
   
-    return (
-        <>
-            {cornerPositions.map((position, index) => (
-                <SmallTopping key={index} position={position} color={color} />
+  function CramelSquareLarge({ color }: { color: string }) {
+      const fullToppingPositions: [number, number, number][] = [
+          [-0.5, 2.5, -1.2],
+          [0.5, 2.5, -1.2],
+          [-0.5, 2.5, 1.2],
+          [0.5, 2.5, 1.2],
+          [-1.1, 2.5, -0.6],
+          [1.1, 2.5, -0.6],
+          [-1.1, 2.5, 0.6],
+          [1.1, 2.5, 0.6],
+    
+          [1.7, 2.6, 0],
+          [-1.7, 2.5, 0],
+          [0, 2.5, 1.7],
+          [0, 2.5, -1.7],
+          
+      ];
+    
+      return (
+          <>
+               <Line  position={[0, -1 , 0]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, Math.PI / 4, 0]} />
+              <Line  position={[0.2, -1 , 0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[0.4, -1 , 0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[0.6, -1 , 0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          
+          <Line  position={[-0.2, -1 , -0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[-0.4, -1 , -0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          <Line  position={[-0.6, -1 , -0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]}  rotation={[0, Math.PI / 4, 0]}/>
+          
+          <Line  position={[0, -1 , 0]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[0.2, -1 , -0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[0.4, -1 , -0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]} />
+          <Line  position={[0.6, -1 ,- 0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          
+          <Line  position={[-0.2, -1 , 0.2]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[-0.4, -1 , 0.4]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]}/>
+          <Line  position={[-0.6, -1 , 0.6]} color='#7B3F00' scale={[2.8, 2.8, 1.8]} rotation={[0, -Math.PI / 4, 0]} />
+         
+          
+
+            {fullToppingPositions.map((position, index) => (
+                <Cream key={index} position={position} color={color} scale={[0.43, 0.43, 0.43]} />
             ))}
-        </>
-    );
-  }
-
-  function ToppingSmallCornersSmall({ color }: { color: string }) {
-    const cornerPositions: [number, number, number][] = [
-        [1.7, 0.6, 0],
-        [-1.7, 0.6, 0],
-        [0, 0.6, 1.7],
-        [0, 0.6, -1.7],
-    ];
-  
-    return (
-        <>
-            {cornerPositions.map((position, index) => (
-                <SmallTopping key={index} position={position} color={color} />
-            ))}
-        </>
-    );
-  }
-
-
-  
-function ToppingSmallCornersLarg({ color }: { color: string }) {
-    const cornerPositions: [number, number, number][] = [
-        [1.7, 2.6, 0],
-        [-1.7, 2.6, 0],
-        [0, 2.6, 1.7],
-        [0, 2.6, -1.7],
-    ];
-  
-    return (
-        <>
-            {cornerPositions.map((position, index) => (
-                <SmallTopping key={index} position={position} color={color} />
-            ))}
-        </>
-    );
-  }
-
-
-
-
-
+              
+          </>
+      );
+    }
   
 
 
@@ -160,15 +166,19 @@ function FullToppingSquare({ color }: { color: string }) {
       [1.1, 1.6, -0.6],
       [-1.1, 1.6, 0.6],
       [1.1, 1.6, 0.6],
+
+      [1.7, 1.6, 0],
+      [-1.7, 1.6, 0],
+      [0, 1.6, 1.7],
+      [0, 1.6, -1.7],
       
   ];
 
   return (
       <>
-          <ToppingCorners color={color}/>
-          {/* <ToppingEdges color={color}/> */}
+          
           {fullToppingPositions.map((position, index) => (
-              <ToppingPiece key={index} position={position} color={color} />
+              <Cream key={index} position={position} color={color} scale={[0.43, 0.43, 0.43]} />
           ))}
           
       </>
@@ -186,16 +196,22 @@ function FullToppingSmallSquare({ color }: { color: string }) {
         [1.1, 0.6, -0.6],
         [-1.1, 0.6, 0.6],
         [1.1, 0.6, 0.6],
+  
+        [1.7, 0.6, 0],
+        [-1.7, 0.6, 0],
+        [0, 0.6, 1.7],
+        [0, 0.6, -1.7],
         
     ];
   
     return (
         <>
-            <ToppingCornersSmall color={color}/>
-            {/* <ToppingEdgesSmall color={color}/> */}
-            {fullToppingPositions.map((position, index) => (
-                <ToppingPiece key={index} position={position} color={color} />
-            ))}
+          
+
+            
+          {fullToppingPositions.map((position, index) => (
+              <Cream key={index} position={position} color={color} scale={[0.43, 0.43, 0.43]} />
+          ))}
             
         </>
     );
@@ -211,67 +227,45 @@ function FullToppingLargSquare({ color }: { color: string }) {
         [1.1, 2.6, -0.6],
         [-1.1, 2.6, 0.6],
         [1.1, 2.6, 0.6],
+  
+        [1.7, 2.6, 0],
+        [-1.7, 2.6, 0],
+        [0, 2.6, 1.7],
+        [0, 2.6, -1.7],
         
     ];
   
     return (
         <>
-            <ToppingCornersLarg color={color}/>
-            {/* <ToppingEdgesLarg color={color}/> */}
-            {fullToppingPositions.map((position, index) => (
-                <ToppingPiece key={index} position={position} color={color} />
-            ))}
+            
+          {fullToppingPositions.map((position, index) => (
+              <Cream key={index} position={position} color={color} scale={[0.43, 0.43, 0.43]} />
+          ))}
             
         </>
     );
   }
 
 function FullSmallToppingSquare({ color }: { color: string }) {
-    const fullToppingPositions: [number, number, number][] = [
-        [-0.5, 1.6, -1.2],
-        [0.5, 1.6, -1.2],
-        [-0.5, 1.6, 1.2],
-        [0.5, 1.6, 1.2],
-        [-1.1, 1.6, -0.6],
-        [1.1, 1.6, -0.6],
-        [-1.1, 1.6, 0.6],
-        [1.1, 1.6, 0.6],
-        
-    ];
+   
   
     return (
         <>
-            <ToppingSmallCorners color={color}/>
-            {/* <ToppingSmallEdges color={color} /> */}
-            {fullToppingPositions.map((position, index) => (
-                <SmallTopping key={index} position={position} color={color} />
-            ))}
-            
+            <SquareCream position={[0, -2.1, 0]} scale={[3.35, 3.35,  3.32]} color={color} rotation={[0, Math.PI / 4, 0]}/>
         </>
     );
   }
 
 
   function FullSmallToppingSmallSquare({ color }: { color: string }) {
-    const fullToppingPositions: [number, number, number][] = [
-        [-0.5, 0.6, -1.2],
-        [0.5, 0.6, -1.2],
-        [-0.5, 0.6, 1.2],
-        [0.5, 0.6, 1.2],
-        [-1.1, 0.6, -0.6],
-        [1.1, 0.6, -0.6],
-        [-1.1, 0.6, 0.6],
-        [1.1, 0.6, 0.6],
-        
-    ];
+   
   
     return (
         <>
-            <ToppingSmallCornersSmall color={color}/>
-            {/* <ToppingSmallEdgesSmall color={color} /> */}
-            {fullToppingPositions.map((position, index) => (
-                <SmallTopping key={index} position={position} color={color} />
-            ))}
+         
+
+         <SquareCream position={[0, -2.2, 0]} scale={[3.35, 2.5, 3.32]} color={color} rotation={[0, Math.PI / 4, 0]}/>
+
             
         </>
     );
@@ -279,25 +273,12 @@ function FullSmallToppingSquare({ color }: { color: string }) {
 
 
   function FullSmallToppingLargSquare({ color }: { color: string }) {
-    const fullToppingPositions: [number, number, number][] = [
-        [-0.5, 2.6, -1.2],
-        [0.5, 2.6, -1.2],
-        [-0.5, 2.6, 1.2],
-        [0.5, 2.6, 1.2],
-        [-1.1, 2.6, -0.6],
-        [1.1, 2.6, -0.6],
-        [-1.1, 2.6, 0.6],
-        [1.1, 2.6, 0.6],
-        
-    ];
+    
   
     return (
         <>
-            <ToppingSmallCornersLarg color={color}/>
-            {/* <ToppingSmallEdgesLarg color={color} /> */}
-            {fullToppingPositions.map((position, index) => (
-                <SmallTopping key={index} position={position} color={color} />
-            ))}
+         <SquareCream position={[0, -1.1, 0]} scale={[3.35, 3.35, 3.32]} color={color} rotation={[0, Math.PI / 4, 0]}/>
+
             
         </>
     );
@@ -307,23 +288,27 @@ function FullSmallToppingSquare({ color }: { color: string }) {
 
 function FullMixToppingSquare({ color }: { color: string }) {
     const fullToppingPositions: [number, number, number][] = [
-        [-0.5, 1.6, -1.2],
-        [0.5, 1.6, -1.2],
-        [-0.5, 1.6, 1.2],
-        [0.5, 1.6, 1.2],
-        [-1.1, 1.6, -0.6],
-        [1.1, 1.6, -0.6],
-        [-1.1, 1.6, 0.6],
-        [1.1, 1.6, 0.6],
+        [-0.5, 1.45, -1.2],
+        [0.5, 1.45, -1.2],
+        [-0.5, 1.45, 1.2],
+        [0.5, 1.45, 1.2],
+        [-1.1, 1.45, -0.6],
+        [1.1, 1.45, -0.6],
+        [-1.1, 1.45, 0.6],
+        [1.1, 1.45, 0.6],
+  
+        [1.7, 1.45, 0],
+        [-1.7, 1.45, 0],
+        [0, 1.45, 1.7],
+        [0, 1.45, -1.7],
         
     ];
   
     return (
         <>
-            <ToppingSmallCorners color={color}/>
-            {/* <ToppingSmallEdges color = {color}/> */}
+            
             {fullToppingPositions.map((position, index) => (
-                <ToppingPiece key={index} position={position} color={color} />
+                 <CreamTopping key={index} position={position} color={color} scale={[0.35, 0.35, 0.35]} />
             ))}
             
         </>
@@ -334,24 +319,28 @@ function FullMixToppingSquare({ color }: { color: string }) {
 
   function FullMixToppingSmallSquare({ color }: { color: string }) {
     const fullToppingPositions: [number, number, number][] = [
-        [-0.5, 0.6, -1.2],
-        [0.5, 0.6, -1.2],
-        [-0.5, 0.6, 1.2],
-        [0.5, 0.6, 1.2],
-        [-1.1, 0.6, -0.6],
-        [1.1, 0.6, -0.6],
-        [-1.1, 0.6, 0.6],
-        [1.1, 0.6, 0.6],
+        [-0.5, 0.45, -1.2],
+        [0.5, 0.45, -1.2],
+        [-0.5, 0.45, 1.2],
+        [0.5, 0.45, 1.2],
+        [-1.1, 0.45, -0.6],
+        [1.1, 0.45, -0.6],
+        [-1.1, 0.45, 0.6],
+        [1.1, 0.45, 0.6],
+  
+        [1.7, 0.45, 0],
+        [-1.7, 0.45, 0],
+        [0, 0.45, 1.7],
+        [0, 0.45, -1.7],
         
     ];
   
     return (
         <>
-            <ToppingSmallCornersSmall color={color}/>
-            {/* <ToppingSmallEdgesSmall color = {color}/> */}
             {fullToppingPositions.map((position, index) => (
-                <ToppingPiece key={index} position={position} color={color} />
+                 <CreamTopping key={index} position={position} color={color} scale={[0.35, 0.35, 0.35]} />
             ))}
+            
             
         </>
     );
@@ -360,24 +349,28 @@ function FullMixToppingSquare({ color }: { color: string }) {
 
   function FullMixToppingLargSquare({ color }: { color: string }) {
     const fullToppingPositions: [number, number, number][] = [
-        [-0.5, 2.6, -1.2],
-        [0.5, 2.6, -1.2],
-        [-0.5, 2.6, 1.2],
-        [0.5, 2.6, 1.2],
-        [-1.1, 2.6, -0.6],
-        [1.1, 2.6, -0.6],
-        [-1.1, 2.6, 0.6],
-        [1.1, 2.6, 0.6],
+        [-0.5, 2.45, -1.2],
+        [0.5, 2.45, -1.2],
+        [-0.5, 2.45, 1.2],
+        [0.5, 2.45, 1.2],
+        [-1.1, 2.45, -0.6],
+        [1.1, 2.45, -0.6],
+        [-1.1, 2.45, 0.6],
+        [1.1, 2.45, 0.6],
+  
+        [1.7, 2.45, 0],
+        [-1.7, 2.45, 0],
+        [0, 2.45, 1.7],
+        [0, 2.45, -1.7],
         
     ];
   
     return (
         <>
-            <ToppingSmallCornersLarg color={color}/>
-            {/* <ToppingSmallEdgesLarg color = {color}/> */}
             {fullToppingPositions.map((position, index) => (
-                <ToppingPiece key={index} position={position} color={color} />
+                 <CreamTopping key={index} position={position} color={color} scale={[0.35, 0.35, 0.35]} />
             ))}
+            
             
         </>
     );
@@ -385,33 +378,16 @@ function FullMixToppingSquare({ color }: { color: string }) {
 
 
   function FullBottomSquare({ color }: { color: string }) {
-    const fullBottomPositions: [number, number, number][] = [
-        [-0.5, -1.3, -1.2],
-        [0.5, -1.3, -1.2],
-        [-0.5, -1.3, 1.2],
-        [0.5, -1.3, 1.2],
-        [-1.2, -1.3, -0.6],
-        [1.2, -1.3, -0.6],
-        [-1.2, -1.3, 0.6],
-        [1.2, -1.3, 0.6],
-
-        // [1.2, -1.3, 1.2],
-        // [-1.2, -1.3, 1.2],
-        // [1.2, -1.3, -1.2],
-        // [-1.2, -1.3, -1.2],
-        [1.7, -1.3, 0],
-        [-1.7, -1.3, 0],
-        [0, -1.3, 1.7],
-        [0, -1.3, -1.7],
-        
-    ];
+    
   
     return (
         <>
-            
-            {fullBottomPositions.map((position, index) => (
-                <Bottom key={index} position={position} color={color} />
-            ))}
+            <SquareBottom position={[1.2, -1.5, 1.2]} scale={[0.025, 0.02, 0.025]} color={color} rotation={[0,Math.PI/4, Math.PI/2]}/>
+          <SquareBottom position={[-1.2, -1.5, -1.2]} scale={[0.02, 0.02, 0.025]} color={color} rotation={[0,Math.PI/4, Math.PI/2]}/>
+          <SquareBottom position={[1.2, -1.5, -1.2]} scale={[0.02, 0.02, 0.025]} color={color} rotation={[0,-Math.PI/4, Math.PI/2]}/>
+          <SquareBottom position={[-1.2, -1.5, 1.2]} scale={[0.02, 0.02, 0.025]} color={color} rotation={[0,-Math.PI/4, -Math.PI/2]}/>
+
+
             
         </>
     );
@@ -426,23 +402,23 @@ function FullMixToppingSquare({ color }: { color: string }) {
 
   return (
     <>
-    <Heart position={[0, 1.55, 1.6]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[0, 1.55, 1.6]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[0, 1.55, -1.6]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[0, 1.55, -1.6]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[-1.6, 1.55, 0]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[-1.6, 1.55, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[1.6, 1.55, 0]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[1.6, 1.55, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[-0.8, 1.55, -0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[-0.8, 1.55, -0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[-0.8, 1.55, 0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[-0.8, 1.55, 0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[0.8, 1.55, -0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[0.8, 1.55, -0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[0.8, 1.55, 0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[0.8, 1.55, 0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
 
-    <Heart position={[0, 1.55, 0]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[0, 1.55, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
 
       
     </>
@@ -451,23 +427,23 @@ function FullMixToppingSquare({ color }: { color: string }) {
 function HeartTopSmallSquare({ color }: { color: string }) {
     return(
         <>
-    <Heart position={[0, 0.6, 1.6]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[0, 0.6, 1.6]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[0, 0.6, -1.6]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[0, 0.6, -1.6]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[-1.6, 0.6, 0]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[-1.6, 0.6, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[1.6, 0.6, 0]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[1.6, 0.6, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[-0.8, 0.6, -0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[-0.8, 0.6, -0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[-0.8, 0.6, 0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[-0.8, 0.6, 0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[0.8, 0.6, -0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[0.8, 0.6, -0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Heart position={[0.8, 0.6, 0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[0.8, 0.6, 0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
 
-    <Heart position={[0, 0.6, 0]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+    <Hearty position={[0, 0.6, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
 
       
     </>
@@ -479,29 +455,114 @@ function HeartTopLargSquare({ color }: { color: string }) {
 
     return (
         <>
-        <Heart position={[0, 2.55, 1.6]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+        <Hearty position={[0, 2.55, 1.6]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
           
-        <Heart position={[0, 2.55, -1.6]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+        <Hearty position={[0, 2.55, -1.6]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
           
-        <Heart position={[-1.6, 2.55, 0]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+        <Hearty position={[-1.6, 2.55, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
           
-        <Heart position={[1.6, 2.55, 0]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+        <Hearty position={[1.6, 2.55, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
           
-        <Heart position={[-0.8, 2.55, -0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+        <Hearty position={[-0.8, 2.55, -0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
           
-        <Heart position={[-0.8, 2.55, 0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+        <Hearty position={[-0.8, 2.55, 0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
           
-        <Heart position={[0.8, 2.55, -0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+        <Hearty position={[0.8, 2.55, -0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
           
-        <Heart position={[0.8, 2.55, 0.8]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+        <Hearty position={[0.8, 2.55, 0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
     
-        <Heart position={[0, 2.55, 0]} scale={[0.32, 0.4, 0.4]} rotation={[Math.PI / 2, 0, Math.PI / 4]} color={color}/>
+        <Hearty position={[0, 2.55, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
     
           
         </>
     );
   }
+///////// Star Topping //////
+
+function StarTopSquare({ color }: { color: string }) {
+    return (
+        <>
+    <Star position={[0, 1.5, 1.6]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+      
+    <Star position={[0, 1.5, -1.6]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+      
+    <Star position={[-1.6, 1.5, 0]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+      
+    <Star position={[1.6, 1.5, 0]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+      
+    <Star position={[-0.8, 1.5, 0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+      
+    <Star position={[-0.8, 1.5, 0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+      
+    <Star position={[0.8, 1.5, -0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+      
+    <Star position={[0.8, 1.5, 0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+    <Star position={[-0.8, 1.5, -0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
 
 
-export {  HeartTopSquare, FullSmallToppingSquare, FullToppingSquare, FullMixToppingSquare ,FullBottomSquare , HeartTopSmallSquare , HeartTopLargSquare , FullToppingLargSquare , FullMixToppingLargSquare , FullSmallToppingLargSquare , FullToppingSmallSquare , FullMixToppingSmallSquare , FullSmallToppingSmallSquare };
+    <Star position={[0, 1.5, 0]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+
+      
+    </>
+    );
+  }
+
+  function StarTopSmallSquare({ color }: { color: string }) {
+    return (
+        <>
+    <Star position={[0, 0.5, 1.6]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+      
+      <Star position={[0, 0.5, -1.6]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[-1.6, 0.5, 0]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[1.6, 0.5, 0]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[-0.8, 0.5, 0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[-0.8, 0.5, 0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[0.8, 0.5, -0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[0.8, 0.5, 0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+      <Star position={[-0.8, 0.5, -0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+  
+  
+      <Star position={[0, 0.5, 0]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+  
+        
+    </>
+    );
+  }
+
+  function StarTopLargeSquare({ color }: { color: string }) {
+    return (
+        <>
+    <Star position={[0, 2.5, 1.6]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+      
+      <Star position={[0, 2.5, -1.6]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[-1.6, 2.5, 0]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[1.6, 2.5, 0]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[-0.8, 2.5, 0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[-0.8, 2.5, 0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[0.8, 2.5, -0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+        
+      <Star position={[0.8, 2.5, 0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+      <Star position={[-0.8, 2.5, -0.8]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+  
+  
+      <Star position={[0, 2.5, 0]} scale={[0.007, 0.007, 0.007]} rotation={[0, 0, 0]} color={color}/>
+  
+        
+    </>
+    );
+  }
+
+
+export {  HeartTopSquare, FullSmallToppingSquare, FullToppingSquare, FullMixToppingSquare ,FullBottomSquare , HeartTopSmallSquare , HeartTopLargSquare , FullToppingLargSquare , FullMixToppingLargSquare , FullSmallToppingLargSquare , FullToppingSmallSquare , FullMixToppingSmallSquare , FullSmallToppingSmallSquare , StarTopSquare, StarTopSmallSquare, StarTopLargeSquare , CramelSquare, CramelSquareSmall, CramelSquareLarge};
 
