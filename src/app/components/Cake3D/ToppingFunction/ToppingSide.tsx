@@ -7,7 +7,9 @@ interface ToppingSideProps {
   color?: string;
 }
 
-const ToppingSide: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
+////// Round Topping heart
+
+const ToppingSideRound: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
   const positions: [number, number, number][] = [
     [0, 0.4, 2.3],
     [0, 0.4, -2.3],
@@ -47,7 +49,7 @@ const ToppingSide: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
   );
 };
 
-const ToppingSideSmall: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
+const ToppingSideRoundSmall: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
   const positions: [number, number, number][] = [
     [0, 0, 2.3],
     [0, 0, -2.3],
@@ -85,7 +87,7 @@ const ToppingSideSmall: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => 
   );
 };
 
-const ToppingSideLarg: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
+const ToppingSideRoundLarg: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
   const positions: [number, number, number][] = [
     [0, 0.4, 2.3],
     [0, 0.4, -2.3],
@@ -135,11 +137,200 @@ const ToppingSideLarg: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
     </>
   );
 };
+//// End of Round Topping heart
 
 
 
+//Square Topping heart
+const ToppingSide: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
+  const positions: [number, number, number][] = [
+    //corners
+    [0.5, 0, 1.8],
+    [-0.5, 0, 1.8],
+    [0.5, 0, -1.8],
+    [-0.5, 0, -1.8],
+    //end corners
+    [-1.2, -0.8, -1.1],
+    [-1.7, 1.1, -0.6],//
+    [-0.8, 1.1, -1.5],//
+    [1.2, -0.8, 1.1],
+    [0.8, 1.1, 1.5],//
+    //corners
+    [1.8, 0, 0.5],
+    [1.7, 1.1, 0.6],//
+    [1.8, 0, -0.5],
+    [-1.8, 0, 0.5],
+    [-1.8, 0, -0.5],
+    //end corners
+    [-1.1, -0.8, 1.2],
+    [-1.7, 1.1, 0.6],//
+    [-0.8, 1.1, 1.5],//
+    [1.1, -0.8, -1.2],
+    [1.7, 1.1, -0.6],//
+    [0.8, 1.1, -1.5],//
+  ];
 
-/////  Stars ///////
+  const rotations: [number, number, number][] = [
+    [0, Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI/4 , 0],
+    [0, Math.PI/4 , 0],
+    [0, -Math.PI/4 , 0],
+    [0, -Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+  ];
+
+  return (
+    <>
+
+
+      {positions.map((position, index) => (
+        <Hearty
+          key={index}
+          position={position}
+          scale={[0.005, 0.005, 0.002]}
+          rotation={rotations[index]}
+          color={color}
+        />
+      ))}
+    </>
+  );
+};
+
+const ToppingSideSmall: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
+  const positions: [number, number, number][] = [
+    //corners
+    [0.5, 0, 1.8],
+    [-0.5, 0, 1.8],
+    [0.5, 0, -1.8],
+    [-0.5, 0, -1.8],
+    //end corners
+    [-1.2, -0.8, -1.1],
+    [1.2, -0.8, 1.1],
+    //corners
+    [1.8, 0, 0.5],
+    [1.8, 0, -0.5],
+    [-1.8, 0, 0.5],
+    [-1.8, 0, -0.5],
+    //end corners
+    [-1.1, -0.8, 1.2],
+     [1.1, -0.8, -1.2],
+  ];
+
+  const rotations: [number, number, number][] = [
+    [0, Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI/4 , 0],
+    [0, -Math.PI/4 , 0],
+    [0, -Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+  ];
+
+  return (
+    <>
+      {positions.map((position, index) => (
+        <Hearty
+          key={index}
+          position={position}
+          scale={[0.005, 0.005, 0.002]}
+          rotation={rotations[index]}
+          color={color}
+        />
+      ))}
+    </>
+  );
+};
+
+const ToppingSideLarg: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
+  const positions: [number, number, number][] = [
+    //corners
+    [0.5, 0.4, 1.8],
+    [-0.5, 0.4, 1.8],
+    [0.5, 0.4, -1.8],
+    [-0.5, 0.4, -1.8],
+    //end corners
+    [-1.2, -0.4, -1.1],
+    [-1.7, 1.5, -0.6],//
+    [-0.8, 1.5, -1.5],//
+    [1.2, -0.4, 1.1],
+    [0.8, 1.5, 1.5],//
+    //corners
+    [1.8, 0.4, 0.5],
+    [1.7, 1.5, 0.6],//
+    [1.8, 0.4, -0.5],
+    [-1.8, 0.4, 0.5],
+    [-1.8, 0.4, -0.5],
+    //end corners
+    [-1.1, -0.4, 1.2],
+    [-1.7, 1.5, 0.6],//
+    [-0.8, 1.5, 1.5],//
+    [1.1, -0.4, -1.2],
+    [1.7, 1.5, -0.6],//
+    [0.8, 1.5, -1.5],//
+  ];
+
+  const rotations: [number, number, number][] = [
+    [0, Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, Math.PI/4 , 0],
+    [0, Math.PI/4 , 0],
+    [0, -Math.PI/4 , 0],
+    [0, -Math.PI / 4, 0],
+    [0, Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+    [0, -Math.PI / 4, 0],
+
+  ];
+
+  return (
+    <>
+      {positions.map((position, index) => (
+        <Hearty
+          key={index}
+          position={position}
+          scale={[0.005, 0.005, 0.002]}
+          rotation={rotations[index]}
+          color={color}
+        />
+      ))}
+    </>
+  );
+};
+//// End of Square Topping heart
+
+
+
+/////  Stars  Round///////
 
 const ToppingStarSide: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
   
@@ -217,6 +408,10 @@ const ToppingStarSideLarge: React.FC<ToppingSideProps> = ({ color = '#FF69B4' })
     </>
   );
 };
+
+//// End of Stars Round///////
+
+/////  Stars  Square///////
 
 const ToppingStarSideSquare: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
   
@@ -306,5 +501,7 @@ const ToppingStarSideSquareLarge: React.FC<ToppingSideProps> = ({ color = '#FF69
     </>
   );
 };
+///// End of Stars  Square///////
 
-export { ToppingSide, ToppingSideSmall, ToppingSideLarg , ToppingStarSide , ToppingStarSideSmall , ToppingStarSideLarge , ToppingStarSideSquare , ToppingStarSideSquareSmall , ToppingStarSideSquareLarge};
+
+export { ToppingSide, ToppingSideSmall, ToppingSideLarg , ToppingStarSide , ToppingStarSideSmall , ToppingStarSideLarge , ToppingStarSideSquare , ToppingStarSideSquareSmall , ToppingStarSideSquareLarge , ToppingSideRound , ToppingSideRoundSmall , ToppingSideRoundLarg};

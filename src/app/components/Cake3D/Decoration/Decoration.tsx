@@ -3,6 +3,7 @@ import Choco from '../../../3D-component/Choco';
 import Strawberry from '../../../3D-component/Strawberry'
 import Candy from '../../../3D-component/Candy';
 import ChocoPar from '../../../3D-component/ChocoPar';
+import Raspberry from '../../../3D-component/Raspberry';
 
 
 function ChocoDecoration() {
@@ -26,25 +27,25 @@ function ChocoParDecoration() {
 function StrawberryDecoration() {
     return(
         <>
-            <Strawberry key="strawberry-1" position={[-1.6 , 1 , 0.75]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-2" position={[1.6 , 1 , 0.75]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-3" position={[-1.6 , 1 , -0.75]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-4" position={[1.6 , 1 ,- 0.75]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-1" position={[-1.7 , 1.1 , 0.7]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-2" position={[1.7 , 1.1 , 0.7]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-3" position={[-1.7 , 1.1 , -0.7]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-4" position={[1.7 , 1.1 ,- 0.7]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
 
-            <Strawberry key="strawberry-1" position={[-0.65 , 1 , 1.6]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-2" position={[0.65 , 1 , -1.6]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-3" position={[-0.65 , 1 , -1.6]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-4" position={[0.65 , 1 , 1.6]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-1" position={[-0.7 , 1.1 , 1.7]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-2" position={[0.7 , 1.1 , -1.7]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-3" position={[-0.7 , 1.1 , -1.7]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-4" position={[0.7 , 1.1 , 1.7]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
 
-            <Strawberry key="strawberry-1" position={[0 , 1 , 1.7]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-2" position={[0 , 1 , -1.7]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-3" position={[1.7, 1 , 0]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-4" position={[-1.7 , 1 ,0]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-1" position={[0 , 1.1 , 1.8]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-2" position={[0 , 1.1 , -1.8]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-3" position={[1.8, 1.1 , 0]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-4" position={[-1.8 , 1.1 ,0]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
              
-            <Strawberry key="strawberry-1" position={[1.2, 1 , 1.2]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-2" position={[1.2 , 1 , -1.2]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-3" position={[-1.2, 1 , 1.2]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
-            <Strawberry key="strawberry-4" position={[-1.2 , 1 ,-1.2]} color='#FF0000' scale={[10, 10, 10]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-1" position={[1.3, 1.1 , 1.3]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-2" position={[1.3 , 1.1 , -1.3]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-3" position={[-1.3, 1.1 , 1.3]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
+            <Strawberry key="strawberry-4" position={[-1.3 , 1.1 ,-1.3]} color='#FF0000' scale={[11, 11, 11]}  rotation={[Math.PI /2, 0, 0]} />
  
         </>
     );
@@ -56,5 +57,16 @@ function CandyDecoration (){
     );
 }
 
+function RaspberryDecoration(){
+    return(
+       <>
+        <Raspberry position={[-1, 0.85, 0]} scale={[0.2, 0.2, 0.2]} color='red' rotation={[Math.PI / 4, 0, 0]} />
+         <Raspberry position={[-1, 1.1, 0.5]} scale={[0.2, 0.2, 0.2]} color='red' rotation={[-Math.PI / 4, 0, 0]} />
+         <Raspberry position={[-0.3, 0.3, 0.3]} scale={[0.2, 0.2, 0.2]} color='red' rotation={[0, 0, Math.PI / 4]} />
 
-export default {ChocoDecoration , ChocoParDecoration , StrawberryDecoration , CandyDecoration};
+       </>
+    )
+}
+
+
+export {ChocoDecoration , ChocoParDecoration , StrawberryDecoration , CandyDecoration , RaspberryDecoration};

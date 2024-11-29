@@ -56,7 +56,7 @@ const FullLayerHeart: React.FC<LayerHeartProps> = ({
   const Heartlayers = [];
 
   for (let i = 0; i < numLayers; i++) {
-    const yOffset = i * 1.2; // Adjust the offset based on the height of each layer
+    const yOffset = i * 0.8; // Adjust the offset based on the height of each layer
 
     Heartlayers.push(
       <React.Fragment key={i}>

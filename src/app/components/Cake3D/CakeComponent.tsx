@@ -5,9 +5,9 @@ import {Layer , FullLayer} from './LayerFunction/Layar'; // Ensure the file './L
 import {LayerHeart, FullLayerHeart} from './LayerFunction/LayerHeart'; 
 import {LayerSquare, FullLayerSquare} from './LayerFunction/LayerSquare';
 import { HeartTop, FullMixTopping, FullTopping, FullSmallTopping, FullBottom ,HeartTopSmallRound , HeartTopLargRound , FullSmallToppingLarg , FullToppingLarg , FullMixToppingLarg , FullToppingSmall , FullMixToppingSmall , FullSmallToppingSmall , Cramel , CramelSmall , CramelLarge , StarTop  , StarTopSmall , StarTopLarge} from './ToppingFunction/Topping';
-import {ToppingSide, ToppingSideSmall, ToppingSideLarg , ToppingStarSide, ToppingStarSideSmall, ToppingStarSideLarge, ToppingStarSideSquare, ToppingStarSideSquareSmall , ToppingStarSideSquareLarge}  from './ToppingFunction/ToppingSide';
+import {ToppingSide, ToppingSideSmall, ToppingSideLarg , ToppingStarSide, ToppingStarSideSmall, ToppingStarSideLarge, ToppingStarSideSquare, ToppingStarSideSquareSmall , ToppingStarSideSquareLarge , ToppingSideRound , ToppingSideRoundSmall , ToppingSideRoundLarg}  from './ToppingFunction/ToppingSide';
 import {  HeartTopSquare, FullSmallToppingSquare, FullToppingSquare, FullMixToppingSquare ,FullBottomSquare , HeartTopSmallSquare , HeartTopLargSquare , FullToppingLargSquare , FullMixToppingLargSquare , FullSmallToppingLargSquare , FullToppingSmallSquare , FullMixToppingSmallSquare , FullSmallToppingSmallSquare , StarTopSquare, StarTopSmallSquare, StarTopLargeSquare, CramelSquare, CramelSquareSmall , CramelSquareLarge} from './ToppingFunction/ToppingSquare';
-import {  HeartTopHeart, FullSmallToppingHeart, FullToppingHeart, FullMixToppingHeart ,FullBottomHeart , HeartTopSmallHeart , HeartTopLargHeart , FullToppingLargHeart , FullMixToppingLargHeart , FullSmallToppingLargHeart , FullToppingSmallHeart , FullMixToppingSmallHeart , FullSmallToppingSmallHeart } from './ToppingFunction/ToppingHeart';
+import {  HeartTopHeart, FullSmallToppingHeart, FullToppingHeart, FullMixToppingHeart ,FullBottomHeart , HeartTopSmallHeart , HeartTopLargHeart , FullToppingLargHeart , FullMixToppingLargHeart , FullSmallToppingLargHeart , FullToppingSmallHeart , FullMixToppingSmallHeart , FullSmallToppingSmallHeart, StarTopHeart, StarTopSmallHeart, StarTopLargHeart, CramelToppingHeart, CramelToppingSmallHeart, CramelToppingLargHeart } from './ToppingFunction/ToppingHeart';
 
 import CakeFont from './Font';
 import FontInput from './FontFunction/FontInput';
@@ -16,6 +16,9 @@ import LayerSelector from './LayerFunction/LayerSelector';
 import { CakePageContainer, Column, MiddleColumn ,ColumnContainer} from '../../styles/CakeComponentStyles/Cake.styled';
 import ColorPicker from './FontFunction/ColorPicker';
 
+//Decoration
+import DecorationSelector from './Decoration/DecorationSelector';
+import {ChocoDecoration , ChocoParDecoration , StrawberryDecoration , CandyDecoration , RaspberryDecoration} from './Decoration/Decoration';
 const CakeScene = () => {
   const [userText, setUserText] = useState('');
   const [fontType, setFontType] = useState('droid_sans_bold');
@@ -36,6 +39,13 @@ const CakeScene = () => {
   const handleSelectBottom = (bottom: string | null) => {
     setSelectedBottom(bottom);
   };
+  //// Decoration Function ////
+  const [selectedDecoration, setSelectedDecoration] = useState<string | null>(null);
+
+  const handleSelectDecoration = (decoration: string | null) => {
+    setSelectedDecoration(decoration);
+    
+  }
   ////Layer Function/////
   const [numLayers, setNumLayers] = useState<number>(2); // Default to 2 layers
   const handleSelectLayer = (layers: 2 | 3 | 4) => {
@@ -45,9 +55,9 @@ const CakeScene = () => {
 
 //// Color Function ////
 const [layerColor, setLayerColor] = useState('#e8ad82');
-const [fillLayerColor, setFillLayerColor] = useState('#D2691E');
+const [fillLayerColor, setFillLayerColor] = useState('#D2691E');// color for filling ( must be 3)
 
-const [toppingColor, setToppingColor] = useState('#fb87c3');
+const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping is the same color
 
 
 //// Stage Function ////
@@ -77,9 +87,9 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');
           
         );
       case 3:
-      //   // return (
-          
-      //   // );
+        return (
+          <DecorationSelector onSelectDecoration={handleSelectDecoration} />
+       );
       // default:
       //   return null;
     }
@@ -207,9 +217,9 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');
             {(currentStage === 2 || currentStage === 3) && layerShape === 'round' && selectedSide === 'starSide' &&  numLayers === 2 &&<ToppingStarSideSmall color={toppingColor}/>}
             {(currentStage === 2 || currentStage === 3) && layerShape === 'round' && selectedSide === 'starSide' &&  numLayers === 4 &&<ToppingStarSideLarge color={toppingColor}/>}
             
-            {(currentStage === 2 || currentStage === 3) && layerShape === 'round' && selectedSide === 'heartSide' &&  numLayers === 3 &&<ToppingSide color={toppingColor}/>}
-            {(currentStage === 2 || currentStage === 3) && layerShape === 'round' && selectedSide === 'heartSide' &&  numLayers === 2 &&<ToppingSideSmall color={toppingColor}/>}
-            {(currentStage === 2 || currentStage === 3) && layerShape === 'round' && selectedSide === 'heartSide' &&  numLayers === 4 &&<ToppingSideLarg color={toppingColor}/>}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'round' && selectedSide === 'heartSide' &&  numLayers === 3 &&<ToppingSideRound color={toppingColor}/>}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'round' && selectedSide === 'heartSide' &&  numLayers === 2 &&<ToppingSideRoundSmall color={toppingColor}/>}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'round' && selectedSide === 'heartSide' &&  numLayers === 4 &&<ToppingSideRoundLarg color={toppingColor}/>}
 
 
             {(currentStage === 2 || currentStage === 3) && layerShape === 'round' && selectedBottom === 'bottom' && <FullBottom color={toppingColor}/>}
@@ -232,6 +242,14 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');
             {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedTopping === 'heart' && numLayers === 3 &&<HeartTopHeart color={toppingColor} />}
             {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedTopping === 'heart' && numLayers === 2 && <HeartTopSmallHeart color={toppingColor} />}
             {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedTopping === 'heart' && numLayers === 4 && <HeartTopLargHeart color={toppingColor} />}
+            
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedTopping === 'star' && numLayers === 3 &&<StarTopHeart color={toppingColor} />}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedTopping === 'star' && numLayers === 2 && <StarTopSmallHeart color={toppingColor} />}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedTopping === 'star' && numLayers === 4 && <StarTopLargHeart color={toppingColor} />}
+            
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedTopping === 'cramel' && numLayers === 3 &&<CramelToppingHeart color={toppingColor} />}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedTopping === 'cramel' && numLayers === 2 && <CramelToppingSmallHeart color={toppingColor} />}
+            {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedTopping === 'cramel' && numLayers === 4 && <CramelToppingLargHeart color={toppingColor} />}
 
 
             {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedSide === 'heartSide' &&  numLayers === 3 &&<ToppingSide color={toppingColor}/>}
@@ -240,6 +258,13 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');
 
 
             {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedBottom === 'bottom' && <FullBottomHeart color={toppingColor}/>}
+
+            {/* Decoration */}
+            {(currentStage === 3) && selectedDecoration === 'choco' && <ChocoDecoration />}
+            {(currentStage === 3) && selectedDecoration === 'chocoPar' && <ChocoParDecoration />}
+            {(currentStage === 3) && selectedDecoration === 'strawberry' && <StrawberryDecoration />}
+            {(currentStage === 3) && selectedDecoration === 'candy' && <CandyDecoration />}
+            {(currentStage === 3) && selectedDecoration === 'raspberry' && <RaspberryDecoration />}
 
             <CakeFont
               text={userText}
