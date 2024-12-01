@@ -40,7 +40,7 @@ export const ColumnContainer = styled.div `
 
 `
 export const CakeButton = styled.button`
-   background-color: #ffffff00;
+   background-color: #ffffff;
   color: #141313;
   width: 8.5em;
   height: 2.9em;

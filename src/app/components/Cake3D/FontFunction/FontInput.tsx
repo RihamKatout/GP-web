@@ -1,5 +1,5 @@
 import React from 'react'; 
-import { CakeInput, ColumnContainer, CakeButton } from '../../../styles/CakeComponentStyles/Cake.styled';
+import { CakeInput, CakeButton } from '../../../styles/CakeComponentStyles/Cake.styled';
 import ColorPicker from './ColorPicker';
 
 
@@ -16,7 +16,7 @@ type FontInputProps = {
 
 const FontInput: React.FC<FontInputProps> = ({ onTextChange, onToggleFont, textValue ,onColorChange ,color}) => {
   return (
-    <ColumnContainer>
+    <>
       <CakeInput
         type="text"
         value={textValue}
@@ -28,7 +28,7 @@ const FontInput: React.FC<FontInputProps> = ({ onTextChange, onToggleFont, textV
       {/* Color Selector for text color */}
       
       <ColorPicker selectedColor={color} onColorChange={onColorChange} />
-    </ColumnContainer>
+    </>
   );
 };
 
