@@ -251,7 +251,7 @@ function FullSmallToppingSquare({ color }: { color: string }) {
   
     return (
         <>
-            <SquareCream position={[0, -2.1, 0]} scale={[3.35, 3.35,  3.32]} color={color} rotation={[0, Math.PI / 4, 0]}/>
+            <SquareCream position={[0, -2.13, 0]} scale={[3.35, 3.35,  3.32]} color={color} rotation={[0, Math.PI / 4, 0]}/>
         </>
     );
   }
@@ -264,7 +264,7 @@ function FullSmallToppingSquare({ color }: { color: string }) {
         <>
          
 
-         <SquareCream position={[0, -2.2, 0]} scale={[3.35, 2.5, 3.32]} color={color} rotation={[0, Math.PI / 4, 0]}/>
+         <SquareCream position={[0, -2.22, 0]} scale={[3.35, 2.5, 3.32]} color={color} rotation={[0, Math.PI / 4, 0]}/>
 
             
         </>
@@ -277,7 +277,7 @@ function FullSmallToppingSquare({ color }: { color: string }) {
   
     return (
         <>
-         <SquareCream position={[0, -1.1, 0]} scale={[3.35, 3.35, 3.32]} color={color} rotation={[0, Math.PI / 4, 0]}/>
+         <SquareCream position={[0, -1.13, 0]} scale={[3.35, 3.35, 3.32]} color={color} rotation={[0, Math.PI / 4, 0]}/>
 
             
         </>

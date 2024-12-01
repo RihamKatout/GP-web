@@ -18,7 +18,10 @@ import ColorPicker from './FontFunction/ColorPicker';
 
 //Decoration
 import DecorationSelector from './Decoration/DecorationSelector';
-import {ChocoDecoration , ChocoParDecoration , StrawberryDecoration , CandyDecoration , RaspberryDecoration} from './Decoration/Decoration';
+import {ChocoDecoration , ChocoParDecoration , StrawberryDecoration , CandyDecoration , RaspberryDecoration , StrawberryDripDecoration, StrawberryHeartDecoration , StrawberryRegularDecoration, StrawberryRegularDripDecoration, StrawberryRegularHeartDecoration, StrawberryLargeDecoration, StrawberryLargeDripDecoration, StrawberryLargeHeartDecoration, RaspberryRegularDecoration, RaspberryLargeDecoration, ChocoParLargeDecoration, ChocoParRegularDecoration} from './Decoration/Decoration';
+import { StrawberryDecorationSquare, StrawberryDripDecorationSquare, StrawberryHeartDecorationSquare, StrawberryLargeDecorationSquare, StrawberryLargeDripDecorationSquare, StrawberryLargeHeartDecorationSquare, StrawberryRegularDecorationSquare, StrawberryRegularDripDecorationSquare, StrawberryRegularHeartDecorationSquare } from './Decoration/DecorationSquare';
+import { ChocoParDecorationHeart, ChocoParLargeDecorationHeart, ChocoParRegularDecorationHeart, RaspberryDecorationHeart, RaspberryLargeDecorationHeart, RaspberryRegularDecorationHeart } from './Decoration/DecorationHeart';
+import CardWriting from './CardWriting';
 const CakeScene = () => {
   const [userText, setUserText] = useState('');
   const [fontType, setFontType] = useState('droid_sans_bold');
@@ -83,8 +86,6 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
             onSelectBottom={handleSelectBottom}
           />
           
-          
-          
         );
       case 3:
         return (
@@ -123,7 +124,7 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
       />
         </ColumnContainer>);
       case 3:
-        return <p>Adjust font and colors for your text.</p>;
+        return <CardWriting />;
       default:
         return null;
     }
@@ -261,10 +262,47 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
 
             {/* Decoration */}
             {(currentStage === 3) && selectedDecoration === 'choco' && <ChocoDecoration />}
-            {(currentStage === 3) && selectedDecoration === 'chocoPar' && <ChocoParDecoration />}
-            {(currentStage === 3) && selectedDecoration === 'strawberry' && <StrawberryDecoration />}
+            {/** Choco Par for Round and Square */}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'chocoPar' && numLayers === 2 && <ChocoParDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'chocoPar' && numLayers === 3 && <ChocoParRegularDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'chocoPar' && numLayers === 4 && <ChocoParLargeDecoration />}
+            {/** Choco Par for Heart */}
+            {(currentStage === 3)&& layerShape === 'heart' && selectedDecoration === 'chocoPar' && numLayers === 2 && <ChocoParDecorationHeart />}
+            {(currentStage === 3) && layerShape === 'heart' && selectedDecoration === 'chocoPar' && numLayers === 3 && <ChocoParRegularDecorationHeart />}
+            {(currentStage === 3) && layerShape === 'heart' && selectedDecoration === 'chocoPar' && numLayers === 4 && <ChocoParLargeDecorationHeart />}
+
+
+            {/* Strawberry Round */}
+            {(currentStage === 3) && layerShape === 'round' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'cramel') && selectedDecoration === 'strawberry' && <StrawberryDecoration />}
+            {(currentStage === 3) && layerShape === 'round' &&  selectedTopping === 'small'&& selectedDecoration === 'strawberry' && <StrawberryDripDecoration />}
+            {(currentStage === 3) && layerShape === 'round' && (selectedTopping === 'heart' || selectedTopping === 'star' ) && selectedDecoration === 'strawberry' && <StrawberryHeartDecoration />}
+            {(currentStage === 3) && layerShape === 'round' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'cramel') && numLayers === 3 && selectedDecoration === 'strawberry' && <StrawberryRegularDecoration />}
+            {(currentStage === 3) && layerShape === 'round' &&  selectedTopping === 'small'&& selectedDecoration === 'strawberry' && numLayers === 3 && <StrawberryRegularDripDecoration />}
+            {(currentStage === 3) && layerShape === 'round' &&  (selectedTopping === 'heart' || selectedTopping === 'star' )&& selectedDecoration === 'strawberry' && numLayers === 3 && <StrawberryRegularHeartDecoration />}
+            {(currentStage === 3) && layerShape === 'round' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'cramel') && numLayers === 4 && selectedDecoration === 'strawberry' && <StrawberryLargeDecoration />}
+            {(currentStage === 3) && layerShape === 'round' &&  selectedTopping === 'small'&& selectedDecoration === 'strawberry' && numLayers === 4 && <StrawberryLargeDripDecoration />}
+            {(currentStage === 3) && layerShape === 'round' &&  (selectedTopping === 'heart' || selectedTopping === 'star' )&& selectedDecoration === 'strawberry' && numLayers === 4 && <StrawberryLargeHeartDecoration />}
+            {/* Strawberry Square */}
+            {(currentStage === 3) && layerShape === 'square' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'cramel') && selectedDecoration === 'strawberry' && <StrawberryDecorationSquare />}
+            {(currentStage === 3) && layerShape === 'square' &&  selectedTopping === 'small'&& selectedDecoration === 'strawberry' && <StrawberryDripDecorationSquare />}
+            {(currentStage === 3) && layerShape === 'square' && (selectedTopping === 'heart' || selectedTopping === 'star' ) && selectedDecoration === 'strawberry' && <StrawberryHeartDecorationSquare />}
+            {(currentStage === 3) && layerShape === 'square' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'cramel') && numLayers === 3 && selectedDecoration === 'strawberry' && <StrawberryRegularDecorationSquare />}
+            {(currentStage === 3) && layerShape === 'square' &&  selectedTopping === 'small'&& selectedDecoration === 'strawberry' && numLayers === 3 && <StrawberryRegularDripDecorationSquare />}
+            {(currentStage === 3) && layerShape === 'square' &&  (selectedTopping === 'heart' || selectedTopping === 'star' )&& selectedDecoration === 'strawberry' && numLayers === 3 && <StrawberryRegularHeartDecorationSquare />}
+            {(currentStage === 3) && layerShape === 'square' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'cramel') && numLayers === 4 && selectedDecoration === 'strawberry' && <StrawberryLargeDecorationSquare />}
+            {(currentStage === 3) && layerShape === 'square' &&  selectedTopping === 'small'&& selectedDecoration === 'strawberry' && numLayers === 4 && <StrawberryLargeDripDecorationSquare />}
+            {(currentStage === 3) && layerShape === 'square' &&  (selectedTopping === 'heart' || selectedTopping === 'star' )&& selectedDecoration === 'strawberry' && numLayers === 4 && <StrawberryLargeHeartDecorationSquare />}
+
             {(currentStage === 3) && selectedDecoration === 'candy' && <CandyDecoration />}
-            {(currentStage === 3) && selectedDecoration === 'raspberry' && <RaspberryDecoration />}
+            {/* Raspberry For Round and Square */}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'raspberry' && numLayers === 2 && <RaspberryDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'raspberry' && numLayers === 3 && <RaspberryRegularDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'raspberry' && numLayers === 4 && <RaspberryLargeDecoration />}
+            {/* Raspberry For Heart */}
+            {(currentStage === 3) && layerShape === 'heart' && selectedDecoration === 'raspberry' && numLayers === 2 && <RaspberryDecorationHeart />}
+            {(currentStage === 3) && layerShape === 'heart' && selectedDecoration === 'raspberry' && numLayers === 3 && <RaspberryRegularDecorationHeart />}
+            {(currentStage === 3) && layerShape === 'heart'&& selectedDecoration === 'raspberry' && numLayers === 4 && <RaspberryLargeDecorationHeart />}
+
 
             <CakeFont
               text={userText}

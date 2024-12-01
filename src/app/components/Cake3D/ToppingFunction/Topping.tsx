@@ -280,8 +280,7 @@ function FullSmallTopping({ color }: { color: string }) {
   
     return (
         <>
-        <Line  position={[0, -2 , 0]} color='red' scale={[5, 3, 3]} /> 
-        <DripCream position={[0, -0.1 , 0]} color={color} scale={[2.5, 1.99, 2.37]} rotation={[0, Math.PI / 3, 0]}/> 
+        <DripCream position={[0, -0.21 , 0]} color={color} scale={[2.5, 1.99, 2.37]} rotation={[0, Math.PI / 3, 0]}/> 
         </>
          
     );
@@ -292,7 +291,7 @@ function FullSmallTopping({ color }: { color: string }) {
     
   
     return (
-        <DripCream position={[0, -1.2 , 0]} color={color} scale={[2.5, 1.99, 2.37]} rotation={[0, Math.PI / 3, 0]}/>
+        <DripCream position={[0, -1.21 , 0]} color={color} scale={[2.5, 1.99, 2.37]} rotation={[0, Math.PI / 3, 0]}/>
     );
   }
 
