@@ -1,13 +1,13 @@
 
 
 
-import HeartCream from '../../../3D-component/HeartCream';
-import HeartCream2 from '../../../3D-component/HeartCream2';
-import Cream from '../../../3D-component/Cream';
-import CreamTopping from '../../../3D-component/CreamTopping';
-import Hearty from '../../../3D-component/Hearty';
-import Star from '../../../3D-component/Star';
-import Line from '../../../3D-component/Line';
+import HeartCream from '../../3D-component/HeartCream';
+import HeartCream2 from '../../3D-component/HeartCream2';
+import Cream from '../../3D-component/Cream';
+import CreamTopping from '../../3D-component/CreamTopping';
+import Hearty from '../../3D-component/Hearty';
+import Star from '../../3D-component/Star';
+import Line from '../../3D-component/Line';
 
 //// Cramel Topping (Small , Large , Regular) ///////////////
 

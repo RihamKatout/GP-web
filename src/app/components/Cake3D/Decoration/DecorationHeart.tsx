@@ -1,6 +1,6 @@
-import ChocoPar from '../../../3D-component/ChocoPar';
-import Raspberry from '../../../3D-component/Raspberry';
-import Strawberry from '../../../3D-component/Strawberry'
+import ChocoPar from '../../3D-component/ChocoPar';
+import Raspberry from '../../3D-component/Raspberry';
+import Strawberry from '../../3D-component/Strawberry'
 
 
 

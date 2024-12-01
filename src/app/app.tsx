@@ -14,7 +14,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import Shops from './components/Shops/Shops';
 import {Cart} from './components/Cart/Cart';
 import ShopNavbar from './components/ShopNavbar';
-import { ShopContextProvider } from './components/Context/ShopContext';
+import {ShopContextProvider} from './context/ShopContext';
 //import Strawberry from './components/Cake3D/Strawberry';
 
 import Apptry from '../Apptry'

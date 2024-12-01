@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode } from 'react';
-import { PRODUCTS } from '../../../products';
+import { PRODUCTS } from '../../products';
 
 // Define the shape of the product
 interface Product {

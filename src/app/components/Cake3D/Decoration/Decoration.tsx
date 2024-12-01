@@ -1,9 +1,9 @@
-import Choco from '../../../3D-component/Choco';
+import Choco from '../../3D-component/Choco';
 
-import Strawberry from '../../../3D-component/Strawberry'
-import Candy from '../../../3D-component/Candy';
-import ChocoPar from '../../../3D-component/ChocoPar';
-import Raspberry from '../../../3D-component/Raspberry';
+import Strawberry from '../../3D-component/Strawberry'
+import Candy from '../../3D-component/Candy';
+import ChocoPar from '../../3D-component/ChocoPar';
+import Raspberry from '../../3D-component/Raspberry';
 
 
 function ChocoDecoration() {

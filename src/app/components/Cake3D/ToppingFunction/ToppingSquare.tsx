@@ -1,12 +1,12 @@
 
 
-import SquareCream from '../../../3D-component/SquareCream';
-import Cream from '../../../3D-component/Cream';
-import SquareBottom from '../../../3D-component/SquareBottom';
-import CreamTopping from '../../../3D-component/CreamTopping';
-import Hearty from '../../../3D-component/Hearty';
-import Star from '../../../3D-component/Star';
-import Line from '../../../3D-component/Line';
+import SquareCream from '../../3D-component/SquareCream';
+import Cream from '../../3D-component/Cream';
+import SquareBottom from '../../3D-component/SquareBottom';
+import CreamTopping from '../../3D-component/CreamTopping';
+import Hearty from '../../3D-component/Hearty';
+import Star from '../../3D-component/Star';
+import Line from '../../3D-component/Line';
 
 
 

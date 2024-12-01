@@ -1,4 +1,4 @@
-import Strawberry from '../../../3D-component/Strawberry'
+import Strawberry from '../../3D-component/Strawberry'
 
 
 

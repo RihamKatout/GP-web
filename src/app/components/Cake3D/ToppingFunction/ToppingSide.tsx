@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Hearty from '../../../3D-component/Hearty';
-import Star from '../../../3D-component/Star';
+import Hearty from '../../3D-component/Hearty';
+import Star from '../../3D-component/Star';
 
 interface ToppingSideProps {
   color?: string;
