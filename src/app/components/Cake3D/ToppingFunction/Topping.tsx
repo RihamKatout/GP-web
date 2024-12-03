@@ -36,6 +36,8 @@ function Cramel ({color = '#7B3F00'}: {color: string}) {
       ];
     return (
         <>
+       
+
         <Line  position={[0, -2 , 0]} color='#7B3F00' scale={[3.2, 2.8, 1.8]} />
           <Line  position={[0, -2 , 0.3]} color='#7B3F00' scale={[3.2, 2.8, 1.8]} />
           <Line  position={[0, -2 , 0.6]} color='#7B3F00' scale={[3.2, 2.8, 1.8]} />

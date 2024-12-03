@@ -18,13 +18,14 @@ import ColorPicker from './FontFunction/ColorPicker';
 
 //Decoration
 import DecorationSelector from './Decoration/DecorationSelector';
-import {ChocoDecoration , ChocoParDecoration , StrawberryDecoration , CandyDecoration , RaspberryDecoration , StrawberryDripDecoration, StrawberryHeartDecoration , StrawberryRegularDecoration, StrawberryRegularDripDecoration, StrawberryRegularHeartDecoration, StrawberryLargeDecoration, StrawberryLargeDripDecoration, StrawberryLargeHeartDecoration, RaspberryRegularDecoration, RaspberryLargeDecoration, ChocoParLargeDecoration, ChocoParRegularDecoration} from './Decoration/Decoration';
+import {ChocoDecoration , ChocoParDecoration, ChocoParRegularDecoration, ChocoParLargeDecoration , RoseDecoration , RaspberryDecoration, RaspberryRegularDecoration, RaspberryLargeDecoration, RoseRegularDecoration, RoseLargeDecoration, ChocoRegularDecoration, ChocoLargeDecoration} from './Decoration/DecorationSide';
+import { StrawberryDecoration  ,  StrawberryDripDecoration , StrawberryHeartDecoration , StrawberryRegularDecoration , StrawberryRegularDripDecoration , StrawberryRegularHeartDecoration , StrawberryLargeDecoration , StrawberryLargeDripDecoration , StrawberryLargeHeartDecoration ,   CherryDecoration, CherryDripDecoration, CherryHeartDecoration ,CherryRegularDecoration , CherryLargeDripDecoration , CherryRegularDripDecoration , CherryRegularHeartDecoration ,CherryLargeDecoration ,CherryLargeHeartDecoration } from './Decoration/Decoration';
 import { StrawberryDecorationSquare, StrawberryDripDecorationSquare, StrawberryHeartDecorationSquare, StrawberryLargeDecorationSquare, StrawberryLargeDripDecorationSquare, StrawberryLargeHeartDecorationSquare, StrawberryRegularDecorationSquare, StrawberryRegularDripDecorationSquare, StrawberryRegularHeartDecorationSquare } from './Decoration/DecorationSquare';
 import { ChocoParDecorationHeart, ChocoParLargeDecorationHeart, ChocoParRegularDecorationHeart, RaspberryDecorationHeart, RaspberryLargeDecorationHeart, RaspberryRegularDecorationHeart } from './Decoration/DecorationHeart';
 import CardWriting from './CardWriting';
 const CakeScene = () => {
   const [userText, setUserText] = useState('');
-  const [fontType, setFontType] = useState('droid_sans_bold');
+  const [fontType, setFontType] = useState('/fonts/droid_sans_bold.typeface.json');
   const [selectedColor, setSelectedColor] = useState('#312e2e');
   ///// Topping / Side / Bottom Function /////
   const [selectedTopping, setSelectedTopping] = useState<string | null>(null);
@@ -44,10 +45,14 @@ const CakeScene = () => {
   };
   //// Decoration Function ////
   const [selectedDecoration, setSelectedDecoration] = useState<string | null>(null);
+  const [selectedMidDecoration, setSelectedMidDecoration] = useState<string | null>(null);
 
   const handleSelectDecoration = (decoration: string | null) => {
     setSelectedDecoration(decoration);
     
+  }
+  const handleSelectMidDecoration = (decorationMid: string | null) => {
+    setSelectedMidDecoration(decorationMid);
   }
   ////Layer Function/////
   const [numLayers, setNumLayers] = useState<number>(2); // Default to 2 layers
@@ -67,7 +72,9 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
   const [currentStage, setCurrentStage] = useState(1);
 
   const toggleFont = () => {
-    setFontType(fontType === 'droid_sans_bold' ? 'helvetiker' : 'droid_sans_bold');
+    setFontType((prevFont) =>
+      prevFont.includes('droid_sans_bold') ? '/fonts/helvetiker_regular.typeface.json' : '/fonts/droid_sans_bold.typeface.json'
+    );
   };
 
   const nextStage = () => setCurrentStage((prev) => Math.min(prev + 1, 3)); // Change 3 if more stages are added
@@ -89,7 +96,7 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
         );
       case 3:
         return (
-          <DecorationSelector onSelectDecoration={handleSelectDecoration} />
+          <DecorationSelector onSelectDecoration={handleSelectDecoration}  onSelectMidDecoration={handleSelectMidDecoration}/>
        );
       // default:
       //   return null;
@@ -260,16 +267,26 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
 
             {(currentStage === 2 || currentStage === 3) && layerShape === 'heart' && selectedBottom === 'bottom' && <FullBottomHeart color={toppingColor}/>}
 
-            {/* Decoration */}
-            {(currentStage === 3) && selectedDecoration === 'choco' && <ChocoDecoration />}
+            {/* ////////////////// Decoration /////////////////////////*/}
+            
+            {/* Choco */}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'choco' && numLayers === 2 && <ChocoDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'choco' && numLayers === 3 && <ChocoRegularDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'choco' && numLayers === 4 && <ChocoLargeDecoration />}
+
+            {/* Rose  */}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'rose' && numLayers === 2 && <RoseDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'rose' && numLayers === 3 && <RoseRegularDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'rose' && numLayers === 4 && <RoseLargeDecoration />}
+
             {/** Choco Par for Round and Square */}
-            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'chocoPar' && numLayers === 2 && <ChocoParDecoration />}
-            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'chocoPar' && numLayers === 3 && <ChocoParRegularDecoration />}
-            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'chocoPar' && numLayers === 4 && <ChocoParLargeDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'chocoPar' && numLayers === 2 && <ChocoParDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'chocoPar' && numLayers === 3 && <ChocoParRegularDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'chocoPar' && numLayers === 4 && <ChocoParLargeDecoration />}
             {/** Choco Par for Heart */}
-            {(currentStage === 3)&& layerShape === 'heart' && selectedDecoration === 'chocoPar' && numLayers === 2 && <ChocoParDecorationHeart />}
-            {(currentStage === 3) && layerShape === 'heart' && selectedDecoration === 'chocoPar' && numLayers === 3 && <ChocoParRegularDecorationHeart />}
-            {(currentStage === 3) && layerShape === 'heart' && selectedDecoration === 'chocoPar' && numLayers === 4 && <ChocoParLargeDecorationHeart />}
+            {(currentStage === 3)&& layerShape === 'heart' && selectedMidDecoration === 'chocoPar' && numLayers === 2 && <ChocoParDecorationHeart />}
+            {(currentStage === 3) && layerShape === 'heart' && selectedMidDecoration === 'chocoPar' && numLayers === 3 && <ChocoParRegularDecorationHeart />}
+            {(currentStage === 3) && layerShape === 'heart' && selectedMidDecoration === 'chocoPar' && numLayers === 4 && <ChocoParLargeDecorationHeart />}
 
 
             {/* Strawberry Round */}
@@ -293,22 +310,35 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
             {(currentStage === 3) && layerShape === 'square' &&  selectedTopping === 'small'&& selectedDecoration === 'strawberry' && numLayers === 4 && <StrawberryLargeDripDecorationSquare />}
             {(currentStage === 3) && layerShape === 'square' &&  (selectedTopping === 'heart' || selectedTopping === 'star' )&& selectedDecoration === 'strawberry' && numLayers === 4 && <StrawberryLargeHeartDecorationSquare />}
 
-            {(currentStage === 3) && selectedDecoration === 'candy' && <CandyDecoration />}
+            
             {/* Raspberry For Round and Square */}
-            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'raspberry' && numLayers === 2 && <RaspberryDecoration />}
-            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'raspberry' && numLayers === 3 && <RaspberryRegularDecoration />}
-            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedDecoration === 'raspberry' && numLayers === 4 && <RaspberryLargeDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'raspberry' && numLayers === 2 && <RaspberryDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'raspberry' && numLayers === 3 && <RaspberryRegularDecoration />}
+            {(currentStage === 3) && (layerShape === 'round' || layerShape === 'square') && selectedMidDecoration === 'raspberry' && numLayers === 4 && <RaspberryLargeDecoration />}
             {/* Raspberry For Heart */}
-            {(currentStage === 3) && layerShape === 'heart' && selectedDecoration === 'raspberry' && numLayers === 2 && <RaspberryDecorationHeart />}
-            {(currentStage === 3) && layerShape === 'heart' && selectedDecoration === 'raspberry' && numLayers === 3 && <RaspberryRegularDecorationHeart />}
-            {(currentStage === 3) && layerShape === 'heart'&& selectedDecoration === 'raspberry' && numLayers === 4 && <RaspberryLargeDecorationHeart />}
+            {(currentStage === 3) && layerShape === 'heart' && selectedMidDecoration === 'raspberry' && numLayers === 2 && <RaspberryDecorationHeart />}
+            {(currentStage === 3) && layerShape === 'heart' && selectedMidDecoration === 'raspberry' && numLayers === 3 && <RaspberryRegularDecorationHeart />}
+            {(currentStage === 3) && layerShape === 'heart'&& selectedMidDecoration === 'raspberry' && numLayers === 4 && <RaspberryLargeDecorationHeart />}
+
+            {/* Cherry for Round */}
+            
+            {(currentStage === 3) && numLayers === 2 && layerShape === 'round' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'cramel') && selectedDecoration === 'cherry' && <CherryDecoration />}
+            {(currentStage === 3) && numLayers === 2 &&  layerShape === 'round' &&  selectedTopping === 'small'&& selectedDecoration === 'cherry' && <CherryDripDecoration />}
+            {(currentStage === 3) && numLayers === 2 && layerShape === 'round' && (selectedTopping === 'heart' || selectedTopping === 'star' ) && selectedDecoration === 'cherry' && <CherryHeartDecoration />}
+            {(currentStage === 3)&& numLayers === 3 && layerShape === 'round' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'cramel') && numLayers === 3 && selectedDecoration === 'cherry' && <CherryRegularDecoration />}
+            {(currentStage === 3) && numLayers === 3 && layerShape === 'round' &&  selectedTopping === 'small'&& selectedDecoration === 'cherry' && numLayers === 3 && <CherryRegularDripDecoration />}
+            {(currentStage === 3) && numLayers === 3 && layerShape === 'round' &&  (selectedTopping === 'heart' || selectedTopping === 'star' )&& selectedDecoration === 'cherry' && numLayers === 3 && <CherryRegularHeartDecoration />}
+            {(currentStage === 3) && numLayers === 4 && layerShape === 'round' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'cramel') && numLayers === 4 && selectedDecoration === 'cherry' && <CherryLargeDecoration />}
+            {(currentStage === 3) && numLayers === 4 && layerShape === 'round' &&  selectedTopping === 'small'&& selectedDecoration === 'cherry' && numLayers === 4 && <CherryLargeDripDecoration />}
+            {(currentStage === 3) && numLayers === 4 && layerShape === 'round' &&  (selectedTopping === 'heart' || selectedTopping === 'star' )&& selectedDecoration === 'cherry' && numLayers === 4 && <CherryLargeHeartDecoration />}
+           
 
 
             <CakeFont
               text={userText}
-              position={[0, 1.4, 0.7]}
+              position={[1, 0.55, 0.7]}
               rotation={[Math.PI / 2, Math.PI, 0]}
-              fontType={fontType}
+              fontPath={fontType}
               maxCharsPerLine={12}
               color={selectedColor}
             />

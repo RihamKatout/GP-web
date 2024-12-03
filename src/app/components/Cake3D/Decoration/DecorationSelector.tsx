@@ -21,10 +21,12 @@ const CakeButton = styled.button<{ active: boolean }>`
 
 interface DecorationSelectorProps {
   onSelectDecoration: (Decoration: string | null) => void;
+  onSelectMidDecoration: (Decoration: string | null) => void;
+
   
 }
 
-const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecoration}) => {
+const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecoration , onSelectMidDecoration}) => {
   const [selectedDecoration, setSelectedDecoration] = useState<string | null>(null);
  
   const handleDecorationClick = (Decoration: string) => {
@@ -33,7 +35,11 @@ const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecorat
     onSelectDecoration(newDecoration);
   };
 
-  
+  const handleMidDecorationClick = (Decoration: string) => {
+    const newDecoration = selectedDecoration === Decoration ? null : Decoration;
+    setSelectedDecoration(newDecoration);
+    onSelectMidDecoration(newDecoration);
+  }
 
 
   return (
@@ -46,31 +52,43 @@ const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecorat
         >
           Strawberry
         </CakeButton>
+        
         <CakeButton
-          onClick={() => handleDecorationClick('choco')}
-          active={selectedDecoration === 'choco'}
+          onClick={() => handleDecorationClick('cherry')}
+          active={selectedDecoration === 'cherry'}
         >
+          Cherry
+        </CakeButton>
+        
+        
+        
+      </div>
+      <div><h3>Select The Middel Decoration:</h3>
+        <CakeButton
+          onClick={() => handleMidDecorationClick('choco')}
+          active={selectedDecoration === 'choco'}
+         >
           Choco
         </CakeButton>
         <CakeButton
-          onClick={() => handleDecorationClick('candy')}
-          active={selectedDecoration === 'candy'}
-        >
-          Candy
-        </CakeButton>
-        <CakeButton
-          onClick={() => handleDecorationClick('raspberry')}
+          onClick={() => handleMidDecorationClick('raspberry')}
           active={selectedDecoration === 'raspberry'}
         >
             Raspberry
         </CakeButton>
         <CakeButton
-          onClick={() => handleDecorationClick('chocoPar')}
+          onClick={() => handleMidDecorationClick('chocoPar')}
           active={selectedDecoration === 'chocoPar'}
         >
           ChocoPar
         </CakeButton>
-        
+        <CakeButton
+          onClick={() => handleMidDecorationClick('rose')}
+          active={selectedDecoration === 'rose'}
+        >
+          Rose
+        </CakeButton>
+
       </div>
      
     </ColumnContainer>

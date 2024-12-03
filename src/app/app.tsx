@@ -16,7 +16,6 @@ import ShopNavbar from "./components/ShopNavbar";
 import { ShopContextProvider } from "./context/ShopContext";
 //import Strawberry from './components/Cake3D/Strawberry';
 
-import Apptry from "../Apptry";
 import RegisterPage from "./pages/RegisterPage";
 //import CreamTopping from './Topping';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -52,11 +51,23 @@ export function App() {
                       <Showcase />
                     </Container>
 
-                    <Apptry></Apptry>
-                    <Button onClick={handleButtonClick}>Click</Button>
-                  </MainBody>
-                }
-              />
+        {/* Route for the main page with Showcase and Navbar */}
+        <Route 
+        
+          path="/" 
+          element={
+            <MainBody>
+              
+              <Container>
+                <Showcase />
+              </Container>
+              
+              
+              
+              <Button onClick={handleButtonClick}>Click</Button>
+            </MainBody>
+          }
+        />
 
               <Route
                 path="/shops"

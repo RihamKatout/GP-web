@@ -89,23 +89,21 @@ const ToppingSideRoundSmall: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }
 
 const ToppingSideRoundLarg: React.FC<ToppingSideProps> = ({ color = '#FF69B4' }) => {
   const positions: [number, number, number][] = [
-    [0, 0.4, 2.3],
-    [0, 0.4, -2.3],
+    [0, 0.6, 2.3],
+    [0, 0.6, -2.3],
+    [-1.7, -0.6, -1.55],
+    [-1.7, 1.6, -1.55],
 
-    [-1.3, -0.4, -1],
-    [-1.3, 1.5, -1],
+    [1.75, -0.6, 1.5],
+    [1.75, 1.6, 1.5],
+    [2.3, 0.6, 0],
+    [-2.3, 0.6, 0],
+    [-1.75, -0.6, 1.5],
+    [-1.75, 1.6, 1.5],
 
-    [1.3, -0.4, 1],
-    [1.3, 1.5, 1],
+    [1.6, -0.6, -1.7],
+    [1.6, 1.6, -1.7],
 
-    [2.3, 0.4, 0],
-    [-2.3, 0.4, 0],
-
-    [-1.3, -0.4, 1],
-    [-1.3, 1.5, 1],
-
-    [1, -0.4, -1.3],
-    [1, 1.5, -1.3],
   ];
 
   const rotations: [number, number, number][] = [
@@ -113,14 +111,18 @@ const ToppingSideRoundLarg: React.FC<ToppingSideProps> = ({ color = '#FF69B4' })
     [0, 0, 0],
     [0, Math.PI / 4, 0],
     [0, Math.PI / 4, 0],
+
     [0, Math.PI / 4, 0],
     [0, Math.PI / 4, 0],
+
     [0, Math.PI / 2, 0],
     [0, Math.PI / 2, 0],
     [0, -Math.PI / 4, 0],
     [0, -Math.PI / 4, 0],
+
     [0, -Math.PI / 4, 0],
     [0, -Math.PI / 4, 0],
+
   ];
 
   return (
