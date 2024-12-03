@@ -36,7 +36,7 @@ const RegisterForm = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<registrationFormFields>({
     defaultValues: {
       username: "",
@@ -54,11 +54,18 @@ const RegisterForm = () => {
     data: registrationFormFields
   ) => {
     try {
+      if (data.password !== data.confirmPassword) {
+        setError("confirmPassword", {
+          type: "manual",
+          message: "Passwords do not match",
+        });
+        return;
+      }
       await registerUserContext(data);
     } catch (error: any) {
       setError("root", {
         type: "manual",
-        message: error.message,
+        message: error.response.data.errors[0],
       });
     }
   };
@@ -111,6 +118,9 @@ const RegisterForm = () => {
       </button>
       {errors.root && (
         <div className="alert alert-danger">{errors.root.message}</div>
+      )}
+      {isSubmitSuccessful && (
+        <div className="alert alert-success">Registration successful!</div>
       )}
 
     </form>

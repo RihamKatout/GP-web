@@ -15,6 +15,7 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
     defaultValues: {
@@ -25,7 +26,13 @@ const LoginForm = () => {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    loginUserContext(data);
+    try {
+      await loginUserContext(data);
+    } catch (error: any) {
+      if (error.response.data.errors[0] === "Bad credentials") {
+        setError("root", { message: "Invalid email or password, please try again!" });
+      } else setError("root", { message: error.response.data.errors[0] });
+    }
   };
 
   return (
@@ -43,6 +50,9 @@ const LoginForm = () => {
       <button type="submit" disabled={isSubmitting}>
         Login
       </button>
+      {errors.root && (
+        <div className="alert alert-danger">{errors.root.message}</div>
+      )}
     </form>
   );
 };
