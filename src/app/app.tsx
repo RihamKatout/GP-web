@@ -1,5 +1,5 @@
 
-import React from 'react';
+
 //import ReactDOM  from 'react-dom/client';
 //import NxWelcome from './nx-welcome';
 import { Container, MainBody, Button } from './styles/Global.styled';
@@ -15,10 +15,6 @@ import Shops from './components/Shops/Shops';
 import {Cart} from './components/Cart/Cart';
 import ShopNavbar from './components/ShopNavbar';
 import {ShopContextProvider} from './context/ShopContext';
-//import Strawberry from './components/Cake3D/Strawberry';
-
-import Apptry from '../Apptry'
-//import CreamTopping from './Topping';
 
 export function App() {
 
@@ -52,7 +48,7 @@ export function App() {
               </Container>
               
               
-              <Apptry></Apptry>
+              
               <Button onClick={handleButtonClick}>Click</Button>
             </MainBody>
           }

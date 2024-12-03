@@ -13,7 +13,7 @@ function Strawberry({ position = [0, 0, 0], scale = [2.5, 2.5, 2.5], rotation = 
 
   return (
     <mesh geometry={geometry} position={position} scale={scale} rotation={rotation}>
-      <meshStandardMaterial color={color} />
+      <meshStandardMaterial color={color} roughness={0.3}/>
     </mesh>
   );
 }
