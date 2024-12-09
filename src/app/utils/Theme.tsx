@@ -6,6 +6,7 @@ export const Theme ={
         white: '#FFFFFF',
         black: '#000000',
         para_text_color: '#dcdcdc',
+        navBackground: 'red'
     },
     fonts:{
         family: 'Arial',

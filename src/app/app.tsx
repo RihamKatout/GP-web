@@ -13,19 +13,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./context/AuthContext";
 import { QueryClient, QueryClientProvider } from "react-query";
+import HomePage from "./pages/HomePage";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <MainBody>
-        <Container>
-          <Showcase />
-        </Container>
-        <Link to="/cake">Click</Link>
-      </MainBody>
-    ),
+    Component: HomePage
   },
   {
     path: "/login",

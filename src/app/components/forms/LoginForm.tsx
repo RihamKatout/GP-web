@@ -2,6 +2,7 @@ import z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -12,11 +13,12 @@ type FormFields = z.infer<typeof schema>;
 
 const LoginForm = () => {
   const { loginUserContext } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting},
   } = useForm<FormFields>({
     defaultValues: {
       email: "",
@@ -28,6 +30,7 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       await loginUserContext(data);
+      navigate("/");
     } catch (error: any) {
       if (error.response.data.errors[0] === "Bad credentials") {
         setError("root", { message: "Invalid email or password, please try again!" });

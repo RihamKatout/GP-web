@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { User } from "../types/User";
 import { loginApi, registerApi } from "../api/auth";
 import { registrationFormFields } from "../components/forms/RegisterForm";
@@ -13,7 +13,7 @@ interface AuthContextProps {
     email: string;
     password: string;
   }) => Promise<void>;
-  logout: () => void;
+  logoutContext: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -37,6 +37,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     localStorage.setItem("token", token);
     setUser(user);
   };
+
   const registerUserContext = async (registrationFormFields: {
     username: string;
     email: string;
@@ -57,15 +58,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setUser(user);
     }
   };
-  const logout = () => {
+
+  const logoutContext = () => {
     setUser(null);
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, registerUserContext, loginUserContext, logout }}
+      value={{ user, registerUserContext, loginUserContext, logoutContext }}
     >
       {children}
     </AuthContext.Provider>
