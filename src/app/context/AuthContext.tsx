@@ -14,6 +14,7 @@ interface AuthContextProps {
     password: string;
   }) => Promise<void>;
   logoutContext: () => void;
+  isLoggedIn: boolean;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -22,7 +23,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const { mutateAsync: mutateLoginAsync } = useMutation(loginApi);
   const { mutateAsync: mutateRegisterAsync } = useMutation(registerApi);
 
@@ -36,6 +37,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     const token = headers.getAuthorization?.();
     localStorage.setItem("token", token);
     setUser(user);
+    setIsLoggedIn(true);
   };
 
   const registerUserContext = async (registrationFormFields: {
@@ -56,17 +58,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       const token = headers.getAuthorization?.();
       localStorage.setItem("token", token);
       setUser(user);
+      setIsLoggedIn(true);
     }
   };
 
   const logoutContext = () => {
     setUser(null);
+    setIsLoggedIn(false);
     localStorage.removeItem("token");
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, registerUserContext, loginUserContext, logoutContext }}
+      value={{ user, registerUserContext, loginUserContext, logoutContext, isLoggedIn }}
     >
       {children}
     </AuthContext.Provider>

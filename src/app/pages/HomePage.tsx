@@ -1,36 +1,36 @@
-import React from "react";
-import Navbar from "../components/shared/Navbar";
-import { useAuth } from "../context/AuthContext";
+import { SectionIdEnum } from "../types";
+import { OffersSection } from "../sections";
+import { MainLayout, SectionContainer } from "../components/Layout";
 
-const HomePage = () => {
-  const {user} = useAuth();
+const sections = [
+  {
+    sectionId: SectionIdEnum.offers,
+    component: <OffersSection />,
+  },
+  {
+    sectionId: SectionIdEnum.categories,
+    component: <OffersSection />,
+  },
+  {
+    sectionId: SectionIdEnum.shop,
+    component: <OffersSection />,
+  },
+  {
+    sectionId: SectionIdEnum.help,
+    component: <OffersSection />,
+  },
+];
+
+export const HomePage = () => {
   return (
-    <>
-      <Navbar isLoggedIn={user !== null} />
-      <div>HomePage</div>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-      <h1>Home Page</h1>
-    </>
+    <MainLayout>
+      {sections.map(({ component, sectionId }) => {
+        return (
+          <SectionContainer sectionId={sectionId} key={sectionId}>
+            {component}
+          </SectionContainer>
+        );
+      })}
+    </MainLayout>
   );
 };
-
-export default HomePage;

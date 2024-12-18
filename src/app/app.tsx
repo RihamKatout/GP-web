@@ -6,14 +6,14 @@ import CakeScene from "./components/Cake3D/CakeComponent";
 import { createBrowserRouter, Link, RouterProvider } from "react-router-dom";
 import Shops from "./components/Shops/Shops";
 import { Cart } from "./components/Cart/Cart";
-import ShopNavbar from "./components/ShopNavbar";
+// import ShopNavbar from "./components/ShopNavbar";
 import { ShopContextProvider } from "./context/ShopContext";
 import RegisterPage from "./pages/RegisterPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./context/AuthContext";
 import { QueryClient, QueryClientProvider } from "react-query";
-import HomePage from "./pages/HomePage";
+import {HomePage} from "./pages";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
     path: "/shops",
     element: (
       <MainBody>
-        <ShopNavbar />
+        {/* <ShopNavbar /> */}
         <Shops />
       </MainBody>
     ),
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
     path: "/cart",
     element: (
       <MainBody>
-        <ShopNavbar />
+        {/* <ShopNavbar /> */}
         <Cart />
       </MainBody>
     ),

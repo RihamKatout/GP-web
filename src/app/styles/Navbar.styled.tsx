@@ -22,7 +22,7 @@ export const Logo = styled(Link)`
   color: #0e0d0d;
 `;
 
-export const LinksContainer = styled.div`
+export const NavList = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -61,7 +61,7 @@ export const ProfileDropdown = styled.div`
   }
 `;
 
-export const MenuLink = styled(Link)`
+export const NavLink = styled(Link)`
   text-decoration: none;
   font-size: 1.2rem;
   font-weight: ${({ theme }) => theme.fonts.weight.medium};
