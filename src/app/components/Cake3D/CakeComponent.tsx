@@ -9,12 +9,11 @@ import {ToppingSide, ToppingSideSmall, ToppingSideLarg , ToppingStarSide, Toppin
 import {  HeartTopSquare, FullSmallToppingSquare, FullToppingSquare, FullMixToppingSquare ,FullBottomSquare , HeartTopSmallSquare , HeartTopLargSquare , FullToppingLargSquare , FullMixToppingLargSquare , FullSmallToppingLargSquare , FullToppingSmallSquare , FullMixToppingSmallSquare , FullSmallToppingSmallSquare , StarTopSquare, StarTopSmallSquare, StarTopLargeSquare, CramelSquare, CramelSquareSmall , CramelSquareLarge} from './ToppingFunction/ToppingSquare';
 import {  HeartTopHeart, FullSmallToppingHeart, FullToppingHeart, FullMixToppingHeart ,FullBottomHeart , HeartTopSmallHeart , HeartTopLargHeart , FullToppingLargHeart , FullMixToppingLargHeart , FullSmallToppingLargHeart , FullToppingSmallHeart , FullMixToppingSmallHeart , FullSmallToppingSmallHeart, StarTopHeart, StarTopSmallHeart, StarTopLargHeart, CramelToppingHeart, CramelToppingSmallHeart, CramelToppingLargHeart } from './ToppingFunction/ToppingHeart';
 
-import CakeFont from './Font';
 import FontInput from './FontFunction/FontInput';
 import ToppingSelector from './ToppingFunction/ToppingSelector';
 import LayerSelector from './LayerFunction/LayerSelector';
 import { CakePageContainer, Column, MiddleColumn ,ColumnContainer} from '../../styles/CakeComponentStyles/Cake.styled';
-import ColorPicker from './FontFunction/ColorPicker';
+import {ColorPicker , FillPicker } from './FontFunction/ColorPicker';
 
 //Decoration
 import DecorationSelector from './Decoration/DecorationSelector';
@@ -23,6 +22,9 @@ import { StrawberryDecoration  ,  StrawberryDripDecoration , StrawberryHeartDeco
 import { StrawberryDecorationSquare, StrawberryDripDecorationSquare, StrawberryHeartDecorationSquare, StrawberryLargeDecorationSquare, StrawberryLargeDripDecorationSquare, StrawberryLargeHeartDecorationSquare, StrawberryRegularDecorationSquare, StrawberryRegularDripDecorationSquare, StrawberryRegularHeartDecorationSquare } from './Decoration/DecorationSquare';
 import { ChocoParDecorationHeart, ChocoParLargeDecorationHeart, ChocoParRegularDecorationHeart, RaspberryDecorationHeart, RaspberryLargeDecorationHeart, RaspberryRegularDecorationHeart } from './Decoration/DecorationHeart';
 import CardWriting from './CardWriting';
+import { FontDripLarge, FontDripRegular, FontDripSmall, FontHeartDripLarge, FontHeartDripRegular, FontHeartDripSmall, FontHeartLarge, FontHeartRegular, FontHeartSmall, FontLarge, FontRegular, FontSmall, FontSquareDripLarge, FontSquareDripRegular, FontSquareDripSmall, FontSquareLarge, FontSquareRegular, FontSquareSmall } from './FontFunction/FontCake';
+import { Divider } from 'antd';
+import { ColorLabel } from '../../styles/CakeComponentStyles/ColorPicker.styled';
 const CakeScene = () => {
   const [userText, setUserText] = useState('');
   const [fontType, setFontType] = useState('/fonts/droid_sans_bold.typeface.json');
@@ -106,29 +108,53 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
   const renderRightColumn = () => {
     switch (currentStage) {
       case 1:
-        return (<>
-        <ColorPicker
+        return (
+        <ColumnContainer>
+        <div style={{ width: '80%', margin: '0 auto' }}>
+        <Divider style={{ borderColor: '#1a1a19b3' }}>
+          <ColorLabel>Cream Color:</ColorLabel>
+        </Divider>
+        </div>
+         <ColorPicker
           selectedColor={layerColor}
           onColorChange={setLayerColor}
-        />
-        <ColorPicker
+         />
+         <div style={{ width: '80%', margin: '0 auto' }}>
+        <Divider style={{ borderColor: '#1a1a19b3' }}>
+          <ColorLabel>Select a Filling:</ColorLabel>
+        </Divider>
+        </div>
+         <FillPicker
           selectedColor={fillLayerColor}
           onColorChange={setFillLayerColor}
-        />
-
-        </>);
+         />
+        </ColumnContainer>
+        );
       case 2:
-        return (<ColumnContainer><FontInput
+        return (
+        <ColumnContainer style={{width:'100%'}}>
+        <div style={{ width: '100%', margin: '0 auto' }}>
+        <Divider style={{ borderColor: '#1a1a19b3' }}>
+          <ColorLabel>Enter a Text:</ColorLabel>
+        </Divider>
+      </div>
+        <FontInput
           textValue={userText}
           onTextChange={setUserText}
           onToggleFont={toggleFont}
           onColorChange={setSelectedColor}
           color={selectedColor}
         />
+        <div style={{ width: '100%', margin: '0 auto' }}>
+        <Divider style={{ borderColor: '#1a1a19b3' }}>
+          <ColorLabel>Topping Color:</ColorLabel>
+        </Divider>
+      </div>
         <ColorPicker
         selectedColor={toppingColor}
         onColorChange={(color) => setToppingColor(color)}
       />
+      
         </ColumnContainer>);
       case 3:
         return <CardWriting />;
@@ -332,16 +358,37 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
             {(currentStage === 3) && numLayers === 4 && layerShape === 'round' &&  selectedTopping === 'small'&& selectedDecoration === 'cherry' && numLayers === 4 && <CherryLargeDripDecoration />}
             {(currentStage === 3) && numLayers === 4 && layerShape === 'round' &&  (selectedTopping === 'heart' || selectedTopping === 'star' )&& selectedDecoration === 'cherry' && numLayers === 4 && <CherryLargeHeartDecoration />}
            
+            {/*////////////// Text input /////////////// */}
+             {/* Text Round  */}
+            {(currentStage === 3|| currentStage===2) && numLayers === 2 && layerShape === 'round' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'heart' || selectedTopping === 'star') && <FontSmall userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+            {(currentStage === 3|| currentStage===2) && numLayers === 2 && layerShape === 'round' && (selectedTopping === 'cramel' || selectedTopping === 'small' ) && <FontDripSmall userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+
+            {(currentStage === 3|| currentStage===2) && numLayers === 3 && (layerShape === 'round') && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'heart' || selectedTopping === 'star') && <FontRegular userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+            {(currentStage === 3|| currentStage===2) && numLayers === 3 && layerShape === 'round' && (selectedTopping === 'cramel' || selectedTopping === 'small' ) && <FontDripRegular userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+
+            {(currentStage === 3|| currentStage===2) && numLayers === 4 && layerShape === 'round' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'heart' || selectedTopping === 'star') && <FontLarge userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+            {(currentStage === 3|| currentStage===2) && numLayers === 4 && layerShape === 'round' && (selectedTopping === 'cramel' || selectedTopping === 'small' ) && <FontDripLarge userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+            {/* Text Square  */}
+            {(currentStage === 3|| currentStage===2) && numLayers === 2 && layerShape === 'square' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'heart' || selectedTopping === 'star') && <FontSquareSmall userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+            {(currentStage === 3|| currentStage===2) && numLayers === 2 && layerShape === 'square' && (selectedTopping === 'cramel' || selectedTopping === 'small' ) && <FontSquareDripSmall userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+
+            {(currentStage === 3|| currentStage===2) && numLayers === 3 && (layerShape === 'square' ) && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'heart' || selectedTopping === 'star') && <FontSquareRegular userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+            {(currentStage === 3|| currentStage===2) && numLayers === 3 && layerShape === 'square' && (selectedTopping === 'cramel' || selectedTopping === 'small' ) && <FontSquareDripRegular userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+
+            {(currentStage === 3|| currentStage===2) && numLayers === 4 && layerShape === 'square' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'heart' || selectedTopping === 'star') && <FontSquareLarge userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+            {(currentStage === 3|| currentStage===2) && numLayers === 4 && layerShape === 'square' && (selectedTopping === 'cramel' || selectedTopping === 'small' ) && <FontSquareDripLarge userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+            {/* Text Heart  */}
+            {(currentStage === 3|| currentStage===2) && numLayers === 2 && layerShape === 'heart' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'heart' || selectedTopping === 'star' || selectedTopping === 'small') && <FontHeartSmall userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+            {(currentStage === 3|| currentStage===2) && numLayers === 2 && layerShape === 'heart' && (selectedTopping === 'cramel'  ) && <FontHeartDripSmall userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+
+            {(currentStage === 3|| currentStage===2) && numLayers === 3 && (layerShape === 'heart' ) && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'heart' || selectedTopping === 'star' || selectedTopping === 'small') && <FontHeartRegular userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+            {(currentStage === 3|| currentStage===2) && numLayers === 3 && layerShape === 'heart' && (selectedTopping === 'cramel' ) && <FontHeartDripRegular userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+
+            {(currentStage === 3|| currentStage===2) && numLayers === 4 && layerShape === 'heart' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'heart' || selectedTopping === 'star' || selectedTopping === 'small' ) && <FontHeartLarge userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
+            {(currentStage === 3|| currentStage===2) && numLayers === 4 && layerShape === 'heart' && (selectedTopping === 'cramel' ) && <FontHeartDripLarge userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
 
 
-            <CakeFont
-              text={userText}
-              position={[1, 0.55, 0.7]}
-              rotation={[Math.PI / 2, Math.PI, 0]}
-              fontPath={fontType}
-              maxCharsPerLine={12}
-              color={selectedColor}
-            />
+            
           </group>
         </Canvas>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>

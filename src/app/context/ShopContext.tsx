@@ -1,45 +1,41 @@
-import React, { createContext, useState, ReactNode } from 'react';
-import { PRODUCTS } from '../../products';
+import React, { createContext, useState, ReactNode } from "react";
+import { PRODUCTS, CAKEPRODUCTS } from "../Shops/products";
 
-// Define the shape of the product
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-}
-
-// Define the shape of the cart items
 interface CartItems {
   [key: number]: number;
 }
 
-// Define the shape of the context value
+
 interface ShopContextValue {
   cartItems: CartItems;
-  addToCart: (itemId: number) => void;
-  removeFromCart: (itemId: number) => void;
+  addToCart: (itemId: number, category?: "PRODUCTS" | "CAKEPRODUCTS") => void;
+  removeFromCart: (itemId: number, category?: "PRODUCTS" | "CAKEPRODUCTS") => void;
   updateCartItemCount: (newAmount: number, itemId: number) => void;
   getTotalCartAmount: () => number;
   checkout: () => void;
+  getTotal: () => number;
+  
 }
 
-// Create the context with a default value
-export const ShopContext = createContext<ShopContextValue | undefined>(undefined);
+export const ShopContext = createContext<ShopContextValue | undefined>(
+  undefined
+);
 
-// Define the default cart items
 const getDefaultCart = (): CartItems => {
   const cart: CartItems = {};
-  for (let i = 1; i < PRODUCTS.length + 1; i++) {
-    cart[i] = 0;
-  }
+  [...PRODUCTS, ...CAKEPRODUCTS].forEach((product) => {
+    cart[product.id] = 0;
+  });
   return cart;
 };
 
-// Define the provider component
-export const ShopContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const ShopContextProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [cartItems, setCartItems] = useState<CartItems>(getDefaultCart());
 
   const addToCart = (itemId: number): void => {
+    // Optionally use `category` for any specific logic
     setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
   };
 
@@ -49,7 +45,7 @@ export const ShopContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       if (updatedCart[itemId] > 1) {
         updatedCart[itemId] -= 1;
       } else {
-        delete updatedCart[itemId];
+        updatedCart[itemId] = 0; // Retain the item in the cart with a count of 0
       }
       return updatedCart;
     });
@@ -61,16 +57,40 @@ export const ShopContextProvider: React.FC<{ children: ReactNode }> = ({ childre
 
   const getTotalCartAmount = (): number => {
     let totalAmount = 0;
+    
+    const allProducts = [...PRODUCTS, ...CAKEPRODUCTS];
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
-        const itemInfo = PRODUCTS.find((product) => product.id === Number(item));
+        const itemInfo = allProducts.find(
+          (product) => product.id === Number(item)
+        );
         if (itemInfo) {
           totalAmount += cartItems[item] * itemInfo.price;
+          
         }
       }
     }
     return totalAmount;
   };
+
+
+  const getTotal = (): number => {
+    let total = 0;
+  
+    const allProducts = [...PRODUCTS, ...CAKEPRODUCTS];
+    for (const item in cartItems) {
+      if (cartItems[item] > 0) {
+        const itemInfo = allProducts.find(
+          (product) => product.id === Number(item)
+        );
+        if (itemInfo) {
+          total += cartItems[item]; // Add the quantity of the item to the total
+        }
+      }
+    }
+    return total;
+  };
+
 
   const checkout = (): void => {
     setCartItems(getDefaultCart());
@@ -83,6 +103,7 @@ export const ShopContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     updateCartItemCount,
     getTotalCartAmount,
     checkout,
+    getTotal
   };
   console.log(cartItems);
   return (

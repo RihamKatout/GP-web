@@ -427,23 +427,23 @@ function FullMixToppingSquare({ color }: { color: string }) {
 function HeartTopSmallSquare({ color }: { color: string }) {
     return(
         <>
-    <Hearty position={[0, 0.6, 1.6]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
+    <Hearty position={[0, 0.5, 1.6]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Hearty position={[0, 0.6, -1.6]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
+    <Hearty position={[0, 0.5, -1.6]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Hearty position={[-1.6, 0.6, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
+    <Hearty position={[-1.6, 0.5, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Hearty position={[1.6, 0.6, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
+    <Hearty position={[1.6, 0.5, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Hearty position={[-0.8, 0.6, -0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
+    <Hearty position={[-0.8, 0.5, -0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Hearty position={[-0.8, 0.6, 0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
+    <Hearty position={[-0.8, 0.5, 0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Hearty position={[0.8, 0.6, -0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
+    <Hearty position={[0.8, 0.5, -0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
       
-    <Hearty position={[0.8, 0.6, 0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
+    <Hearty position={[0.8, 0.5, 0.8]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
 
-    <Hearty position={[0, 0.6, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
+    <Hearty position={[0, 0.5, 0]} scale={[0.005, 0.005, 0.002]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
 
       
     </>

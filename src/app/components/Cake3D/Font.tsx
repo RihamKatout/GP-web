@@ -62,7 +62,11 @@ const CakeFont: React.FC<CakeTextProps> = ({
           bevelThickness={0.01}
           bevelSize={0.01}
           bevelSegments={5}
-          position={[0, -index * (fontSize + 0.1), 0]} // Adjust vertical spacing
+          position={[
+            -line.length * (fontSize / 4), // Center horizontally by adjusting X position
+            -index * (fontSize + 0.1), // Adjust vertical spacing
+            0,
+          ]}
         >
           {line}
           <meshStandardMaterial attach="material" color={color} />

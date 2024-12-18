@@ -1,6 +1,8 @@
 import React from 'react'; 
 import { CakeInput, CakeButton } from '../../../styles/CakeComponentStyles/Cake.styled';
-import ColorPicker from './ColorPicker';
+import {ColorPicker} from './ColorPicker';
+import { Divider } from 'antd';
+import { ColorLabel } from '../../../styles/CakeComponentStyles/ColorPicker.styled';
 
 
 type FontInputProps = {
@@ -26,6 +28,11 @@ const FontInput: React.FC<FontInputProps> = ({ onTextChange, onToggleFont, textV
       <CakeButton onClick={onToggleFont}>Toggle Font</CakeButton>
 
       {/* Color Selector for text color */}
+      <div style={{ width: '100%', margin: '0 auto' }}>
+        <Divider style={{ borderColor: '#1a1a19b3' }}>
+          <ColorLabel>Text Color:</ColorLabel>
+        </Divider>
+      </div>
       
       <ColorPicker selectedColor={color} onColorChange={onColorChange} />
     </>

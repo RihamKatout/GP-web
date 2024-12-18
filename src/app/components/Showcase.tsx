@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {motion} from 'framer-motion';
 
 //import for global style
@@ -11,13 +11,13 @@ import {
     IconContainer,
 } from '../styles/Global.styled'
 import showcase from "../../assets/showcase.png";
-import shape1 from "../../assets/particle.png";
+// import shape1 from "../../assets/particle.png";
 
 //import for showcase style
 import {
    ShowcaseImageCard, 
    ShowcaseParticleContainer ,
-   Particle,
+   
   } from '../styles/Showcase.styled';
 //import for icons
 import { BsInstagram, BsLinkedin, BsTwitter, BsYoutube } from 'react-icons/bs';
@@ -93,7 +93,7 @@ const Showcase = () => {
               <img src={showcase} alt='showcase'/>
             </ShowcaseImageCard>
             
-            <Particle
+            {/* <Particle
                 as={motion.img}
                 animate={{
                   x:[0,100,0],
@@ -215,7 +215,7 @@ const Showcase = () => {
                 bottom="350px"
                 left="50px"
                 rotate='0deg'
-            />
+            /> */}
 
           </ShowcaseParticleContainer>
         </FlexContainer>

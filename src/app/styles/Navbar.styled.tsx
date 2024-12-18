@@ -1,14 +1,18 @@
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
 
-export const NavbarContainer = styled.div<{bgColor?:string}>`
-    position: fixed;
-    width:100%;
-    top: 0;
-    left:0;
-    z-index:10;
-    transition: all 0.3s ease-in;
-    background-color: ${({bgColor}) => bgColor};
+export const NavbarContainer = styled.div`
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+     background-color: ${({ theme }) => theme.colors.background || "white"};
+     color: ${({ theme }) => theme.colors.text || "black"};
+     /* transition: background-color 0.2s, color 0.2s; */
+     position: sticky;
+     top:0;
+     z-index: 1000;
+    
+    /* top: 0;
+    left:0; */
+    
 ` 
 
 export  const Logo = styled.p `

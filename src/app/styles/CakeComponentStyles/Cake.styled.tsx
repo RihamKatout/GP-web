@@ -2,8 +2,9 @@ import styled from "styled-components";
 
 export const CakePageContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr; /* Left and right columns smaller, middle column larger */
-  height: 100vh; /* Full viewport height */
+  grid-template-columns: 1fr 2.3fr 1fr; /* Left and right columns smaller, middle column larger */
+  height: 85vh; /* Full viewport height */
+  padding: 0rem;
 `;
 
 export const Column = styled.div`
@@ -17,8 +18,8 @@ export const Column = styled.div`
 export const MiddleColumn = styled(Column)`
   background-color: #fff; /* Different background color for the middle column */
   padding: 20px;
-  margin-top: 80px;
-  margin-bottom:50px;
+  /* margin-top: 10px;
+ margin-bottom:50px; */
   border-radius: 20px;
 `;
 export const CakeInput = styled.input`
@@ -42,16 +43,17 @@ export const ColumnContainer = styled.div `
 export const CakeButton = styled.button`
    background-color: #ffffff;
   color: #141313;
-  width: 8.5em;
-  height: 2.9em;
-  border: ${({theme}) => theme.colors.secondary} 0.2em solid;
+  width: 7.5em;
+  height: 4.3em;
+  border: #C47B83 0.17em solid;
   border-radius: 11px;
   text-align: center;
   transition: all 0.6s ease;
   margin-top: 10px;
 
   &:hover {
-    background-color: ${({theme}) => theme.colors.secondary};
+    //background-color: ${({theme}) => theme.colors.secondary};
+    transform: scale(1.05);
     cursor: pointer;
   }
 
