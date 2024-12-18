@@ -51,40 +51,24 @@ const NavigationItems = [
 
 const UserMenuIcons = [
   {
-    icon: (
-      <IconButton color="inherit" edge="end" aria-label="user menu">
-        <FavoriteIcon />
-      </IconButton>
-    ),
+    icon: <FavoriteIcon />,
     text: "Wishlist",
-    to: SectionIdEnum.wishlist,
+    path: "/wishlist",
   },
   {
-    icon: (
-      <IconButton color="inherit" edge="end" aria-label="user menu">
-        <ShoppingCartIcon />
-      </IconButton>
-    ),
+    icon: <ShoppingCartIcon />,
     text: "Cart",
-    to: SectionIdEnum.cart,
+    path: "/cart",
   },
   {
-    icon: (
-      <IconButton color="inherit" edge="end" aria-label="user menu">
-        <AccountCircle />
-      </IconButton>
-    ),
+    icon: <AccountCircle />,
     text: "Profile",
-    to: SectionIdEnum.profile,
+    path: "/profile",
   },
   {
-    icon: (
-      <IconButton color="inherit" edge="end" aria-label="user menu">
-        <LogoutIcon />
-      </IconButton>
-    ),
+    icon: <LogoutIcon />,
     text: "Logout",
-    to: SectionIdEnum.logout,
+    path: "/logout",
   },
 ];
 
@@ -116,11 +100,16 @@ export const Navbar = () => {
     </AnchorLink>
   ));
 
-  const mappedUserIcons = UserMenuIcons.map(({ icon, to }) => (
-    <AnchorLink key={to} href={`#${to}`}>
-      <Button color="inherit" size="large">
+  const mappedUserIcons = UserMenuIcons.map(({ icon, path }) => (
+    <AnchorLink key={path}>
+      <IconButton
+        color="inherit"
+        edge="end"
+        aria-label="user menu"
+        onClick={() => navigate(path)}
+      >
         {icon}
-      </Button>
+      </IconButton>
     </AnchorLink>
   ));
 
@@ -143,22 +132,18 @@ export const Navbar = () => {
         <div>{Logo}</div>
 
         {/* Navigation items */}
-        <div>
-          {!isMobile && (
-            <Box component="nav" sx={{ display: "flex", gap: 2 }}>
-              {mappedNavigationItems}
-            </Box>
-          )}
-        </div>
+        {!isMobile && (
+          <Box component="div" sx={{ display: "flex", gap: 2 }}>
+            {mappedNavigationItems}
+          </Box>
+        )}
 
         {/* User menu icons or register/login buttons */}
-        <div>
-          {!isMobile && (
-            <Box component="nav" sx={{ display: "flex" }}>
-              {isLoggedIn ? mappedUserIcons : mappedAuthenticationButtons}
-            </Box>
-          )}
-        </div>
+        {!isMobile && (
+          <Box component="div" sx={{ display: "flex" }}>
+            {isLoggedIn ? mappedUserIcons : mappedAuthenticationButtons}
+          </Box>
+        )}
 
         {isMobile && (
           <div>
@@ -170,6 +155,7 @@ export const Navbar = () => {
             >
               <MenuIcon />
             </IconButton>
+
             <Menu
               anchorEl={menuAnchor}
               open={Boolean(menuAnchor)}
@@ -181,17 +167,11 @@ export const Navbar = () => {
                 </AnchorLink>
               ))}
               {isLoggedIn
-                ? UserMenuIcons.map(({ icon, text, to }) => (
-                    <AnchorLink
-                      key={to}
-                      href={`#${to}`}
-                      onClick={handleMenuClose}
-                    >
-                      <MenuItem>
-                        {icon}
-                        {text}
-                      </MenuItem>
-                    </AnchorLink>
+                ? UserMenuIcons.map(({ icon, text, path }) => (
+                    <MenuItem onClick={() => navigate(path)}>
+                      {icon}
+                      {text}
+                    </MenuItem>
                   ))
                 : AuthenticationButtons.map(({ text, Path }) => (
                     <MenuItem

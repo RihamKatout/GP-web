@@ -13,13 +13,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./context/AuthContext";
 import { QueryClient, QueryClientProvider } from "react-query";
-import {HomePage} from "./pages";
+import { HomePage } from "./pages";
+import ProfilePage from "./pages/ProfilePage";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/",
-    Component: HomePage
+    Component: HomePage,
   },
   {
     path: "/login",
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/profile",
+    Component: ProfilePage,
+  },
+  {
     path: "*",
     element: (
       <MainBody>
@@ -65,7 +70,7 @@ const router = createBrowserRouter([
         </Button>
       </MainBody>
     ),
-  }
+  },
 ]);
 
 export function App() {
