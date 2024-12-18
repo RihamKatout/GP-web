@@ -3,4 +3,10 @@ export const enum SectionIdEnum {
     categories = "categories",
     shop = "shop",
     help = "help",
+    wishlist = "wishlist",
+    cart = "cart",
+    profile = "profile",
+    logout = "logout",
+    login = "login",
+    register = "register",
 }
