@@ -5,16 +5,17 @@ interface CartItems {
   [key: number]: number;
 }
 
-
 interface ShopContextValue {
   cartItems: CartItems;
   addToCart: (itemId: number, category?: "PRODUCTS" | "CAKEPRODUCTS") => void;
-  removeFromCart: (itemId: number, category?: "PRODUCTS" | "CAKEPRODUCTS") => void;
+  removeFromCart: (
+    itemId: number,
+    category?: "PRODUCTS" | "CAKEPRODUCTS"
+  ) => void;
   updateCartItemCount: (newAmount: number, itemId: number) => void;
   getTotalCartAmount: () => number;
   checkout: () => void;
   getTotal: () => number;
-  
 }
 
 export const ShopContext = createContext<ShopContextValue | undefined>(
@@ -57,7 +58,7 @@ export const ShopContextProvider: React.FC<{ children: ReactNode }> = ({
 
   const getTotalCartAmount = (): number => {
     let totalAmount = 0;
-    
+
     const allProducts = [...PRODUCTS, ...CAKEPRODUCTS];
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
@@ -66,17 +67,15 @@ export const ShopContextProvider: React.FC<{ children: ReactNode }> = ({
         );
         if (itemInfo) {
           totalAmount += cartItems[item] * itemInfo.price;
-          
         }
       }
     }
     return totalAmount;
   };
 
-
   const getTotal = (): number => {
     let total = 0;
-  
+
     const allProducts = [...PRODUCTS, ...CAKEPRODUCTS];
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
@@ -91,7 +90,6 @@ export const ShopContextProvider: React.FC<{ children: ReactNode }> = ({
     return total;
   };
 
-
   const checkout = (): void => {
     setCartItems(getDefaultCart());
   };
@@ -103,12 +101,10 @@ export const ShopContextProvider: React.FC<{ children: ReactNode }> = ({
     updateCartItemCount,
     getTotalCartAmount,
     checkout,
-    getTotal
+    getTotal,
   };
   console.log(cartItems);
   return (
-    <ShopContext.Provider value={contextValue}>
-      {children}
-    </ShopContext.Provider>
+    <ShopContext.Provider value={contextValue}>{children}</ShopContext.Provider>
   );
 };

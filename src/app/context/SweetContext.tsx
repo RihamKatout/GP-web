@@ -55,7 +55,7 @@ export const SweetContextProvider: React.FC<{ children: ReactNode }> = ({
 
   const getTotalCartAmount = (): number => {
     let totalAmount = 0;
-    
+
     const allProducts = [...PRODUCTS, ...CAKE];
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
@@ -64,17 +64,15 @@ export const SweetContextProvider: React.FC<{ children: ReactNode }> = ({
         );
         if (itemInfo) {
           totalAmount += cartItems[item] * itemInfo.price;
-          
         }
       }
     }
     return totalAmount;
   };
 
-
   const getTotal = (): number => {
     let total = 0;
-  
+
     const allProducts = [...PRODUCTS, ...CAKE];
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
@@ -100,12 +98,10 @@ export const SweetContextProvider: React.FC<{ children: ReactNode }> = ({
     updateCartItemCount,
     getTotalCartAmount,
     checkout,
-    getTotal
+    getTotal,
   };
   console.log(cartItems);
   return (
-    <ShopContext.Provider value={contextValue}>
-      {children}
-    </ShopContext.Provider>
+    <ShopContext.Provider value={contextValue}>{children}</ShopContext.Provider>
   );
 };
