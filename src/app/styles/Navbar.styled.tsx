@@ -1,19 +1,19 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-export const NavbarContainer = styled.nav`
-  position: sticky;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: ${({ theme }) => theme.colors.navBackground};
-  color: ${({ theme }) => theme.colors.black};
-`;
+export const NavbarContainer = styled.div`
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+     background-color: ${({ theme }) => theme.colors.background || "white"};
+     color: ${({ theme }) => theme.colors.text || "black"};
+     /* transition: background-color 0.2s, color 0.2s; */
+     position: sticky;
+     top:0;
+     z-index: 1000;
+    
+    /* top: 0;
+    left:0; */
+    
+` 
 
 export const Logo = styled(Link)`
   text-decoration: none;

@@ -3,14 +3,14 @@ import styled from "styled-components";
 
 // Define prop interfaces
 interface PaddingProps {
-    top?: string;
-    bottom?: string;
-    left?: string;
-    right?: string;
-    responsiveRight?: string;
-    responsiveLeft?: string;
-    responsiveBottom?: string;
-    responsiveTop?: string;
+    top?: string | undefined;
+    bottom?: string | undefined;
+    left?: string | undefined;
+    right?: string | undefined;
+    responsiveRight?: string | undefined;
+    responsiveLeft?: string | undefined;
+    responsiveBottom?: string | undefined;
+    responsiveTop?: string | undefined;
   }
   
   interface FlexProps {
