@@ -13,14 +13,14 @@ import {
 import AnchorLink from "react-anchor-link-smooth-scroll";
 import { logoImg } from "../../../../assets";
 import { SectionIdEnum } from "../../../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "../../../context/AuthContext";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Logo = (
   <Box component="div" flexGrow={1}>
@@ -78,11 +78,12 @@ const AuthenticationButtons = [
 ];
 
 export const Navbar = () => {
-  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-  const { isLoggedIn } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
+  const { isLoggedIn } = useAuth();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -93,11 +94,23 @@ export const Navbar = () => {
   };
 
   const mappedNavigationItems = NavigationItems.map(({ text, to }) => (
-    <AnchorLink key={to} href={`#${to}`}>
-      <Button color="inherit" size="large">
-        {text}
-      </Button>
-    </AnchorLink>
+    <Button
+      key={to}
+      color="inherit"
+      size="large"
+      onClick={() => {
+        if (location.pathname !== "/") {
+          navigate("/");
+        } else {
+          const section = document.getElementById(to);
+          if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+          }
+        }
+      }}
+    >
+      {text}
+    </Button>
   ));
 
   const mappedUserIcons = UserMenuIcons.map(({ icon, path }) => (
@@ -161,14 +174,17 @@ export const Navbar = () => {
               open={Boolean(menuAnchor)}
               onClose={handleMenuClose}
             >
-              {NavigationItems.map(({ text, to }) => (
-                <AnchorLink key={to} href={`#${to}`} onClick={handleMenuClose}>
-                  <MenuItem>{text}</MenuItem>
-                </AnchorLink>
+              {mappedNavigationItems.map((item, index) => (
+                <MenuItem key={index} onClick={() => handleMenuClose()}>
+                  {item}
+                </MenuItem>
               ))}
               {isLoggedIn
                 ? UserMenuIcons.map(({ icon, text, path }) => (
-                    <MenuItem onClick={() => navigate(path)}>
+                    <MenuItem
+                      onClick={() => navigate(path)}
+                      style={{ padding: "0 26px" }}
+                    >
                       {icon}
                       {text}
                     </MenuItem>
@@ -180,6 +196,7 @@ export const Navbar = () => {
                         handleMenuClose();
                         navigate(Path);
                       }}
+                      style={{ padding: "0 28px" }}
                     >
                       {text}
                     </MenuItem>
