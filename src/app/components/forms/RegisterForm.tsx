@@ -2,6 +2,7 @@ import z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   username: z
@@ -31,6 +32,7 @@ const schema = z.object({
 export type registrationFormFields = z.infer<typeof schema>;
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
   const { registerUserContext } = useAuth();
   const {
     register,
@@ -62,6 +64,7 @@ const RegisterForm = () => {
         return;
       }
       await registerUserContext(data);
+      navigate("/");
     } catch (error: any) {
       setError("root", {
         type: "manual",
@@ -122,7 +125,6 @@ const RegisterForm = () => {
       {isSubmitSuccessful && (
         <div className="alert alert-success">Registration successful!</div>
       )}
-
     </form>
   );
 };

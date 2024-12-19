@@ -13,7 +13,7 @@ import {
 import AnchorLink from "react-anchor-link-smooth-scroll";
 import { logoImg } from "../../../../assets";
 import { SectionIdEnum } from "../../../types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "../../../context/AuthContext";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -34,7 +34,7 @@ const Logo = (
         width="min-content"
       >
         <img width="60px" height="40px" src={logoImg} alt="logo" />
-        <Typography variant="h5" sx={{ width: "min-content" }}>
+        <Typography variant="h5" sx={{ width: "min-content", fontFamily: "DynaPuff"}}>
           Designify
         </Typography>
       </Box>
@@ -81,7 +81,7 @@ export const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, logoutContext } = useAuth();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
 
@@ -91,6 +91,11 @@ export const Navbar = () => {
 
   const handleMenuClose = () => {
     setMenuAnchor(null);
+  };
+
+  const handleLogout = () => {
+    logoutContext();
+    navigate("/");
   };
 
   const mappedNavigationItems = NavigationItems.map(({ text, to }) => (
@@ -119,7 +124,13 @@ export const Navbar = () => {
         color="inherit"
         edge="end"
         aria-label="user menu"
-        onClick={() => navigate(path)}
+        onClick={() => {
+          if (path === "/logout") {
+            handleLogout();
+          } else {
+            navigate(path);
+          }
+        }}
       >
         {icon}
       </IconButton>
