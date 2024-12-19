@@ -1,12 +1,12 @@
 import { Container, MainBody, Button } from "./styles/Global.styled";
 import { ThemeProvider } from "styled-components";
 import { Theme } from "./utils/Theme";
-import Showcase from "./components/Showcase";
+// import Showcase from "./components/Showcase";
 import CakeScene from "./components/Cake3D/CakeComponent";
 import { createBrowserRouter, Link, RouterProvider } from "react-router-dom";
 // import ShopNavbar from "./components/ShopNavbar";
 //import Shops from "./Shops/Shops/Shops";
-import  Cart  from "./Shops/Cart/Cart";
+import Cart from "./Shops/Cart/Cart";
 import ShopNavbar from "./Shops/component/ShopNavbar";
 import { ShopContextProvider } from "./context/ShopContext";
 import RegisterPage from "./pages/RegisterPage";
@@ -23,6 +23,7 @@ import { SweetContextProvider } from "./context/SweetContext";
 import SweetNavbar from "./SweetTouches/component/SweetNavbar";
 import ShopHero from "./Shops/component/ShopHero";
 import Navbar from "./Shops/component/ShopNavbar";
+import { Showcase } from "./pages";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -42,16 +43,20 @@ const router = createBrowserRouter([
     path: "/shops",
     element: (
       <MainBody>
-       <Navbar/>
-       <ShopHero/>
+        <Navbar />
+        <ShopHero />
       </MainBody>
     ),
+  },
+  {
+    path: "/showcase",
+    Component: Showcase,
   },
   {
     path: "/cart",
     element: (
       <MainBody>
-        <Navbar/>
+        <Navbar />
         <ShopNavbar />
         <Cart />
       </MainBody>
@@ -60,8 +65,8 @@ const router = createBrowserRouter([
   {
     path: "/cake",
     element: (
-      <div >
-        <Navbar/>
+      <div>
+        <Navbar />
         <SweetNavbar />
         <CakeScene></CakeScene>
       </div>
@@ -71,26 +76,23 @@ const router = createBrowserRouter([
     path: "/sweettouches",
     element: (
       <MainBody>
-        <Navbar/>
+        <Navbar />
         <Hero />
-        
       </MainBody>
     ),
   },
   {
     path: "/profile",
     Component: ProfilePage,
-  },{
+  },
+  {
     path: "/sweetcart",
     element: (
-      
-         <MainBody>
-        <Navbar/>
+      <MainBody>
+        <Navbar />
         <SweetNavbar />
         <SweetCart />
-       </MainBody>
-      
-      
+      </MainBody>
     ),
   },
   {
@@ -112,10 +114,9 @@ export function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <SweetContextProvider>
-          <ShopContextProvider>
-
-            <RouterProvider router={router} />
-          </ShopContextProvider>
+            <ShopContextProvider>
+              <RouterProvider router={router} />
+            </ShopContextProvider>
           </SweetContextProvider>
         </AuthProvider>
       </QueryClientProvider>
