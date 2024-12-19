@@ -6,12 +6,10 @@ import {
   Menu,
   MenuItem,
   Toolbar,
-  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import AnchorLink from "react-anchor-link-smooth-scroll";
-import { logoImg } from "../../../../assets";
 import { SectionIdEnum } from "../../../types";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -21,26 +19,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useLocation, useNavigate } from "react-router-dom";
-
-const Logo = (
-  <Box component="div" flexGrow={1}>
-    {/* TODO: navigate to offers section from here */}
-    <AnchorLink>
-      <Box
-        component="div"
-        display="flex"
-        alignItems="center"
-        gap={1}
-        width="min-content"
-      >
-        <img width="60px" height="40px" src={logoImg} alt="logo" />
-        <Typography variant="h5" sx={{ width: "min-content", fontFamily: "DynaPuff"}}>
-          Designify
-        </Typography>
-      </Box>
-    </AnchorLink>
-  </Box>
-);
+import { Logo } from "../../shared";
 
 const NavigationItems = [
   { text: "Offers", to: SectionIdEnum.offers },
@@ -153,7 +132,7 @@ export const Navbar = () => {
   return (
     <AppBar position="fixed" sx={{ backgroundColor: "black" }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <div>{Logo}</div>
+        <Logo />
 
         {/* Navigation items */}
         {!isMobile && (

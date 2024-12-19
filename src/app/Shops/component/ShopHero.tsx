@@ -8,7 +8,7 @@ import SweetNavbar from "./ShopNavbar";
 //import {CakeShop , AllShop} from '../Shops/SelectShop';
 import Offer from './ShopOffer';
 import { Divider } from "antd";
-import Footer from "../../components/Footer";
+import Footer from "../../components/Layout/main-layout/Footer";
 import Contact from "./ShopContact";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import Shops from "../Shops/Shops";

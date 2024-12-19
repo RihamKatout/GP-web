@@ -5,7 +5,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
 const FooterContainer = styled.footer`
-  padding: 2rem 0;
+  padding: 1rem;
   background-color: ${({ theme }) => theme.colors.primary};
   color: #fff;
   display: flex;

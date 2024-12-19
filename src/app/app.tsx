@@ -16,7 +16,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { HomePage } from "./pages";
 import ProfilePage from "./pages/ProfilePage";
-import Footer from "./components/Footer";
+import Footer from "./components/Layout/main-layout/Footer";
 import Hero from "./SweetTouches/component/Hero";
 import SweetCart from "./SweetTouches/Cart/SweetCart";
 import { SweetContextProvider } from "./context/SweetContext";

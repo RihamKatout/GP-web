@@ -5,7 +5,7 @@ import { CartItem } from "./CartItem";
 import { PRODUCTS, CAKEPRODUCTS } from "../products";
 import styled from "styled-components";
 import { Divider } from "antd";
-import Footer from "../../components/Footer";
+import Footer from "../../components/Layout/main-layout/Footer";
 
 const CartContainer = styled.div`
   padding: 5rem;

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { Divider } from "antd";
 import { useNavigate } from "react-router-dom";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import Footer from "../../components/Footer";
+import Footer from "../../components/Layout/main-layout/Footer";
 
 const CartContainer = styled.div`
   padding: 2rem;

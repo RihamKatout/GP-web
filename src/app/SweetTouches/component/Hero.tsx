@@ -8,7 +8,7 @@ import SweetNavbar from "./SweetNavbar";
 //import {Cake , ShopsComponent} from '../Sweet/SelectShop';
 import Offer from './Offer';
 import { Divider } from "antd";
-import Footer from "../../components/Footer";
+import Footer from "../../components/Layout/main-layout/Footer";
 import Contact from "./Contact";
 import { CAKE , PRODUCTS} from "../products";
 import Shops from "../Sweet/Shops";
