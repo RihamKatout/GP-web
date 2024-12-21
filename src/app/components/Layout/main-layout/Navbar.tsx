@@ -20,6 +20,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "../../shared";
+import { NavigationContainer } from "../../../styles/MainLayout.style/Navbar.styled";
 
 const NavigationItems = [
   { text: "Offers", to: SectionIdEnum.offers },
@@ -52,8 +53,8 @@ const UserMenuIcons = [
 ];
 
 const AuthenticationButtons = [
-  { text: "Login", Path: "/login" },
-  { text: "Register", Path: "/register" },
+  { text: "Login", Path: "/login", borderColor: "rgb(0, 0, 0)" },
+  { text: "Register", Path: "/register", borderColor: "rgb(0, 0, 0)" },
 ];
 
 export const Navbar = () => {
@@ -117,12 +118,19 @@ export const Navbar = () => {
   ));
 
   const mappedAuthenticationButtons = AuthenticationButtons.map(
-    ({ text, Path }) => (
+    ({ text, Path, borderColor }) => (
       <Button
         key={Path}
         color="inherit"
         size="large"
         onClick={() => navigate(Path)}
+        sx={{
+          border: "3px solid",
+          borderRadius: "25px",
+          borderColor: borderColor,
+          color: "black",
+          padding: "5px 20px",
+        }}
       >
         {text}
       </Button>
@@ -130,20 +138,21 @@ export const Navbar = () => {
   );
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: "black" }}>
+    <AppBar position="fixed" sx={{   backgroundColor:"white"  }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Logo />
 
         {/* Navigation items */}
         {!isMobile && (
-          <Box component="div" sx={{ display: "flex", gap: 2 }}>
-            {mappedNavigationItems}
-          </Box>
+          // <Box component="div" sx={{ display: "flex", gap: 2 }}>
+          //   {mappedNavigationItems}
+          // </Box>
+          <NavigationContainer>{mappedNavigationItems}</NavigationContainer>
         )}
 
         {/* User menu icons or register/login buttons */}
         {!isMobile && (
-          <Box component="div" sx={{ display: "flex" }}>
+          <Box component="div" sx={{ display: "flex", gap: 2 }}>
             {isLoggedIn ? mappedUserIcons : mappedAuthenticationButtons}
           </Box>
         )}

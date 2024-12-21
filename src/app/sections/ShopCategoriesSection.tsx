@@ -19,7 +19,9 @@ export const ShopCategoriesSection = () => {
         flexDirection: "column",
         alignItems: "center",
         gap: "2rem",
-        padding: "3rem",
+        padding: "1rem",
+        height: "80vh", 
+        justifyContent: "center",
       }}
     >
       <h1

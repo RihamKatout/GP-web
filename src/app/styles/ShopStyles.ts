@@ -8,11 +8,11 @@ export const StyledCategoryCard = styled(Card)(({ theme }) => ({
   borderRadius: "25px",
   background: "linear-gradient(135deg, rgb(216, 249, 225), rgb(235, 213, 245))",
   transition: "opacity 0.6s ease, transform 0.6s ease",
-  opacity: 0, // Initially hidden
-  transform: "translateY(20px)", // Slightly shifted down
+  opacity: 0, 
+  transform: "translateY(20px)", 
   "&.visible": {
-    opacity: 1, // Fade in
-    transform: "translateY(0)", // Move to original position
+    opacity: 1,
+    transform: "translateY(0)",
   },
   "&:hover": {
     transform: "scale(1.1)",

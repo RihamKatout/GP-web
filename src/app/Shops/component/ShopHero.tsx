@@ -16,7 +16,7 @@ import { CAKEPRODUCTS, PRODUCTS } from "../products";
 import {FaSearch} from "react-icons/fa";
 
 
-const HeroContainer = styled.div`
+export const HeroContainer = styled.div`
   min-height: 750px;
   display: flex;
   justify-content: center;
@@ -122,7 +122,7 @@ const HeroContainer = styled.div`
 //   }
 // `;
 
-const OfferContainer = styled.div`
+export const OfferContainer = styled.div`
   padding: 2rem;
   background-color: #f9f9f9;
   display: flex;
@@ -130,7 +130,7 @@ const OfferContainer = styled.div`
  
 `;
 
-const OfferTitle = styled.h3`
+export const OfferTitle = styled.h3`
   font-size: 1.8rem;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.secondary || "#333"};

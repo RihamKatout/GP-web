@@ -1,5 +1,5 @@
 import { SectionIdEnum } from "../types";
-import { OffersSection, ShopCategoriesSection } from "../sections";
+import { HelpCenter, OffersSection, ShopCategoriesSection } from "../sections";
 import { MainLayout, SectionContainer } from "../components/Layout";
 
 const sections = [
@@ -17,7 +17,7 @@ const sections = [
   },
   {
     sectionId: SectionIdEnum.help,
-    component: <OffersSection />,
+    component: <HelpCenter />,
   },
 ];
 
