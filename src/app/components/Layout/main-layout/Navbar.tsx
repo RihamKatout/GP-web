@@ -160,7 +160,7 @@ export const Navbar = () => {
         {isMobile && (
           <div>
             <IconButton
-              color="inherit"
+              sx={{ color: "black" }}
               edge="start"
               onClick={handleMenuOpen}
               aria-label="menu"

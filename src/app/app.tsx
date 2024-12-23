@@ -1,11 +1,8 @@
-import { Container, MainBody, Button } from "./styles/Global.styled";
+import { MainBody, Button } from "./styles/Global.styled";
 import { ThemeProvider } from "styled-components";
 import { Theme } from "./utils/Theme";
-// import Showcase from "./components/Showcase";
 import CakeScene from "./components/Cake3D/CakeComponent";
 import { createBrowserRouter, Link, RouterProvider } from "react-router-dom";
-// import ShopNavbar from "./components/ShopNavbar";
-//import Shops from "./Shops/Shops/Shops";
 import Cart from "./Shops/Cart/Cart";
 import ShopNavbar from "./Shops/component/ShopNavbar";
 import { ShopContextProvider } from "./context/ShopContext";
@@ -16,7 +13,6 @@ import { AuthProvider } from "./context/AuthContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { HomePage } from "./pages";
 import ProfilePage from "./pages/ProfilePage";
-import Footer from "./components/Layout/main-layout/Footer";
 import Hero from "./SweetTouches/component/Hero";
 import SweetCart from "./SweetTouches/Cart/SweetCart";
 import { SweetContextProvider } from "./context/SweetContext";
@@ -24,6 +20,7 @@ import SweetNavbar from "./SweetTouches/component/SweetNavbar";
 import ShopHero from "./Shops/component/ShopHero";
 import Navbar from "./Shops/component/ShopNavbar";
 import { Showcase } from "./pages";
+import ProductPage from "./pages/ProductPage";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -49,8 +46,8 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/showcase",
-    Component: Showcase,
+    path: "/product",
+    element: <Showcase />,
   },
   {
     path: "/cart",
@@ -94,6 +91,10 @@ const router = createBrowserRouter([
         <SweetCart />
       </MainBody>
     ),
+  },
+  {
+    path: "/product/:id",
+    Component: ProductPage,
   },
   {
     path: "*",

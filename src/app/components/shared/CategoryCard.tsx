@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 type CategoryCardProps = {
   id: number;
   title: string;
-  imageURL: string;
+  imageURL?: string;
 };
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
@@ -42,7 +42,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
   return (
     <StyledCategoryCard
       ref={cardRef}
-      onClick={() => navigate('/showcase')}
+      onClick={() => navigate("/product?storeCategoryId=" + id)}
     >
       <CardActionArea style={{ height: "100%" }}>
         {imageURL && <StyledCardMedia image={imageURL} />}
