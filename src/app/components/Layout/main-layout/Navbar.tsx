@@ -101,9 +101,9 @@ export const Navbar = () => {
   const mappedUserIcons = UserMenuIcons.map(({ icon, path }) => (
     <AnchorLink key={path}>
       <IconButton
-        color="inherit"
         edge="end"
         aria-label="user menu"
+        sx={{ color: "black" }}
         onClick={() => {
           if (path === "/logout") {
             handleLogout();
