@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import  { useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import {Layer , FullLayer} from './LayerFunction/Layar'; // Ensure the file './Layer.tsx' exists in the same directory
@@ -10,9 +10,9 @@ import {  HeartTopSquare, FullSmallToppingSquare, FullToppingSquare, FullMixTopp
 import {  HeartTopHeart, FullSmallToppingHeart, FullToppingHeart, FullMixToppingHeart ,FullBottomHeart , HeartTopSmallHeart , HeartTopLargHeart , FullToppingLargHeart , FullMixToppingLargHeart , FullSmallToppingLargHeart , FullToppingSmallHeart , FullMixToppingSmallHeart , FullSmallToppingSmallHeart, StarTopHeart, StarTopSmallHeart, StarTopLargHeart, CramelToppingHeart, CramelToppingSmallHeart, CramelToppingLargHeart } from './ToppingFunction/ToppingHeart';
 
 import FontInput from './FontFunction/FontInput';
-import ToppingSelector from './ToppingFunction/ToppingSelector';
+import {ToppingSelector , ToppingHeartSelector ,ToppingSquareSelector} from './ToppingFunction/ToppingSelector';
 import LayerSelector from './LayerFunction/LayerSelector';
-import { CakePageContainer, Column, MiddleColumn ,ColumnContainer} from '../../styles/CakeComponentStyles/Cake.styled';
+import { CakePageContainer, Column, MiddleColumn ,ColumnContainer, CakeButton} from '../../styles/CakeComponentStyles/Cake.styled';
 import {ColorPicker , FillPicker } from './FontFunction/ColorPicker';
 
 //Decoration
@@ -23,8 +23,116 @@ import { StrawberryDecorationSquare, StrawberryDripDecorationSquare, StrawberryH
 import { ChocoParDecorationHeart, ChocoParLargeDecorationHeart, ChocoParRegularDecorationHeart, RaspberryDecorationHeart, RaspberryLargeDecorationHeart, RaspberryRegularDecorationHeart } from './Decoration/DecorationHeart';
 import CardWriting from './CardWriting';
 import { FontDripLarge, FontDripRegular, FontDripSmall, FontHeartDripLarge, FontHeartDripRegular, FontHeartDripSmall, FontHeartLarge, FontHeartRegular, FontHeartSmall, FontLarge, FontRegular, FontSmall, FontSquareDripLarge, FontSquareDripRegular, FontSquareDripSmall, FontSquareLarge, FontSquareRegular, FontSquareSmall } from './FontFunction/FontCake';
-import { Divider } from 'antd';
+import { ConfigProvider, Divider, Steps } from 'antd';
 import { ColorLabel } from '../../styles/CakeComponentStyles/ColorPicker.styled';
+import { useFrame } from '@react-three/fiber';
+
+import { ReactNode } from 'react';
+import * as THREE from 'three';
+import styled from 'styled-components';//enableRotate={false}
+import { useGLTF } from '@react-three/drei';
+import { Text } from '@react-three/drei';
+
+
+const MiniCharacter = ({ position = [0, 0, 0], scale = 0.5, rotation = [0, 0, 0] }) => {
+  const groupRef = useRef<THREE.Group>(null);
+  const [isRotating, setIsRotating] = useState(false); // Track rotation state
+  const [rotationProgress, setRotationProgress] = useState(0); // Track rotation progress
+  const clockRef = useRef(0); // Persistent clock for the jumping effect
+
+  const handleClick = () => {
+    if (!isRotating) {
+      setIsRotating(true); // Start rotating
+      setRotationProgress(0); // Reset progress
+    }
+  };
+
+  useFrame(() => {
+    if (groupRef.current) {
+      // Handle rotation
+      if (isRotating) {
+        const rotationSpeed = 0.1; // Speed of rotation
+        groupRef.current.rotation.y += rotationSpeed;
+        setRotationProgress((prev) => prev + rotationSpeed);
+
+        // Stop rotation after 360° (2 * Math.PI radians)
+        if (rotationProgress + rotationSpeed >= 2 * Math.PI) {
+          groupRef.current.rotation.y = Math.PI / 2; // Reset rotation
+          setIsRotating(false); // Stop rotating
+          setRotationProgress(0); // Reset progress
+        }
+      }
+
+      // Handle jumping (bobbing) animation
+      clockRef.current += 0.05; // Increment clock
+      groupRef.current.position.y = position[1] + Math.sin(clockRef.current) * 0.2; // Bobbing effect
+    }
+  });
+
+  const { scene } = useGLTF('./cute_chick.glb'); // Ensure this path is correct
+
+  return (
+    <primitive
+      ref={groupRef}
+      object={scene}
+      position={position}
+      scale={scale}
+      rotation={rotation}
+      onClick={handleClick}
+    />
+  );
+};
+
+const SpeechBubble = ({ texts, position, interval = 2000, rotation }: { texts: string[], position: [number, number, number], interval?: number, rotation: [number, number, number] }) => {
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % texts.length); // Cycle through texts
+    }, interval);
+
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, [texts, interval]);
+
+  return (
+    <Text
+      position={position}
+      rotation={rotation}
+      fontSize={0.25} // Larger font size for better visibility
+      color={'#e14d97'} // Bright, fun color
+      
+      anchorX="center"
+      anchorY="middle"
+      outlineWidth={0.05} // Add an outline to make the text stand out
+      outlineColor={'#00000091'} // Black outline
+    >
+      {texts[currentTextIndex]}
+    </Text>
+  );
+};
+
+
+// Use alongside your character
+
+
+const RotatingCake = ({ children }: { children: ReactNode }) => {
+  const groupRef = useRef<THREE.Group>(null);
+
+  useFrame(() => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y += 0.005; // Adjust rotation speed
+    }
+  });
+
+  return <group ref={groupRef}>{children}</group>;
+};
+const GradientContainer = styled.div`
+  width: 100%;
+  height: 80vh;
+  //background: rgb(63,94,251);
+  background: radial-gradient(circle, #C47B83 0%, rgba(255,255,255,1) 63%);
+  
+`;
 const CakeScene = () => {
   const [userText, setUserText] = useState('');
   const [fontType, setFontType] = useState('/fonts/droid_sans_bold.typeface.json');
@@ -88,12 +196,27 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
         return <LayerSelector onSelectLayer={handleSelectLayer} onSelectShape={setLayerShape} />;
       case 2:
         return (
-          
-          <ToppingSelector
+          <>
+           {(layerShape === 'round') && <ToppingSelector
             onSelectTopping={handleSelectTopping}
             onSelectSide={handleSelectSide}
             onSelectBottom={handleSelectBottom}
-          />
+            />}
+
+           {(layerShape === 'heart') && <ToppingHeartSelector
+            onSelectTopping={handleSelectTopping}
+            onSelectSide={handleSelectSide}
+            onSelectBottom={handleSelectBottom}
+            />}
+
+           {(layerShape === 'square') && <ToppingSquareSelector
+            onSelectTopping={handleSelectTopping}
+            onSelectSide={handleSelectSide}
+            onSelectBottom={handleSelectBottom}
+            />}  
+          </>
+          
+          
           
         );
       case 3:
@@ -162,16 +285,49 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
         return null;
     }
   };
-
+  const cakeRef = useRef<THREE.Group>(null);
   return (
+    
     <CakePageContainer>
       <Column>{renderLeftColumn()}</Column>
       <MiddleColumn>
-        <Canvas camera={{ position: [0, 12, -13], fov: 20 }}>
+        <GradientContainer>
+        <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#22B14C', // Change primary color to #22B14C
+          colorTextHeading: '#22B14C', // Change text color in headings
+        },
+      }}
+    >
+        <Steps
+          size="small"
+          current={currentStage - 1}
+          items={[
+         {
+          title: 'Let\'s Start',
+          
+         },
+        {
+          title: 'Keep on Going',
+        },
+        {
+          title: 'Good Job',
+        },
+
+       ]}
+       
+        style={{ width: '100%' , height: '30px'}}/></ConfigProvider>
+       <div style={{ width: '100%', margin: '0 auto' , justifyContent: 'center' , alignItems: 'center' , height: '80%'}}>
+        <Canvas camera={{ position: [0, 16, -22], fov: 18 }}>
+         
+         <RotatingCake>
           <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={0.8} />
-          <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} minPolarAngle={0} maxPolarAngle={Math.PI / 2} />
-          <group>
+          <directionalLight position={[10, 10, 5]} intensity={0.5} />
+          <directionalLight position={[-10, 10, 5]} intensity={0.5} />
+          <OrbitControls enablePan={true} enableZoom={false} enableRotate={true} minPolarAngle={0} maxPolarAngle={Math.PI / 2} />
+           
+          <group ref={cakeRef}>
             {layerShape === 'heart' && <LayerHeart numLayers={numLayers} layerColor={layerColor} fillLayerColor={fillLayerColor} />}
             {layerShape === 'round' && <Layer numLayers={numLayers} layerColor={layerColor} fillLayerColor={fillLayerColor} />}
             {layerShape === 'square' && <LayerSquare numLayers={numLayers} layerColor={layerColor} fillLayerColor={fillLayerColor} />}
@@ -390,19 +546,34 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
 
             
           </group>
+          </RotatingCake>
+          <>
+          <MiniCharacter position={[4.5, 2.3, 0]} scale={0.55} rotation={[0, Math.PI / 2, 0.2]} />
+          <SpeechBubble
+             texts={[...(currentStage === 1 ? ['"Hello There!"'] : []), ...(currentStage === 1 ? ['"Lets Make a Cake!"'] : []),...(currentStage === 1 ? ['"Show me Your Art"'] : []),
+              ...(currentStage === 2 ? ['"Thats cool!"'] : []), ...(currentStage === 2 ? ['"Nice Coloring"'] : []),...(currentStage === 2? ['"Keep Going.."'] : []),...(currentStage === 2 ? ['"You are Talented"'] : []),
+             ...(currentStage === 3 ? ['"Do Your Final Touch"'] : []),...(currentStage === 3 ? ['"Almost There!"'] : []),...(currentStage === 3 ? ['"Your cake is ready!"'] : []),]}
+             position={[4.5, 4, 0]}
+             interval={4000} // Change text every 3 seconds
+             rotation={[0, 3.2, 0]}
+          />
+         </>
         </Canvas>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
-          <button onClick={prevStage} disabled={currentStage === 1}>
-            Prev
-          </button>
-          <button onClick={nextStage} disabled={currentStage === 3}>
-            Next
-          </button>
         </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' , marginTop:'0 auto'}}>
+          <CakeButton onClick={prevStage} disabled={currentStage === 1} style={{height: '60px' }}>
+           <img src={next} style={{ width: '50px', height: '50px' ,transform: 'rotate(180deg)'}}/>
+          </CakeButton>
+          <CakeButton onClick={nextStage} disabled={currentStage === 3} style={{height: '60px' }}>
+            <img src={next} style={{ width: '50px', height: '50px'}}/>
+          </CakeButton>
+        </div>
+        </GradientContainer>
       </MiddleColumn>
+      
       <Column>{renderRightColumn()}</Column>
     </CakePageContainer>
   );
 };
-
+import next from '../../../assets/cake/ButtonIcon/right-arrow.png'
 export default CakeScene;
