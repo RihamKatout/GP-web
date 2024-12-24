@@ -1,9 +1,9 @@
 import React from "react";
-import { ProductCardStyle } from "../../styles";
-import { Product } from "../../types";
+import { ProductCardStyle } from "../../../styles";
+import { Product } from "../../../types";
 import { useNavigate } from "react-router-dom";
 
-const ProductCard: React.FC<Product> = (product) => {
+export const ProductCard: React.FC<Product> = (product) => {
   const navigate = useNavigate();
 
   return (
@@ -17,4 +17,3 @@ const ProductCard: React.FC<Product> = (product) => {
   );
 };
 
-export default ProductCard;

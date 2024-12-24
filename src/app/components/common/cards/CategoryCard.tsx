@@ -4,7 +4,7 @@ import {
   CategoryCardTitle,
   StyledCategoryCard,
   StyledCategoryCardMedia,
-} from "../../styles";
+} from "../../../styles";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 

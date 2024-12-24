@@ -6,7 +6,7 @@ import {
   PaginationContainer,
   PaginationButton,
 } from "../../styles/shared/Pagination.styled";
-import ProductCard from "../../components/common/ProductCard";
+import {ProductCard} from "../../components/common";
 
 //TODO : fix
 export interface ProductsShowcaseSectionProps {
