@@ -1,7 +1,8 @@
 import { Divider } from "antd";
-import { OfferContainer, OfferTitle } from "../Shops/component/ShopHero";
-import Contact from "../SweetTouches/component/Contact";
+import { OfferContainer, OfferTitle } from "../../Shops/component/ShopHero";
+import Contact from "../../SweetTouches/component/Contact";
 
+// TODO: fix
 export const HelpCenter = () => {
   return (
     <OfferContainer>

@@ -7,10 +7,7 @@ const ProductCard: React.FC<Product> = (product) => {
   const navigate = useNavigate();
 
   return (
-    <ProductCardStyle
-      key={product.id}
-      onClick={() => navigate("/product/" + product.id)}
-    >
+    <ProductCardStyle onClick={() => navigate("/product/" + product.id)}>
       <img src={product.imageURL} alt={product.name} />
       <h2>{product.name}</h2>
       <p>Price: ${product.price}</p>

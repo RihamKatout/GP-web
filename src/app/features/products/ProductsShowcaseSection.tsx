@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { Product } from "../types";
-import { PaginatedResponse } from "../api/shop";
-import { CardsGrid, ProductCardStyle } from "../styles";
+import { PaginatedResponse, Product } from "../../types";
+import { CardsGrid } from "../../styles";
 import {
   PaginationContainer,
   PaginationButton,
-} from "../styles/MainLayout.style/Pagination.styled";
-import ProductCard from "../components/shared/ProductCard";
+} from "../../styles/shared/Pagination.styled";
+import ProductCard from "../../components/common/ProductCard";
 
+//TODO : fix
 export interface ProductsShowcaseSectionProps {
   data?: PaginatedResponse<Product>;
   page: number | 0;
@@ -32,7 +32,7 @@ export const ProductsShowcaseSection: React.FC<
       )}
       <CardsGrid>
         {data?.content.map((product: Product) => (
-          <ProductCard {...product} />
+          <ProductCard key={product.id} {...product} />
         ))}
       </CardsGrid>
       <PaginationContainer>

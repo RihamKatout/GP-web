@@ -1,10 +1,10 @@
-import React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import { ProductService } from "../api/shop";
 import { Box, Grid, Typography, Container, styled } from "@mui/material";
-import { Loader } from "../components/shared";
+import { Loader } from "../components/common";
+import { ProductService } from "../api";
 
+// TODO : fix
 const ProductImage = styled("img")({
   width: "50%",
   height: "auto",

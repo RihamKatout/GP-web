@@ -1,16 +1,10 @@
-import z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { LoginFields, loginSchema } from "../../types";
 
-const schema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long"),
-});
-
-type FormFields = z.infer<typeof schema>;
-
+// TODO : show welcome message
 const LoginForm = () => {
   const { loginUserContext } = useAuth();
   const navigate = useNavigate();
@@ -18,22 +12,24 @@ const LoginForm = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting},
-  } = useForm<FormFields>({
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFields>({
     defaultValues: {
       email: "",
       password: "",
     },
-    resolver: zodResolver(schema),
+    resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+  const onSubmit: SubmitHandler<LoginFields> = async (data) => {
     try {
       await loginUserContext(data);
       navigate("/");
     } catch (error: any) {
       if (error.response.data.errors[0] === "Bad credentials") {
-        setError("root", { message: "Invalid email or password, please try again!" });
+        setError("root", {
+          message: "Invalid email or password, please try again!",
+        });
       } else setError("root", { message: error.response.data.errors[0] });
     }
   };

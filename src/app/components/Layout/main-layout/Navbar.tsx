@@ -13,14 +13,14 @@ import AnchorLink from "react-anchor-link-smooth-scroll";
 import { SectionIdEnum } from "../../../types";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../../context";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";  
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Logo } from "../../shared";
-import { NavigationContainer } from "../../../styles/MainLayout.style/Navbar.styled";
+import { Logo } from "../../common";
+import { NavigationContainer } from "../../../styles";
 
 const NavigationItems = [
   { text: "Offers", to: SectionIdEnum.offers },

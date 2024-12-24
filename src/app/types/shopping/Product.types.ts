@@ -1,9 +1,3 @@
-export type ShopCategory = {
-  id: number;
-  categoryName: string;
-  imageURL?: string;
-};
-
 export interface Product {
   id: string;
   name: string;

@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useMutation } from "react-query";
-import { User } from "../types/User";
-import { loginApi, registerApi } from "../api/auth";
-import { registrationFormFields } from "../components/forms/RegisterForm";
+import { User } from "../types/userManagement/User.types";
+import { loginApi, registerApi } from "../api/authService";
+import { RegistrationFields } from "../types";
 
 interface AuthContextProps {
   user: User | null;
   registerUserContext: (
-    registrationFormFields: registrationFormFields
+    registrationFormFields: RegistrationFields
   ) => Promise<void>;
   loginUserContext: (userData: {
     email: string;

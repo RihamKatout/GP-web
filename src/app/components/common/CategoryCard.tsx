@@ -2,8 +2,8 @@ import React from "react";
 import { CardActionArea, CardContent } from "@mui/material";
 import {
   CategoryCardTitle,
-  StyledCardMedia,
   StyledCategoryCard,
+  StyledCategoryCardMedia,
 } from "../../styles";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -45,7 +45,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       onClick={() => navigate("/product?storeCategoryId=" + id)}
     >
       <CardActionArea style={{ height: "100%" }}>
-        {imageURL && <StyledCardMedia image={imageURL} />}
+        {imageURL && <StyledCategoryCardMedia image={imageURL} />}
         <CardContent>
           <CategoryCardTitle>{title}</CategoryCardTitle>
         </CardContent>

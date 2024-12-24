@@ -1,12 +1,12 @@
 import { useQuery } from "react-query";
-import { getShopCategoriesApi } from "../api";
-import { CategoryCard } from "../components/shared";
-import { ShopCategory } from "../types";
-import { CardsGrid } from "../styles";
-import { Loader } from "../components/shared";
+import { CardsGrid } from "../../styles";
+import { CategoryCard, Loader } from "../../components/common";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { StoreCategoryService } from "../../api";
+import { StoreCategory } from "../../types";
 
-export const ShopCategoriesSection = () => {
+// TODO: fix 
+export const StoreCategoriesSection = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -14,7 +14,7 @@ export const ShopCategoriesSection = () => {
     data: categories,
     isLoading,
     error,
-  } = useQuery(["categories"], getShopCategoriesApi);
+  } = useQuery(["categories"], StoreCategoryService.getShopCategories);
   if (error instanceof Error) return <p>Error: {error.message}</p>;
 
   return (
@@ -53,7 +53,7 @@ export const ShopCategoriesSection = () => {
         <Loader type="bouncing" />
       ) : (
         <CardsGrid>
-          {categories?.data.map((category: ShopCategory) => (
+          {categories?.data.map((category: StoreCategory) => (
             <CategoryCard
               key={category.id}
               title={category.categoryName}

@@ -1,5 +1,6 @@
-import RegisterForm from "../components/forms/RegisterForm";
+import RegisterForm from "../features/authentication/RegisterForm";
 
+// TODO: add back to home, login buttons
 const RegisterPage = () => {
     return (
         <div>

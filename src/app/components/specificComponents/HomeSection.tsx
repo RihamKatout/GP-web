@@ -1,6 +1,7 @@
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { HeroContainer } from "../Shops/component/ShopHero";
+import { HeroContainer } from "../../Shops/component/ShopHero";
 
+// TODO: fix 
 export const HomeSection = () => {
   return (
     <HeroContainer>

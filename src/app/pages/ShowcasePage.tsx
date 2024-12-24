@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MainLayout, SectionContainer } from "../components/Layout";
-import { ProductFilters, SectionIdEnum } from "../types";
+import { ProductCategory, ProductFilters, SectionIdEnum } from "../types";
 import { useQuery } from "react-query";
-import {
-  getProductCategorizeForStoreCategoryApi,
-  ProductService,
-} from "../api";
-import { ProductsShowcaseSection } from "../sections";
-import { Loader } from "../components/shared";
+import { ProductCategoryService, ProductService } from "../api";
+import { Loader } from "../components/common";
 import { FiltersContainer } from "../styles";
+import { ProductsShowcaseSection } from "../features/products/ProductsShowcaseSection";
 
-interface Category {
-  id: number;
-  name: string;
-}
-export const Showcase: React.FC = () => {
+// TODO: fix
+
+export const ShowcasePage: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<ProductCategory[]>([]);
 
   const queryParams: ProductFilters = Object.fromEntries(
     Array.from(searchParams.entries())
@@ -44,9 +39,10 @@ export const Showcase: React.FC = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       window.scrollTo(0, 0);
-      const response = await getProductCategorizeForStoreCategoryApi(
-        filters.storeCategoryId
-      );
+      const response =
+        await ProductCategoryService.getProductCategorizeByStoreCategory(
+          filters.storeCategoryId
+        );
       setCategories(response);
     };
     fetchCategories();
