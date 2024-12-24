@@ -2,15 +2,14 @@ import { createBrowserRouter, Link } from "react-router-dom";
 import { HomePage, ShowcasePage } from "../pages";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
-import Cart from "../Shops/Cart/Cart";
 import { Button, MainBody } from "../styles/Global.styled";
-import ShopNavbar from "../Shops/component/ShopNavbar";
-import Navbar from "../Shops/component/ShopNavbar";
 import SweetNavbar from "../SweetTouches/component/SweetNavbar";
 import CakeScene from "../components/Cake3D/CakeComponent";
 import ProductPage from "../pages/ProductPage";
 import ProfilePage from "../pages/ProfilePage";
-import Hero from "../Shops/component/ShopHero";
+import SweetCart from "../SweetTouches/Cart/SweetCart";
+import Hero from "../SweetTouches/component/Hero";
+import Navbar from "../SweetTouches/component/SweetNavbar";
 
 const routerConfig = createBrowserRouter([
   {
@@ -32,18 +31,13 @@ const routerConfig = createBrowserRouter([
   {
     path: "/cart",
     element: (
-      <MainBody>
-        <Navbar />
-        <ShopNavbar />
-        <Cart />
-      </MainBody>
+      <SweetCart></SweetCart>
     ),
   },
   {
     path: "/cake",
     element: (
       <div>
-        <Navbar />
         <SweetNavbar />
         <CakeScene></CakeScene>
       </div>

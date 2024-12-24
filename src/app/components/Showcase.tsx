@@ -1,7 +1,5 @@
 
 import {motion} from 'framer-motion';
-
-//import for global style
 import {
     PaddingContainer,
     FlexContainer,
@@ -11,15 +9,11 @@ import {
     IconContainer,
 } from '../styles/Global.styled'
 import showcase from "../../assets/showcase.png";
-// import shape1 from "../../assets/particle.png";
-
-//import for showcase style
 import {
    ShowcaseImageCard, 
    ShowcaseParticleContainer ,
    
   } from '../styles/Showcase.styled';
-//import for icons
 import { BsInstagram, BsLinkedin, BsTwitter, BsYoutube } from 'react-icons/bs';
 import { fadeInLeftVariant, fadeInRightVariant } from '../utils/Variants';
 

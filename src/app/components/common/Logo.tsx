@@ -1,4 +1,3 @@
-import AnchorLink from "react-anchor-link-smooth-scroll";
 import { logoImg } from "../../../assets";
 import { SectionIdEnum } from "../../types";
 import { Box, Typography } from "@mui/material";

@@ -1,5 +1,5 @@
 import { RegistrationFields } from "../types";
-import { clientAxios } from "./axiosClient";
+import { clientAxios } from ".";
 
 export async function loginApi(userData: { email: string; password: string }) {
   const response = await clientAxios.post("/auth/login", userData);

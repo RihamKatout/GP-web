@@ -1,6 +1,5 @@
 import { ThemeProvider } from "styled-components";
 import { Theme } from "./utils/Theme";
-import { ShopContextProvider } from "./context/ShopContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthProvider } from "./context/AuthContext";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -16,9 +15,7 @@ export function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <SweetContextProvider>
-            <ShopContextProvider>
-              <RouterProvider router={routerConfig} />
-            </ShopContextProvider>
+            <RouterProvider router={routerConfig} />
           </SweetContextProvider>
         </AuthProvider>
       </QueryClientProvider>
