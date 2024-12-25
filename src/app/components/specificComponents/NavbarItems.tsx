@@ -8,6 +8,7 @@ import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export const NavigationItems = [
+  { text: "Home", to: SectionIdEnum.home },
   { text: "Offers", to: SectionIdEnum.offers },
   { text: "Categories", to: SectionIdEnum.categories },
   { text: "Shop", to: SectionIdEnum.shop },

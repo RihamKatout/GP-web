@@ -10,52 +10,13 @@ import {
   useTheme,
 } from "@mui/material";
 import AnchorLink from "react-anchor-link-smooth-scroll";
-import { SectionIdEnum } from "../../../types";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "../../../context";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";  
-import LogoutIcon from "@mui/icons-material/Logout";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Logo } from "../../common";
 import { NavigationContainer } from "../../../styles";
+import { AuthenticationButtons, Logo, NavigationItems, UserMenuIcons } from "../../specificComponents";
 
-const NavigationItems = [
-  { text: "Offers", to: SectionIdEnum.offers },
-  { text: "Categories", to: SectionIdEnum.categories },
-  { text: "Shop", to: SectionIdEnum.shop },
-  { text: "Help Center", to: SectionIdEnum.help },
-];
-
-const UserMenuIcons = [
-  {
-    icon: <FavoriteIcon />,
-    text: "Wishlist",
-    path: "/wishlist",
-  },
-  {
-    icon: <ShoppingCartIcon />,
-    text: "Cart",
-    path: "/cart",
-  },
-  {
-    icon: <AccountCircle />,
-    text: "Profile",
-    path: "/profile",
-  },
-  {
-    icon: <LogoutIcon />,
-    text: "Logout",
-    path: "/logout",
-  },
-];
-
-const AuthenticationButtons = [
-  { text: "Login", Path: "/login", borderColor: "rgb(0, 0, 0)" },
-  { text: "Register", Path: "/register", borderColor: "rgb(0, 0, 0)" },
-];
 
 export const Navbar = () => {
   const location = useLocation();

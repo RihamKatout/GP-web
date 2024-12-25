@@ -1,8 +1,8 @@
 import { Divider } from "antd";
-import Contact from "../../SweetTouches/component/Contact";
+import Contact from "../../../SweetTouches/component/Contact";
 
 // TODO: fix
-export const HelpCenter = () => {
+export const HelpCenterSection = () => {
   return (
       <div style={{ width: "80%", margin: "0 auto" }}>
         <Divider style={{ borderColor: "#1a1a19b3" }}>

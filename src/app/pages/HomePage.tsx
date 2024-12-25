@@ -1,11 +1,15 @@
 import { SectionIdEnum } from "../types";
 import { MainLayout, SectionContainer } from "../components/Layout";
-import { HelpCenter } from "../components/specificComponents/HelpCenterSection";
-import { OffersSection } from "../features/offers/OffersSection";
 import { StoreCategoriesSection } from "../features/stores/StoreCategoriesSection";
+import { OffersSection } from "../features";
+import { HelpCenterSection, HeroSection } from "../components/specificComponents";
 
 //TODO : fix sections
 const sections = [
+  {
+    sectionId: SectionIdEnum.home,
+    component: <HeroSection />,
+  },
   {
     sectionId: SectionIdEnum.offers,
     component: <OffersSection />,
@@ -20,7 +24,7 @@ const sections = [
   },
   {
     sectionId: SectionIdEnum.help,
-    component: <HelpCenter />,
+    component: <HelpCenterSection />,
   },
 ];
 

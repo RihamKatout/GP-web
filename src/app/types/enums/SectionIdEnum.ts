@@ -1,13 +1,11 @@
 export const enum SectionIdEnum {
+  // home page sections
+  home = "home",
   offers = "offers",
   categories = "categories",
   shop = "shop",
   help = "help",
-  wishlist = "wishlist",
-  cart = "cart",
-  profile = "profile",
-  logout = "logout",
-  login = "login",
-  register = "register",
+
+
   showcase = "showcase",
 }
