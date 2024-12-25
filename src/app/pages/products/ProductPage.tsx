@@ -1,8 +1,8 @@
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { Box, Grid, Typography, Container, styled } from "@mui/material";
-import { Loader } from "../components/common";
-import { ProductService } from "../api";
+import { Loader } from "../../components/common";
+import { ProductService } from "../../api";
 
 // TODO : fix
 const ProductImage = styled("img")({
@@ -19,7 +19,7 @@ const ProductDetails = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ProductPage = () => {
+export const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
 
   const {
@@ -73,5 +73,3 @@ const ProductPage = () => {
     </Container>
   );
 };
-
-export default ProductPage;

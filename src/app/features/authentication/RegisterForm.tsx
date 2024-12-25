@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { RegistrationFields, registrationSchema } from "../../types";
 
 //TODO : show welcome message
-const RegisterForm = () => {
+export const RegisterForm = () => {
   const navigate = useNavigate();
   const { registerUserContext } = useAuth();
   const {
@@ -102,5 +102,3 @@ const RegisterForm = () => {
     </form>
   );
 };
-
-export default RegisterForm;

@@ -1,7 +1,7 @@
-import LoginForm from "../features/authentication/LoginForm";
+import {LoginForm} from "../../features";
 
 // TODO: add back to home, register, forget password buttons
-const LoginPage = () => {
+export const LoginPage = () => {
   return (
     <>
       <div>LoginPage</div>
@@ -9,5 +9,3 @@ const LoginPage = () => {
     </>
   );
 };
-
-export default LoginPage;

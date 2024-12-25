@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { LoginFields, loginSchema } from "../../types";
 
 // TODO : show welcome message
-const LoginForm = () => {
+export const LoginForm = () => {
   const { loginUserContext } = useAuth();
   const navigate = useNavigate();
   const {
@@ -55,5 +55,3 @@ const LoginForm = () => {
     </form>
   );
 };
-
-export default LoginForm;

@@ -1,12 +1,8 @@
 import { createBrowserRouter, Link } from "react-router-dom";
-import { HomePage, ShowcasePage } from "../pages";
-import LoginPage from "../pages/LoginPage";
-import RegisterPage from "../pages/RegisterPage";
+import { HomePage, LoginPage, ProductPage, ProfilePage, RegisterPage, ShowcasePage } from "../pages";
 import { Button, MainBody } from "../styles/Global.styled";
 import SweetNavbar from "../SweetTouches/component/SweetNavbar";
 import CakeScene from "../components/Cake3D/CakeComponent";
-import ProductPage from "../pages/ProductPage";
-import ProfilePage from "../pages/ProfilePage";
 import SweetCart from "../SweetTouches/Cart/SweetCart";
 import Hero from "../SweetTouches/component/Hero";
 import Navbar from "../SweetTouches/component/SweetNavbar";

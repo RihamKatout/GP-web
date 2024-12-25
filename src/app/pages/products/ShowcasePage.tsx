@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { MainLayout, SectionContainer } from "../components/Layout";
-import { ProductCategory, ProductFilters, SectionIdEnum } from "../types";
 import { useQuery } from "react-query";
-import { ProductCategoryService, ProductService } from "../api";
-import { Loader } from "../components/common";
-import { FiltersContainer } from "../styles";
-import { ProductsShowcaseSection } from "../features/products/ProductsShowcaseSection";
+import { ProductCategoryService, ProductService } from "../../api";
+import { MainLayout, SectionContainer } from "../../components/Layout";
+import { ProductsShowcaseSection } from "../../features/products/ProductsShowcaseSection";
+import { FiltersContainer } from "../../styles";
+import { ProductCategory, ProductFilters, SectionIdEnum } from "../../types";
+import { Loader } from "../../components/common";
 
 // TODO: fix
 

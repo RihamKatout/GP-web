@@ -1,2 +1,10 @@
 export * from "./HomePage";
-export * from "./ShowcasePage"
+
+// products
+export * from "./products/ShowcasePage";
+export * from "./products/ProductPage";
+
+// user
+export * from "./user/LoginPage";
+export * from "./user/RegisterPage";
+export * from "./user/ProfilePage";
