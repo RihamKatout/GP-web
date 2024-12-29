@@ -7,12 +7,14 @@ interface CartItems {
 
 interface ShopContextValue {
   cartItems: CartItems;
+  cakeImages: { image: string; size: string; price: number }[]; // New state for 3D Cake images
   addToCart: (itemId: number, category?: "PRODUCTS" | "CAKE") => void;
   removeFromCart: (itemId: number, category?: "PRODUCTS" | "CAKE") => void;
   updateCartItemCount: (newAmount: number, itemId: number) => void;
   getTotalCartAmount: () => number;
   checkout: () => void;
   getTotal: () => number;
+  addCakeImage: (image: string ,size: string, price: number) => void; // Add method to handle 3D Cake images
 }
 
 export const ShopContext = createContext<ShopContextValue | undefined>(
@@ -31,9 +33,9 @@ export const SweetContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [cartItems, setCartItems] = useState<CartItems>(getDefaultCart());
+  const [cakeImages, setCakeImages] = useState<{ image: string; size: string; price: number }[]>([]); // State to store 3D Cake images
 
   const addToCart = (itemId: number): void => {
-    // Optionally use `category` for any specific logic
     setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
   };
 
@@ -43,7 +45,7 @@ export const SweetContextProvider: React.FC<{ children: ReactNode }> = ({
       if (updatedCart[itemId] > 1) {
         updatedCart[itemId] -= 1;
       } else {
-        updatedCart[itemId] = 0; // Retain the item in the cart with a count of 0
+        updatedCart[itemId] = 0;
       }
       return updatedCart;
     });
@@ -67,12 +69,16 @@ export const SweetContextProvider: React.FC<{ children: ReactNode }> = ({
         }
       }
     }
+    
+   // Add the price of 3D cake images
+    totalAmount += cakeImages.reduce((acc, cake) => acc + cake.price, 0);
     return totalAmount;
   };
 
   const getTotal = (): number => {
     let total = 0;
 
+    // Count the total quantity of PRODUCTS and CAKE items
     const allProducts = [...PRODUCTS, ...CAKE];
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
@@ -80,27 +86,37 @@ export const SweetContextProvider: React.FC<{ children: ReactNode }> = ({
           (product) => product.id === Number(item)
         );
         if (itemInfo) {
-          total += cartItems[item]; // Add the quantity of the item to the total
+          total += cartItems[item];
         }
       }
     }
+
+    // Add the number of 3D cake images
+    total += cakeImages.length;
+
     return total;
+  };
+  const addCakeImage = (image: string , cakeSize: string, cakePrice: number): void => {
+    setCakeImages((prev) => [...prev, { image, size: cakeSize, price: cakePrice }]);
   };
 
   const checkout = (): void => {
     setCartItems(getDefaultCart());
+    setCakeImages([]); // Clear cake images on checkout
   };
 
   const contextValue: ShopContextValue = {
     cartItems,
+    cakeImages, // Provide cake images
     addToCart,
     removeFromCart,
     updateCartItemCount,
     getTotalCartAmount,
     checkout,
     getTotal,
+    addCakeImage, // Provide the addCakeImage method
   };
-  console.log(cartItems);
+
   return (
     <ShopContext.Provider value={contextValue}>{children}</ShopContext.Provider>
   );

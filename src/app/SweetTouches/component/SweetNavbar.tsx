@@ -11,7 +11,7 @@ const NavbarContainer = styled.div`
   color: ${({ theme }) => theme.colors.text || "black"};
   transition: background-color 0.2s, color 0.2s;
   position: sticky;
-  top: 80px;
+  top: 60px;
   z-index: 1000;
 `;
 
@@ -95,7 +95,7 @@ const Navbar = () => {
         </LogoContainer>
         {/* Order Button */}
 
-         <Link to="/sweetcart">
+         <Link to="/cart">
           <OrderButton>
             Order
             <FaCartShopping className="icon" />

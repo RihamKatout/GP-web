@@ -8,19 +8,20 @@ import SweetNavbar from "./SweetNavbar";
 //import {Cake , ShopsComponent} from '../Sweet/SelectShop';
 import Offer from './Offer';
 import { Divider } from "antd";
-import Footer from "../../components/Layout/main-layout/Footer";
+
 import Contact from "./Contact";
 import { CAKE , PRODUCTS} from "../products";
 import Shops from "../Sweet/Shops";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { FaSearch } from "react-icons/fa";
+import { MainLayout } from "../../components/Layout";
 
 const HeroContainer = styled.div`
   min-height: 750px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to bottom, #C47B83, #f9f9f9);///f9f9f9
+  background: linear-gradient(to bottom, #c6838b4b, #f9f9f9);///f9f9f9
   color: ${({ theme }) => theme.colors.text || "#000"};
   transition: 0.2s;
 
@@ -105,21 +106,6 @@ const HeroContainer = styled.div`
     }
   }
 `;
-// const ButtonContainer = styled.div`
-//   padding: 2rem;
-//   background-color: #f8f9fa;
-//   color: #fafafb;
-//   /* border-bottom: 3px solid #272527b8; */
-//   margin: 0px auto;
-  
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-//   display: flex;
-//   justify-content: center;
-
-//   @media (max-width: 768px) {
-//     padding: 1rem;
-//   }
-// `;
 
 const OfferContainer = styled.div`
   padding: 2rem;
@@ -200,7 +186,7 @@ const Hero = () => {
     setFilteredProducts(activeComponent === "CakeShop" ? CAKE : PRODUCTS);
   }, [activeComponent]);
   return (
-    <>
+    <MainLayout>
     <SweetNavbar/>
     <HeroContainer>
       <div className="content">
@@ -324,8 +310,8 @@ const Hero = () => {
        
      </OfferContainer>
      
-     <Footer/>
-    </>
+     
+    </MainLayout>
   );
 };
 

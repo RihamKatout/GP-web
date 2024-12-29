@@ -39,6 +39,7 @@ const Contact = () => {
       </form>
       
         <DotLottieReact
+          className="lottie-animation"
           src="https://lottie.host/2935245e-3fd1-4197-a825-83cae6b05714/IYjL7lAkXp.lottie"
           loop
           autoplay
@@ -62,7 +63,7 @@ const StyledContactForm = styled.div`
   form {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 100%;
     font-size: 16px;
 
     input {
@@ -119,7 +120,7 @@ const StyledContactForm = styled.div`
   // Lottie Animation Wrapper
   .lottie-animation {
     flex-shrink: 0;
-    width: 30%; /* Allocate space for animation */
+    width:65%; /* Allocate space for animation */
     display: flex;
     justify-content: center;
     align-items: center;

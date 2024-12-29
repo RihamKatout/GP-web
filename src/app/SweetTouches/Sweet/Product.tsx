@@ -65,18 +65,14 @@ const ButtonRow = styled.div`
 `;
 
 // Styled Components
-
-// Other styled components remain unchanged...
-
-
-// Styled Components
 const ProductItem = styled.div`
   cursor: pointer;
-  box-shadow: rgba(99, 99, 99, 0.05) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.25) 0px 2px 8px 0px;
   padding: 18px;
   border-radius: 4px;
+  border: 1px solid #36353531;
   transition: all 0.3s;
-  background:linear-gradient(to bottom, #C47B83, #f9f9f9);
+  //background:linear-gradient(to bottom, #C47B83, #f9f9f9);
 
   &:hover {
     box-shadow: rgba(58, 57, 57, 0.532) 4px 4px 8px 0px;

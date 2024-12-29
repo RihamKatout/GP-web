@@ -6,17 +6,20 @@ import styled from "styled-components";
 import { Divider } from "antd";
 import { useNavigate } from "react-router-dom";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import Footer from "../../components/Layout/main-layout/Footer";
+import CakeCart from "./CakeCart";
 
 const CartContainer = styled.div`
   padding: 2rem;
   background-color: #f8f9fa;
   color: #343a40;
   width: 100%; /* Ensure it spans the container */
+  //top : 65px;
+  height: 100%;
   position: relative;
   margin: 0rem auto;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: -1000;
 
   @media (max-width: 768px) {
     padding: 1rem;
@@ -77,17 +80,20 @@ const SweetCart = () => {
     throw new Error("Cart must be used within a ShopContextProvider");
   }
 
-  const { cartItems, getTotalCartAmount, checkout } = context;
+  const { cartItems, getTotalCartAmount, checkout ,cakeImages } = context;
   const cartKeys = Object.keys(cartItems);
   const handleNavigate = () => {
     navigate("/shops");
   };
- 
+  
+  console.log("Navigated Cake Images:", cakeImages);
+  
+  console.log("Context Cake Images:", context.cakeImages);
 
   return (
     <>
     <CartContainer>
-      <div style={{ width:'80%', margin:'0 auto'}}>
+      <div style={{ width:'80%', margin:'3rem auto'}}>
       <Divider style={{  borderColor: '#1a1a19b3' }}><CartTitle>Your Cart</CartTitle></Divider>
       <CartItems>
         {cartKeys.map((key) => {
@@ -100,9 +106,12 @@ const SweetCart = () => {
           }
           return null;
         })}
+        <CakeCart/>
       </CartItems>
+      
       <CartSummary>
         <h2>Total: ${getTotalCartAmount()}</h2>
+
         <button  onClick={handleContinueShopping}>
             Continue Shopping
           </button>
@@ -143,7 +152,7 @@ const SweetCart = () => {
     </div >
        
     </CartContainer>
-    <Footer/>
+    
   </>
   );
 };

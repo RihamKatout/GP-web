@@ -2,20 +2,42 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import {ColumnContainer} from '../../../styles/CakeComponentStyles/Cake.styled';
 // Define the CakeButton component
+
+import { Divider } from 'antd';
+import { ColorLabel } from '../../../styles/CakeComponentStyles/ColorPicker.styled';
+
+import strawberry from '../../../../assets/cake/ToppingIcon/Decoration/strawberry.png'
+import cherry from '../../../../assets/cake/ToppingIcon/Decoration/cherry.png'
+import choco from '../../../../assets/cake/ToppingIcon/Decoration/choco.png'
+import chocopar from '../../../../assets/cake/ToppingIcon/Decoration/chocopar.png'
+import raspbery from '../../../../assets/cake/ToppingIcon/Decoration/raspberry.png'
+import rose from '../../../../assets/cake/ToppingIcon/Decoration/rose.png'
+
+// Define the CakeButton component
 const CakeButton = styled.button<{ active: boolean }>`
-  background-color: ${props => (props.active ? props.theme.colors.secondary : '#ffffff' )};
+   background-color: #ffffff;
   color: #141313;
-  width: 8.5em;
-  height: 2.9em;
-  border: ${({theme}) => theme.colors.secondary} 0.2em solid;
+  width: 7.5em;
+  height: 5.5em;
+  border: #C47B83 0.17em solid;
   border-radius: 11px;
   text-align: center;
   transition: all 0.6s ease;
-  margin-top: 10px;
+  margin-top: 8px;
+  margin-right: 8px;
+  margin-left: 10px;
+
 
   &:hover {
-    background-color: ${({theme}) => theme.colors.secondary};
+    //background-color: ${({theme}) => theme.colors.secondary};
+    transform: scale(1.05);
     cursor: pointer;
+  }
+
+  img {
+    width: 80px;
+    height: 80px;
+    margin-right: 8px;
   }
 `;
 
@@ -44,49 +66,64 @@ const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecorat
 
   return (
     <ColumnContainer>
-      <div>
-        <h3>Select The Decoration:</h3>
+      <div style={{ width: '100%' , margin: '0 auto' , justifyContent: 'center' , alignItems: 'center' }}>
+        <div style={{ width: '100%', margin: '0 auto' }}>
+                <Divider style={{ borderColor: '#1a1a19b3' }}>
+                  <ColorLabel>Select The Decoration:</ColorLabel>
+                </Divider>
+               </div>
         <CakeButton
           onClick={() => handleDecorationClick('strawberry')}
           active={selectedDecoration === 'strawberry'}
         >
-          Strawberry
+        <img src={strawberry}  />
+        <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Strawberry</div>
         </CakeButton>
         
         <CakeButton
           onClick={() => handleDecorationClick('cherry')}
           active={selectedDecoration === 'cherry'}
         >
-          Cherry
+          <img src={cherry}  />
+          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Cherry</div>
         </CakeButton>
         
         
         
       </div>
-      <div><h3>Select The Middel Decoration:</h3>
+      <div>
+        <div style={{ width: '100%', margin: '0 auto' }}>
+                <Divider style={{ borderColor: '#1a1a19b3' }}>
+                  <ColorLabel>Select The Mid Decoration:</ColorLabel>
+                </Divider>
+         </div>
         <CakeButton
           onClick={() => handleMidDecorationClick('choco')}
           active={selectedDecoration === 'choco'}
          >
-          Choco
+          <img src={choco}  />
+          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Choco</div>
         </CakeButton>
         <CakeButton
           onClick={() => handleMidDecorationClick('raspberry')}
           active={selectedDecoration === 'raspberry'}
         >
-            Raspberry
+          <img src={raspbery}  />
+          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Raspberry</div>
         </CakeButton>
         <CakeButton
           onClick={() => handleMidDecorationClick('chocoPar')}
           active={selectedDecoration === 'chocoPar'}
         >
-          ChocoPar
+          <img src={chocopar}  />
+          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>ChocoPar</div>
         </CakeButton>
         <CakeButton
           onClick={() => handleMidDecorationClick('rose')}
           active={selectedDecoration === 'rose'}
         >
-          Rose
+          <img src={rose}  />
+          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Rose</div>
         </CakeButton>
 
       </div>

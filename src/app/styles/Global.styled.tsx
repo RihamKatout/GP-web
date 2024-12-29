@@ -66,8 +66,9 @@ export const FlexContainer = styled.div<FlexProps>`
 
 `
 export const Heading = styled(PaddingContainer)<{ size?: string; align?: string }>`
-    color: ${({theme}) => theme.colors.white};
+    color:#201e1ed2;
     text-align: ${({align}) => align};
+    font-family: 'Poppins', sans-serif;
     font-size: ${({size}) => {
         switch(size){
             case 'h1':
@@ -110,12 +111,13 @@ export const Heading = styled(PaddingContainer)<{ size?: string; align?: string 
 `
 
 export const BlueText = styled.span`
-    color: ${({theme}) => theme.colors.secondary};
+    color:#e38e8e;
 `
 
 export const ParaText = styled(PaddingContainer)`
-    color: ${({theme}) => theme.colors.para_text_color};
-    line-height: 2rem;
+    color: #201e1ed2;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
 
 `
 
@@ -128,7 +130,7 @@ export const IconContainer = styled.div<{ size?: string; color?: string }>`
                 return theme.colors.white;
 
             case 'pink':
-                return theme.colors.secondary;
+                return '#e38e8e';
 
             default:
                 return;
