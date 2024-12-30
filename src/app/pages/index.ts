@@ -8,3 +8,7 @@ export * from "./products/ProductPage";
 export * from "./user/LoginPage";
 export * from "./user/RegisterPage";
 export * from "./user/ProfilePage";
+export * from "./user/UnauthorizedPage";
+
+// admin
+export * from "./admin/DashboardPage";

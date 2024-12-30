@@ -1,5 +1,12 @@
 import { createBrowserRouter, Link } from "react-router-dom";
-import { HomePage, LoginPage, ProductPage, ProfilePage, RegisterPage, ShowcasePage } from "../pages";
+import {
+  HomePage,
+  LoginPage,
+  ProductPage,
+  ProfilePage,
+  RegisterPage,
+  ShowcasePage,
+} from "../pages";
 import { Button, MainBody } from "../styles/Global.styled";
 import SweetNavbar from "../SweetTouches/component/SweetNavbar";
 import CakeScene from "../components/Cake3D/CakeComponent";
@@ -7,6 +14,8 @@ import SweetCart from "../SweetTouches/Cart/SweetCart";
 import Hero from "../SweetTouches/component/Hero";
 import Navbar from "../SweetTouches/component/SweetNavbar";
 import { MainLayout } from "../components/Layout";
+import ProtectedRoute from "./ProtectedRoute";
+import { DashboardPage } from "../pages/admin/DashboardPage";
 
 const routerConfig = createBrowserRouter([
   {
@@ -26,12 +35,22 @@ const routerConfig = createBrowserRouter([
     element: <ShowcasePage />,
   },
   {
+    path: "/dashboard",
+    element: (
+      <ProtectedRoute role="ADMIN">
+        <DashboardPage></DashboardPage>
+      </ProtectedRoute>
+    ),
+  },
+  {
     path: "/cart",
     element: (
-      <MainLayout>
-       <SweetNavbar />
-       <SweetCart></SweetCart>
-      </MainLayout>
+      <ProtectedRoute>
+        <MainLayout>
+          <SweetNavbar />
+          <SweetCart></SweetCart>
+        </MainLayout>
+      </ProtectedRoute>
     ),
   },
   {
@@ -54,7 +73,11 @@ const routerConfig = createBrowserRouter([
   },
   {
     path: "/profile",
-    Component: ProfilePage,
+    element: (
+      <ProtectedRoute>
+        <ProfilePage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/product/:id",
