@@ -21,7 +21,9 @@ export interface ProductFilters {
   maxPrice?: number;
   minRating?: number;
   id?: number;
-  isAvailable?: boolean;
+  available?: boolean;
+  threeDModel?: boolean;
+  customizable?: boolean;
   page: number | 0;
   size: number | 20;
 }

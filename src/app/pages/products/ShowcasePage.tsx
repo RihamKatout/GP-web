@@ -1,7 +1,11 @@
 import { MainLayout, SectionContainer } from "../../components/Layout";
 import { Product, ProductFilters, SectionIdEnum } from "../../types";
-import { FilterSidebar, ProductsShowcaseSection } from "../../features";
-import { useCallback, useState } from "react";
+import {
+  FilterOptions,
+  FilterSidebar,
+  ProductsShowcaseSection,
+} from "../../features";
+import { useCallback, useEffect, useState } from "react";
 import { ProductService } from "../../api";
 import { debounce } from "@mui/material";
 import styled from "styled-components";
@@ -46,7 +50,7 @@ export const ShowcasePage = () => {
   const updateSearchParams = useCallback(
     (newFilters: ProductFilters) => {
       const filteredParams = Object.entries(newFilters)
-        .filter(([, value]) => value !== undefined && value !== null)
+        .filter(([, value]) => value !== undefined && value !== null )
         .reduce((acc, [key, value]) => {
           acc[key] = value.toString();
           return acc;
@@ -64,20 +68,9 @@ export const ShowcasePage = () => {
     [updateSearchParams]
   );
 
-  const handleFilterChange = (name: keyof ProductFilters, value: any) => {
-    const newFilters = {
-      ...filters,
-      [name]: value === "" ? undefined : value,
-      page: 0, // Reset page to 0 when filters change
-    };
-    setFilters(newFilters);
-
-    if (name === "keyWord") {
-      debouncedSearch(newFilters);
-    } else {
-      updateSearchParams(newFilters);
-    }
-  };
+  useEffect(() => {
+    updateSearchParams(filters);
+  }, [filters]);
 
   // Fetch products
   const [products, setProducts] = useState<Product[]>([]);
@@ -98,7 +91,12 @@ export const ShowcasePage = () => {
   const handlePageChange = (newPage: number) => {
     const newFilters = { ...filters, page: newPage };
     setFilters(newFilters);
-    updateSearchParams(newFilters);
+  };
+
+  const handleProductOptions = (newFilters: FilterOptions) => {
+    const updatedFilters = { ...filters, ...newFilters, page: 0 };
+    setFilters(updatedFilters);
+    // debouncedSearch(updatedFilters);
   };
 
   return (
@@ -108,7 +106,7 @@ export const ShowcasePage = () => {
           {/* Sidebar */}
           <FilterSidebar
             storeCategoryId={filters.storeCategoryId || 1}
-            handleFilterChange={handleFilterChange}
+            handleProductOptionsChange={handleProductOptions}
           />
           <ProductsShowcaseSection
             products={products}
@@ -117,8 +115,8 @@ export const ShowcasePage = () => {
             handlePageChange={handlePageChange}
             page={
               data?.page || {
-                size: 0,
-                number: 0,
+                size: 12,
+                number: 1,
                 totalElements: 0,
                 totalPages: 0,
               }

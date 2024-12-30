@@ -1,18 +1,8 @@
-import { Button, Divider, styled, IconButton } from "@mui/material";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { useMediaQuery } from "@mui/material";
-import { Category, ProductFilters } from "../../types";
+import { Button, Divider, styled } from "@mui/material";
+import { Category } from "../../types";
 import { CategoryCard, SearchField } from "../../components/common";
-import { useState } from "react";
 import React, { useEffect } from "react";
 import { StoreCategoryService } from "../../api";
-
-const SidebarSection = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.5rem",
-  overflow: "hidden",
-});
 
 const CategoriesContainer = styled("div")({
   display: "flex",
@@ -27,10 +17,11 @@ const CategoriesContainer = styled("div")({
 const SidebarContainer = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  gap: "2.2rem",
+  gap: "0.5rem",
   padding: "1rem",
   width: "18vw",
   height: "100%",
+  overflow: "hidden",
   borderRight: "1px solid black",
   [theme.breakpoints.down("md")]: {
     width: "30vw",
@@ -46,28 +37,48 @@ const SidebarContainer = styled("div")(({ theme }) => ({
 
 interface FilterSidebarProps {
   storeCategoryId: number;
-  handleFilterChange: (name: keyof ProductFilters, value: any) => void;
+  handleProductOptionsChange: (options: FilterOptions) => void;
 }
 
-// TODO : put productCategories in a carousel
+export interface FilterOptions {
+  available?: boolean;
+  threeDModel?: boolean;
+  customizable?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+  categoryId?: number;
+}
+
+// TODO : put productCategories in a carousel and fix mobile responsiveness
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   storeCategoryId,
-  handleFilterChange,
+  handleProductOptionsChange,
 }) => {
-  // mobile responsive
-  const isMobile = useMediaQuery("(max-width:600px)");
-  const [filtersVisible, setFiltersVisible] = useState(false);
-  const toggleFilters = () => {
-    setFiltersVisible((prev) => !prev);
-  };
-
   // product categories
   const [productCategories, setProductCategories] = React.useState<Category[]>(
     []
   );
+  const [filterOptions, setFilterOptions] = React.useState<FilterOptions>({
+    available: undefined,
+    threeDModel: undefined,
+    customizable: undefined,
+    minPrice: undefined,
+    maxPrice: undefined,
+  });
+
   const handleCategoryClick = (categoryId?: number) => {
-    handleFilterChange("categoryId", categoryId);
+    const newFilterOptions = {
+      available: undefined,
+      threeDModel: undefined,
+      customizable: undefined,
+      minPrice: undefined,
+      maxPrice: undefined,
+      categoryId: categoryId,
+    };
+    setFilterOptions(newFilterOptions);
+    handleProductOptionsChange(newFilterOptions);
   };
+
   useEffect(() => {
     const fetchStoreCategory = async () => {
       const response = await StoreCategoryService.getStoreCategoryById(
@@ -78,246 +89,176 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     fetchStoreCategory();
   }, []);
 
-  if (isMobile) {
-    return (
-      <SidebarContainer style={{ gap: "0.5rem" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <SearchField />
-          <IconButton onClick={toggleFilters}>
-            <FilterListIcon />
-          </IconButton>
-        </div>
-        <Button
-          style={{
-            backgroundColor: "black",
-            color: "white",
-            width: "100%",
-            marginTop: "0.5rem",
-          }}
-        >
-          View products
-        </Button>
-        {filtersVisible && (
-          <div>
-            {/* Mobile Filters */}
-            <SidebarSection>
-              <Divider style={{ color: "black", fontWeight: "bold" }}>
-                Product options
-              </Divider>
-              {[
-                "Available",
-                "3d model",
-                "Customizable",
-                "Discounted items",
-              ].map((option) => (
-                <label key={option}>
-                  <input type="checkbox" /> {option}
-                </label>
-              ))}
-            </SidebarSection>
-
-            <SidebarSection>
-              <Divider style={{ color: "black", fontWeight: "bold" }}>
-                Price
-              </Divider>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "0.5rem",
-                    alignItems: "center",
-                  }}
-                >
-                  <input
-                    type="number"
-                    placeholder="$"
-                    style={{
-                      padding: "0.2rem",
-                      borderRadius: "0.25rem",
-                      border: "1px solid #ccc",
-                      width: "4rem",
-                    }}
-                  />
-                  <span style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
-                    {" "}
-                    -{" "}
-                  </span>
-                  <input
-                    type="number"
-                    placeholder="$"
-                    style={{
-                      padding: "0.2rem",
-                      borderRadius: "0.25rem",
-                      border: "1px solid #ccc",
-                      width: "4rem",
-                    }}
-                  />
-                </div>
-                <Button
-                  style={{
-                    marginLeft: "1rem",
-                    backgroundColor: "black",
-                    color: "white",
-                    height: "4.7vh",
-                  }}
-                >
-                  OK
-                </Button>
-              </div>
-            </SidebarSection>
-          </div>
-        )}
-        {/* categories */}
-        <CategoriesContainer>
-          {productCategories.map((category: Category) => (
-            <div
-              key={category.id}
-              style={{
-                padding: "1rem",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <CategoryCard
-                title={category.name}
-                imageurl={category.imageurl}
-                id={category.id}
-                type="PRODUCT"
-                onClick={() => {
-                  // navigate(`/${showcaseType}?categoryId=${category.id}`);
-                  // window.location.reload();
-                }}
-              />
-            </div>
-          ))}
-        </CategoriesContainer>
-      </SidebarContainer>
-    );
-  }
+  // filter options
+  const handleFilterButtonClick = () => {
+    console.log("Filter data:", filterOptions);
+    handleProductOptionsChange(filterOptions);
+  };
 
   return (
     <SidebarContainer>
-      {/* Category Section */}
-      <SidebarSection style={{ alignItems: "center" }}>
-        <SearchField />
-        <Button
+      {/* search Section */}
+      <SearchField />
+      <Button
+        style={{
+          backgroundColor: "black",
+          color: "white",
+          width: "100%",
+        }}
+      >
+        View stores
+      </Button>
+      <Divider
+        style={{ color: "black", fontWeight: "bold", marginTop: "0.5rem" }}
+      >
+        Categories
+      </Divider>
+      <CategoriesContainer>
+        <div
+          key={0}
           style={{
-            backgroundColor: "black",
-            color: "white",
-            width: "100%",
+            padding: "0.5rem",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          View stores
-        </Button>
-      </SidebarSection>
-      <SidebarSection>
-        <Divider style={{ color: "black", fontWeight: "bold" }}>
-          Categories
-        </Divider>
-        {/* categories */}
-        <CategoriesContainer>
+          <CategoryCard
+            title="All"
+            id={0}
+            type="PRODUCT"
+            onClick={() => handleCategoryClick()}
+          />
+        </div>
+        {productCategories.map((category: Category) => (
           <div
-            key={0}
+            key={category.id}
             style={{
-              padding: "0.5rem",
+              padding: "0.55rem",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
             <CategoryCard
-              title="All"
-              id={0}
+              title={category.name}
+              imageurl={category.imageurl}
+              id={category.id}
               type="PRODUCT"
-              onClick={() => handleCategoryClick()}
+              onClick={() => handleCategoryClick(category.id)}
             />
           </div>
-          {productCategories.map((category: Category) => (
-            <div
-              key={category.id}
-              style={{
-                padding: "0.55rem",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <CategoryCard
-                title={category.name}
-                imageurl={category.imageurl}
-                id={category.id}
-                type="PRODUCT"
-                onClick={() => handleCategoryClick(category.id)}
-              />
-            </div>
-          ))}
-        </CategoriesContainer>
-      </SidebarSection>
+        ))}
+      </CategoriesContainer>
+      <Divider
+        style={{ color: "black", fontWeight: "bold", marginTop: "0.5rem" }}
+      >
+        Product options
+      </Divider>
 
-      {/* Product Options */}
-      <SidebarSection>
-        <Divider style={{ color: "black", fontWeight: "bold" }}>
-          Product options
-        </Divider>
-        {["Available", "3d model", "Customizable", "Discounted items"].map(
-          (option) => (
-            <label key={option}>
-              <input type="checkbox" /> {option}
-            </label>
-          )
-        )}
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-            <h6>Price</h6>
-            <input
-              type="number"
-              placeholder="$"
-              style={{
-                padding: "0.2rem",
-                borderRadius: "0.25rem",
-                border: "1px solid #ccc",
-                width: "50%",
-              }}
-            />
-            <span style={{ fontWeight: "bold", fontSize: "1.5rem" }}> - </span>
-            <input
-              type="number"
-              placeholder="$"
-              style={{
-                padding: "0.2rem",
-                borderRadius: "0.25rem",
-                border: "1px solid #ccc",
-                width: "50%",
-              }}
-            />
-          </div>
-          <Button
-            style={{
-              marginLeft: "0.1rem",
-              backgroundColor: "black",
-              color: "white",
-              height: "4.7vh",
-              width: "100%",
+      {/* product options  */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.1rem" }}>
+        <label>
+          <input
+            type="checkbox"
+            checked={!!filterOptions.available}
+            onChange={(e) => {
+              setFilterOptions({
+                ...filterOptions,
+                available: e.target.checked ? true : undefined,
+              });
             }}
-          >
-            OK
-          </Button>
+          />
+          Available
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={!!filterOptions.threeDModel}
+            onChange={(e) => {
+              setFilterOptions({
+                ...filterOptions,
+                threeDModel: e.target.checked ? true : undefined,
+              });
+            }}
+          />
+          3D Model
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={!!filterOptions.customizable}
+            onChange={(e) => {
+              setFilterOptions({
+                ...filterOptions,
+                customizable: e.target.checked ? true : undefined,
+              });
+            }}
+          />
+          Customizable
+        </label>
+      </div>
+
+      {/* price range */}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          <h6>Price</h6>
+          <input
+            type="number"
+            placeholder="$"
+            value={filterOptions.minPrice || ""}
+            style={{
+              padding: "0.2rem",
+              borderRadius: "0.25rem",
+              border: "1px solid #ccc",
+              width: "50%",
+            }}
+            onChange={(e) => {
+              setFilterOptions({
+                ...filterOptions,
+                minPrice: e.target.value ? Number(e.target.value) : undefined,
+              });
+            }}
+          />
+          <span style={{ fontWeight: "bold", fontSize: "1.5rem" }}> - </span>
+          <input
+            type="number"
+            placeholder="$"
+            value={filterOptions.maxPrice || ""}
+            style={{
+              padding: "0.2rem",
+              borderRadius: "0.25rem",
+              border: "1px solid #ccc",
+              width: "50%",
+            }}
+            onChange={(e) => {
+              setFilterOptions({
+                ...filterOptions,
+                maxPrice: e.target.value ? Number(e.target.value) : undefined,
+              });
+            }}
+          />
         </div>
-      </SidebarSection>
+        <Button
+          style={{
+            marginLeft: "0.1rem",
+            backgroundColor: "black",
+            color: "white",
+            height: "4.7vh",
+            width: "100%",
+          }}
+          onClick={handleFilterButtonClick}
+        >
+          OK
+        </Button>
+      </div>
     </SidebarContainer>
   );
 };
