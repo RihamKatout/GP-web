@@ -1,4 +1,4 @@
-import  { useEffect, useRef, useState } from 'react';
+import  { ReactNode, useContext, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import {Layer , FullLayer} from './LayerFunction/Layar'; // Ensure the file './Layer.tsx' exists in the same directory
@@ -26,93 +26,13 @@ import { FontDripLarge, FontDripRegular, FontDripSmall, FontHeartDripLarge, Font
 import { ConfigProvider, Divider, Steps } from 'antd';
 import { ColorLabel } from '../../styles/CakeComponentStyles/ColorPicker.styled';
 import { useFrame } from '@react-three/fiber';
-
-import { ReactNode } from 'react';
 import * as THREE from 'three';
-import styled from 'styled-components';//enableRotate={false}
-import { useGLTF } from '@react-three/drei';
-import { Text } from '@react-three/drei';
+import {MiniCharacter, SpeechBubble} from './Character';
+import html2canvas from 'html2canvas';
 
-
-const MiniCharacter = ({ position = [0, 0, 0], scale = 0.5, rotation = [0, 0, 0] }) => {
-  const groupRef = useRef<THREE.Group>(null);
-  const [isRotating, setIsRotating] = useState(false); // Track rotation state
-  const [rotationProgress, setRotationProgress] = useState(0); // Track rotation progress
-  const clockRef = useRef(0); // Persistent clock for the jumping effect
-
-  const handleClick = () => {
-    if (!isRotating) {
-      setIsRotating(true); // Start rotating
-      setRotationProgress(0); // Reset progress
-    }
-  };
-
-  useFrame(() => {
-    if (groupRef.current) {
-      // Handle rotation
-      if (isRotating) {
-        const rotationSpeed = 0.1; // Speed of rotation
-        groupRef.current.rotation.y += rotationSpeed;
-        setRotationProgress((prev) => prev + rotationSpeed);
-
-        // Stop rotation after 360° (2 * Math.PI radians)
-        if (rotationProgress + rotationSpeed >= 2 * Math.PI) {
-          groupRef.current.rotation.y = Math.PI / 2; // Reset rotation
-          setIsRotating(false); // Stop rotating
-          setRotationProgress(0); // Reset progress
-        }
-      }
-
-      // Handle jumping (bobbing) animation
-      clockRef.current += 0.05; // Increment clock
-      groupRef.current.position.y = position[1] + Math.sin(clockRef.current) * 0.2; // Bobbing effect
-    }
-  });
-
-  const { scene } = useGLTF('./cute_chick.glb'); // Ensure this path is correct
-
-  return (
-    <primitive
-      ref={groupRef}
-      object={scene}
-      position={position}
-      scale={scale}
-      rotation={rotation}
-      onClick={handleClick}
-    />
-  );
-};
-
-const SpeechBubble = ({ texts, position, interval = 2000, rotation }: { texts: string[], position: [number, number, number], interval?: number, rotation: [number, number, number] }) => {
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % texts.length); // Cycle through texts
-    }, interval);
-
-    return () => clearInterval(timer); // Cleanup on unmount
-  }, [texts, interval]);
-
-  return (
-    <Text
-      position={position}
-      rotation={rotation}
-      fontSize={0.25} // Larger font size for better visibility
-      color={'#e14d97'} // Bright, fun color
-      
-      anchorX="center"
-      anchorY="middle"
-      outlineWidth={0.05} // Add an outline to make the text stand out
-      outlineColor={'#00000091'} // Black outline
-    >
-      {texts[currentTextIndex]}
-    </Text>
-  );
-};
-
-
+import { ShopContext } from "../../context/SweetContext";
 // Use alongside your character
+//import { useThree } from '@react-three/fiber';
 
 
 const RotatingCake = ({ children }: { children: ReactNode }) => {
@@ -189,6 +109,29 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
 
   const nextStage = () => setCurrentStage((prev) => Math.min(prev + 1, 3)); // Change 3 if more stages are added
   const prevStage = () => setCurrentStage((prev) => Math.max(prev - 1, 1));
+//////////Review Pop-up Function////////
+const [showReviewPopup, setShowReviewPopup] = useState(false);
+
+const handleOpenPopup = () => {
+  setShowReviewPopup(true);
+};
+
+const handleConfirmPopup = () => {
+  setShowReviewPopup(false);
+  console.log("Cake added to cart!"); // Additional logic can go here
+};
+const [cardMessage, setCardMessage] = useState<string>(""); // Save the message
+
+
+///////////////Cake Sizing & Price////////////////
+  const [cakeSize, setCakeSize] = useState<string>("Regular"); // Default size
+  const [cakePrice, setCakePrice] = useState<number>(20); // Default price
+
+  const handleSizeChange = (size: string, price: number) => {
+    setCakeSize(size);
+    setCakePrice(price);
+  };
+
 
   const renderLeftColumn = () => {
     switch (currentStage) {
@@ -251,6 +194,12 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
           selectedColor={fillLayerColor}
           onColorChange={setFillLayerColor}
          />
+         <div style={{ width: '80%', margin: '0 auto' }}>
+        <Divider style={{ borderColor: '#1a1a19b3' }}>
+          <ColorLabel>Select The Size:</ColorLabel>
+        </Divider>
+        </div>
+         <CakeSize selectedSize={cakeSize} onSizeChange={handleSizeChange} />
         </ColumnContainer>
         );
       case 2:
@@ -280,12 +229,88 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
       
         </ColumnContainer>);
       case 3:
-        return <CardWriting />;
+        return <ColumnContainer style={{width:'100%'}}>
+         
+       <CardWriting onSaveMessage={(message) => setCardMessage(message)}/>
+      <div style={{ display: 'flex', flexDirection: 'row',justifyContent: 'center', width: '100%' }}>
+       <CakeButton
+        onClick={captureCakeScene}
+        style={{ marginRight: '1rem' }}
+      >
+        Save & Shop
+      </CakeButton>
+      <CakeButton
+        onClick={handleOpenPopup}>Review</CakeButton>
+     </div >
+      {showReviewPopup && (
+  <ReviewCake
+    onClose={() => setShowReviewPopup(false)}
+    onConfirm={handleConfirmPopup}
+    cardMessage={cardMessage} // Pass the card message
+    cakeSize={cakeSize}
+    cakePrice={cakePrice}
+  />
+)}
+
+        </ColumnContainer >;
+
       default:
         return null;
     }
   };
-  const cakeRef = useRef<THREE.Group>(null);
+  
+  
+
+  const [cart, setCart] = useState<string[]>([]); // Store captured images
+  const containerRef = useRef<HTMLDivElement | null>(null); // Reference for the whole container
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null); // Reference for WebGL renderer
+  
+  const context = useContext(ShopContext);
+  if (!context) {
+    console.error("CakeCart must be used within a ShopContextProvider");
+    return null; // Return early if context is undefined
+  }
+
+  const { addCakeImage } = context;
+  
+
+  const captureCakeScene = async () => {
+    if (!containerRef.current || !rendererRef.current) {
+      console.error('Container or renderer is not initialized.');
+      return;
+    }
+
+    try {
+      // Step 1: Capture the WebGL content as an image
+      const webglCanvas = rendererRef.current.domElement;
+      const webglImage = webglCanvas.toDataURL('image/png');
+
+      // Step 2: Add the WebGL image to the DOM temporarily
+      const img = new Image();
+      img.src = webglImage;
+      img.style.position = 'absolute';
+      img.style.zIndex = '100';
+      img.style.pointerEvents = 'none'; // Prevent interaction with the image
+      containerRef.current.appendChild(img);
+
+      // Step 3: Capture the full HTML page with the WebGL overlay
+      const htmlCanvas = await html2canvas(containerRef.current, { useCORS: true });
+
+      // Step 4: Remove the temporary WebGL image
+      containerRef.current.removeChild(img);
+
+      // Step 5: Save the combined image
+      const finalImage = htmlCanvas.toDataURL('image/png');
+      setCart((prevCart) => [...prevCart, finalImage]);
+      addCakeImage(finalImage ,cakeSize, cakePrice);
+     
+    } catch (error) {
+      console.error('Error capturing the cake scene:', error);
+    }
+  };
+  
+
+
   return (
     
     <CakePageContainer>
@@ -318,16 +343,33 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
        ]}
        
         style={{ width: '100%' , height: '30px'}}/></ConfigProvider>
-       <div style={{ width: '100%', margin: '0 auto' , justifyContent: 'center' , alignItems: 'center' , height: '80%'}}>
-        <Canvas camera={{ position: [0, 16, -22], fov: 18 }}>
+       <div ref={containerRef} style={{ width: '100%', margin: '0 auto' , justifyContent: 'center' , alignItems: 'center' , height: '80%'}}>
+        <Canvas  camera={{ position: [0, 16, -22], fov: 18 }} 
+        gl={{ preserveDrawingBuffer: true }}
+        onCreated={({ gl }) => {
+          rendererRef.current = gl;
+      
+          const canvas = gl.domElement;
+          canvas.addEventListener("webglcontextlost", (event) => {
+            event.preventDefault();
+            console.warn("WebGL context lost!!!.");
+            rendererRef.current = new THREE.WebGLRenderer({ preserveDrawingBuffer: true });
+          });
+      
+          canvas.addEventListener("webglcontextrestored", () => {
+            console.log("WebGL context restored.");
+          });
+        }}
+      >
          
          <RotatingCake>
+        
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={0.5} />
           <directionalLight position={[-10, 10, 5]} intensity={0.5} />
           <OrbitControls enablePan={true} enableZoom={false} enableRotate={true} minPolarAngle={0} maxPolarAngle={Math.PI / 2} />
            
-          <group ref={cakeRef}>
+          <group >
             {layerShape === 'heart' && <LayerHeart numLayers={numLayers} layerColor={layerColor} fillLayerColor={fillLayerColor} />}
             {layerShape === 'round' && <Layer numLayers={numLayers} layerColor={layerColor} fillLayerColor={fillLayerColor} />}
             {layerShape === 'square' && <LayerSquare numLayers={numLayers} layerColor={layerColor} fillLayerColor={fillLayerColor} />}
@@ -543,14 +585,12 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
             {(currentStage === 3|| currentStage===2) && numLayers === 4 && layerShape === 'heart' && (selectedTopping === 'full' || selectedTopping === 'mix' || selectedTopping === 'heart' || selectedTopping === 'star' || selectedTopping === 'small' ) && <FontHeartLarge userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
             {(currentStage === 3|| currentStage===2) && numLayers === 4 && layerShape === 'heart' && (selectedTopping === 'cramel' ) && <FontHeartDripLarge userText={userText} fontType={fontType} selectedColor={selectedColor}/> }
 
-
-            
           </group>
           </RotatingCake>
           <>
           <MiniCharacter position={[4.5, 2.3, 0]} scale={0.55} rotation={[0, Math.PI / 2, 0.2]} />
           <SpeechBubble
-             texts={[...(currentStage === 1 ? ['"Hello There!"'] : []), ...(currentStage === 1 ? ['"Lets Make a Cake!"'] : []),...(currentStage === 1 ? ['"Show me Your Art"'] : []),
+             texts={[...(currentStage === 1 ? ['"Hello There!😀"'] : []), ...(currentStage === 1 ? ['"Lets Make a Cake!"'] : []),...(currentStage === 1 ? ['"Show me Your Art"'] : []),
               ...(currentStage === 2 ? ['"Thats cool!"'] : []), ...(currentStage === 2 ? ['"Nice Coloring"'] : []),...(currentStage === 2? ['"Keep Going.."'] : []),...(currentStage === 2 ? ['"You are Talented"'] : []),
              ...(currentStage === 3 ? ['"Do Your Final Touch"'] : []),...(currentStage === 3 ? ['"Almost There!"'] : []),...(currentStage === 3 ? ['"Your cake is ready!"'] : []),]}
              position={[4.5, 4, 0]}
@@ -568,6 +608,7 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
             <img src={next} style={{ width: '50px', height: '50px'}}/>
           </CakeButton>
         </div>
+        
         </GradientContainer>
       </MiddleColumn>
       
@@ -576,4 +617,8 @@ const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping i
   );
 };
 import next from '../../../assets/cake/ButtonIcon/right-arrow.png'
+import styled from 'styled-components';
+
+import { ReviewCake } from './ReviewCake';
+import CakeSize from './CakeSize';
 export default CakeScene;

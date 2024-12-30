@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const CakePageContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 2.3fr 1fr; /* Left and right columns smaller, middle column larger */
-  height: 85vh; /* Full viewport height */
+  height: 120vh; /* Full viewport height */
   padding: 0rem;
 `;
 
@@ -58,4 +58,3 @@ export const CakeButton = styled.button`
   }
 
 `
-

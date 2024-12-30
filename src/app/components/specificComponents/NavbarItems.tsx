@@ -28,7 +28,7 @@ export const Logo = () => {
         if (location.pathname !== "/") {
           navigate("/");
         }
-        const section = document.getElementById(SectionIdEnum.offers);
+        const section = document.getElementById(SectionIdEnum.home);
         if (section) {
           section.scrollIntoView({ behavior: "smooth" });
         }

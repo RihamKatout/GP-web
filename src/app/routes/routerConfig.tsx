@@ -6,6 +6,7 @@ import CakeScene from "../components/Cake3D/CakeComponent";
 import SweetCart from "../SweetTouches/Cart/SweetCart";
 import Hero from "../SweetTouches/component/Hero";
 import Navbar from "../SweetTouches/component/SweetNavbar";
+import { MainLayout } from "../components/Layout";
 
 const routerConfig = createBrowserRouter([
   {
@@ -27,16 +28,19 @@ const routerConfig = createBrowserRouter([
   {
     path: "/cart",
     element: (
-      <SweetCart></SweetCart>
+      <MainLayout>
+       <SweetNavbar />
+       <SweetCart></SweetCart>
+      </MainLayout>
     ),
   },
   {
     path: "/cake",
     element: (
-      <div>
+      <MainLayout>
         <SweetNavbar />
         <CakeScene></CakeScene>
-      </div>
+      </MainLayout>
     ),
   },
   {
@@ -55,6 +59,15 @@ const routerConfig = createBrowserRouter([
   {
     path: "/product/:id",
     Component: ProductPage,
+  },
+  {
+    path: "/shops",
+    element: (
+      <MainBody>
+        <Navbar />
+        <Hero />
+      </MainBody>
+    ),
   },
   {
     path: "*",
