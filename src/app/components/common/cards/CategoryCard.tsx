@@ -11,13 +11,17 @@ import { useNavigate } from "react-router-dom";
 type CategoryCardProps = {
   id: number;
   title: string;
-  imageURL?: string;
+  imageurl?: string;
+  type?: "STORE" | "PRODUCT";
+  onClick: () => void;
 };
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
   title,
-  imageURL,
+  imageurl,
   id,
+  type,
+  onClick,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -38,18 +42,40 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       if (cardRef.current) observer.unobserve(cardRef.current);
     };
   }, []);
-  const navigate = useNavigate();
+
   return (
-    <StyledCategoryCard
-      ref={cardRef}
-      onClick={() => navigate("/product?storeCategoryId=" + id)}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        gap: "0.2rem",
+        width: type === "PRODUCT" ? "4rem" : "auto"
+      }}
     >
-      <CardActionArea style={{ height: "100%" }}>
-        {imageURL && <StyledCategoryCardMedia image={imageURL} />}
-        <CardContent>
-          <CategoryCardTitle>{title}</CategoryCardTitle>
-        </CardContent>
-      </CardActionArea>
-    </StyledCategoryCard>
+      <StyledCategoryCard
+        type={type || "STORE"}
+        imageurl={imageurl}
+        ref={cardRef}
+        onClick={onClick}
+      >
+        <CardActionArea
+          style={{ height: "100%", backgroundColor: "transparent" }}
+        >
+          {type === "STORE" && imageurl && (
+            <StyledCategoryCardMedia image={imageurl} />
+          )}
+          {(type === "STORE" || type === undefined) && (
+            <CardContent>
+              <CategoryCardTitle>{title}</CategoryCardTitle>
+            </CardContent>
+          )}
+        </CardActionArea>
+      </StyledCategoryCard>
+      {type === "PRODUCT" && (
+        <p style={{ color: "black", fontWeight: "bold", fontSize: "0.8rem"}}>{title}</p>
+      )}
+    </div>
   );
 };

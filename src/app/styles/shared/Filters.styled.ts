@@ -2,6 +2,7 @@ import { styled } from "@mui/material";
 
 export const FiltersContainer = styled("div")(() => ({
   display: "flex",
+  flexDirection: "column",
   flexWrap: "wrap",
   gap: "1rem",
   padding: "1rem",
@@ -9,7 +10,7 @@ export const FiltersContainer = styled("div")(() => ({
   border: "1px solid #ddd",
   borderRadius: "8px",
   marginBottom: "1.5rem",
-
+  alignItems: "center",
   "& input, & select, & button": {
     padding: "0.5rem",
     border: "1px solid #ddd",

@@ -1,20 +1,21 @@
 import { useQuery } from "react-query";
-import { CardsGrid } from "../../styles";
-import { CategoryCard, Loader } from "../../components/common";
+import { CardsGrid } from "../../../styles";
+import { CategoryCard, Loader } from "../../common";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { StoreCategoryService } from "../../api";
-import { StoreCategory } from "../../types";
+import { StoreCategoryService } from "../../../api";
+import { Category } from "../../../types";
+import { useNavigate } from "react-router-dom";
 
-// TODO: fix 
+// TODO: fix
 export const StoreCategoriesSection = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  const navigate = useNavigate();
   const {
     data: categories,
     isLoading,
     error,
-  } = useQuery(["categories"], StoreCategoryService.getShopCategories);
+  } = useQuery(["categories"], StoreCategoryService.getStoreCategories);
   if (error instanceof Error) return <p>Error: {error.message}</p>;
 
   return (
@@ -53,12 +54,16 @@ export const StoreCategoriesSection = () => {
         <Loader type="bouncing" />
       ) : (
         <CardsGrid>
-          {categories?.data.map((category: StoreCategory) => (
+          {categories?.data.map((category: Category) => (
             <CategoryCard
               key={category.id}
-              title={category.categoryName}
+              title={category.name}
               id={category.id}
-              imageURL={category.imageURL}
+              imageurl={category.imageurl}
+              type="STORE"
+              onClick={() => {
+                navigate("/product?storeCategoryId=" + category.id);
+              }}
             />
           ))}
         </CardsGrid>

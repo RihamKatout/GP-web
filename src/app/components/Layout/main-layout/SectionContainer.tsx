@@ -11,9 +11,23 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   sectionId,
 }) => {
   return (
-    <div id={sectionId} key={sectionId} style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-      <Container style={{margin: "1rem 0", padding: "1rem"}}>
-        <Toolbar></Toolbar>
+    <div
+      id={sectionId}
+      key={sectionId}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Container
+        style={{
+          padding: "0",
+          width: "100%",
+          maxWidth: "100vw", 
+        }}
+      >
+        <Toolbar />
         <Box component={"section"} minHeight={"100vh"}>
           {children}
         </Box>

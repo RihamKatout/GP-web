@@ -43,7 +43,7 @@ export const ProductPage = () => {
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
           <ProductImage
-            src={product.imageURL || "/placeholder.jpg"}
+            src={product.imageurl || "/placeholder.jpg"}
             alt={product.name}
           />
         </Grid>

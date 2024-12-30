@@ -3,12 +3,13 @@ import { ProductCardStyle } from "../../../styles";
 import { Product } from "../../../types";
 import { useNavigate } from "react-router-dom";
 
+// TODO : create a mobile card
 export const ProductCard: React.FC<Product> = (product) => {
   const navigate = useNavigate();
 
   return (
     <ProductCardStyle onClick={() => navigate("/product/" + product.id)}>
-      <img src={product.imageURL} alt={product.name} />
+      <img src={product.imageurl} alt={product.name} />
       <h2>{product.name}</h2>
       <p>Price: ${product.price}</p>
       <p>Rating: {product.rating}</p>

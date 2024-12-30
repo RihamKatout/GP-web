@@ -1,127 +1,130 @@
-import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import { ProductCategoryService, ProductService } from "../../api";
 import { MainLayout, SectionContainer } from "../../components/Layout";
-import { ProductsShowcaseSection } from "../../features/products/ProductsShowcaseSection";
-import { FiltersContainer } from "../../styles";
-import { ProductCategory, ProductFilters, SectionIdEnum } from "../../types";
-import { Loader } from "../../components/common";
+import { Product, ProductFilters, SectionIdEnum } from "../../types";
+import { FilterSidebar, ProductsShowcaseSection } from "../../features";
+import { useCallback, useState } from "react";
+import { ProductService } from "../../api";
+import { debounce } from "@mui/material";
+import styled from "styled-components";
+import { useQuery } from "react-query";
+import { useSearchParams } from "react-router-dom";
 
-// TODO: fix
+const ShowcaseContainer = styled("div")({
+  display: "flex",
+  height: "150vh",
+  maxWidth: "100vw",
+  overflow: "hidden",
+  flexWrap: "wrap",
+  gap: "0",
+  justifyContent: "flex-start",
+  alignItems: "flex-start",
+});
 
-export const ShowcasePage: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const [categories, setCategories] = useState<ProductCategory[]>([]);
+const DEFAULT_PAGE_SIZE = 2;
 
-  const queryParams: ProductFilters = Object.fromEntries(
-    Array.from(searchParams.entries())
-  ) as unknown as ProductFilters;
+export const ShowcasePage = () => {
+  // product filtering
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const normalizedParams: ProductFilters = {
-    ...queryParams,
-    storeCategoryId: queryParams.storeCategoryId
-      ? Number(queryParams.storeCategoryId)
-      : undefined,
-    minPrice: queryParams.minPrice ? Number(queryParams.minPrice) : undefined,
-    maxPrice: queryParams.maxPrice ? Number(queryParams.maxPrice) : undefined,
-    minRating: queryParams.minRating
-      ? Number(queryParams.minRating)
-      : undefined,
-    page: queryParams.page ? Number(queryParams.page) : 0,
-    size: queryParams.size ? Number(queryParams.size) : 20,
+  const normalizeSearchParams = (): ProductFilters => {
+    const params = Object.fromEntries(searchParams.entries());
+    return {
+      storeCategoryId: Number(params.storeCategoryId) || undefined,
+      categoryId: Number(params.categoryId) || undefined,
+      minPrice: Number(params.minPrice) || undefined,
+      maxPrice: Number(params.maxPrice) || undefined,
+      minRating: Number(params.minRating) || undefined,
+      keyWord: params.keyWord,
+      page: Number(params.page) || 0,
+      size: Number(params.size) || DEFAULT_PAGE_SIZE,
+    };
   };
 
-  const [filters, setFilters] = useState<ProductFilters>(normalizedParams);
-  const [formFilters, setFormFilters] =
-    useState<ProductFilters>(normalizedParams);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      window.scrollTo(0, 0);
-      const response =
-        await ProductCategoryService.getProductCategorizeByStoreCategory(
-          filters.storeCategoryId
-        );
-      setCategories(response);
-    };
-    fetchCategories();
-  }, [filters.storeCategoryId]);
-
-  const { data, isLoading, isError } = useQuery(
-    ["products", filters],
-    () => ProductService.fetchProducts(filters),
-    { keepPreviousData: true }
+  const [filters, setFilters] = useState<ProductFilters>(
+    normalizeSearchParams()
   );
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormFilters((prev) => ({
-      ...prev,
+  const updateSearchParams = useCallback(
+    (newFilters: ProductFilters) => {
+      const filteredParams = Object.entries(newFilters)
+        .filter(([, value]) => value !== undefined && value !== null)
+        .reduce((acc, [key, value]) => {
+          acc[key] = value.toString();
+          return acc;
+        }, {} as Record<string, string>);
+
+      setSearchParams(new URLSearchParams(filteredParams));
+    },
+    [setSearchParams]
+  );
+
+  const debouncedSearch = useCallback(
+    debounce((newFilters: ProductFilters) => {
+      updateSearchParams(newFilters);
+    }, 500),
+    [updateSearchParams]
+  );
+
+  const handleFilterChange = (name: keyof ProductFilters, value: any) => {
+    const newFilters = {
+      ...filters,
       [name]: value === "" ? undefined : value,
-    }));
+      page: 0, // Reset page to 0 when filters change
+    };
+    setFilters(newFilters);
+
+    if (name === "keyWord") {
+      debouncedSearch(newFilters);
+    } else {
+      updateSearchParams(newFilters);
+    }
   };
 
-  const applyFilters = () => {
-    setFilters((prev) => ({ ...prev, ...formFilters, page: 0 }));
-  };
-
-  const handlePageChange = (newPage: number) => {
-    setFilters((prev) => ({ ...prev, page: newPage }));
-  };
+  // Fetch products
+  const [products, setProducts] = useState<Product[]>([]);
+  const { data, isLoading, isError } = useQuery(
+    ["products", searchParams.toString()],
+    () => ProductService.fetchProducts(filters),
+    {
+      keepPreviousData: true,
+      onSuccess: (data) => {
+        setProducts(data.content);
+        scrollTo({ top: 0, behavior: "smooth" });
+      },
+    }
+  );
 
   if (isError) return <p>Error loading products.</p>;
 
+  const handlePageChange = (newPage: number) => {
+    const newFilters = { ...filters, page: newPage };
+    setFilters(newFilters);
+    updateSearchParams(newFilters);
+  };
+
   return (
     <MainLayout>
-      <SectionContainer sectionId={SectionIdEnum.showcase}>
-        <div>
-          <FiltersContainer>
-            <input
-              type="text"
-              name="keyWord"
-              placeholder="Search by name"
-              value={formFilters.keyWord || ""}
-              onChange={handleInputChange}
-            />
-            <input
-              type="number"
-              name="minPrice"
-              placeholder="Min Price"
-              value={formFilters.minPrice || ""}
-              onChange={handleInputChange}
-            />
-            <input
-              type="number"
-              name="maxPrice"
-              placeholder="Max Price"
-              value={formFilters.maxPrice || ""}
-              onChange={handleInputChange}
-            />
-            <select
-              name="categoryId"
-              value={formFilters.categoryId || ""}
-              onChange={handleInputChange}
-            >
-              <option value="">All Categories</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            <button onClick={applyFilters}>Search</button>
-          </FiltersContainer>
-
-          {isLoading && <Loader type="bouncing" />}
+      <SectionContainer sectionId={SectionIdEnum.products}>
+        <ShowcaseContainer>
+          {/* Sidebar */}
+          <FilterSidebar
+            storeCategoryId={filters.storeCategoryId || 1}
+            handleFilterChange={handleFilterChange}
+          />
           <ProductsShowcaseSection
-            data={data}
-            page={filters.page}
+            products={products}
+            isLoading={isLoading}
+            setProducts={setProducts}
             handlePageChange={handlePageChange}
-          ></ProductsShowcaseSection>
-        </div>
+            page={
+              data?.page || {
+                size: 0,
+                number: 0,
+                totalElements: 0,
+                totalPages: 0,
+              }
+            }
+          />
+        </ShowcaseContainer>
       </SectionContainer>
     </MainLayout>
   );

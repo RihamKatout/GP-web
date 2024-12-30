@@ -5,7 +5,7 @@ export const enum SectionIdEnum {
   categories = "categories",
   shop = "shop",
   help = "help",
+  products = "products",
 
 
-  showcase = "showcase",
 }

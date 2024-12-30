@@ -99,15 +99,12 @@ export const Navbar = () => {
   );
 
   return (
-    <AppBar position="fixed" sx={{   backgroundColor:"white"  }}>
+    <AppBar position="fixed" sx={{   backgroundColor:"white" , borderBottom: "1px solid black", boxShadow: "none" }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Logo />
 
         {/* Navigation items */}
         {!isMobile && (
-          // <Box component="div" sx={{ display: "flex", gap: 2 }}>
-          //   {mappedNavigationItems}
-          // </Box>
           <NavigationContainer>{mappedNavigationItems}</NavigationContainer>
         )}
 

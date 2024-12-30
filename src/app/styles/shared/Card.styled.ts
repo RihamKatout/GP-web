@@ -1,13 +1,22 @@
 import { Card, CardMedia, styled } from "@mui/material";
 
-// Store Category card styles
+// Category card styles
 // This card  contains only title and image
-export const StyledCategoryCard = styled(Card)(({ theme }) => ({
-  width: "140px",
-  height: "160px",
+export const StyledCategoryCard = styled(Card)<{
+  type?: string;
+  imageurl?: string;
+}>(({ theme, type, imageurl }) => ({
+  width: type === "STORE" ? "140px" : "70px",
+  height: type === "STORE" ? "160px" : "70px",
   textAlign: "center",
-  borderRadius: "25px",
-  background: "linear-gradient(135deg, rgb(216, 249, 225), rgb(235, 213, 245))",
+  borderRadius: type === "STORE" ? "25px" : "50%",
+  border: type === "STORE" ? "" : "1px solid rgb(252, 210, 247)",
+  background:
+    type === "STORE"
+      ? "linear-gradient(135deg, rgb(216, 249, 225), rgb(235, 213, 245))"
+      : imageurl
+      ? `url(${imageurl}) center/cover no-repeat`
+      : `url(https://drive.google.com/thumbnail?id=12DXmxY3D4Oar8f1XJphR0dzEpSoo-T1_) center/cover no-repeat`,
   transition: "opacity 0.6s ease, transform 0.6s ease",
   opacity: 0,
   transform: "translateY(20px)",
@@ -20,8 +29,8 @@ export const StyledCategoryCard = styled(Card)(({ theme }) => ({
     boxShadow: "0px 12px 30px rgba(0, 0, 0, 0.1)",
   },
   [theme.breakpoints.down("sm")]: {
-    width: "120px",
-    height: "160px",
+    width: type === "STORE" ? "120px" : "60px",
+    height: type === "STORE" ? "160px" : "60px",
   },
 }));
 
@@ -51,8 +60,8 @@ export const ProductCardStyle = styled("div")(({ theme }: { theme: any }) => ({
   textAlign: "center",
   border: "1px solid #ddd",
   borderRadius: "8px",
-  padding: "1rem",
-  width: "300px",
+  padding: "0.5rem",
+  width: "200px",
   boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
   transition: "transform 0.2s, box-shadow 0.2s",
   cursor: "pointer",
@@ -62,21 +71,20 @@ export const ProductCardStyle = styled("div")(({ theme }: { theme: any }) => ({
   },
 
   img: {
-    width: "100%",
-    height: "200px",
-    objectFit: "cover",
+    height: "100px",
+    objectFit: "fit",
     borderRadius: "4px",
     marginBottom: "1rem",
   },
 
   h2: {
-    fontSize: "1.25rem",
+    fontSize: "1.1rem",
     color: "#333",
     margin: "0.5rem 0",
   },
 
   p: {
-    fontSize: "1rem",
+    fontSize: "0.9rem",
     color: "#555",
     margin: "0.25rem 0",
   },

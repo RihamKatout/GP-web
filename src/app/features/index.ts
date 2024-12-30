@@ -4,9 +4,10 @@ export * from "./authentication/RegisterForm";
 
 // offers 
 export * from "./offers/OffersSection";
-
-// products
-export * from "./products/ProductsShowcaseSection";
+export * from "./showcase/ShowcaseHeader";
+// showcase
+export * from "./showcase/FilterSidebar";
+export * from "./showcase/ProductsShowcaseSection";
 
 // stores 
-export * from "./stores/StoreCategoriesSection";
+export * from "../components/specificComponents/sections/StoreCategoriesSection";

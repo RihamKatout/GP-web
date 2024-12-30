@@ -1,6 +1,6 @@
 import { SectionIdEnum } from "../types";
 import { MainLayout, SectionContainer } from "../components/Layout";
-import { StoreCategoriesSection } from "../features/stores/StoreCategoriesSection";
+import { StoreCategoriesSection } from "../components/specificComponents/sections/StoreCategoriesSection";
 import { OffersSection } from "../features";
 import { HelpCenterSection, HeroSection } from "../components/specificComponents";
 
