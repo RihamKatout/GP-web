@@ -6,6 +6,7 @@ import {
   ProfilePage,
   RegisterPage,
   ShowcasePage,
+  ForgotPassword
 } from "../pages";
 import { Button, MainBody } from "../styles/Global.styled";
 import SweetNavbar from "../SweetTouches/component/SweetNavbar";
@@ -25,6 +26,10 @@ const routerConfig = createBrowserRouter([
   {
     path: "/login",
     Component: LoginPage,
+  },
+  {
+    path: "/forgot-password",
+    Component: ForgotPassword,
   },
   {
     path: "/register",

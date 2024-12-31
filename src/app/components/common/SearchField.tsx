@@ -7,7 +7,7 @@ const SearchContainer = styled("div")({
   border: "1px solid #000",
   display: "flex",
   alignItems: "center",
-  borderRadius: "0.2rem",
+  borderRadius: "0.7rem",
   padding: "0.2rem",
 });
 

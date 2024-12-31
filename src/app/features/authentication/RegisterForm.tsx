@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { message } from "antd";
+import home from "../../../assets/home.png";
 
 const schema = z.object({
   username: z
@@ -120,6 +121,8 @@ const RegisterForm = () => {
         </ButtonContainer>
       </form>
       {/* Create Account link */}
+      <BakeHomeButton onClick={() => navigate("/")} ><img src={home} style={{ width: "25px", height: "25px" }} /></BakeHomeButton>
+
       <LinkToRegister>
            Have an account? <StyledLink to="/login">Login</StyledLink>
         </LinkToRegister>
@@ -200,7 +203,7 @@ const MainContainer = styled.div `
   -webkit-backdrop-filter: blur(8.5px);
 ;
 `
-const InputContainer = styled.div `
+const InputContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Two columns */
   gap: 1rem; /* Spacing between inputs */
@@ -208,10 +211,16 @@ const InputContainer = styled.div `
   padding: 1rem;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr; /* Stack inputs on smaller screens */
+    grid-template-columns:  repeat(2, 1fr); /* Stack inputs vertically on smaller screens */
+    gap: 0.5rem; /* Reduce gap for smaller screens */
   }
-;
-`
+
+  @media (max-width: 480px) {
+    grid-template-columns:  repeat(2, 1fr);
+    //padding: 0.5rem; /* Adjust padding for very small screens */
+  }
+`;
+
 
 
 const ButtonContainer = styled.div`
@@ -234,5 +243,21 @@ const StyledLink = styled(Link)`
   font-weight: bold;
   &:hover {
     text-decoration: underline;
+  }
+`;
+const BakeHomeButton = styled.button`
+  background: #ffe4d4;
+  color: #191818d3;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background: #ff8a65;
+    transform: scale(1.05);
   }
 `;

@@ -1,66 +1,56 @@
-import z from "zod";
-import { useForm, SubmitHandler, FieldErrors } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { message } from "antd"; // Import Ant Design's message
-
-const schema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long"),
-});
-
-type FormFields = z.infer<typeof schema>;
+import { useForm, SubmitHandler, FieldErrors } from "react-hook-form";
+import { message } from "antd";
+import { useAuth } from "../../context/AuthContext";
+import emailjs from "emailjs-com"; // Import EmailJS
 
 const LoginForm = () => {
   const { loginUserContext } = useAuth();
   const navigate = useNavigate();
-  const [messageApi, contextHolder] = message.useMessage(); // Initialize message
-
-  const {
-    register,
-    handleSubmit,
-    setError,
-    
-    formState: { isSubmitting },
-  } = useForm<FormFields>({
+  const [messageApi, contextHolder] = message.useMessage();
+  
+  const { register, handleSubmit, setError, formState: { isSubmitting } } = useForm({
     defaultValues: {
       email: "",
       password: "",
     },
-    resolver: zodResolver(schema),
   });
 
-  // Handle invalid inputs before submit
-  const onInvalid = (errors: FieldErrors<FormFields>) => {
-    if (errors.email) {
-      messageApi.error(errors.email.message || "Invalid email address");
-    }
-    if (errors.password) {
-      messageApi.error(
-        errors.password.message || "Password must be at least 8 characters long"
-      );
-    }
-  };
-
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+  const onSubmit: SubmitHandler<any> = async (data) => {
     try {
       await loginUserContext(data);
       messageApi.success("Login successful! Redirecting...");
       navigate("/");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      if (error.response?.data.errors[0] === "Bad credentials") {
-        setError("root", {
-          message: "Invalid email or password, please try again!",
-        });
-        messageApi.error("Invalid email or password, please try again!");
-      } else {
-        setError("root", { message: error.response?.data.errors[0] });
-        messageApi.error(error.response?.data.errors[0] || "An error occurred");
-      }
+      setError("root", {
+        message: "Invalid email or password, please try again!",
+      });
+      messageApi.error("Invalid email or password, please try again!");
     }
+  };
+
+  const onForgotPassword = (email: string) => {
+    // EmailJS Password Reset Email Configuration
+    const templateParams = {
+      user_email: email,
+      reset_link: "http://localhost:5173/forgot-password", // Change to your password reset page URL
+    };
+
+    // Send the email using EmailJS
+    emailjs
+      .send("service_9el3gcf", "template_tjxhrls", templateParams, "3utpEi5L2w2bw-lZn")
+      .then(
+        (response: any) => {
+          console.log("Password reset email sent:", response);
+          messageApi.success("Password reset link sent! Check your email.");
+          navigate("/forgot-password"); // Redirect to reset password page
+        },
+        (error: any) => {
+          console.log("Failed to send email:", error);
+          messageApi.error("Failed to send password reset email. Please try again.");
+        }
+      );
   };
 
   return (
@@ -68,16 +58,19 @@ const LoginForm = () => {
       {contextHolder}
       <MainContainer>
         <WelcomeText>Login</WelcomeText>
-        <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <InputContainer>
             <StyledInput {...register("email")} placeholder="Email" />
-           
+            <StyledForgotPasswordContainer>
+              <StyledLink to="#" onClick={() => onForgotPassword("user@example.com")}>
+                Forgot your password?
+              </StyledLink>
+            </StyledForgotPasswordContainer>
             <StyledInput
               {...register("password")}
               type="password"
               placeholder="Password"
             />
-           
           </InputContainer>
           <ButtonContainer>
             <StyledButton type="submit" disabled={isSubmitting}>
@@ -85,8 +78,7 @@ const LoginForm = () => {
             </StyledButton>
           </ButtonContainer>
         </form>
-         {/* Create Account link */}
-         <LinkToRegister>
+        <LinkToRegister>
           Don't have an account? <StyledLink to="/register">Create one</StyledLink>
         </LinkToRegister>
       </MainContainer>
@@ -95,6 +87,19 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+// Styled Components
+
+const StyledForgotPasswordContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 85%;
+  margin-top: -10px;
+  margin-bottom: 10px;
+`;
+
+// Other Styled Components...
+
 
 ///////// Styled Components /////////
 const StyledInput = styled.input`
@@ -131,7 +136,7 @@ const StyledButton = styled.button`
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
-  margin-top: 1.5rem;
+  //margin-top: 1.5rem;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s, box-shadow 0.2s;
   &:hover {
@@ -154,13 +159,14 @@ const MainContainer = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  height: 500px;
+  height: 550px;
   width: 400px;
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 2px 10px 30px rgba(7, 7, 7, 0.1);
   border-radius: 20px;
   backdrop-filter: blur(8.5px);
   -webkit-backdrop-filter: blur(8.5px);
+  
 `;
 
 const InputContainer = styled.div`
@@ -190,3 +196,20 @@ const StyledLink = styled(Link)`
     text-decoration: underline;
   }
 `;
+const BakeHomeButton = styled.button`
+  background: #ffe4d4;
+  color: #191818d3;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background: #ff8a65;
+    transform: scale(1.05);
+  }
+`;
+

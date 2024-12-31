@@ -1,2 +1,2 @@
-import logo from "./logo.png";
+import logo from "./device.png";
 export const logoImg = logo;

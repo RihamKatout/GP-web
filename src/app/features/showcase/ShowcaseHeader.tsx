@@ -10,6 +10,7 @@ const CategoriesContainer = styled("div")({
   alignItems: "center",
   justifyContent: "center",
   width: "80vw",
+ 
 });
 
 
