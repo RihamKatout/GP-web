@@ -1,7 +1,11 @@
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import LoginForm from "../../features/authentication/LoginForm";
+import { LoggedInUserPage } from "..";
 
 export const LoginPage = () => {
+  if (localStorage.getItem("token")) {
+    return <LoggedInUserPage />;
+  }
   return (
     <div style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
       {/* Lottie Animation as Background */}
@@ -12,7 +16,7 @@ export const LoginPage = () => {
         style={{
           position: "absolute",
           top: 0,
-          left: '-350px',
+          left: "-350px",
           width: "100%",
           height: "100%",
           zIndex: -1, // Places animation behind content
@@ -26,14 +30,12 @@ export const LoginPage = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
-          
         }}
       >
-        <div style={{ marginLeft: '700px' }}>
+        <div style={{ marginLeft: "700px" }}>
           <LoginForm />
         </div>
       </div>
     </div>
   );
 };
-

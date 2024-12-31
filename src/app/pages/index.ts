@@ -12,3 +12,6 @@ export * from "./user/UnauthorizedPage";
 
 // admin
 export * from "./admin/DashboardPage";
+
+// error
+export * from "./errors/LoggedInUserPage";
