@@ -9,7 +9,7 @@ export const StyledCategoryCard = styled(Card)<{
   width: type === "STORE" ? "140px" : "70px",
   height: type === "STORE" ? "160px" : "70px",
   textAlign: "center",
-  borderRadius: type === "STORE" ? "25px" : "50%",
+  borderRadius: type === "STORE" ? "25px" : "20%",
   border: type === "STORE" ? "" : "1px solid rgb(252, 210, 247)",
   background:
     type === "STORE"

@@ -1,4 +1,4 @@
-import { Button } from "antd";
+//import { Button } from "antd";
 import React, { useState } from "react";
 import { Loader, ProductCard } from "../../components/common";
 import { CardsGrid } from "../../styles";
@@ -18,9 +18,28 @@ const ShowcaseBody = styled("div")({
 
 const SortSelect = styled("select")({
   padding: "0.2rem",
-  borderRadius: "0.25rem",
-  border: "1px solid #ccc",
+  borderRadius: "15px",
+  border: "2px solid #1b1a1a",
+  
 });
+const Button = styled.button`
+    padding: 0.5rem 1rem;
+    background-color: #e4bcbc;
+    color: #1b1a1a;
+    border: 2px solid #131313ae;
+    border-radius: 15px ;
+    font-weight: 600;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    
+    
+    &:hover {
+        background-color: ${({ theme }) => theme.colors.primary || "white"};
+    }
+ `;
+
 
 interface ProductsShowcaseSectionProps {
   products?: Product[];
@@ -73,12 +92,18 @@ export const ProductsShowcaseSection: React.FC<ProductsShowcaseSectionProps> = (
       handleSortChange(sortType);
     }
   };
+   
+  
+  
   return (
+    
     <ShowcaseBody
       style={{
         width: isMobile ? "90%" : "auto",
       }}
     >
+      
+      
       {/* showcase header (types and sorting) */}
       <div
         style={{
@@ -116,6 +141,7 @@ export const ProductsShowcaseSection: React.FC<ProductsShowcaseSectionProps> = (
           <SwapVertIcon onClick={handleSortDirectionChange} />
         </div>
       </div>
+      
       {isLoading ? (
         <Loader type="bouncing" />
       ) : (
@@ -137,6 +163,8 @@ export const ProductsShowcaseSection: React.FC<ProductsShowcaseSectionProps> = (
         onChange={(_, page) => handlePageChange(page - 1)}
         sx={{ margin: "2rem 0" }}
       />
+     
+      
     </ShowcaseBody> 
   );
 };
