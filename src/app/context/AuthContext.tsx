@@ -1,6 +1,12 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { useMutation } from "react-query";
-import { loginApi, registerApi } from "../api";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { useMutation, useQuery } from "react-query";
+import { getCurrentUser, loginApi, registerApi } from "../api";
 import { User, RegistrationFields } from "../types";
 
 interface AuthContextProps {
@@ -25,6 +31,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const { mutateAsync: mutateLoginAsync } = useMutation(loginApi);
   const { mutateAsync: mutateRegisterAsync } = useMutation(registerApi);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setUser(null);
+      setIsLoggedIn(false);
+      return;
+    }
+
+    getCurrentUser()
+      .then((response) => {
+        setUser(response.data);
+        setIsLoggedIn(true);
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        setUser(null);
+        setIsLoggedIn(false);
+      });
+  }, []);
 
   const loginUserContext = async (userData: {
     email: string;
@@ -69,7 +95,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ user, registerUserContext, loginUserContext, logoutContext, isLoggedIn }}
+      value={{
+        user,
+        registerUserContext,
+        loginUserContext,
+        logoutContext,
+        isLoggedIn,
+      }}
     >
       {children}
     </AuthContext.Provider>
