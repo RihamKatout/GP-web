@@ -21,9 +21,12 @@ import {
 import { BsInstagram, BsLinkedin, BsTwitter, BsYoutube } from 'react-icons/bs';
 import { fadeInLeftVariant, fadeInRightVariant } from '../../../utils/Variants';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 
 export const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <PaddingContainer 
        id="Home"
@@ -55,7 +58,13 @@ export const HeroSection = () => {
             fontFamily: "DynaPuff",
             fontWeight: "400",
             fontSize: "3.5rem",
-          }}>DESIGNFY!</BlueText> 
+          }}>DESIGNFY!
+          <Button 
+          onClick = {() => navigate("/dashboard")}
+          >
+            Dashboard
+          </Button>
+          </BlueText> 
 
             </Heading>
             <Heading as="h3" size="h3" style={{ color: "#1e1c1c414"}}>

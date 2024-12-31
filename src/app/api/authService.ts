@@ -6,6 +6,11 @@ export async function loginApi(userData: { email: string; password: string }) {
   return response;
 }
 
+export async function getCurrentUser() {
+  const response = await clientAxios.get("/user");
+  return response;
+}
+
 export async function registerApi(registrationFormFields: RegistrationFields) {
   const response = await clientAxios.post(
     "/auth/register",
