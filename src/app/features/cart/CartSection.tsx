@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { CartService } from "../../api";
 import { useNavigate } from "react-router-dom";
+import { Divider } from "@mui/material";
 
-// TODO: group items by store
 // handle payment
 const CartContainer = styled.div`
   padding: 1rem;
@@ -29,9 +29,8 @@ const CartItemsContainer = styled.div`
   flex-direction: column;
   width: 60vw;
   overflow: hidden;
-  // background-color: rgb(221, 221, 221);
   border-radius: 0.6rem;
-  border: 1px solid #6a437c;
+  border: 2px solid #6a437c;
   @media (max-width: 1000px) {
     width: 90vw;
   }
@@ -41,43 +40,32 @@ const CartItemsContainer = styled.div`
   .store-group {
     border-radius: 0.6rem;
     h5 {
-      padding: 0.7rem;
+      padding: 0.7rem 1rem;
+      margin: 0;
       color: white;
       background-color: #6a437c;
       cursor: pointer;
     }
     &:last-child {
-      border: none;
+      border-bottom: none;
     }
-  }
-`;
-
-const CartSummeryContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 30vw;
-  max-width: 380px;
-  background-color: #6a437c;
-  border-radius: 0.6rem;
-  padding: 1rem;
-  @media (max-width: 780px) {
-    width: 90vw;
   }
 `;
 
 const ClearButtonsContainer = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
+  button {
+    width: 50%;
+    font-size: 0.8rem;
+    color: white;
+    background-color: rgb(235, 83, 83);
+    border: none;
+  }
   @media (max-width: 1200px) {
     flex-direction: column;
     button {
       width: 100% !important;
-    }
-  }
-  @media (max-width: 1300px) {
-    button {
-      font-size: 0.8rem;
     }
   }
 `;
@@ -85,12 +73,12 @@ const ClearButtonsContainer = styled.div`
 const CheckoutContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: rgb(221, 221, 221);
-  background-color: white;
-  padding: 2rem 3rem;
+  background-color: #;
+  border: 2px solid #6a437c;
+  padding: 1rem 2rem;
   text-align: center;
   border-radius: 0.6rem;
-  gap: 1rem;
+  gap: 0.5rem;
   div {
     width: 100%;
   }
@@ -100,14 +88,15 @@ const CheckoutContainer = styled.div`
   .Option {
     display: flex;
     align-items: center;
-    margin-top: -1.2rem;
     justify-content: space-between;
     p {
-      color: rgb(156, 156, 156);
+      color: rgb(118, 118, 118);
       font-size: 1rem;
+      margin: 0;
     }
     h5 {
       font-size: 1.1rem;
+      margin: 0;
     }
   }
 `;
@@ -199,83 +188,79 @@ export const CartSection: React.FC<CartSectionProps> = ({
       </CartItemsContainer>
 
       {/* cart summary */}
-      <CartSummeryContainer>
-        <ClearButtonsContainer>
-          <Button
-            onClick={handleDeleteSelectedItems}
-            disabled={!selectedItems?.length}
-            style={{ width: "50%" }}
-          >
-            <DeleteOutlineIcon />
-            Remove selected items
+      <CheckoutContainer>
+        <h3 style={{ fontWeight: "bold" }}>Summary</h3>
+        <Divider
+          style={{
+            backgroundColor: "black",
+            border: "1px solid black",
+            marginBottom: "1rem",
+          }}
+        />
+        <div className="Option">
+          <p>Subtotal</p>
+          <h5>
+            {cartItems?.reduce(
+              (total, item) =>
+                selectedItems?.includes(item.id)
+                  ? total + item.product.price * item.quantity
+                  : total,
+              0
+            )}
+            $
+          </h5>
+        </div>
+        <div className="Option">
+          <p>Discount</p>
+          <h5>- $</h5>
+        </div>
+        <div className="Option">
+          <p>Delivery Service</p>
+          <h5>- $</h5>
+        </div>
+        <div className="Option">
+          <p style={{ color: "black", fontWeight: "bold", fontSize: "1.1rem" }}>Total</p>
+          <h5>
+            {cartItems?.reduce(
+              (total, item) =>
+                selectedItems?.includes(item.id)
+                  ? total + item.product.price * item.quantity
+                  : total,
+              0
+            )}
+            $
+          </h5>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+          <Input type="text" placeholder="promo code" color="#6a437c" />
+          <Button style={{ backgroundColor: "#6a437c", color: "white" }}>
+            Apply
           </Button>
-          <Button onClick={handleClearCart} style={{ width: "50%" }}>
+        </div>
+        <Button style={{ backgroundColor: "#6a437c", color: "white" }}>
+          Pay
+        </Button>
+        <ClearButtonsContainer>
+          {selectedItems?.length ? (
+            <Button
+              onClick={handleDeleteSelectedItems}
+              disabled={!selectedItems?.length}
+            >
+              <DeleteOutlineIcon />
+              Remove selected items
+            </Button>
+          ) : (
+            <></>
+          )}
+          <Button
+            onClick={handleClearCart}
+            style={{ width: !selectedItems?.length ? "100%" : "50%" }}
+          >
             <DeleteForeverIcon />
             Clear my cart
           </Button>
         </ClearButtonsContainer>
-        <CheckoutContainer>
-          <h3>Summary</h3>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-            <Input type="text" placeholder="promo code" color="#6a437c" />
-            <Button style={{ backgroundColor: "black", color: "white" }}>
-              Apply
-            </Button>
-          </div>
-          <h4 style={{ marginTop: "2rem" }}>
-            {cartItems?.reduce(
-              (total, item) =>
-                selectedItems?.includes(item.id)
-                  ? total + item.quantity
-                  : total,
-              0
-            )}{" "}
-            items
-          </h4>
-          <div className="Option">
-            <p>Subtotal</p>
-            <h5>
-              {cartItems?.reduce(
-                (total, item) =>
-                  selectedItems?.includes(item.id)
-                    ? total + item.product.price * item.quantity
-                    : total,
-                0
-              )}
-              $
-            </h5>
-          </div>
-          <div className="Option">
-            <p>Discount</p>
-            <h5>
-              {cartItems?.reduce(
-                (total, item) =>
-                  selectedItems?.includes(item.id)
-                    ? total + item.product.price * item.quantity
-                    : total,
-                0
-              )}
-              $
-            </h5>
-          </div>
-          <div className="Option">
-            <p>Delivery Service</p>
-            <h5>
-              {cartItems?.reduce(
-                (total, item) =>
-                  selectedItems?.includes(item.id)
-                    ? total + item.product.price * item.quantity
-                    : total,
-                0
-              )}
-              $
-            </h5>
-          </div>
-          <Button style={{ backgroundColor: "black", color: "white" }}>
-            Pay
-          </Button>
-        </CheckoutContainer>
-      </CartSummeryContainer>
+      </CheckoutContainer>
     </CartContainer>
   );
 };
