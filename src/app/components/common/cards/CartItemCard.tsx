@@ -3,16 +3,17 @@ import { CartItem } from "../../../types";
 import React from "react";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { CartService } from "../../../api";
+import { useNavigate } from "react-router-dom";
 
 // TODO: for mobile: fix item header
 const ItemContainer = styled.div`
-  // background: linear-gradient(90deg, rgb(216, 249, 225), rgb(235, 213, 245));
   background-color: white;
   display: flex;
   gap: 1rem;
-  padding: 0.8rem;
+  padding: 0.5rem 0.8rem;
   width: 100%;
   overflow: hidden;
+  border-bottom: 1px solid #6a437c;
   @media (max-width: 600px) {
     width: 90vw;
   }
@@ -23,12 +24,12 @@ const ItemSection = styled.div`
   flex-direction: column;
   justify-content: center;
   &:nth-child(1) {
-    gap: 1rem;
+    gap: 0.5rem;
     flex-direction: row;
     align-items: center;
   }
   &:nth-child(3) {
-    gap: 0.5rem;
+    gap: 0.1rem;
     margin-left: auto;
     margin-right: 0.5rem;
     align-items: flex-end;
@@ -36,15 +37,12 @@ const ItemSection = styled.div`
   }
   @media (max-width: 780px) {
     overflow: visible;
-    &:nth-child(1) {
-      gap: 0.5rem;
-    }
   }
 `;
 
 const ProductImage = styled.img`
-  width: 8vw;
-  height: 8vw;
+  width: 6vw;
+  height: 6vw;
   @media (max-width: 780px) {
     width: 20vw;
     height: 20vw;
@@ -54,16 +52,16 @@ const ProductImage = styled.img`
 const ProductDetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0;
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
   p {
     color: rgb(97, 97, 97);
     padding: 0;
-    margin: 0.2rem 0;
+    margin: 0.1rem 0;
+    font-size: 0.85rem;
   }
   @media (max-width: 780px) {
     p {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
     }
   }
 `;
@@ -71,7 +69,7 @@ const ProductDetailsContainer = styled.div`
 const ItemHeader = styled.p`
   margin: 0;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   @media (max-width: 780px) {
     font-size: 0.9rem;
   }
@@ -100,7 +98,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
   setItems,
 }) => {
   const [quantity, setQuantity] = React.useState(item.quantity);
-
+  const navigate = useNavigate();
   const handleDeleteItem = async (id: Number) => {
     if (
       window.confirm("Are you sure you want to remove item from your cart?")
@@ -155,7 +153,12 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
       </ItemSection>
 
       <ItemSection>
-        <ItemHeader>{item?.product?.name}</ItemHeader>
+        <ItemHeader
+          onClick={() => navigate(`/product/${item?.product?.id}`)}
+          style={{ cursor: "pointer" }}
+        >
+          {item?.product?.name}
+        </ItemHeader>
         <ProductDetailsContainer>
           <p>
             {item?.product?.price}$ -{" "}

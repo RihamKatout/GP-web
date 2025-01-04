@@ -7,6 +7,7 @@ import { CartItem } from "../../types";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { CartService } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 // TODO: group items by store
 // handle payment
@@ -26,18 +27,28 @@ const CartContainer = styled.div`
 const CartItemsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   width: 60vw;
   overflow: hidden;
-  background-color: rgb(221, 221, 221);
+  // background-color: rgb(221, 221, 221);
   border-radius: 0.6rem;
-  padding: 1rem;
+  border: 1px solid #6a437c;
   @media (max-width: 1000px) {
     width: 90vw;
   }
   @media (max-width: 600px) {
     padding: 0;
-    gap: 0.5rem;
+  }
+  .store-group {
+    border-radius: 0.6rem;
+    h5 {
+      padding: 0.7rem;
+      color: white;
+      background-color: #6a437c;
+      cursor: pointer;
+    }
+    &:last-child {
+      border: none;
+    }
   }
 `;
 
@@ -114,7 +125,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
   const [selectedItems, setSelectedItems] = useState<Number[] | undefined>(
     undefined
   );
-
+  const navigate = useNavigate();
   useEffect(() => {
     scrollTo(0, 0);
     setSelectedItems(undefined);
@@ -141,19 +152,50 @@ export const CartSection: React.FC<CartSectionProps> = ({
     }
   };
 
+  const groupedItems = cartItems?.reduce(
+    (
+      acc: Record<
+        string,
+        { storeId: number; storeName: string; items: CartItem[] }
+      >,
+      item: CartItem
+    ) => {
+      const storeId = item.storeId;
+      const storeName = item.storeName;
+
+      if (!acc[storeId]) {
+        acc[storeId] = {
+          storeId,
+          storeName,
+          items: [],
+        };
+      }
+
+      acc[storeId].items.push(item);
+      return acc;
+    },
+    {}
+  );
+
   return (
     <CartContainer>
       {/* cart items */}
       <CartItemsContainer>
-        {cartItems?.map((item: CartItem) => (
-          <CartItemCard
-            key={item.id}
-            item={item}
-            setSelectedItems={setSelectedItems}
-            setItems={setItems}
-            checkedItems={selectedItems || []}
-          />
-        ))}
+        {groupedItems &&
+          Object.values(groupedItems).map(({ storeId, storeName, items }) => (
+            <div key={storeId} className="store-group">
+              <h5 onClick={() => navigate(`/store/${storeId}`)}>{storeName}</h5>
+              {items.map((item) => (
+                <CartItemCard
+                  key={item.id}
+                  item={item}
+                  setSelectedItems={setSelectedItems}
+                  setItems={setItems}
+                  checkedItems={selectedItems || []}
+                />
+              ))}
+            </div>
+          ))}
       </CartItemsContainer>
 
       {/* cart summary */}
