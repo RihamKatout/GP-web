@@ -141,6 +141,12 @@ export const CartSection: React.FC<CartSectionProps> = ({
     }
   };
 
+  const handleDeleteItem = async (id: Number) => {
+    if (window.confirm("Are you sure you want to remove item from your cart?")) {
+      await CartService.deleteItem(id);
+      queryClient.invalidateQueries(["cart"]);
+    }
+  }
   const groupedItems = cartItems?.reduce(
     (
       acc: Record<
@@ -181,6 +187,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
                   setSelectedItems={setSelectedItems}
                   setItems={setItems}
                   checkedItems={selectedItems || []}
+                  handleDeleteItem={handleDeleteItem}
                 />
               ))}
             </div>

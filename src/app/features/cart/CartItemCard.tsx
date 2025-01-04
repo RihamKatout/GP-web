@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { CartItem } from "../../types";
 import React from "react";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { CartService } from "../../api";
 import { useNavigate } from "react-router-dom";
 
@@ -96,6 +96,7 @@ interface CartItemCardProps {
   setSelectedItems: React.Dispatch<React.SetStateAction<Number[] | undefined>>;
   checkedItems?: Number[];
   setItems?: React.Dispatch<React.SetStateAction<CartItem[]>>;
+  handleDeleteItem: (id: Number) => void;
 }
 
 export const CartItemCard: React.FC<CartItemCardProps> = ({
@@ -103,25 +104,10 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
   setSelectedItems,
   checkedItems = [],
   setItems,
+  handleDeleteItem,
 }) => {
   const [quantity, setQuantity] = React.useState(item.quantity);
   const navigate = useNavigate();
-  const handleDeleteItem = async (id: Number) => {
-    if (
-      window.confirm("Are you sure you want to remove item from your cart?")
-    ) {
-      await CartService.deleteItem(id);
-      if (setItems) {
-        setItems((prev) => {
-          if (prev) {
-            return prev.filter((i) => i.id !== id);
-          }
-          return prev;
-        });
-      }
-      setSelectedItems(undefined);
-    }
-  };
 
   const handleQuantityChange = async (value: number) => {
     if (value > 0) {
