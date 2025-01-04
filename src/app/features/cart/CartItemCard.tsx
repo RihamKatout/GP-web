@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { CartItem } from "../../../types";
+import { CartItem } from "../../types";
 import React from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { CartService } from "../../../api";
+import { CartService } from "../../api";
 import { useNavigate } from "react-router-dom";
 
 // TODO: view order details

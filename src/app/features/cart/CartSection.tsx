@@ -1,7 +1,7 @@
 import { Button, Input } from "antd";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { CartItemCard } from "../../components/common";
+import { CartItemCard } from "..";
 import styled from "styled-components";
 import { CartItem } from "../../types";
 import { useEffect, useState } from "react";
@@ -59,7 +59,7 @@ const ClearButtonsContainer = styled.div`
     width: 50%;
     font-size: 0.8rem;
     color: white;
-    background-color: rgb(235, 83, 83);
+    background-color: rgb(255, 36, 36);
     border: none;
   }
   @media (max-width: 1200px) {
@@ -219,7 +219,9 @@ export const CartSection: React.FC<CartSectionProps> = ({
           <h5>- $</h5>
         </div>
         <div className="Option">
-          <p style={{ color: "black", fontWeight: "bold", fontSize: "1.1rem" }}>Total</p>
+          <p style={{ color: "black", fontWeight: "bold", fontSize: "1.1rem" }}>
+            Total
+          </p>
           <h5>
             {cartItems?.reduce(
               (total, item) =>
