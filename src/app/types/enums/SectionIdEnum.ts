@@ -7,5 +7,5 @@ export const enum SectionIdEnum {
   help = "help",
   products = "products",
   cart = "cart",
-
+  unauthorized = "unauthorized",
 }

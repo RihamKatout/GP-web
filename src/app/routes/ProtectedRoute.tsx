@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../context";
-import { UnauthorizedPage } from "../pages/user/UnauthorizedPage";
+import { UnauthorizedPage } from "../pages/errors/UnauthorizedPage";
 
 interface ProtectedRouteProps {
   role?: string;
