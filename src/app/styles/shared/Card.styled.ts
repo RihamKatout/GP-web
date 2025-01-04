@@ -13,7 +13,7 @@ export const StyledCategoryCard = styled(Card)<{
   border: type === "STORE" ? "" : "1px solid rgb(252, 210, 247)",
   background:
     type === "STORE"
-      ? "linear-gradient(135deg, rgb(216, 249, 225), rgb(235, 213, 245))"
+      ? "linear-gradient(135deg, rgb(216, 247, 249), rgb(235, 213, 245))"
       : imageurl
       ? `url(${imageurl}) center/cover no-repeat`
       : `url(https://drive.google.com/thumbnail?id=12DXmxY3D4Oar8f1XJphR0dzEpSoo-T1_) center/cover no-repeat`,

@@ -13,7 +13,6 @@ import { useQuery } from "react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Carousel } from "antd";
-import cake from "../../../assets/cake1.mp4"
 
 const ShowcaseContainer = styled("div")({
   display: "flex",
@@ -106,7 +105,6 @@ export const ShowcasePage = () => {
   const handleNavigate = () => {
     navigate("/cake");
   };
-
 
   return (
     <MainLayout>

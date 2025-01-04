@@ -9,15 +9,19 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import AnchorLink from "react-anchor-link-smooth-scroll";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "../../../context";
 import { useLocation, useNavigate } from "react-router-dom";
 import { NavigationContainer } from "../../../styles";
-import { AuthenticationButtons, Logo, NavigationItems, UserMenuIcons } from "../../specificComponents";
+import {
+  AuthenticationButtons,
+  Logo,
+  NavigationItems,
+  UserMenuIcons,
+} from "../../specificComponents";
 
-
+// TODO: handle notifications
 export const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -60,22 +64,21 @@ export const Navbar = () => {
   ));
 
   const mappedUserIcons = UserMenuIcons.map(({ icon, path }) => (
-    <AnchorLink key={path}>
-      <IconButton
-        edge="end"
-        aria-label="user menu"
-        sx={{ color: "black" }}
-        onClick={() => {
-          if (path === "/logout") {
-            handleLogout();
-          } else {
-            navigate(path);
-          }
-        }}
-      >
-        {icon}
-      </IconButton>
-    </AnchorLink>
+    <IconButton
+      edge="end"
+      aria-label="user menu"
+      sx={{ color: "black" }}
+      key={path}
+      onClick={() => {
+        if (path === "/logout") {
+          handleLogout();
+        } else {
+          if (path) navigate(path);
+        }
+      }}
+    >
+      {icon}
+    </IconButton>
   ));
 
   const mappedAuthenticationButtons = AuthenticationButtons.map(
@@ -99,7 +102,14 @@ export const Navbar = () => {
   );
 
   return (
-    <AppBar position="fixed" sx={{   backgroundColor:"white" , borderBottom: "1px solid black", boxShadow: "none" }}>
+    <AppBar
+      position="fixed"
+      sx={{
+        backgroundColor: "white",
+        borderBottom: "1px solid black",
+        boxShadow: "none",
+      }}
+    >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Logo />
 
@@ -139,7 +149,9 @@ export const Navbar = () => {
               {isLoggedIn
                 ? UserMenuIcons.map(({ icon, text, path }) => (
                     <MenuItem
-                      onClick={() => navigate(path)}
+                      onClick={() => {
+                        if (path) navigate(path);
+                      }}
                       style={{ padding: "0 26px" }}
                     >
                       {icon}

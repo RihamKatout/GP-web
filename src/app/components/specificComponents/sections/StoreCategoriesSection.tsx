@@ -6,7 +6,6 @@ import { StoreCategoryService } from "../../../api";
 import { Category } from "../../../types";
 import { useNavigate } from "react-router-dom";
 
-// TODO: fix
 export const StoreCategoriesSection = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));

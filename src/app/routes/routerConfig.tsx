@@ -6,12 +6,12 @@ import {
   ProfilePage,
   RegisterPage,
   ShowcasePage,
-  ForgotPassword
+  ForgotPassword,
+  Cart,
 } from "../pages";
 import { Button, MainBody } from "../styles/Global.styled";
 import SweetNavbar from "../SweetTouches/component/SweetNavbar";
 import CakeScene from "../components/Cake3D/CakeComponent";
-import SweetCart from "../SweetTouches/Cart/SweetCart";
 import Hero from "../SweetTouches/component/Hero";
 import Navbar from "../SweetTouches/component/SweetNavbar";
 import { MainLayout } from "../components/Layout";
@@ -51,10 +51,7 @@ const routerConfig = createBrowserRouter([
     path: "/cart",
     element: (
       <ProtectedRoute>
-        <MainLayout>
-          <SweetNavbar />
-          <SweetCart></SweetCart>
-        </MainLayout>
+        <Cart />
       </ProtectedRoute>
     ),
   },

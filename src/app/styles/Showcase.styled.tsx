@@ -23,11 +23,3 @@ export const ShowcaseImageCard = styled.div`
     }
 
 `
-export const Particle = styled.img <{top?: string , left?: string ,right?: string ,bottom?:string ,rotate?: string}>`
-    position: absolute;
-    top: ${({top}) => top};
-    left: ${({left}) => left};
-    right: ${({right}) => right};
-    bottom: ${({bottom}) => bottom};
-    transform: rotate(${({rotate}) => rotate});
-`

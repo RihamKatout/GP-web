@@ -4,7 +4,6 @@ import { StoreCategoriesSection } from "../components/specificComponents/section
 import { OffersSection } from "../features";
 import { HelpCenterSection, HeroSection } from "../components/specificComponents";
 
-//TODO : fix sections
 const sections = [
   {
     sectionId: SectionIdEnum.home,

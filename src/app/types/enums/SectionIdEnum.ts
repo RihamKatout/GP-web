@@ -6,6 +6,6 @@ export const enum SectionIdEnum {
   shop = "shop",
   help = "help",
   products = "products",
-
+  cart = "cart",
 
 }

@@ -6,7 +6,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const FooterContainer = styled.footer`
   padding: 1rem;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: #6a437c;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@ const FooterContainer = styled.footer`
       text-align: center;
 
       h6 {
-        color: ${({ theme }) => theme.colors.secondary};
+        color: white;
         font-size: 1.1rem;
         font-weight: 600;
         margin-bottom: 1rem;
@@ -44,7 +44,7 @@ const FooterContainer = styled.footer`
           }
 
           a {
-            font-size: 0.9375rem;
+            font-size: 0.88rem;
             color: #fff;
             text-decoration: none;
 
@@ -72,15 +72,6 @@ const CopyrightSection = styled.div`
   text-align: center;
   font-size: 0.875rem;
   opacity: 0.8;
-
-  a {
-    color: #fff;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 `;
 const IconContainer = styled.i<{ size?: string; color?: string }>`
     font-size: ${({size}) => size};
@@ -150,16 +141,16 @@ const Footer: React.FC = () => {
 
       <CopyrightSection>
       Copyright © {new Date().getFullYear()} DESIGNIFY. 
-        <IconContainer color='pink' size='1.2rem'>
+        <IconContainer size='1.2rem'>
             <BsInstagram/>
          </IconContainer>
-         <IconContainer color='pink' size='1.2rem'>
+         <IconContainer size='1.2rem'>
          <BsYoutube/>
          </IconContainer>
-         <IconContainer color='pink' size='1.2rem'>
+         <IconContainer size='1.2rem'>
         <BsLinkedin/>
         </IconContainer>
-        <IconContainer color='pink' size='1.2rem'>
+        <IconContainer size='1.2rem'>
         <BsTwitter/>
         </IconContainer>
         

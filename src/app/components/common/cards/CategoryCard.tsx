@@ -6,7 +6,6 @@ import {
   StyledCategoryCardMedia,
 } from "../../../styles";
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 type CategoryCardProps = {
   id: number;
@@ -19,7 +18,6 @@ type CategoryCardProps = {
 export const CategoryCard: React.FC<CategoryCardProps> = ({
   title,
   imageurl,
-  id,
   type,
   onClick,
 }) => {

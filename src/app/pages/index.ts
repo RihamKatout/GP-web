@@ -3,6 +3,7 @@ export * from "./HomePage";
 // products
 export * from "./products/ShowcasePage";
 export * from "./products/ProductPage";
+export * from "./products/Cart";
 
 // user
 export * from "./user/LoginPage";

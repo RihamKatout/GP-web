@@ -10,16 +10,3 @@ export const StoreCategoryService = {
     return response;
   }
 };
-
-export const ProductCategoryService = {
-  // TODO : remove
-  getProductCategorizeByStoreCategory: async (storeCategoryId?: number) => {
-    if (!storeCategoryId) {
-      return;
-    }
-    const response = await clientAxios.get(
-      `/category/product/${storeCategoryId}`
-    );
-    return response.data;
-  },
-};

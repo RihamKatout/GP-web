@@ -3,7 +3,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  stock: number;
+  stock: number | 0;
   imageurl: string;
   createdDate: string;
   rating: number;
@@ -26,4 +26,14 @@ export interface ProductFilters {
   customizable?: boolean;
   page: number | 0;
   size: number | 20;
+}
+
+export interface CartItem {
+  id: number;
+  product: Product;
+  size: "SMALL" | "REGULAR" | "LARGE";
+  quantity: number;
+  storeId: number;
+  details: string;
+  storeName: string;
 }

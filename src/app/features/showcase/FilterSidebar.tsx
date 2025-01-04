@@ -50,7 +50,7 @@ export interface FilterOptions {
   categoryId?: number;
 }
 
-// TODO : put productCategories in a carousel and fix mobile responsiveness
+// TODO : put productCategories in a carousel, fix mobile responsiveness, and handle searching
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   storeCategoryId,
   handleProductOptionsChange,

@@ -6,6 +6,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { logoImg } from "../../../assets";
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 export const NavigationItems = [
   { text: "Home", to: SectionIdEnum.home },
@@ -61,6 +62,10 @@ export const UserMenuIcons = [
     icon: <AccountCircle />,
     text: "Profile",
     path: "/profile",
+  },
+  {
+    icon: <NotificationsActiveIcon />,
+    text: "Notifications",
   },
   {
     icon: <LogoutIcon />,

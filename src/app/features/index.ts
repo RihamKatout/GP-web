@@ -11,3 +11,6 @@ export * from "./showcase/ProductsShowcaseSection";
 
 // stores 
 export * from "../components/specificComponents/sections/StoreCategoriesSection";
+
+// cart
+export * from "./cart/CartSection";

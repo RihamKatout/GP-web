@@ -7,7 +7,7 @@ export async function loginApi(userData: { email: string; password: string }) {
 }
 
 export async function getCurrentUser() {
-  const response = await clientAxios.get("/user");
+  const response = await clientAxios.get("/auth");
   return response;
 }
 

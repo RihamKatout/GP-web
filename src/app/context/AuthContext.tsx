@@ -5,7 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { getCurrentUser, loginApi, registerApi } from "../api";
 import { User, RegistrationFields } from "../types";
 
