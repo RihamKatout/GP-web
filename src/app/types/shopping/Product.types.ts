@@ -10,6 +10,8 @@ export interface Product {
   isAvailable: boolean;
   isCustomizable: boolean;
   model3dURL?: string;
+  storeName: string;
+  storeIdTmp: number;
 }
 
 export interface ProductFilters {
@@ -29,11 +31,11 @@ export interface ProductFilters {
 }
 
 export interface CartItem {
-  id: number;
+  id?: number;
   product: Product;
-  size: "SMALL" | "REGULAR" | "LARGE";
+  size: "S" | "M" | "L" | "XL";
   quantity: number;
-  storeId: number;
+  storeId?: number;
   details: string;
-  storeName: string;
+  storeName?: string;
 }

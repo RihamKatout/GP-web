@@ -14,6 +14,12 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Carousel } from "antd";
 
+// TODO: fix carousel 
+// prevent opening model for unavailable products
+// prevent unlogged users from adding to cart
+// show success message on adding to cart
+// wishlist feature
+// handle sorting in backend
 const ShowcaseContainer = styled("div")({
   display: "flex",
   height: "100%",
@@ -25,7 +31,7 @@ const ShowcaseContainer = styled("div")({
   alignItems: "flex-start",
 });
 
-const DEFAULT_PAGE_SIZE = 2;
+const DEFAULT_PAGE_SIZE = 20;
 
 export const ShowcasePage = () => {
   // product filtering

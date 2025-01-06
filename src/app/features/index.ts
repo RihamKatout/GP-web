@@ -16,3 +16,6 @@ export * from "../components/specificComponents/sections/StoreCategoriesSection"
 export * from "./cart/CartSection";
 export * from "./cart/EmptyCart";
 export * from "./cart/CartItemCard";
+
+// products
+export * from "./products/ProductPreview";

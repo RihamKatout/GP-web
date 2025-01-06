@@ -20,26 +20,23 @@ const SortSelect = styled("select")({
   padding: "0.2rem",
   borderRadius: "15px",
   border: "2px solid #1b1a1a",
-  
 });
 const Button = styled.button`
-    padding: 0.5rem 1rem;
-    background-color: #e4bcbc;
-    color: #1b1a1a;
-    border: 2px solid #131313ae;
-    border-radius: 15px ;
-    font-weight: 600;
-    width: 100px;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    
-    
-    &:hover {
-        background-color: ${({ theme }) => theme.colors.primary || "white"};
-    }
- `;
+  padding: 0.5rem 1rem;
+  background-color: #e4bcbc;
+  color: #1b1a1a;
+  border: 2px solid #131313ae;
+  border-radius: 15px;
+  font-weight: 600;
+  width: 100px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
 
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primary || "white"};
+  }
+`;
 
 interface ProductsShowcaseSectionProps {
   products?: Product[];
@@ -53,15 +50,10 @@ interface ProductsShowcaseSectionProps {
     totalPages: number;
   };
 }
-// TODO : fix reponsive
 
-export const ProductsShowcaseSection: React.FC<ProductsShowcaseSectionProps> = ({
-  products,
-  isLoading,
-  setProducts,
-  handlePageChange,
-  page
-}) => {
+export const ProductsShowcaseSection: React.FC<
+  ProductsShowcaseSectionProps
+> = ({ products, isLoading, setProducts, handlePageChange, page }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
   // product sorting
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
@@ -92,18 +84,13 @@ export const ProductsShowcaseSection: React.FC<ProductsShowcaseSectionProps> = (
       handleSortChange(sortType);
     }
   };
-   
-  
-  
+
   return (
-    
     <ShowcaseBody
       style={{
         width: isMobile ? "90%" : "auto",
       }}
     >
-      
-      
       {/* showcase header (types and sorting) */}
       <div
         style={{
@@ -141,21 +128,29 @@ export const ProductsShowcaseSection: React.FC<ProductsShowcaseSectionProps> = (
           <SwapVertIcon onClick={handleSortDirectionChange} />
         </div>
       </div>
-      
+
       {isLoading ? (
         <Loader type="bouncing" />
       ) : (
-        <CardsGrid style={{ flexWrap: "wrap" }}>
-          {products?.map((product) => (
-            <ProductCard key={product.id} {...product} />
-          ))}
-          {products?.map((product) => (
-            <ProductCard key={product.id} {...product} />
-          ))}
-          {products?.map((product) => (
-            <ProductCard key={product.id} {...product} />
-          ))}
-        </CardsGrid>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 200px))",
+              gap: "1rem",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
+            {products?.map((product) => (
+              <ProductCard key={product.id} {...product} />
+            ))}
+            {products?.map((product) => (
+              <ProductCard key={product.id} {...product} />
+            ))}
+            {products?.map((product) => (
+              <ProductCard key={product.id} {...product} />
+            ))}
+          </div>
       )}
       <Pagination
         count={page.totalPages}
@@ -163,8 +158,6 @@ export const ProductsShowcaseSection: React.FC<ProductsShowcaseSectionProps> = (
         onChange={(_, page) => handlePageChange(page - 1)}
         sx={{ margin: "2rem 0" }}
       />
-     
-      
-    </ShowcaseBody> 
+    </ShowcaseBody>
   );
 };
