@@ -1,5 +1,5 @@
 import { clientAxios } from ".";
-import { CartItem } from "../types";
+import { CartItemAdd } from "../types";
 
 export const CartService = {
   getCart: async () => {
@@ -22,7 +22,7 @@ export const CartService = {
     const response = await clientAxios.delete(`/cart/items`, { data: ids });
     return response;
   },
-  addItem: async (item: CartItem) => {
+  addItem: async (item: CartItemAdd) => {
     const response = await clientAxios.post(`/cart`, { ...item });
     return response;
   },

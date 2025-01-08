@@ -2,7 +2,7 @@ import { createBrowserRouter, Link } from "react-router-dom";
 import {
   HomePage,
   LoginPage,
-  ProductPage,
+  ProductDetailsPage,
   ProfilePage,
   RegisterPage,
   ShowcasePage,
@@ -83,7 +83,7 @@ const routerConfig = createBrowserRouter([
   },
   {
     path: "/product/:id",
-    Component: ProductPage,
+    Component: ProductDetailsPage,
   },
   {
     path: "/shops",

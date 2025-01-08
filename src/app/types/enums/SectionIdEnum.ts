@@ -8,4 +8,5 @@ export const enum SectionIdEnum {
   products = "products",
   cart = "cart",
   unauthorized = "unauthorized",
+  product = "product",
 }

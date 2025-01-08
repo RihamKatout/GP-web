@@ -19,3 +19,4 @@ export * from "./cart/CartItemCard";
 
 // products
 export * from "./products/ProductPreview";
+export * from "./products/ProductDetailsSection";

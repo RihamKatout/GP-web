@@ -12,6 +12,7 @@ export interface Product {
   model3dURL?: string;
   storeName: string;
   storeIdTmp: number;
+  storeLogoUrl?: string;
 }
 
 export interface ProductFilters {
@@ -31,11 +32,18 @@ export interface ProductFilters {
 }
 
 export interface CartItem {
-  id?: number;
+  id: number;
   product: Product;
   size: "S" | "M" | "L" | "XL";
   quantity: number;
-  storeId?: number;
+  storeId: number;
   details: string;
-  storeName?: string;
+  storeName: string;
+}
+
+export interface CartItemAdd {
+  product: Product;
+  size: "S" | "M" | "L" | "XL";
+  quantity: number;
+  details: string;
 }

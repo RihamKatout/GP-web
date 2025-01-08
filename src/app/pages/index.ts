@@ -2,7 +2,7 @@ export * from "./HomePage";
 
 // products
 export * from "./products/ShowcasePage";
-export * from "./products/ProductPage";
+export * from "./products/ProductDetailsPage";
 export * from "./products/CartPage";
 
 // user
