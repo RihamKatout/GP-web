@@ -7,26 +7,30 @@ export const StyledCategoryCard = styled(Card)<{
   imageurl?: string;
 }>(({ theme, type, imageurl }) => ({
   width: type === "STORE" ? "140px" : "70px",
-  height: type === "STORE" ? "160px" : "70px",
+  height: type === "STORE" ? "130px" : "70px",
   textAlign: "center",
   borderRadius: type === "STORE" ? "25px" : "20%",
   border: type === "STORE" ? "" : "1px solid rgb(252, 210, 247)",
   background:
     type === "STORE"
-      ? "linear-gradient(135deg, rgb(216, 247, 249), rgb(235, 213, 245))"
+      ? "linear-gradient(45deg,rgb(255, 193, 197),rgb(195, 215, 255))"
       : imageurl
       ? `url(${imageurl}) center/cover no-repeat`
       : `url(https://drive.google.com/thumbnail?id=12DXmxY3D4Oar8f1XJphR0dzEpSoo-T1_) center/cover no-repeat`,
-  transition: "opacity 0.6s ease, transform 0.6s ease",
+  transition: "all 0.6s ease",
   opacity: 0,
-  transform: "translateY(20px)",
+  transform: "translateY(20px) perspective(1000px)",
+  transformStyle: "preserve-3d",
+  boxShadow: type === "STORE"?
+    "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),	0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,	0 0.25rem 0.5rem 0 rgba(145, 171, 210, 0.55) inset"
+    : "none", 
   "&.visible": {
     opacity: 1,
-    transform: "translateY(0)",
+    transform: "translateY(0) perspective(1000px)",
   },
   "&:hover": {
-    transform: "scale(1.1)",
-    boxShadow: "0px 12px 30px rgba(0, 0, 0, 0.1)",
+    transform: "scale(1.1) perspective(1000px) rotateY(10deg)",
+    boxShadow: "8px 14px 30px rgba(0, 0, 0, 0.2)",
   },
   [theme.breakpoints.down("sm")]: {
     width: type === "STORE" ? "120px" : "60px",
@@ -44,8 +48,9 @@ export const StyledCategoryCardMedia = styled(CardMedia)(({ theme }) => ({
 
 export const CategoryCardTitle = styled("h3")(({ theme }) => ({
   fontWeight: "700",
-  fontFamily: "Delius Swash Caps",
-  fontSize: "1.3rem",
+  fontFamily: "Delius",
+  fontSize: "1.1rem",
+  margin: "-0.6rem 0",
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.2rem",
   },
