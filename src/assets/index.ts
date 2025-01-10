@@ -9,3 +9,6 @@ export const JoinUsImg = joinUsCharachter;
 
 import owl from "./characters/owl.png";
 export const OwlImg = owl;
+
+import store from "./store/store.png";
+export const StoreImg = store;
