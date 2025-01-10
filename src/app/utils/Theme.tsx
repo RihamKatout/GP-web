@@ -1,5 +1,6 @@
 export const Theme = {
   colors: {
+    primary_dark: "rgb(215, 126, 143)", // dark pink
     primary: "rgba(225, 160, 172, 1)", // pink
     primary_light: "rgba(251, 216, 226, 1)", // rose
     secondary: "rgba(27, 26, 52, 1)", // dark navy
@@ -10,6 +11,7 @@ export const Theme = {
     gray_light: "rgba(227, 227, 227, 1)",
     gray: "rgba(130, 130, 130, 1)",
     tan: "rgba(240, 230, 220, 1)", // tan
+    tan_light: "rgb(248, 242, 237)", // light tan
     danger: "rgba(255, 209, 209, 1)",
   },
   fonts: {

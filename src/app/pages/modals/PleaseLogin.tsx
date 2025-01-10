@@ -28,14 +28,13 @@ export const PleaseLoginModal: React.FC<Props> = ({ message }) => {
 };
 
 const ModalContainer = styled.div`
-  gap: 0.5rem;
   width: 30vw;
   display: flex;
   padding: 1.5rem;
   border-radius: 1rem;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.colors.primary_light};
+  background-color: ${({ theme }) => theme.colors.secondary};
   img {
     width: 25%;
   }
@@ -43,22 +42,23 @@ const ModalContainer = styled.div`
     border-radius: 1rem;
     padding: 1rem;
     gap: 1rem;
+    
     display: flex;
     align-items: center;
-    background-color: white;
     flex-direction: column;
     text-align: center;
+    color: ${({ theme }) => theme.colors.white};
     h4 {
       font-family: "Delius", serif;
       font-weight: bold;
     }
     button {
-      background-color: ${({ theme }) => theme.colors.secondary};
+      background-color: ${({ theme }) => theme.colors.primary_dark};
       color: white;
       border: none;
       border-radius: 0.3rem;
-      padding: 0.2rem 0.5rem;
-      font-size: 1rem;
+      padding: 0.2rem 1rem;
+      font-size: 1.2rem;
       cursor: pointer;
       font-family: "Delius", serif;
     }
