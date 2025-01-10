@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useForm, SubmitHandler, FieldErrors } from "react-hook-form";
 import { message } from "antd";
@@ -9,7 +9,7 @@ const LoginForm = () => {
   const { loginUserContext } = useAuth();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
-  
+  const location = useLocation();
   const { register, handleSubmit, setError, formState: { isSubmitting } } = useForm({
     defaultValues: {
       email: "",
@@ -21,7 +21,7 @@ const LoginForm = () => {
     try {
       await loginUserContext(data);
       messageApi.success("Login successful! Redirecting...");
-      navigate("/");
+      navigate(location.state?.from || "/");
     } catch (error: any) {
       setError("root", {
         message: "Invalid email or password, please try again!",

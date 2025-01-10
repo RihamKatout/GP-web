@@ -1,20 +1,39 @@
-import React, { useState } from "react";
-import { Product } from "../../types";
+import React, { useEffect, useState } from "react";
+import { Product, ProductSizeEnum } from "../../types";
 import AliceCarousel from "react-alice-carousel";
-import { Rating } from "@mui/material";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { Divider, Rating, useMediaQuery, useTheme } from "@mui/material";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import {
+  ProductColors,
+  ProductPreview,
+  ProductSizes,
+  WishlistButton,
+} from "..";
 
-//TODO: fix number of reviews
+//TODO: fix reviews
 interface ProductSectionProps {
-  product: Product | undefined;
+  product: Product;
 }
 
 export const ProductSection: React.FC<ProductSectionProps> = ({ product }) => {
   const [price, setPrice] = useState(0);
-  const [size, setSize] = useState<string | undefined>(undefined);
-  const [color, setColor] = useState<string | undefined>(undefined);
+  const [selectedSize, setSelectedSize] = useState<ProductSizeEnum>();
+  const [selectedColor, setSelectedColor] = useState<string>();
+  const [isWishlisted, setIsWishlisted] = useState(false);
   const handleDragStart = (e: any) => e.preventDefault();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isAvailable = product?.isAvailable && product?.stock > 0;
+
+  useEffect(() => {
+    setPrice(product.price);
+    setIsWishlisted(product?.inWishlist ?? false);
+  }, []);
+
   const items = [
     <img
       src={product?.imageurl}
@@ -32,107 +51,145 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ product }) => {
       role="presentation"
     />,
   ];
-  const isAvailable = product?.isAvailable && product?.stock > 0;
+
+  //TODO: fix error message
+  const handleAddToCart = async () => {
+    if (!isAvailable) {
+      alert("Sorry! Product is unavailable at the moment");
+      return;
+    }
+    setIsModalOpen(true);
+  };
 
   return (
-    <SectionContainer>
-      <ProductStoreContainer>
-        <ProductCard>
-          {/* first section will contain product image, add or remove from wishlist, and reviews */}
-          <div className="left-column">
-            <AliceCarousel
-              mouseTracking
-              items={items}
-              autoPlay
-              infinite
-              animationDuration={2000}
-              autoPlayInterval={2000}
-              keyboardNavigation
-              disableButtonsControls
-            />
-            <div className="review-card">
-              <p>hi</p>
-              <button>view all</button>
+    <>
+      <ProductPreview
+        product={product}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
+      <SectionContainer>
+        <ProductStoreContainer>
+          <ProductCard className="tan-threeD-effect-border">
+            {/* first section will contain product image, wishlist button, and reviews */}
+            <div className="left-column">
+              <AliceCarousel
+                mouseTracking
+                items={items}
+                autoPlay
+                infinite
+                animationDuration={2000}
+                autoPlayInterval={2000}
+                keyboardNavigation
+                disableDotsControls
+              />{" "}
+              <WishlistButton
+                isWishlisted={isWishlisted}
+                setIsWishlisted={setIsWishlisted}
+                productId={product?.id}
+              />
+              {/* create reviews component */}
+              <ReviewContainer>
+                <p style={{ padding: "1rem" }}>hi</p>
+                <button onClick={handleAddToCart}>view all</button>
+              </ReviewContainer>
             </div>
-          </div>
-        </ProductCard>
-      </ProductStoreContainer>
-    </SectionContainer>
+
+            {isMobile ? (
+              <>
+                <div
+                  className="store-info"
+                  onClick={() => navigate(`/store/${product?.storeIdTmp}`)}
+                >
+                  <img src={product?.storeLogoUrl} alt={product?.storeName} />
+                  <p>{product?.storeName} store</p>
+                </div>
+                <Divider
+                  style={{
+                    border: "1px solid rgb(140, 140, 140)",
+                    margin: "1rem",
+                  }}
+                />
+              </>
+            ) : (
+              <Divider
+                style={{
+                  border: "1px solid rgb(140, 140, 140)",
+                  margin: "1rem",
+                }}
+              />
+            )}
+            <div className="right-column">
+              <div className="header">
+                <h2>{product?.name}</h2>
+                <h2 style={{ fontSize: "1.5rem" }}>{price}$</h2>
+              </div>
+              <div className="rating">
+                <Rating
+                  name="half-rating-read"
+                  defaultValue={product?.rating}
+                  precision={0.5}
+                  readOnly
+                  size="small"
+                />
+                <p style={{ color: "rgb(150, 150, 150)" }}> (42 reviews)</p>
+              </div>
+              {isAvailable ? (
+                <></>
+              ) : (
+                <p
+                  style={{
+                    color: "red",
+                    backgroundColor: "rgb(255, 209, 209)",
+                    padding: "0.2rem 0.5rem",
+                    borderRadius: "0.5rem",
+                    textAlign: "center",
+                  }}
+                >
+                  {product?.isAvailable
+                    ? "Product is out of stock"
+                    : "Product is unavailable right now"}
+                </p>
+              )}
+              <p className="description">{product?.description}.</p>
+              <ProductColors
+                colors={product?.colors}
+                selectedColor={selectedColor}
+                setSelectedColor={setSelectedColor}
+              />
+              <ProductSizes
+                sizes={product?.sizePrices}
+                selectedSize={selectedSize}
+                setSelectedSize={setSelectedSize}
+                setPrice={setPrice}
+              />
+              <button onClick={handleAddToCart}>
+                <AddShoppingCartIcon sx={{ color: "navy", height: "40px" }} />
+              </button>
+            </div>
+          </ProductCard>
+        </ProductStoreContainer>
+      </SectionContainer>
+    </>
   );
 };
 
-/*
-    <ProductIdContainer className="tan-threeD-effect-border">
-      <ImageAndReviewSection>
-        
-      </ImageAndReviewSection>
-      <ProductDetailsSection>
-        {/* <div
-          className="store-info"
-          onClick={() => navigate(`/store/${product.storeIdTmp}`)}
-        >
-          <img src={product.storeLogoUrl} alt={product.storeName} />
-          <p>{product.storeName} store</p>
-        </div>
-        <Divider style={{ border: "1px solid rgb(200, 200, 200)" }} /> */
-//     <div className="header">
-//       <div
-//         style={{
-//           display: "flex",
-//           alignItems: "center",
-//           width: "100%",
-//           justifyContent: "space-between",
-//         }}
-//       >
-//         <h2>{product?.name}</h2>
-//         <h2 style={{ fontSize: "1.5rem" }}>{price}$</h2>
-//       </div>
-//       {isAvailable ? (
-//         <></>
-//       ) : (
-//         <p style={{ color: "red" }}>
-//           {product?.isAvailable ? "out of stock" : "unavailable right now"}
-//         </p>
-//       )}
-//     </div>
-//     <div className="rating">
-//       <Rating
-//         name="half-rating-read"
-//         // defaultValue={product?.rating}
-//         defaultValue={3.5}
-//         precision={0.5}
-//         readOnly
-//         size="small"
-//       />
-//       <p> (42 reviews)</p>
-//     </div>
-//     <p style={{ color: "rgb(130, 130, 130)" }}>
-//       {product?.description} {product?.description} {product?.description}{" "}
-//       {product?.description} {product?.description} {product?.description}
-//       {product?.description}
-//     </p>
-//     <div className="buttons">
-//       <button className="outline">Add to cart</button>
-//       <button className="button-63">
-//         <AddShoppingCartIcon style={{ marginRight: "0.3rem" }} />
-//         Add to cart
-//       </button>
-//     </div>
-//   </ProductDetailsSection>
-// </ProductIdContainer>
 const SectionContainer = styled.section`
   display: flex;
   width: 100%;
-  height: 100vh;
-  margin-top: 3rem;
+  margin: 3rem 0;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.primary};
+  h2 {
+    margin: 0;
+    padding: 0;
+  }
+  p {
+    margin: 0;
+  }
 `;
 
 const ProductStoreContainer = styled.section`
-  gap: 1rem;
   display: flex;
-  margin-left: 2rem;
   max-width: 100%;
   @media (max-width: 768px) {
     flex-direction: column;
@@ -140,131 +197,117 @@ const ProductStoreContainer = styled.section`
 `;
 
 const ProductCard = styled.section`
-  gap: 1rem;
   width: 70%;
   height: 100%;
   display: flex;
+  border-radius: 1rem;
+  margin: 0 2rem;
   background-color: ${({ theme }) => theme.colors.tan};
   .left-column {
-    background-color: red;
     display: flex;
     width: 40%;
     flex-direction: column;
-    gap: 1rem;
     padding: 1rem;
+    position: relative;
     img {
       width: 100%;
       padding: 2rem;
-      background: linear-gradient(45deg, rgb(215, 196, 224), rgb(127, 92, 146));
-    }
-    .review-card {
-      display: flex;
-      width: auto;
-      justify-content: space-between;      
-      border-radius: 1rem;
       background-color: ${({ theme }) => theme.colors.white};
-      button{
-        background-color: ${({ theme }) => theme.colors.secondary_light};
-        border-radius: 0 1rem 1rem 0;
-        border: none;
-        color: ${({ theme }) => theme.colors.white};
-        padding: 1rem 0.5rem;
+    }
+    .wishlist {
+      position: absolute;
+      z-index: 1000;
+      top: 1.5rem;
+      left: 1.5rem;
+      height: 2rem;
+      width: 2rem;
+      cursor: pointer;
+      color: rgb(216, 100, 100);
+      &:hover {
+        color: rgb(159, 43, 43);
       }
     }
   }
-  @media (max-width: 768px) {
+  .right-column {
     width: 100%;
+    display: flex;
     flex-direction: column;
-  }
-`;
+    padding: 1rem;
+    gap: 1rem;
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: -0.7rem;
+    }
+    .rating {
+      display: flex;
+      align-items: center;
+      p {
+        margin: 0 0.5rem;
+        font-size: 0.8rem;
+      }
+    }
+    .description {
+      color: ${({ theme }) => theme.colors.gray};
+      text-align: justify;
+    }
 
-const ImageAndReviewSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  padding: 1rem;
-  jsutify-content: center;
-  img {
-    width: 100%;
-    padding: 2rem;
-    background: linear-gradient(45deg, rgb(215, 196, 224), rgb(127, 92, 146));
-  }
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const ProductDetailsSection = styled.div`
-  width: 50%;
-  display: flex;
-  padding: 1rem;
-  flex-direction: column;
-  h2 {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 700;
-    font-family: "Delius Swash Caps", serif;
+    button {
+      height: 40px;
+      width: 40px;
+      border: none;
+      margin: 0 0 0 auto;
+      background-color: transparent;
+      border-radius: 50%;
+      transition: background-color 0.5s;
+      &:hover {
+        cursor: pointer;
+        background-color: rgba(131, 126, 176, 0.4);
+      }
+    }
   }
   .store-info {
-    gap: 0.5rem;
     display: flex;
     align-items: center;
-    margin-bottom: -1rem;
+    gap: 1rem;
+    padding: 0 1rem;
     img {
-      width: 28px;
-      height: 28px;
+      width: 2.5rem;
+      height: 2.5rem;
       border-radius: 50%;
     }
     p {
       cursor: pointer;
-      color: rgb(57, 57, 57);
       &:hover {
         text-decoration: underline;
       }
     }
   }
-  .header {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-    p:first-child {
-      background: rgb(215, 196, 224);
-      color: rgb(57, 57, 57);
+  @media (max-width: 768px) {
+    width: auto;
+    margin: 0 4rem;
+    flex-direction: column;
+    .left-column {
+      width: 100%;
     }
   }
-  .rating {
-    gap: 0.5rem;
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    p {
-      color: rgb(130, 130, 130);
-      font-size: 0.75rem;
-    }
-  }
-  .buttons {
-    gap: 1rem;
-    width: 100%;
-    display: flex;
-    margin-top: 1rem;
-    button {
-      width: 50%;
-      padding: 0.4rem;
-      font-size: 1.1rem;
-    }
-    .outline {
-      background: white;
-      color: rgb(33, 33, 33);
-      border: 3px solid rgb(127, 92, 146);
-    }
-    &:first-child {
-      background: rgb(215, 196, 224);
-      color: rgb(57, 57, 57);
-    }
+`;
+
+const ReviewContainer = styled.section`
+  display: flex;
+  width: auto;
+  justify-content: space-between;
+  border-radius: 0.5rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  button {
+    background-color: ${({ theme }) => theme.colors.secondary_light};
+    border-radius: 0 0.5rem 0.5rem 0;
+    border: none;
+    color: ${({ theme }) => theme.colors.white};
+    padding: 1rem 0.5rem;
   }
   @media (max-width: 768px) {
-    width: 100%;
+    display: none;
   }
 `;

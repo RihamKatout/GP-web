@@ -1,5 +1,4 @@
 import { Modal, Box } from "@mui/material";
-import { display } from "html2canvas/dist/types/css/property-descriptors/display";
 
 interface CustomModalProps {
   open: boolean;
@@ -16,12 +15,13 @@ export const CustomModal = ({ open, onClose, children }: CustomModalProps) => {
     width: "auto",
     bgcolor: "background.paper",
     boxShadow: 24,
-    borderRadius: 2,
+    borderRadius: "1rem",
   };
 
   return (
     <Modal
       open={open}
+      disableScrollLock
       onClose={onClose}
       aria-labelledby="modal-title"
       aria-describedby="modal-description"

@@ -20,3 +20,8 @@ export * from "./cart/CartItemCard";
 // products
 export * from "./products/ProductPreview";
 export * from "./products/ProductDetailsSection";
+export * from "./products/common/ProductColors";
+export * from "./products/common/ProductSizes";
+
+// wishlist
+export * from "./wishlist/WishlistButton";

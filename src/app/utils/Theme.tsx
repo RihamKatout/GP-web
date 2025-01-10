@@ -1,16 +1,19 @@
 export const Theme = {
   colors: {
-    primary: "#e1a0ac",         // pink
-    primary_light: "#fbd8e2",   // rose
-    secondary: "#1b1a34",       // dark navy
-    secondary_light: "#8795b2", // light navy
-    white: "#FFFFFF",
-    black: "#000000",
-    gray_light: "#e3e3e3",
-    tan: "#f0e6dc",             // tan
+    primary: "rgba(225, 160, 172, 1)", // pink
+    primary_light: "rgba(251, 216, 226, 1)", // rose
+    secondary: "rgba(27, 26, 52, 1)", // dark navy
+    secondary_light: "rgb(183, 198, 228)", // light navy
+    secondary_extra_light: "rgb(229, 237, 253)", // extra light navy
+    white: "rgba(255, 255, 255, 1)",
+    black: "rgba(0, 0, 0, 1)",
+    gray_light: "rgba(227, 227, 227, 1)",
+    gray: "rgba(130, 130, 130, 1)",
+    tan: "rgba(240, 230, 220, 1)", // tan
+    danger: "rgba(255, 209, 209, 1)",
   },
   fonts: {
-    family: "Arial",
+    family: "Delius",
     weight: {
       regular: 400,
       medium: 500,

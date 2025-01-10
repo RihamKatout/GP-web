@@ -25,14 +25,13 @@ export const ProductDetailsPage = () => {
     () => ProductService.fetchProductById(Number(id)),
     {
       enabled: !!id,
-      onSuccess: (data) => {},
+      cacheTime: 0,
     }
   );
 
   //TODO: fix
   if (!product) return <div>Product not found</div>;
 
-  console.log(product);
   return (
     <MainLayout>
       <SectionContainer sectionId={SectionIdEnum.product}>

@@ -1,119 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CustomModal } from "../../components/common";
-import { Product } from "../../types";
-import { Input, Rating } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Product, ProductSizeEnum } from "../../types";
+import { Divider, Input } from "@mui/material";
 import { CartService } from "../../api";
-
-const ProductPreviewContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 35vw;
-  // padding: 0.5rem;
-  @media (max-width: 780px) {
-    width: 80vw;
-    .inner-container {
-      flex-direction: column;
-    }
-  }
-  .inner-container {
-    display: flex;
-  }
-  h5 {
-    width: 100%;
-    text-align: center;
-    margin: 0;
-    padding: 0.5rem;
-    font-weight: bold;
-    font-family: "Delius", serif;
-    background-color: rgba(106, 67, 124, 0.27);
-    background-image: linear-gradient(
-      135deg,
-      rgb(216, 247, 249),
-      rgb(244, 227, 253)
-    );
-    border-radius: 0.5rem 0.5rem 0 0;
-    max-height: 2.5rem;
-    min-height: 2.5rem;
-  }
-  h6 {
-    font-family: "Delius", serif;
-    font-weight: bold;
-    margin: 0;
-  }
-  span {
-    cursor: pointer;
-    &:hover {
-      font-size: 1.3rem;
-      text-decoration: underline;
-    }
-  }
-`;
-
-const LeftColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 50%;
-  padding: 0.5rem;
-  img {
-    width: 100%;
-    background-color: rgb(247, 247, 247);
-    border: 1px solid rgba(217, 217, 217, 0.5);
-    box-shadow: 0 2px 7px rgba(217, 217, 217, 0.65);
-  }
-  h3 {
-    font-family: "Delius", serif;
-    font-weight: bold;
-    margin: 0;
-  }
-  p {
-    color: rgb(130, 130, 130);
-    margin: 0 0 1rem 0;
-    padding: 0;
-  }
-  h6 {
-    margin: 0;
-    padding: 0;
-  }
-  @media (max-width: 780px) {
-    width: 100%;
-  }
-`;
-
-const RightColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  width: 50%;
-  padding: 1rem 0.5rem 0.5rem 0.5rem;
-  margin: 0.5rem;
-  border-radius: 0.5rem;
-  background-color: rgb(240, 240, 240);
-  @media (max-width: 780px) {
-    width: 100%;
-    justify-content: center;
-    text-align: center;
-  }
-  p {
-    margin: 0;
-  }
-  button {
-    margin-top: auto;
-    margin-bottom: 0;
-    background-color: #6a437c;
-    color: white;
-    border: none;
-    border-radius: 0.3rem;
-    padding: 0.2rem;
-    font-size: 1rem;
-    cursor: pointer;
-    &:hover {
-      background-color: #7d4f8b;
-    }
-  }
-`;
+import { useAuth } from "../../context";
+import { PleaseLoginModal } from "../../pages";
+import { ProductColors, ProductSizes } from "..";
 
 interface ProductPreviewProps {
   product: Product;
@@ -126,53 +19,224 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
   setIsModalOpen,
   product,
 }) => {
-  const navigate = useNavigate();
-  const [quantity, setQuantity] = useState(1);
+  const { isLoggedIn } = useAuth();
   const [details, setDetails] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const [price, setPrice] = useState<number>(0);
+  const [selectedColor, setSelectedColor] = useState<string>();
+  const [selectedSize, setSelectedSize] = useState<ProductSizeEnum>(
+    ProductSizeEnum.S
+  );
 
+  // TODO: show success message
+  // add color to the request
+  // show error message if there is an error
   const handleAddToCart = async () => {
-    await CartService.addItem({ product, quantity, details, size: "S" });
+    if (!isLoggedIn) {
+      return;
+    }
+    try {
+      await CartService.addItem({
+        product,
+        size: selectedSize,
+        quantity,
+        details,
+      });
+    } catch (e: any) {
+      console.error(e?.response?.data?.errors?.[0]);
+    }
     setIsModalOpen(false);
   };
+  const handleQuantityChange = async (value: number) => {
+    if (value > 0 && value <= product.stock) {
+      setQuantity(value);
+    }
+  };
+  useEffect(() => {
+    if (isModalOpen) {
+      setDetails("");
+      setQuantity(1);
+      if (product.colors?.length !== 0) setSelectedColor(product.colors?.[0]);
+      const availableSizes = Object.keys(product.sizePrices) as Array<
+        keyof typeof product.sizePrices
+      >;
+      setSelectedSize(availableSizes[0]);
+      setPrice(product.sizePrices[availableSizes[0]]);
+    }
+  }, [isModalOpen, product]);
 
   return (
     <CustomModal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-      <ProductPreviewContainer>
-        <h5>
-          Sold by
-          <span
-            style={{ color: "#6a437c", marginLeft: "0.4rem" }}
-            onClick={() => navigate("/store/" + product.storeIdTmp)}
-          >
-            {product.storeName}
-          </span>
-        </h5>
-        <div className="inner-container">
-          <LeftColumn>
-            <img src={product.imageurl} />
-            <h3>{product.name}</h3>
-            <Rating
-              name="half-rating-read"
-              // defaultValue={product.rating}
-              defaultValue={4}
-              precision={0.5}
-              readOnly
-              size="small"
+      {isLoggedIn ? (
+        <ProductPreviewContainer>
+          <h4>{product?.name}</h4>
+          <Divider
+            style={{
+              border: "1px solid rgb(140, 140, 140)",
+              margin: "0.4rem 0",
+            }}
+          />
+          <img src={product?.imageurl} alt={product?.name} />
+          <div className="product-info">
+            <ProductColors
+              colors={product?.colors}
+              selectedColor={selectedColor}
+              setSelectedColor={setSelectedColor}
             />
-            <h6>${product.price}</h6>
-            <p>{product.description}</p>
-          </LeftColumn>
-          <RightColumn>
-            <h6>Total price = {quantity * product.price} $</h6>
+            <ProductSizes
+              sizes={product?.sizePrices}
+              selectedSize={selectedSize}
+              setSelectedSize={setSelectedSize}
+              setPrice={setPrice}
+            />
+            <p style={{ marginTop: "1rem" }}>add your details</p>
             <Input
-              placeholder="add your details …"
-              style={{ fontSize: "0.9rem" }}
+              placeholder="Details"
+              value={details}
               onChange={(e) => setDetails(e.target.value)}
+              style={{ width: "100%", marginTop: "-0.5rem" }}
             />
-            <button onClick={handleAddToCart}>Add to cart</button>
-          </RightColumn>
-        </div>
-      </ProductPreviewContainer>
+            <SummarySection>
+              <div className="summary-section" style={{ gap: "0.8rem" }}>
+                <p style={{ fontSize: "0.85rem" }}>Qty</p>
+                <QuantityButtonsContainer>
+                  <button
+                    onClick={() => handleQuantityChange(quantity - 1)}
+                    disabled={quantity === 1}
+                  >
+                    -
+                  </button>
+                  <p>{quantity}</p>
+                  <button onClick={() => handleQuantityChange(quantity + 1)}>
+                    +
+                  </button>
+                  {quantity >= product.stock ? (
+                    <span>Max stock reached</span>
+                  ) : (
+                    <></>
+                  )}
+                </QuantityButtonsContainer>
+              </div>
+              <div className="summary-section">
+                <p style={{ fontSize: "0.85rem" }}>Total</p>
+                <p style={{ fontSize: "1.2rem" }}>{price * quantity}$</p>
+              </div>
+              <button className="add-button" onClick={handleAddToCart}>
+                add
+              </button>
+            </SummarySection>
+          </div>
+        </ProductPreviewContainer>
+      ) : (
+        <PleaseLoginModal message="Please login to add this product to your cart!" />
+      )}
     </CustomModal>
   );
 };
+
+const ProductPreviewContainer = styled.div`
+  padding: 1rem;
+  display: flex;
+  width: 25vw;
+  border-radius: 1rem;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.tan};
+  p {
+    margin: 0;
+  }
+  h4 {
+    margin: 0.5rem 0;
+    font-family: ${({ theme }) => theme.fonts.family};
+    font-weight: ${({ theme }) => theme.fonts.weight.bold};
+  }
+  img {
+    width: 100%;
+  }
+  .product-info {
+    background-color: ${({ theme }) => theme.colors.white};
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+    margin-top: 1rem;
+    box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
+    .options {
+      gap: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: -0.7rem;
+      text-align: center;
+    }
+  }
+  @media (max-width: 1000px) {
+    width: 35vw;
+  }
+  @media (max-width: 780px) {
+    width: 45vw;
+  }
+  @media (max-width: 600px) {
+    width: 60vw;
+  }
+`;
+
+const QuantityButtonsContainer = styled.button`
+  padding: 0;
+  width: auto;
+  margin-top: -0.5rem;
+  border: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  p {
+    height: 25px;
+    width: 30px;
+    font-size: 0.9rem;
+    align-content: center;
+  }
+  span {
+    color: red;
+    font-size: 0.8rem;
+    margin: 0;
+    margin-left: 0.5rem;
+  }
+  button {
+    width: 25px;
+    height: 25px;
+    border: none;
+    font-weight: bold;
+    border-radius: 99px;
+    transition: background-color 0.5s;
+    background-color: ${({ theme }) => theme.colors.white};
+    &:hover {
+      cursor: pointer;
+      background-color: ${({ theme }) => theme.colors.tan};
+    }
+  }
+`;
+
+const SummarySection = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  .add-button {
+    margin-right: 0;
+    margin-left: auto;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: ${({ theme }) => theme.colors.secondary};
+    color: ${({ theme }) => theme.colors.white};
+    font-family: "Delius", serif;
+  }
+  .summary-section {
+    width: 30%;
+    display: flex;
+    border-radius: 0.5rem;
+    padding: 0.2rem 0.4rem;
+    flex-direction: column;
+    margin: 0.5rem 0.5rem 0 0;
+    background-color: ${({ theme }) => theme.colors.gray_light};
+  }
+`;

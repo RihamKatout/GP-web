@@ -1,5 +1,7 @@
+import { ProductSizeEnum } from "../enums/ProductSizeEnum";
+
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   description: string;
   price: number;
@@ -13,6 +15,11 @@ export interface Product {
   storeName: string;
   storeIdTmp: number;
   storeLogoUrl?: string;
+  colors: string[];
+  sizePrices: {
+    [key in ProductSizeEnum]: number;
+  };
+  inWishlist: boolean;
 }
 
 export interface ProductFilters {
@@ -34,7 +41,7 @@ export interface ProductFilters {
 export interface CartItem {
   id: number;
   product: Product;
-  size: "S" | "M" | "L" | "XL";
+  size: "S" | "M" | "L" | "XL" | "XXL";
   quantity: number;
   storeId: number;
   details: string;
@@ -43,7 +50,7 @@ export interface CartItem {
 
 export interface CartItemAdd {
   product: Product;
-  size: "S" | "M" | "L" | "XL";
+  size: "S" | "M" | "L" | "XL" | "XXL";
   quantity: number;
   details: string;
 }
