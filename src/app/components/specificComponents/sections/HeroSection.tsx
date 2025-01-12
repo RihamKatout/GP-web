@@ -21,7 +21,7 @@ import { fadeInLeftVariant, fadeInRightVariant } from "../../../utils/Variants";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
-
+import room from "../../../../assets/store/room.png";
 export const HeroSection = () => {
   const navigate = useNavigate();
   return (
@@ -92,12 +92,12 @@ export const HeroSection = () => {
         </motion.div>
 
         <ShowcaseParticleContainer>
-          <ShowcaseImageCard>
-            <DotLottieReact
-              src="https://lottie.host/3b41766d-fbf3-4b8d-92c1-52893a6fada6/q9AyrI26gM.lottie"
-              loop
-              autoplay
-            />
+          <ShowcaseImageCard style={{width: "780px"  , height: "auto" , marginBottom:"20px"}} >
+          <img
+          src={room}
+          alt="Home"
+          style={{ width: "130%", height: "100%", alignSelf:"center", }}
+          />
           </ShowcaseImageCard>
         </ShowcaseParticleContainer>
       </FlexContainer>

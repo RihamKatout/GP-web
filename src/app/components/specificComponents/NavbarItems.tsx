@@ -7,7 +7,7 @@ import { logoImg } from "../../../assets";
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-
+//import Favorite from '../../assets/icons/Favorite';
 export const NavigationItems = [
   { text: "Home", to: SectionIdEnum.home },
   { text: "Offers", to: SectionIdEnum.offers },
@@ -47,28 +47,142 @@ export const Logo = () => {
   );
 };
 
+import favoriteImg from "../../../assets/Icons/heart.png"; // Adjust path as needed
+import cartImg from "../../../assets/Icons/cart.png";
+import personImg from "../../../assets/Icons/person.png";
+import bellImg from "../../../assets/Icons/bell.png";
+import doorImg from "../../../assets/Icons/door.png";
+
+
 export const UserMenuIcons = [
   {
-    icon: <FavoriteIcon />,
+    icon: (<div
+      style={{
+        width: 35, // Fixed container size
+        height: 35,
+        overflow: "hidden", // Cuts off the extra image
+        position: "relative",
+      }}
+    >
+      <img
+        src={favoriteImg}
+        alt="Favorite"
+        style={{
+          width: "110px", // Scale image larger
+          height: "68px",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)", // Center the image
+          objectFit: "cover",
+        }}
+      />
+    </div>
+),
     text: "Wishlist",
     path: "/wishlist",
   },
   {
-    icon: <ShoppingCartIcon />,
+    icon:(<div
+      style={{
+        width: 35, // Fixed container size
+        height: 35,
+        overflow: "hidden", // Cuts off the extra image
+        position: "relative",
+      }}
+    >
+      <img
+        src={cartImg}
+        alt="Cart"
+        style={{
+          width: "110px", // Scale image larger
+          height: "70px",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)", // Center the image
+          objectFit: "cover",
+        }}
+      />
+    </div>
+),
     text: "Cart",
     path: "/cart",
   },
   {
-    icon: <AccountCircle />,
+    icon: (<div
+      style={{
+        width: 35, // Fixed container size
+        height: 45,
+        overflow: "hidden", // Cuts off the extra image
+        position: "relative",
+      }}
+    >
+      <img
+        src={personImg}
+        alt="Profile"
+        style={{
+          width: "100px", // Scale image larger
+          height: "40px",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)", // Center the image
+          objectFit: "cover",
+        }}
+      />
+    </div>),
     text: "Profile",
     path: "/profile",
   },
   {
-    icon: <NotificationsActiveIcon />,
+    icon: (<div
+      style={{
+        width: 35, // Fixed container size
+        height: 35,
+        overflow: "hidden", // Cuts off the extra image
+        position: "relative",
+      }}
+    >
+      <img
+        src={bellImg}
+        alt="Notifications"
+        style={{
+          width: "110px", // Scale image larger
+          height: "70px",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)", // Center the image
+          objectFit: "cover",
+        }}
+      />
+    </div>),
     text: "Notifications",
   },
   {
-    icon: <LogoutIcon />,
+    icon: (<div
+      style={{
+        width: 25, // Fixed container size
+        height: 45,
+        overflow: "hidden", // Cuts off the extra image
+        position: "relative",
+      }}
+    >
+      <img
+        src={doorImg}
+        alt="Logout"
+        style={{
+          width: "50px", // Scale image larger
+          height: "55px",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)", // Center the image
+          objectFit: "cover",
+        }}
+      />
+    </div>),
     text: "Logout",
     path: "/logout",
   },

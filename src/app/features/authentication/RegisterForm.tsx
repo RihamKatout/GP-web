@@ -137,16 +137,18 @@ export default RegisterForm;
 /////////Style Section ///////////
 const StyledInput = styled.input `
   background: #f0f4ff;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-  border-radius: 50px;
+  box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5);
+  border:1px solid rgba(217, 217, 217, 0.5);
+  border-radius: 10px;
   width: 100%; /* Adjust width to fit the grid layout */
   height: 3.5rem;
   padding: 0 1.5rem;
-  border: none;
+  //border: none;
   outline: none;
   color: #3c354e;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
+  font-family: "Overlock", serif;
   margin: 0; /* Remove default margins */
   &:focus {
     box-shadow: 0px 0px 8px #a3b8ff;
@@ -158,23 +160,29 @@ const StyledInput = styled.input `
 ;
 `
 const StyledButton = styled.button `
-  background: linear-gradient(135deg, rgb(216, 249, 225), rgb(245, 213, 241));
   color: #191818;
   text-transform: uppercase;
   letter-spacing: 0.15rem;
   width: 70%;
   height: 3.5rem;
   border: none;
-  border-radius: 50px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
   margin-top: 1.5rem;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  font-family: "Delius Swash Caps";
+  //margin-top: 1.5rem;
+  background-color: ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
   transition: transform 0.2s, box-shadow 0.2s;
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                    0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                    0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
   }
 ;
 `
@@ -246,7 +254,7 @@ const StyledLink = styled(Link)`
   }
 `;
 const BakeHomeButton = styled.button`
-  background: #ffe4d4;
+  
   color: #191818d3;
   font-size: 1rem;
   font-weight: bold;
@@ -256,8 +264,14 @@ const BakeHomeButton = styled.button`
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  background-color: ${({ theme }) => theme.colors.primary};
+  box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
   &:hover {
-    background: #ff8a65;
+    box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
     transform: scale(1.05);
   }
 `;
