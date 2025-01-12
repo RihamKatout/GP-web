@@ -1,16 +1,14 @@
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import LoginForm from "../../features/authentication/LoginForm";
 import styled from "styled-components";
-
+import img from "../../../assets/store/login.png"
 export const LoginPage = () => {
   return (
     <PageContainer>
       {/* Lottie Animation as Background */}
      <AnimatedBackground>
-      <DotLottieReact
-        src="https://lottie.host/1a8e801a-e220-49bf-9e42-a2a0c0a6dd3f/hwIuP7H4Bi.lottie"
-        loop
-        autoplay
+      <img
+        src={img}
         style={{
           position: "absolute",
           top: 0,

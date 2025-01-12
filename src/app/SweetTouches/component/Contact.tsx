@@ -1,8 +1,8 @@
-import  { useRef } from "react";
+import { useRef } from "react";
 import emailjs from "@emailjs/browser";
 import styled from "styled-components";
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-
+import video from "../../../assets/store/try.mp4";
+//import { Theme } from "../../../utils/Theme";
 // npm i @emailjs/browser
 
 const Contact = () => {
@@ -37,14 +37,17 @@ const Contact = () => {
         <textarea name="message" />
         <input type="submit" value="Send" />
       </form>
-      
-        <DotLottieReact
-          className="lottie-animation"
-          src="https://lottie.host/2935245e-3fd1-4197-a825-83cae6b05714/IYjL7lAkXp.lottie"
+
+      {/* Replace Lottie animation with video */}
+      <div className="video-container">
+        <video
+          src={video} // Replace with your video URL
+          autoPlay
           loop
-          autoplay
+          muted
+          controls={false} // Set to true if you want playback controls
         />
-      
+      </div>
     </StyledContactForm>
   );
 };
@@ -73,7 +76,7 @@ const StyledContactForm = styled.div`
       outline: none;
       border-radius: 10px;
       border: 1px solid rgb(220, 220, 220);
-
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5);
       &:focus {
         border: 2px solid #e4bcbc;
       }
@@ -89,7 +92,8 @@ const StyledContactForm = styled.div`
       outline: none;
       border-radius: 10px;
       border: 1px solid rgb(220, 220, 220);
-
+      color: ${({ theme }) => theme.colors.secondary};
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5);
       &:focus {
         border: 2px solid #e4bcbc;
       }
@@ -97,41 +101,49 @@ const StyledContactForm = styled.div`
 
     label {
       margin-top: 1rem;
+      font-family: "Delius";
+      color: ${({ theme }) => theme.colors.primary_dark};
+      font-size: 18px;
+      font-weight: 600;
     }
 
     input[type="submit"] {
-      background-color: #e4bcbc;
       color: #1b1a1a;
-      border: 2px solid #131313ae;
-      border-radius: 10px;
+      border-radius: 8px;
       font-weight: 600;
       text-align: center;
-
       cursor: pointer;
       transition: background-color 0.3s;
       margin-top: 20px;
+      background-color: ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
 
       &:hover {
-        background-color: ${({ theme }) => theme.colors.primary || "white"};
+        transform: scale(1.05);
+        box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                    0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                    0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+        background-color: ${({ theme }) => theme.colors.secondary_light};
       }
     }
   }
 
-  // Lottie Animation Wrapper
-  .lottie-animation {
+  .video-container {
     flex-shrink: 0;
-    width:65%; /* Allocate space for animation */
+    width: 60%; /* Allocate space for the video */
     display: flex;
     justify-content: center;
     align-items: center;
 
-    canvas {
-      max-width: 100%;
-      height: auto; /* Maintain aspect ratio */
+    video {
+      width: 100%;
+      //border-radius: 10px; /* Optional: Add rounded corners */
+      //box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); Optional: Add shadow
     }
   }
 
-  // Responsive Design
   @media (max-width: 1024px) {
     flex-direction: column;
 
@@ -139,7 +151,7 @@ const StyledContactForm = styled.div`
       width: 100%;
     }
 
-    .lottie-animation {
+    .video-container {
       width: 100%;
       margin-top: 1rem;
     }
@@ -165,4 +177,3 @@ const StyledContactForm = styled.div`
     }
   }
 `;
-

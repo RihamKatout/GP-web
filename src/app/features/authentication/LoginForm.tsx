@@ -4,7 +4,7 @@ import { useForm, SubmitHandler, FieldErrors } from "react-hook-form";
 import { message } from "antd";
 import { useAuth } from "../../context/AuthContext";
 import emailjs from "emailjs-com"; // Import EmailJS
-
+import home from "../../../assets/home.png";
 const LoginForm = () => {
   const { loginUserContext } = useAuth();
   const navigate = useNavigate();
@@ -61,11 +61,11 @@ const LoginForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <InputContainer>
             <StyledInput {...register("email")} placeholder="Email" />
-            <StyledForgotPasswordContainer>
+            {/* <StyledForgotPasswordContainer>
               <StyledLink to="#" onClick={() => onForgotPassword("user@example.com")}>
                 Forgot your password?
               </StyledLink>
-            </StyledForgotPasswordContainer>
+            </StyledForgotPasswordContainer> */}
             <StyledInput
               {...register("password")}
               type="password"
@@ -78,8 +78,14 @@ const LoginForm = () => {
             </StyledButton>
           </ButtonContainer>
         </form>
+        <BakeHomeButton onClick={() => navigate("/")} ><img src={home} style={{ width: "25px", height: "25px" }} /></BakeHomeButton>
         <LinkToRegister>
           Don't have an account? <StyledLink to="/register">Create one</StyledLink>
+          <StyledForgotPasswordContainer>
+              <StyledLink to="#" onClick={() => onForgotPassword("user@example.com")}>
+                Forgot your password?
+              </StyledLink>
+            </StyledForgotPasswordContainer>
         </LinkToRegister>
       </MainContainer>
     </>
@@ -94,7 +100,7 @@ const StyledForgotPasswordContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 85%;
-  margin-top: -10px;
+  margin-top: 5px;
   margin-bottom: 10px;
 `;
 
@@ -104,12 +110,12 @@ const StyledForgotPasswordContainer = styled.div`
 ///////// Styled Components /////////
 const StyledInput = styled.input`
   background: #f0f4ff;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-  border-radius: 50px;
+  box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5);
+  border:1px solid rgba(217, 217, 217, 0.5);
+  border-radius: 10px;
   width: 85%;
   height: 3.5rem;
-  padding: 0 1.5rem;
-  border: none;
+  padding: 0 1.5rem;//border: none;
   outline: none;
   color: #3c354e;
   font-size: 1rem;
@@ -125,30 +131,36 @@ const StyledInput = styled.input`
 `;
 
 const StyledButton = styled.button`
-  background: linear-gradient(135deg, rgb(216, 249, 225), rgb(245, 213, 241));
+  
   color: #191818;
   text-transform: uppercase;
   letter-spacing: 0.15rem;
   width: 70%;
   height: 3.5rem;
   border: none;
-  border-radius: 50px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
+  font-family: "Delius Swash Caps";
   //margin-top: 1.5rem;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  background-color: ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
   transition: transform 0.2s, box-shadow 0.2s;
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                    0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                    0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
   }
 `;
 
 const WelcomeText = styled.h2`
   margin: 2rem 0 1rem 0;
   font-size: 2rem;
-  color: #eb977d;
+  color: #D77E8F;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.3rem;
@@ -186,12 +198,14 @@ const LinkToRegister = styled.div`
   margin-top: 1rem;
   font-size: 0.9rem;
   color: #555;
+  font-family:  "Overlock", serif;
 `;
 
 const StyledLink = styled(Link)`
-  color: #ffc2af;
+  color: #E1A0AC;
   text-decoration: none;
   font-weight: bold;
+  font-family:  "Overlock", serif;
   &:hover {
     text-decoration: underline;
   }
@@ -207,9 +221,14 @@ const BakeHomeButton = styled.button`
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  background-color: ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
   &:hover {
-    background: #ff8a65;
+    box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
     transform: scale(1.05);
   }
 `;
-

@@ -12,7 +12,7 @@ export const Theme = {
     gray: "rgba(130, 130, 130, 1)",
     tan: "rgba(240, 230, 220, 1)", // tan
     tan_light: "rgb(248, 242, 237)", // light tan
-    danger: "rgba(255, 209, 209, 1)",
+    
   },
   fonts: {
     family: "Delius",
@@ -26,3 +26,5 @@ export const Theme = {
     mobile: "710px",
   },
 };
+//font-family: "Overlock", serif;
+//font-family: "Delius Swash Caps", serif;
