@@ -39,7 +39,10 @@ export const WishlistButton: React.FC<WishlistButtonProps> = ({
         open={isWishlistErrorOpen}
         onClose={() => setIsWishlistErrorOpen(false)}
       >
-        <PleaseLoginModal message="Please login to add this product to your wishlist!" />
+        <PleaseLoginModal
+          message="Please login to add this product to your wishlist!"
+          hasBackground={true}
+        />
       </CustomModal>
       {isWishlisted ? (
         <FavoriteIcon className="wishlist" onClick={handleWishlistClick} />

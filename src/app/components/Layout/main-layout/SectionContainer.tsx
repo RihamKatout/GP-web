@@ -18,6 +18,8 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        maxWidth: "100vw",
+        overflowX: "hidden",
       }}
     >
       <Container

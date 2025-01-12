@@ -38,7 +38,7 @@ export const ProductSizes: React.FC<ProductSizesProps> = ({
                     setSelectedSize(size as ProductSizeEnum);
                   }}
                   style={{
-                    backgroundColor: "white",
+                    backgroundColor: "rgba(240, 240, 240, 1)",
                     color: "black",
                     width: "1.5rem",
                     height: "1.5rem",

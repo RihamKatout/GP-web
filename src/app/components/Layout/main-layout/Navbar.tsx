@@ -87,7 +87,11 @@ export const Navbar = () => {
         key={Path}
         color="inherit"
         size="large"
-        onClick={() => navigate(Path)}
+        onClick={() =>
+          navigate(Path, {
+            state: { from: window.location.pathname },
+          })
+        }
         sx={{
           border: "3px solid",
           borderRadius: "25px",

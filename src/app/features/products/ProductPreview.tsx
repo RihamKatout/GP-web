@@ -128,7 +128,10 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
           </div>
         </ProductPreviewContainer>
       ) : (
-        <PleaseLoginModal message="Please login to add this product to your cart!" />
+        <PleaseLoginModal
+          message="Please login to add this product to your cart!"
+          hasBackground={true}
+        />
       )}
     </CustomModal>
   );

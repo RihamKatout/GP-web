@@ -1,18 +1,26 @@
 import React from "react";
 import styled from "styled-components";
-import { JoinUsImg } from "../../../assets";
+import { WhiteKidImg } from "../../../assets";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
   message?: string;
+  fontSize?: string;
+  hasBackground?: boolean;
+  darkFont?: boolean;
 }
-export const PleaseLoginModal: React.FC<Props> = ({ message }) => {
+export const PleaseLoginModal: React.FC<Props> = ({
+  message,
+  fontSize,
+  hasBackground,
+  darkFont,
+}) => {
   const navigate = useNavigate();
   return (
-    <ModalContainer>
-      <img src={JoinUsImg} alt="Join Us" />
+    <ModalContainer hasBackground={hasBackground} darkFont={darkFont}>
+      <img src={WhiteKidImg} alt="Join Us" />
       <div>
-        <h4>{message || "Please Login!"}</h4>
+        <h4 style={{ fontSize: fontSize }}>{message || "Please Login!"}</h4>
         <button
           onClick={() =>
             navigate("/login", {
@@ -27,27 +35,30 @@ export const PleaseLoginModal: React.FC<Props> = ({ message }) => {
   );
 };
 
-const ModalContainer = styled.div`
-  width: 30vw;
+const ModalContainer = styled.div<{
+  hasBackground?: boolean;
+  darkFont?: boolean;
+}>`
+  width: 100%;
+  max-width: 30vw;
   display: flex;
   padding: 1.5rem;
   border-radius: 1rem;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme, hasBackground }) =>
+    hasBackground ? theme.colors.secondary : "transparent"};
   img {
     width: 25%;
   }
   div {
-    border-radius: 1rem;
-    padding: 1rem;
     gap: 1rem;
-    
     display: flex;
+    text-align: center;
     align-items: center;
     flex-direction: column;
-    text-align: center;
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme, darkFont }) =>
+      darkFont ? theme.colors.secondary : theme.colors.white};
     h4 {
       font-family: "Delius", serif;
       font-weight: bold;

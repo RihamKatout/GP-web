@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import AliceCarousel from "react-alice-carousel";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { ProductColors, ProductSizes, WishlistButton } from "../..";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { ProductPreview } from "../..";
 import { Divider, Rating } from "@mui/material";
 import { Product, ProductSizeEnum } from "../../../types";
 
@@ -13,9 +11,19 @@ import { Product, ProductSizeEnum } from "../../../types";
 //TODO: fix error message
 interface ProductDetailsCardProps {
   product: Product;
+  setSelectedSize: React.Dispatch<React.SetStateAction<ProductSizeEnum>>;
+  selectedSize: ProductSizeEnum;
+  price: number;
+  setPrice: (price: number) => void;
+  isAvailable: boolean;
 }
 export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   product,
+  setSelectedSize,
+  selectedSize,
+  price,
+  setPrice,
+  isAvailable,
 }) => {
   const handleDragStart = (e: any) => e.preventDefault();
 
@@ -39,35 +47,19 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
 
   const theme = useTheme();
   const navigate = useNavigate();
-  const [price, setPrice] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [selectedColor, setSelectedColor] = useState<string>();
-  const isAvailable = product?.isAvailable && product?.stock > 0;
-  const [selectedSize, setSelectedSize] = useState<ProductSizeEnum>();
 
   useEffect(() => {
     setPrice(product.price);
     setIsWishlisted(product?.inWishlist ?? false);
   }, []);
-  const handleAddToCart = async () => {
-    if (!isAvailable) {
-      alert("Sorry! Product is unavailable at the moment");
-      return;
-    }
-    setIsModalOpen(true);
-  };
 
   return (
     <>
-      <ProductPreview
-        product={product}
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-      />
-      <ProductCard className="tan-threeD-effect-border">
-        {/* first section will contain product image, wishlist button, and reviews */}
+      <ProductCard>
+        {/* first section contains product image and wishlist button*/}
         <div className="left-column">
           <AliceCarousel
             mouseTracking
@@ -78,17 +70,12 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
             autoPlayInterval={2000}
             keyboardNavigation
             disableDotsControls
-          />{" "}
+          />
           <WishlistButton
             isWishlisted={isWishlisted}
             setIsWishlisted={setIsWishlisted}
             productId={product?.id}
           />
-          {/* create reviews component */}
-          <ReviewContainer>
-            <p style={{ padding: "1rem" }}>hi</p>
-            <button onClick={handleAddToCart}>view all</button>
-          </ReviewContainer>
         </div>
 
         {isMobile ? (
@@ -111,14 +98,14 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
           <Divider
             style={{
               border: "1px solid rgb(140, 140, 140)",
-              margin: "1rem",
+              margin: "1rem 0",
             }}
           />
         )}
         <div className="right-column">
           <div className="header">
             <h2>{product?.name}</h2>
-            <h2 style={{ fontSize: "1.5rem" }}>{price}$</h2>
+            <h2>{price}$</h2>
           </div>
           <div className="rating">
             <Rating
@@ -147,7 +134,19 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
                 : "Product is unavailable right now"}
             </p>
           )}
-          <p className="description">{product?.description}.</p>
+          <p className="description">
+            {product?.description}
+            {product?.description}
+            {product?.description}
+            {product?.description}
+            {product?.description}
+            {product?.description}
+            {product?.description}
+            {product?.description}
+            {product?.description}
+            {product?.description}
+            {product?.description}.
+          </p>
           <ProductColors
             colors={product?.colors}
             selectedColor={selectedColor}
@@ -159,9 +158,6 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
             setSelectedSize={setSelectedSize}
             setPrice={setPrice}
           />
-          <button onClick={handleAddToCart}>
-            <AddShoppingCartIcon sx={{ color: "navy", height: "40px" }} />
-          </button>
         </div>
       </ProductCard>
     </>
@@ -169,48 +165,52 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
 };
 
 const ProductCard = styled.section`
-  width: 60%;
-  height: 100%;
+  width: auto;
+  min-height: 50%;
   display: flex;
+  overflow: hidden;
   border-radius: 1rem;
-  margin: 0 2rem;
-  background-color: ${({ theme }) => theme.colors.tan};
+  background-color: ${({ theme }) => theme.colors.white};
+
+  box-shadow: 10px -2px 25px rgba(0, 0, 0, 0.29);
   .left-column {
-    display: flex;
     width: 40%;
-    flex-direction: column;
-    padding: 1rem;
     position: relative;
+    padding: 1rem;
     img {
       width: 100%;
-      padding: 2rem;
-      background-color: ${({ theme }) => theme.colors.white};
+      padding: 1rem;
+      background-color: ${({ theme }) => theme.colors.secondary_extra_light};
+      box-shadow: 5px -2px 50px rgba(0, 0, 0, 0.2) inset;
     }
     .wishlist {
       position: absolute;
       z-index: 1000;
       top: 1.5rem;
       left: 1.5rem;
-      height: 2rem;
-      width: 2rem;
+      height: 2.5rem;
+      width: 2.5rem;
       cursor: pointer;
-      color: rgb(216, 100, 100);
+      color: rgb(237, 18, 58);
       &:hover {
         color: rgb(159, 43, 43);
       }
     }
   }
   .right-column {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
     gap: 1rem;
+    flex-grow: 1;
+    display: flex;
+    padding: 1.5rem;
+    flex-direction: column;
     .header {
+      color: ${({ theme }) => theme.colors.secondary_dark};
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: -0.7rem;
+      font-size: 1.4rem;
+      font-weight: bolder;
+      margin-bottom: -0.5rem;
     }
     .rating {
       display: flex;
@@ -219,9 +219,10 @@ const ProductCard = styled.section`
         margin: 0 0.5rem;
         font-size: 0.8rem;
       }
+      margin-bottom: 1rem;
     }
     .description {
-      color: ${({ theme }) => theme.colors.gray};
+      color: ${({ theme }) => theme.colors.secondary};
       text-align: justify;
     }
 
@@ -263,23 +264,5 @@ const ProductCard = styled.section`
     .left-column {
       width: 100%;
     }
-  }
-`;
-
-const ReviewContainer = styled.section`
-  display: flex;
-  width: auto;
-  justify-content: space-between;
-  border-radius: 0.5rem;
-  background-color: ${({ theme }) => theme.colors.white};
-  button {
-    background-color: ${({ theme }) => theme.colors.secondary_light};
-    border-radius: 0 0.5rem 0.5rem 0;
-    border: none;
-    color: ${({ theme }) => theme.colors.white};
-    padding: 1rem 0.5rem;
-  }
-  @media (max-width: 768px) {
-    display: none;
   }
 `;
