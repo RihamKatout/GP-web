@@ -94,7 +94,7 @@ const StoreInfo = styled.div`
       2px 0.5rem 0.5rem rgba(255, 255, 255, 0.52) inset,
       0 0.25rem 0.5rem 0 rgba(212, 170, 185, 0.36) inset;
     &:hover {
-      background-color: rgb(235, 234, 224);
+      background-color: ${({ theme }) => theme.colors.secondary_light};
     }
   }
   .store-logo {

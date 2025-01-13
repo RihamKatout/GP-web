@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { WhiteKidImg } from "../../../assets";
 import { useNavigate } from "react-router-dom";
+//import loginChar from "../../../assets/characters/loginChar.png"
 
 interface Props {
   message?: string;

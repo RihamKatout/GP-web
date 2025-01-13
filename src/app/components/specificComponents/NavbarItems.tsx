@@ -1,12 +1,9 @@
 import { SectionIdEnum } from "../../types";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import LogoutIcon from "@mui/icons-material/Logout";
+
 import { logoImg } from "../../../assets";
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+
 //import Favorite from '../../assets/icons/Favorite';
 export const NavigationItems = [
   { text: "Home", to: SectionIdEnum.home },

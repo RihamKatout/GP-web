@@ -76,9 +76,11 @@ const routerConfig = createBrowserRouter([
   {
     path: "/profile",
     element: (
+      
       <ProtectedRoute>
         <ProfilePage />
       </ProtectedRoute>
+      
     ),
   },
   {

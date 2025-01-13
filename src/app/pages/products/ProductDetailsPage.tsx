@@ -7,6 +7,7 @@ import styled from "styled-components";
 import "react-alice-carousel/lib/alice-carousel.css";
 import { useEffect } from "react";
 import { ProductSection } from "../../features";
+import ReviewSection from "../../features/products/Feedback/ReviewSection";
 
 const SimilarSection = styled.section``;
 
@@ -38,6 +39,7 @@ export const ProductDetailsPage = () => {
         <ProductSection product={product}></ProductSection>
         <SimilarSection></SimilarSection>
       </SectionContainer>
+      {/* <ReviewSection/> */}
     </MainLayout>
   );
 };
