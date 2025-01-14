@@ -70,15 +70,17 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({ userInfo, handleChange
 
 const EditForm = styled.div`
   margin-top: 20px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.white};
   padding: 15px;
   border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const FormRow = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  
 
   label {
     flex: 1;
