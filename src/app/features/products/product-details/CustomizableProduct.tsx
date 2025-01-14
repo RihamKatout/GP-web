@@ -20,7 +20,7 @@ export const CustomizableProduct: React.FC<CustomizableProductProps> = ({
             src="https://lottie.host/5ed3a060-3457-4dca-8bcd-20fd1935d6e6/murWSnXNyG.lottie"
             loop
             autoplay
-            style={{ width: "150px", height: "120px" }}
+            style={{ width: "140px", height: "120px" }}
           />
           <p>
             You can design this product as you want{" "}
@@ -39,13 +39,10 @@ const Container = styled.div`
   align-items: center;
   padding: -2rem 1rem;
   margin-top: -1.5rem;
-  margin-bottom: -1rem;
+  margin-bottom: -3.2rem;
   p {
-    margin: 0 0 0 -0.5rem;
+    margin: 0 0 1rem -0.8rem;
     font-size: 1.5rem;
-  }
-  img {
-    width: 60px;
   }
   span {
     margin-left: 0.3rem;
@@ -54,5 +51,11 @@ const Container = styled.div`
     font-weight: bold;
     cursor: pointer;
     text-decoration: underline;
+  }
+  @media (max-width: 780px) {
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
   }
 `;

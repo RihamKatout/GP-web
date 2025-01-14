@@ -28,7 +28,6 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ product }) => {
           setPrice={setPrice}
           isAvailable={isAvailable}
         />
-        <ReviewSection />
       </ProductAndReviewsContainer>
 
       <StoreAndCartContainer>

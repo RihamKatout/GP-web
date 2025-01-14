@@ -80,6 +80,7 @@ const StoreInfo = styled.div`
     border: none;
     width: 100%;
     background-color: rgba(210, 110, 126, 0.9);
+    background-color: ;
     padding: 0.4rem 1rem;
     font-size: 1.1rem;
     font-weight: 700;

@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import img from "../../../../assets/store/riham.png";
 import { Rating } from "@mui/material";
 
-// TODO: 
+// TODO:
 // open review as a model when it is clicked
 // handle view all reviews button
 // fetch reviews from the server
@@ -53,48 +53,32 @@ export const ReviewSection = () => {
   };
   return (
     <Container>
-      <ReviewsHeader>
-        <h5>Reviews</h5>
-      </ReviewsHeader>
-
-      <SliderWrapper>
-        <Button onClick={handleSeeAll} style={{ marginBottom: "0.5rem" }}>
-          view all reviews
-        </Button>
-        <StyledSlider {...sliderSettings}>
-          {reviews.map((review) => (
-            <Card key={review.id} style={{ display: "flex" }}>
-              <div className="header">
-                <Avatar src={review.avatar} alt={review.name} />
-                <div className="name-rating">
-                  <p>{review.name}</p>
-                  <Rating
-                    name="half-rating-read"
-                    defaultValue={review.rating}
-                    precision={0.5}
-                    readOnly
-                    size="small"
-                  />
-                </div>
+      <Button onClick={handleSeeAll} style={{ marginBottom: "0.5rem" }}>
+        view all reviews
+      </Button>
+      <StyledSlider {...sliderSettings}>
+        {reviews.map((review) => (
+          <Card key={review.id} style={{ display: "flex" }}>
+            <div className="header">
+              <Avatar src={review.avatar} alt={review.name} />
+              <div className="name-rating">
+                <p>{review.name}</p>
+                <Rating
+                  name="half-rating-read"
+                  defaultValue={review.rating}
+                  precision={0.5}
+                  readOnly
+                  size="small"
+                />
               </div>
-              <Feedback>{review.feedback}</Feedback>
-            </Card>
-          ))}
-        </StyledSlider>
-      </SliderWrapper>
+            </div>
+            <Feedback>{review.feedback}</Feedback>
+          </Card>
+        ))}
+      </StyledSlider>
     </Container>
   );
 };
-
-const SliderWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  border-radius: 0 1rem 1rem 1rem;
-  padding: 0.8rem 1rem 1rem 1rem;
-  box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.17);
-  background-color: ${({ theme }) => theme.colors.white};
-`;
 
 const StyledSlider = styled(Slider)`
   width: 100%;
@@ -109,9 +93,13 @@ const StyledSlider = styled(Slider)`
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  border-radius: 1rem;
   align-items: flex-end;
   justify-content: space-between;
+  width: 100%;
+  flex-direction: column;
+  border-radius: 0 1rem 1rem 1rem;
+  padding: 0 1rem 1rem 1rem;
+  margin-top: 0.5rem;
 `;
 
 const Card = styled.div`
@@ -121,9 +109,8 @@ const Card = styled.div`
   cursor: pointer;
   overflow: hidden;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1),
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2),
     0 2px 25px rgba(79, 89, 121, 0.1) inset;
-  background-color: rgba(117, 133, 186, 0.1);
   .name-rating {
     display: flex;
     flex-direction: column;
@@ -162,28 +149,12 @@ const Feedback = styled.p`
 const Button = styled.p`
   width: auto;
   font-family: "Overlock", serif;
-  margin: 0 11rem;
+  margin: 0 2rem;
+  text-align: right;
   color: ${({ theme }) => theme.colors.primary_dark};
   cursor: pointer;
   &:hover {
     color: ${({ theme }) => theme.colors.secondary_dark};
     text-decoration: underline;
-  }
-`;
-
-const ReviewsHeader = styled.div`
-  padding: 0.8rem 6rem 0 6rem;
-  width: fit-content;
-  border-radius: 1rem 1rem 0 0;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.17);
-
-  h5 {
-    font-family: "Delius", serif;
-    color: ${({ theme }) => theme.colors.white};
-  }
-  @media (max-width: 780px) {
-    flex-direction: column;
-    width: 100%;
   }
 `;
