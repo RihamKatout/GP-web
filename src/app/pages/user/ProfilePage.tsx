@@ -11,40 +11,39 @@ export const ProfilePage = () => {
   const [selectedSection, setSelectedSection] = useState('Profile'); // Tracks the active section
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
-  const { isLoggedIn, logoutContext } = useAuth();
-  const [userInfo, setUserInfo] = useState({
-    avatar: riham,
-    firstName: 'Jane',
-    lastName: 'Doe',
-    phone: '123-456-7890',
-    email: 'jane.doe@example.com',
-    password: '',
-  });
+  const { isLoggedIn, logoutContext, user } = useAuth() ;
+
+  // Redirect to login if not logged in
+  if (!isLoggedIn) {
+    navigate('/login');
+    return null;
+  }
 
   const handleEditClick = () => setIsEditing(!isEditing);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUserInfo((prev) => ({ ...prev, [name]: value }));
+    // Update logic for editable fields can be added here
   };
 
   const handleSave = () => {
     setIsEditing(false);
-    // Add save logic (e.g., API call)
+    // Add save logic (e.g., API call to update user info)
   };
+
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
-        setUserInfo((prev) => ({ ...prev, avatar: reader.result as string }));
+        // Update avatar logic here (e.g., API call to update avatar)
       };
       reader.readAsDataURL(file);
     }
   };
+
   const handleLogout = () => {
     logoutContext();
-    navigate("/");
+    navigate('/');
   };
 
   return (
@@ -52,8 +51,19 @@ export const ProfilePage = () => {
       <DashboardContainer>
         <Sidebar>
           <div>
-            <img src={userInfo.avatar} alt="User Avatar" style={{ width: '80%' , borderRadius: '50%' , margin: '0 auto' , display: 'block'}} />
-            <UserName style={{ textAlign: 'center' , marginBottom: '10px' }}>{`${userInfo.firstName} ${userInfo.lastName}`}</UserName>
+            <img
+              src={user?.userImageURL || riham}
+              alt="User Avatar"
+              style={{
+                width: '80%',
+                borderRadius: '50%',
+                margin: '0 auto',
+                display: 'block',
+              }}
+            />
+            <UserName style={{ textAlign: 'center', marginBottom: '10px' }}>
+              {`${user?.firstName || ''} ${user?.lastName || ''}`}
+            </UserName>
           </div>
           <SidebarItem
             onClick={() => setSelectedSection('Profile')}
@@ -73,51 +83,50 @@ export const ProfilePage = () => {
           >
             Activity
           </SidebarItem>
-          <SidebarItem
-            onClick={handleLogout}
-            active={selectedSection === 'Logout'}
-          >
-            Logout
-          </SidebarItem>
+          <SidebarItem onClick={handleLogout} active={false}>Logout</SidebarItem>
         </Sidebar>
 
         <MainContent>
           {selectedSection === 'Profile' && (
             <>
-            <ProfileContent>
-            <ProfileHeader isEditing={isEditing}>
-        <ProfileHeaderColumn>
-            <Avatar src={userInfo.avatar} alt="User Avatar" isEditing={isEditing} />
-            <UserName>{`${userInfo.firstName} ${userInfo.lastName}`}</UserName>
-            <UserInfo>{userInfo.email}</UserInfo>
-        </ProfileHeaderColumn>
-        <EditButtonWrapper isEditing={isEditing}>
-              <EditButton onClick={handleEditClick}>
-               {isEditing ? 'Cancel' : 'Edit'}
-              </EditButton>
-           </EditButtonWrapper>
-          </ProfileHeader>
-          
-              {isEditing && (
-                <ProfileFormWrapper>
-                  <ProfileForm
-                    userInfo={userInfo}
-                    handleChange={handleChange}
-                    handleSave={handleSave}
-                    handleAvatarChange={handleAvatarChange}
-                  />
-                </ProfileFormWrapper>
-              )}
-            </ProfileContent>
-          
-            <ProfileShopping />
-            <ProfileActivity />
-           </>
+              <ProfileContent>
+                <ProfileHeader isEditing={isEditing}>
+                  <ProfileHeaderColumn>
+                    <Avatar
+                      src={user?.userImageURL || riham}
+                      alt="User Avatar"
+                      isEditing={isEditing}
+                    />
+                    <UserName>{`${user?.firstName || ''} ${user?.lastName || ''}`}</UserName>
+                    {/* <UserInfo>{user?.firstName || ''}</UserInfo> */}
+                  </ProfileHeaderColumn>
+                  <EditButtonWrapper isEditing={isEditing}>
+                    <EditButton onClick={handleEditClick}>
+                      {isEditing ? 'Cancel' : 'Edit'}
+                    </EditButton>
+                  </EditButtonWrapper>
+                </ProfileHeader>
+
+                {isEditing && user && (
+                  <ProfileFormWrapper>
+                    <ProfileForm
+                      userInfo={user}
+                      handleChange={handleChange}
+                      handleSave={handleSave}
+                      handleAvatarChange={handleAvatarChange}
+                    />
+                  </ProfileFormWrapper>
+                )}
+              </ProfileContent>
+
+              <ProfileShopping />
+              <ProfileActivity />
+            </>
           )}
 
           {selectedSection === 'Shopping' && (
             <Section>
-              <ProfileShopping/>
+              <ProfileShopping />
             </Section>
           )}
 
@@ -126,7 +135,6 @@ export const ProfilePage = () => {
               <ProfileActivity />
             </Section>
           )}
-
         </MainContent>
       </DashboardContainer>
     </MainLayout>

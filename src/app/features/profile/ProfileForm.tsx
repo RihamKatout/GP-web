@@ -2,12 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface UserInfo {
+  id: number;
+  username: string;
   firstName: string;
   lastName: string;
-  phone: string;
-  email: string;
-  password: string;
-  avatar: string; // Add avatar to the userInfo interface
+  roles: string[];
+  userImageURL: string | null;
+  signUpDate: Date;
+  numberOfStores: number;
+  enabled: boolean;
+  accountNonLocked: boolean;
+  accountNonExpired: boolean;
+  credentialsNonExpired: boolean;
+  
 }
 
 interface ProfileFormProps {
@@ -49,7 +56,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         <input
           type="text"
           name="phone"
-          value={userInfo.phone}
+          value={userInfo.firstName}
           onChange={handleChange}
         />
       </FormRow>
@@ -58,7 +65,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         <input
           type="email"
           name="email"
-          value={userInfo.email}
+          value={userInfo.firstName}
           onChange={handleChange}
         />
       </FormRow>
@@ -67,7 +74,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         <input
           type="password"
           name="password"
-          value={userInfo.password}
+          value={userInfo.firstName}
           onChange={handleChange}
         />
       </FormRow>
