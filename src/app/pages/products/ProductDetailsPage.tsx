@@ -36,8 +36,14 @@ export const ProductDetailsPage = () => {
   return (
     <MainLayout>
       <SectionContainer sectionId={SectionIdEnum.product}>
-        <ProductSection product={product}></ProductSection>
-        <SimilarSection></SimilarSection>
+        {product ? (
+          <>
+            <ProductSection product={product}></ProductSection>
+            <SimilarSection></SimilarSection>
+          </>
+        ) : (
+          <div>Product not found</div>
+        )}
       </SectionContainer>
       {/* <ReviewSection/> */}
     </MainLayout>
