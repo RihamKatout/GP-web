@@ -26,6 +26,7 @@ export * from "./products/product-details/ProductDetailsCard";
 export * from "./products/product-details/StoreCard";
 export * from "./products/product-details/AddToCartSection";
 export * from "./products/product-details/ReviewSection";
+export * from "./products/product-details/CustomizableProduct";
 
 // wishlist
 export * from "./wishlist/WishlistButton";

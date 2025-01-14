@@ -205,7 +205,7 @@ const ProductCard = styled.div`
       justify-content: space-between;
       align-items: center;
       font-size: 1.4rem;
-      font-weight: bold;
+      font-weight: bold ;
       margin-bottom: -0.5rem;
     }
     .rating {

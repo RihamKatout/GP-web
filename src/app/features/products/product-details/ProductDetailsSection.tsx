@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Product, ProductSizeEnum } from "../../../types";
 import styled from "styled-components";
 import { ProductDetailsCard } from "./ProductDetailsCard";
-import { AddToCartSection, ReviewSection, StoreCard } from "../..";
+import { AddToCartSection, CustomizableProduct, ReviewSection, StoreCard } from "../..";
 
 //TODO: fix responsive
 interface ProductSectionProps {
@@ -18,6 +18,7 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ product }) => {
 
   return (
     <SectionContainer>
+      <CustomizableProduct isCustomizable={product?.isCustomizable} />
       <ProductAndReviewsContainer>
         <ProductDetailsCard
           product={product}

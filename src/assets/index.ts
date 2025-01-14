@@ -18,3 +18,6 @@ export const LeftStoreImg = leftStore;
 
 import stripedAwnings from "./store/striped_awnings.png";
 export const StripedAwningsImg = stripedAwnings;
+
+import navyRobot from "./characters/navy_robot.png";
+export const NavyRobotImg = navyRobot;
