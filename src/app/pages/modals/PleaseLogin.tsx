@@ -2,23 +2,28 @@ import React from "react";
 import styled from "styled-components";
 import { WhiteKidImg } from "../../../assets";
 import { useNavigate } from "react-router-dom";
-//import loginChar from "../../../assets/characters/loginChar.png"
 
 interface Props {
   message?: string;
   fontSize?: string;
   hasBackground?: boolean;
   darkFont?: boolean;
+  maxWidth?: string;
 }
 export const PleaseLoginModal: React.FC<Props> = ({
   message,
   fontSize,
   hasBackground,
   darkFont,
+  maxWidth,
 }) => {
   const navigate = useNavigate();
   return (
-    <ModalContainer hasBackground={hasBackground} darkFont={darkFont}>
+    <ModalContainer
+      hasBackground={hasBackground}
+      darkFont={darkFont}
+      maxWidth={maxWidth}
+    >
       <img src={WhiteKidImg} alt="Join Us" />
       <div>
         <h4 style={{ fontSize: fontSize }}>{message || "Please Login!"}</h4>
@@ -39,16 +44,16 @@ export const PleaseLoginModal: React.FC<Props> = ({
 const ModalContainer = styled.div<{
   hasBackground?: boolean;
   darkFont?: boolean;
+  maxWidth?: string;
 }>`
-  width: 100%;
-  max-width: 30vw;
+  width: ${({ maxWidth }) => (maxWidth !== undefined ? maxWidth : "30vw")};
   display: flex;
   padding: 1.5rem;
   border-radius: 1rem;
   align-items: center;
   justify-content: center;
   background-color: ${({ theme, hasBackground }) =>
-    hasBackground ? theme.colors.secondary : "transparent"};
+    hasBackground ? theme.colors.tan : "transparent"};
   img {
     width: 25%;
   }
@@ -59,7 +64,7 @@ const ModalContainer = styled.div<{
     align-items: center;
     flex-direction: column;
     color: ${({ theme, darkFont }) =>
-      darkFont ? theme.colors.secondary : theme.colors.white};
+      darkFont ? theme.colors.secondary_dark : theme.colors.secondary};
     h4 {
       font-family: "Delius", serif;
       font-weight: bold;
@@ -69,7 +74,7 @@ const ModalContainer = styled.div<{
       color: white;
       border: none;
       border-radius: 0.3rem;
-      padding: 0.2rem 1rem;
+      padding: 0.2rem 4rem;
       font-size: 1.2rem;
       cursor: pointer;
       font-family: "Delius", serif;

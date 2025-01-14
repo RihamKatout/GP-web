@@ -6,7 +6,6 @@ import { useAuth } from "../../../context";
 import { Product, ProductSizeEnum } from "../../../types";
 import { CartService } from "../../../api";
 import { ProductColors, ProductSizes } from "../..";
-import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
 interface AddToCartSectionProps {
   product: Product;
   setSelectedSize: React.Dispatch<React.SetStateAction<ProductSizeEnum>>;
@@ -66,7 +65,7 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
 
   return (
     <AddToCartContainer>
-      <h3>Add to cart</h3>
+      <h5>Add to cart</h5>
 
       <SectionContent>
         {isLoggedIn ? (
@@ -83,12 +82,11 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
                 setSelectedSize={setSelectedSize}
                 setPrice={setPrice}
               />
-              <p style={{ marginTop: "1rem" }}>add your details</p>
               <Input
-                placeholder="Details"
+                placeholder="Add your details here"
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
-                style={{ width: "100%", marginTop: "-0.5rem" }}
+                style={{ width: "100%", marginTop: "0.5rem" }}
               />
               <SummarySection>
                 <div className="summary-section" style={{ gap: "0.8rem" }}>
@@ -126,6 +124,7 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
             message="Please login to add this product to your cart!"
             fontSize="1.2rem"
             darkFont={true}
+            maxWidth="100%"
           />
         )}
       </SectionContent>
@@ -134,25 +133,24 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
 };
 
 const AddToCartContainer = styled.div`
-  width: 100%;
+  width: auto;
   height: auto;
   display: flex;
   border-radius: 1rem;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 10px -4px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.17);
   background-color: ${({ theme }) => theme.colors.white};
-  h3 {
+  h5 {
     font-family: "Delius", serif;
     font-weight: bold;
     width: auto;
     padding-bottom: 0.5rem;
     margin: 1rem 1rem;
     color: ${({ theme }) => theme.colors.secondary_dark};
-    border-bottom: 3px solid ${({ theme }) => theme.colors.secondary_dark};
+    border-bottom: 2px solid ${({ theme }) => theme.colors.secondary_dark};
   }
   @media (max-width: 780px) {
-    width: auto;
     margin-top: 1rem;
   }
 `;
@@ -176,6 +174,9 @@ const SectionContent = styled.div`
     .product-info {
       width: 100%;
     }
+  }
+  & > div {
+    width: auto;
   }
 `;
 

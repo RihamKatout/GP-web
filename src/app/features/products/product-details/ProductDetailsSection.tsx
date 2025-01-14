@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Product, ProductSizeEnum } from "../../../types";
 import styled from "styled-components";
 import { ProductDetailsCard } from "./ProductDetailsCard";
-import { AddToCartSection, StoreCard } from "../..";
-import TabsContainer from "../Feedback/TabsContainer";
+import { AddToCartSection, ReviewSection, StoreCard } from "../..";
 
+//TODO: fix responsive
 interface ProductSectionProps {
   product: Product;
 }
@@ -27,9 +27,8 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ product }) => {
           setPrice={setPrice}
           isAvailable={isAvailable}
         />
-        <TabsContainer/>
+        <ReviewSection />
       </ProductAndReviewsContainer>
-      
 
       <StoreAndCartContainer>
         <StoreCard
@@ -46,7 +45,6 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ product }) => {
           isAvailable={isAvailable}
         />
       </StoreAndCartContainer>
-     
     </SectionContainer>
   );
 };

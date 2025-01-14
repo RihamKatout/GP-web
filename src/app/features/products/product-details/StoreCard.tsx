@@ -1,11 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  LeftStoreImg,
-  StoreImg,
-  StripedAwningsImg,
-  WhiteKidImg,
-} from "../../../../assets";
+import { StripedAwningsImg } from "../../../../assets";
 import { useNavigate } from "react-router-dom";
 
 interface StoreCardProps {

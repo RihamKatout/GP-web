@@ -12,6 +12,7 @@ export const Theme = {
     gray_light: "rgba(240, 240, 240, 1)",
     gray: "rgba(130, 130, 130, 1)",
     tan: "rgba(240, 230, 220, 1)", // tan
+    tan_dark: "rgb(69, 46, 25)", // tan
     tan_light: "rgb(248, 242, 237)", // light tan
     
   },
