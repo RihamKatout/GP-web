@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Product, ProductSizeEnum } from "../../../types";
 import styled from "styled-components";
 import { ProductDetailsCard } from "./ProductDetailsCard";
-import { AddToCartSection, CustomizableProduct, ReviewSection, StoreCard } from "../..";
+import { AddToCartSection, CustomizableProduct, StoreCard } from "../..";
 
 //TODO: fix responsive
 interface ProductSectionProps {

@@ -8,6 +8,7 @@ import {
   ShowcasePage,
   ForgotPassword,
   CartPage,
+  StorePage,
 } from "../pages";
 import { Button, MainBody } from "../styles/Global.styled";
 import SweetNavbar from "../SweetTouches/component/SweetNavbar";
@@ -76,16 +77,18 @@ const routerConfig = createBrowserRouter([
   {
     path: "/profile",
     element: (
-      
       <ProtectedRoute>
         <ProfilePage />
       </ProtectedRoute>
-      
     ),
   },
   {
     path: "/product/:id",
     Component: ProductDetailsPage,
+  },
+  {
+    path: "/store/:id",
+    Component: StorePage,
   },
   {
     path: "/shops",

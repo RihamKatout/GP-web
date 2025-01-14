@@ -30,3 +30,8 @@ export * from "./products/product-details/CustomizableProduct";
 
 // wishlist
 export * from "./wishlist/WishlistButton";
+
+// store
+export * from "./stores/StoreInformationSection";
+export * from "./stores/StoreOffersSection";
+export * from "./stores/StoreProductsSection";

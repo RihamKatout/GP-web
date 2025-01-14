@@ -20,6 +20,7 @@ export interface Product {
     [key in ProductSizeEnum]: number;
   };
   inWishlist: boolean;
+  numberOfReviews: number;
 }
 
 export interface ProductFilters {

@@ -23,3 +23,6 @@ export * from "./errors/LoggedInUserPage";
 
 // modals
 export * from "./modals/PleaseLogin";
+
+// store 
+export * from "./store/StorePage";

@@ -115,7 +115,7 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
               readOnly
               size="medium"
             />
-            <p style={{ color: "rgb(150, 150, 150)" }}> (42 reviews)</p>
+            <p style={{ color: "rgb(150, 150, 150)" }}> ({product.numberOfReviews} reviews)</p>
           </div>
           {isAvailable ? (
             <></>

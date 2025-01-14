@@ -7,6 +7,9 @@ export * from "./userManagement/User.types";
 // enums
 export * from "./enums/SectionIdEnum";
 export * from "./enums/ProductSizeEnum";
+export * from "./enums/StoreStatusEnum";
+
 // shopping
 export * from "./shopping/Product.types";
 export * from "./shopping/Categories.types";
+export * from "./shopping/Store.types";
