@@ -32,6 +32,16 @@ export const ProfilePage = () => {
     setIsEditing(false);
     // Add save logic (e.g., API call)
   };
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUserInfo((prev) => ({ ...prev, avatar: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   const handleLogout = () => {
     logoutContext();
     navigate("/");
@@ -81,7 +91,7 @@ export const ProfilePage = () => {
             <UserName>{`${userInfo.firstName} ${userInfo.lastName}`}</UserName>
             <UserInfo>{userInfo.email}</UserInfo>
         </ProfileHeaderColumn>
-       <EditButtonWrapper isEditing={isEditing}>
+        <EditButtonWrapper isEditing={isEditing}>
               <EditButton onClick={handleEditClick}>
                {isEditing ? 'Cancel' : 'Edit'}
               </EditButton>
@@ -94,6 +104,7 @@ export const ProfilePage = () => {
                     userInfo={userInfo}
                     handleChange={handleChange}
                     handleSave={handleSave}
+                    handleAvatarChange={handleAvatarChange}
                   />
                 </ProfileFormWrapper>
               )}
@@ -172,9 +183,11 @@ const Avatar = styled.img<{ isEditing: boolean }>`
 
 const UserName = styled.h2`
   margin: 5px 0;
+  color: ${({ theme }) => theme.colors.primary_dark};
 `;
 
 const UserInfo = styled.p`
+  margin: 5px ;
   color: #777;
 `;
 
@@ -200,13 +213,12 @@ const EditButton = styled.button`
 `;
 const EditButtonWrapper = styled.div<{ isEditing: boolean }>`
   display: flex;
-  justify-content: ${({ isEditing }) => (isEditing ? 'flex-start' : 'flex-end')};
-  margin-top: ${({ isEditing }) => (isEditing ? '15px' : '0')};
-  //grid-column: ${({ isEditing }) => (isEditing ? '1 / -1' : 'auto')};
-  /* grid-row: ${({ isEditing }) => (isEditing ? '2' : 'auto')}; */
-  margin-right: ${({ isEditing }) => (isEditing ? '230px' : '0')};
+  justify-content: ${({ isEditing }) => (isEditing ? 'center' : 'flex-end')};
+  margin-top: 20px; /* Adjust as needed for spacing */
   align-items: center;
+  width: 63%; /* Ensures it spans the full width of the card */
 `;
+
 
 const Section = styled.div`
   margin-top: 20px;
@@ -229,7 +241,7 @@ const ProfileContent = styled.div`
 const ProfileFormWrapper = styled.div`
   flex: 1;
   background-color: white;
-  padding: 20px;
+ // padding: 20px;
   border-radius: 1rem;
   box-shadow: 10px -4px 25px rgba(0, 0, 0, 0.2);
 `;
