@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { MainLayout } from "../../components/Layout";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
-import { ProfileInfoSection, Sidebar } from "../../features";
+import { MyStoresSection, ProfileInfoSection, Sidebar } from "../../features";
 import { ProfileSectionsEnum } from "../../types";
 
 export const ProfilePage = () => {
@@ -47,6 +47,7 @@ export const ProfilePage = () => {
 
         <MainContent>
           {selectedSection === ProfileSectionsEnum.Profile && <ProfileInfoSection />}
+          {selectedSection === ProfileSectionsEnum.MyStores && <MyStoresSection />}
           {/* {selectedSection === SectionName.Profile && ( */}
           {/* <>
             <ProfileContent>

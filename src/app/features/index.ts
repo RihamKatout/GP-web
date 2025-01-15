@@ -43,3 +43,4 @@ export * from "./profile/ProfileShopping";
 export * from "./profile/SidebarItems";
 export * from "./profile/Sidebar";
 export * from "./profile/ProfileInfoSection";
+export * from "./profile/MyStoresSection";

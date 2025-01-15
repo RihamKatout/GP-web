@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { SidebarItems } from "..";
 import { ProfileSectionsEnum } from "../../types";
+import { useAuth } from "../../context";
 
 interface SidebarProps {
   selectedSection: ProfileSectionsEnum;
@@ -12,18 +13,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
   selectedSection,
   setSelectedSection,
 }) => {
+  const { user } = useAuth();
   return (
     <SidebarContainer>
-      {SidebarItems.map((item) => (
-        <SidebarItem
-          key={item.id}
-          onClick={() => setSelectedSection(item.section)}
-          active={selectedSection === item.section}
-        >
-          {item.icon}
-          <p>{item.title}</p>
-        </SidebarItem>
-      ))}
+      {SidebarItems.map((item) => {
+        if (item.id === 3 && !user?.roles.includes("STORE_MANAGER")) {
+          return null;
+        }
+        if (
+          item.id === 4 &&
+          (!user?.roles.includes("ADMIN") || !user?.roles.includes("SUPPORT"))
+        ) {
+          return null;
+        }
+        return (
+          <SidebarItem
+            key={item.id}
+            onClick={() => setSelectedSection(item.section)}
+            active={selectedSection === item.section}
+          >
+            {item.icon}
+            <p>{item.title}</p>
+          </SidebarItem>
+        );
+      })}
     </SidebarContainer>
   );
 };
