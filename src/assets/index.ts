@@ -24,3 +24,7 @@ export const NavyRobotImg = navyRobot;
 
 import riham from "./characters/riham.png";
 export const RihamImg = riham;
+
+// default
+import defaultStore from "./default/default-store-icon.png";
+export const DefaultStoreImg = defaultStore;

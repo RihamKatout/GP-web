@@ -17,8 +17,6 @@ export * from "./admin/DashboardPage";
 // error
 export * from "./errors/LoggedInUserPage";
 export * from "./errors/UnauthorizedPage";
-
-// error
 export * from "./errors/LoggedInUserPage";
 
 // modals
@@ -26,3 +24,4 @@ export * from "./modals/PleaseLogin";
 
 // store 
 export * from "./store/StorePage";
+export * from "./store/StoreDashboardPage";

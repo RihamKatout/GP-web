@@ -1,6 +1,6 @@
 export enum StoreStatusEnum {
-  ACTIVE,
-  BANNED,
-  UNDER_REVIEW,
-  INACTIVE,
+  ACTIVE = "ACTIVE",
+  BANNED = "BANNED",
+  UNDER_REVIEW = "UNDER_REVIEW",
+  INACTIVE = "INACTIVE",
 }

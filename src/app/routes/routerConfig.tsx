@@ -9,6 +9,7 @@ import {
   ForgotPassword,
   CartPage,
   StorePage,
+  StoreDashboardPage,
 } from "../pages";
 import { Button, MainBody } from "../styles/Global.styled";
 import SweetNavbar from "../SweetTouches/component/SweetNavbar";
@@ -97,6 +98,14 @@ const routerConfig = createBrowserRouter([
         <Navbar />
         <Hero />
       </MainBody>
+    ),
+  },
+  {
+    path: "/store-dashboard/:id",
+    element: (
+      <ProtectedRoute role="STORE_MANAGER">
+        <StoreDashboardPage />
+      </ProtectedRoute>
     ),
   },
   {

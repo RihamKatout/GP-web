@@ -67,7 +67,7 @@ export const UnauthorizedPage = () => {
         <PageContainer>
           <img src={unauthorizedImg} alt="Unauthorized" />
           <div>
-            <h1>We cought you</h1>
+            <h1>We caught you</h1>
             <p>Oops! You are not allowed to access this page ...</p>
             {isLoggedIn ? (
               <Button onClick={() => navigate("/")}>Back to Home page</Button>
