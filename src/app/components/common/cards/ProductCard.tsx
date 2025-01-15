@@ -94,6 +94,26 @@ const ProductCardStyle = styled.div`
 `;
 
 // TODO : wishlist and cart functionality
+const CustomizableTag = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: ${({theme}) => theme.colors.primary_dark};
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  z-index: 2;
+`;
+const StoreName = styled.div`
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: ${({theme}) => theme.colors.primary_dark};
+  text-align: left;
+  margin-bottom: 0.3rem;
+`;
+
 export const ProductCard: React.FC<Product> = (product) => {
   const navigate = useNavigate();
   const isAvailable = product.isAvailable && product.stock > 0;
@@ -114,13 +134,20 @@ export const ProductCard: React.FC<Product> = (product) => {
         setIsModalOpen={setIsModalOpen}
       />
       <ProductCardStyle>
+        {/* Add the Customizable Tag */}
+        {product.isCustomizable && <CustomizableTag>3D</CustomizableTag>}
+
         <img src={product.imageurl} alt={product.name} />
 
         <FavoriteBorderIcon
           className="wishlist"
           onClick={handleAddToWishlist}
         />
+
         <div className="product-details">
+          {/* Add Store Name */}
+          <StoreName>{product.storeName}</StoreName>
+
           <h6 onClick={() => navigate("/product/" + product.id)}>
             {product.name}
             {!isAvailable && (

@@ -8,6 +8,7 @@ import img2 from '../../../assets/store/discount2.png';
 import img1 from '../../../assets/store/discountChar.png';
 
 import { Theme } from '../../utils/Theme';
+import { Divider } from 'antd';
 
 const offersData = [
   { id: 1, image: img, title: 'Offer 1', store: 'Sweet Touches', description: 'Get a 30% discount on all items!' },
@@ -36,18 +37,23 @@ export const OffersSection: React.FC = () => {
           margin: '1rem auto',
         }}
       >
-        <Typography
+      <div style={{ width: "80%", margin: "0 auto" }}>
+      <Divider style={{ borderColor: "#1a1a19b3" }}>
+      <Typography
           variant="h2"
           style={{
             fontFamily: 'DynaPuff',
             fontWeight: 400,
             fontSize: '3.7rem',
-            color: Theme.colors.secondary,
+            color: Theme.colors.secondary_dark,
             alignSelf: 'center',
           }}
         >
           Offers
         </Typography>
+      </Divider>
+      </div>
+        
 
         <Slider {...settings}>
           {offersData.map((offer) => (

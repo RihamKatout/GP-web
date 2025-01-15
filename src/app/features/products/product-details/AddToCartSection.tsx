@@ -1,11 +1,16 @@
 import { Input } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Upload } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
 import { PleaseLoginModal } from "../../../pages";
 import { useAuth } from "../../../context";
 import { Product, ProductSizeEnum } from "../../../types";
 import { CartService } from "../../../api";
 import { ProductColors, ProductSizes } from "../..";
+
+const { Dragger } = Upload;
+
 interface AddToCartSectionProps {
   product: Product;
   setSelectedSize: React.Dispatch<React.SetStateAction<ProductSizeEnum>>;
@@ -14,6 +19,7 @@ interface AddToCartSectionProps {
   setPrice: (price: number) => void;
   isAvailable: boolean;
 }
+
 export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
   product,
   setSelectedSize,
@@ -26,6 +32,7 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
   const [details, setDetails] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState<string>();
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
   const handleAddToCart = async () => {
     if (!isLoggedIn) {
@@ -41,14 +48,32 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
         size: selectedSize,
         quantity,
         details,
+        //image: uploadedImage, // Include uploaded image in the request
       });
     } catch (e: any) {
       console.error(e?.response?.data?.errors?.[0]);
     }
   };
-  const handleQuantityChange = async (value: number) => {
+
+  const handleQuantityChange = (value: number) => {
     if (value > 0 && value <= product.stock) {
       setQuantity(value);
+    }
+  };
+
+  const handleFileChange = (info: any) => {
+    const { file } = info;
+
+    if (file.originFileObj) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.result) {
+          setUploadedImage(reader.result as string); // Set image as a Base64 URI
+        }
+      };
+
+      reader.readAsDataURL(file.originFileObj);
     }
   };
 
@@ -88,6 +113,29 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
                 onChange={(e) => setDetails(e.target.value)}
                 style={{ width: "100%", marginTop: "0.5rem" }}
               />
+
+              {/* Image Uploader */}
+              {/* <Dragger
+                accept="image/*"
+                maxCount={2}
+                onChange={handleFileChange}
+                style={{ marginTop: "1rem", padding: "1rem" , width: '50%' , margin: '0 auto'}}
+              >
+                <p className="ant-upload-drag-icon">
+                  <InboxOutlined />
+                </p>
+                <p>Click or drag an image to upload</p>
+              </Dragger>
+              */}
+              {/* Preview 
+              {uploadedImage && (
+                <ImagePreview>
+                  <img src={uploadedImage} alt="Uploaded" />
+                </ImagePreview>
+              )}
+              */}
+               
+
               <SummarySection>
                 <div className="summary-section" style={{ gap: "0.8rem" }}>
                   <p style={{ fontSize: "0.85rem" }}>Qty</p>
@@ -104,9 +152,7 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
                     </button>
                     {quantity >= product.stock ? (
                       <span>Max stock reached</span>
-                    ) : (
-                      <></>
-                    )}
+                    ) : null}
                   </QuantityButtonsContainer>
                 </div>
                 <div className="summary-section">
@@ -114,7 +160,7 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
                   <p style={{ fontSize: "1.2rem" }}>{price * quantity}$</p>
                 </div>
                 <button className="add-button" onClick={handleAddToCart}>
-                  add
+                  Add
                 </button>
               </SummarySection>
             </div>
@@ -132,6 +178,17 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
   );
 };
 
+const ImagePreview = styled.div`
+  margin-top: 1rem;
+  text-align: center;
+
+  img {
+    max-width: 80%;
+    max-height: 120px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+`;
 const AddToCartContainer = styled.div`
   width: auto;
   height: auto;

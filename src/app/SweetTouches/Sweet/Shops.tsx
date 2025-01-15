@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Product } from "./Product";
 import {ProductDetails} from "./Pop-up"; // Import the Pop-up component
 import { Divider } from "antd";
-import { Dragger } from "../component/Dragger";
+import  {Dragger}  from "../component/Dragger";
 
 interface ShopProps {
   title: string;
