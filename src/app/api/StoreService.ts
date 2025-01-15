@@ -6,4 +6,12 @@ export const StoreService = {
     const response = await clientAxios.get(`/store/${id}`);
     return response.data;
   },
+  getStoresByStoreCategoryId: async (id?: number): Promise<Store[]> => {
+    if(!id) {
+      const response = await clientAxios.get("/store");
+      return response.data;
+    }   
+    const response = await clientAxios.get(`/store?storeCategoryId=${id}`);
+    return response.data;
+  },
 };

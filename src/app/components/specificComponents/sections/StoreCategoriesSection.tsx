@@ -1,11 +1,10 @@
-import { useQuery } from "react-query";
 import { CardsGrid } from "../../../styles";
 import { CategoryCard, Loader } from "../../common";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { StoreCategoryService } from "../../../api";
 import { Category } from "../../../types";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import React from "react";
 
 const CategoriesSectionContainer = styled.div`
   padding-top: 4rem;
@@ -18,11 +17,11 @@ const CategoriesSectionContainer = styled.div`
     width: 28%;
     height: 28%;
   }
-  h1{
+  h1 {
     margin: 0;
   }
   @media (max-width: 768px) {
-  padding-top: 2rem;
+    padding-top: 2rem;
     flex-direction: column;
     gap: 1rem;
     .shopImg {
@@ -32,15 +31,20 @@ const CategoriesSectionContainer = styled.div`
   }
 `;
 
-export const StoreCategoriesSection = () => {
+interface StoreCategoriesSectionProps {
+  categories?: Category[];
+  isLoading: boolean;
+  error: any;
+}
+export const StoreCategoriesSection: React.FC<StoreCategoriesSectionProps> = ({
+  categories,
+  isLoading,
+  error,
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
-  const {
-    data: categories,
-    isLoading,
-    error,
-  } = useQuery(["categories"], StoreCategoryService.getStoreCategories);
+
   if (error instanceof Error) return <p>Error: {error.message}</p>;
 
   return (
@@ -85,7 +89,7 @@ export const StoreCategoriesSection = () => {
           <Loader type="bouncing" />
         ) : (
           <CardsGrid style={{ padding: "0" }}>
-            {categories?.data.map((category: Category) => (
+            {categories?.map((category: Category) => (
               <CategoryCard
                 key={category.id}
                 title={category.name}
