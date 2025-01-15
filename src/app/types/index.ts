@@ -8,6 +8,7 @@ export * from "./userManagement/User.types";
 export * from "./enums/SectionIdEnum";
 export * from "./enums/ProductSizeEnum";
 export * from "./enums/StoreStatusEnum";
+export * from "./enums/ProfileSectionsEnum";
 
 // shopping
 export * from "./shopping/Product.types";

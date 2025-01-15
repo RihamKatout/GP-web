@@ -35,3 +35,11 @@ export * from "./wishlist/WishlistButton";
 export * from "./stores/StoreInformationSection";
 export * from "./stores/StoreOffersSection";
 export * from "./stores/StoreProductsSection";
+
+// profile
+export * from "./profile/ProfileActivity";
+export * from "./profile/ProfileForm";
+export * from "./profile/ProfileShopping";
+export * from "./profile/SidebarItems";
+export * from "./profile/Sidebar";
+export * from "./profile/ProfileInfoSection";

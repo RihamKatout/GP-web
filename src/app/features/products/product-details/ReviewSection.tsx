@@ -3,9 +3,8 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import img from "../../../../assets/store/riham.png";
 import { Rating } from "@mui/material";
-
+import { RihamImg } from "../../../../assets";
 // TODO:
 // open review as a model when it is clicked
 // handle view all reviews button
@@ -15,14 +14,14 @@ const reviewsData = [
   {
     id: 1,
     name: "John Doe",
-    avatar: img,
+    avatar: RihamImg,
     rating: 5,
     feedback: "Amazing service! The products exceeded my expectations.",
   },
   {
     id: 2,
     name: "Jane Smith",
-    avatar: img,
+    avatar: RihamImg,
     rating: 4,
     feedback: "Very satisfied with the quality and customer service.",
   },
