@@ -10,6 +10,7 @@ export const CartPage = () => {
   const [items, setItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
+    scrollTo({ top: 0, behavior: "smooth" });
     if (cartItems?.data) {
       setItems(cartItems.data);
     }

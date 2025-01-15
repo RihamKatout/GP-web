@@ -1,4 +1,3 @@
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import LoginForm from "../../features/authentication/LoginForm";
 import styled from "styled-components";
 import img from "../../../assets/store/login.png"

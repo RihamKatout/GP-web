@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MainLayout } from "../../components/Layout";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,14 @@ export const ProfilePage = () => {
   const [selectedSection, setSelectedSection] = useState<ProfileSectionsEnum>(
     ProfileSectionsEnum.Profile
   );
+
+  useEffect(() => {
+    scrollTo({ top: 0, behavior: "smooth" });
+    if (selectedSection === ProfileSectionsEnum.Logout) {
+      logoutContext();
+      navigate("/");
+    }
+  }, [selectedSection]);
 
   if (!user) {
     navigate("/login", { state: { from: "/profile" } });
@@ -46,8 +54,12 @@ export const ProfilePage = () => {
         />
 
         <MainContent>
-          {selectedSection === ProfileSectionsEnum.Profile && <ProfileInfoSection />}
-          {selectedSection === ProfileSectionsEnum.MyStores && <MyStoresSection />}
+          {selectedSection === ProfileSectionsEnum.Profile && (
+            <ProfileInfoSection />
+          )}
+          {selectedSection === ProfileSectionsEnum.MyStores && (
+            <MyStoresSection />
+          )}
           {/* {selectedSection === SectionName.Profile && ( */}
           {/* <>
             <ProfileContent>
