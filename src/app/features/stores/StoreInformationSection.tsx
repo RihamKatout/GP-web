@@ -47,7 +47,7 @@ const Container = styled.div`
 const CoverImage = styled.div`
   img {
     width: 100%;
-    height: 200px;
+    height: 220px;
     object-fit: cover;
     border-radius: 15px 15px 0 0;
   }

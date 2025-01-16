@@ -8,12 +8,13 @@ import { Pagination } from "@mui/material";
 import { ProductCard } from "../../components/common";
 import { Theme } from "../../utils/Theme";
 
-const DefaultPageSize = 8; // Display 4 products per page (2x2 grid)
+const DefaultPageSize = 8;
 
 interface StoreProductsSectionProps {
   productCategories: Category[];
   storeId: number;
 }
+
 export const StoreProductsSection: React.FC<StoreProductsSectionProps> = ({
   productCategories,
   storeId,
@@ -42,20 +43,19 @@ export const StoreProductsSection: React.FC<StoreProductsSectionProps> = ({
     updateSearchParams();
   }, [filters]);
 
-  // Fetch products
-  const [products, setProducts] = useState<Product[]>([]);
   const { data } = useQuery(
-    ["products", searchParams.toString()],
+    ["products", filters],
     () => ProductService.fetchProducts(filters),
     {
       keepPreviousData: true,
       onSuccess: (data) => {
-        setProducts(data.content);
+        console.log("API Response:", data);
         scrollTo({ top: 0, behavior: "smooth" });
-        console.log("data", data);
       },
     }
   );
+
+  const products = data?.content || [];
 
   return (
     <Container>
@@ -88,26 +88,20 @@ export const StoreProductsSection: React.FC<StoreProductsSectionProps> = ({
           ))}
         </Tabs>
       </TabsContainer>
-      <ProductsContainer>
+
+      <ProductsGrid>
         {products.length === 0 ? (
           <Message>No products found for the selected category.</Message>
-
         ) : (
-          
-          products.map((product) => <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 200px))",
-            gap: "1rem",
-            justifyContent: "center",
-            width: "100%",
-          }}
-        ><ProductCard key={product.id} {...product} /> </div>)
+          products.map((product) => (
+            <ProductCard key={product.id} {...product} />
+          ))
         )}
-      </ProductsContainer>
+      </ProductsGrid>
+
       <PaginationContainer>
         <Pagination
-          count={data?.page.totalPages}
+          count={data?.page?.totalPages || 1}
           page={(data?.page?.number ?? 0) + 1}
           onChange={(_, page) =>
             setFilters((prev) => ({ ...prev, page: page - 1 }))
@@ -118,56 +112,54 @@ export const StoreProductsSection: React.FC<StoreProductsSectionProps> = ({
   );
 };
 
-// Styled components
+// Styled Components
 const Container = styled.div`
-  grid-area: storeProducts;
-  background-color: #f9f9f9;
+  background-color: #fefefe;
   padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 1100px;
+  margin: 0 auto;
 `;
 
 const TabsContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 `;
 
 const Tabs = styled.div`
   display: flex;
-  //gap: 0.5rem;
-  width: 100%;
- // max-width: 600px;
-  justify-content: center;
-  border-bottom:3px solid ${Theme.colors.primary};
+  gap: 1rem;
+  flex-wrap: wrap;
 `;
 
 const Tab = styled.button<{ active: boolean }>`
-  flex: 1;
-  padding: 0.5rem 1rem;
-  margin: 0;
-  width: 100%;
-  text-align: center;
-  background-color: ${(props) => (props.active ? Theme.colors.primary_dark : "#f1f1f1")};
-  color: ${(props) => (props.active ? "#000000" : "#6c757d")};
-  border: 2px solid ${(props) => (props.active ? Theme.colors.primary : Theme.colors.secondary_light)};
-  //border-bottom: ${(props) => (props.active ? "none" : "1px solid #ccc")};
-  border-radius: 5px 5px 0 0;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-bottom: ${(props) =>
+    props.active ? `3px solid ${Theme.colors.primary}` : "none"};
+  background: ${(props) => (props.active ? "#ffffff" : "#f8f8f8")};
+  color: ${(props) => (props.active ? Theme.colors.primary_dark : "#666")};
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => (props.active ? "#fff" : "#e9ecef")};
+    background: #ffffff;
+    color: ${Theme.colors.primary_dark};
   }
 `;
 
-const ProductsContainer = styled.div`
-  display: flex;
-  grid-template-columns: repeat(2, 1fr); /* Two columns */
-  //gap: -30rem; /* Reduced gap between items */
-  //rgin: 1rem 0; /* Adjusted margin for better layout */
-  //padding: 0.5rem; /* Added padding for container */
-  background-color: #fff; /* Optional: Background color for the grid area */
-  border: 1px solid #e0e0e0; /* Optional: Border to define container boundaries */
-  border-radius: 5px; /* Optional: Rounded corners */
+const ProductsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  justify-content: center; /* Centers the grid content */
+  margin: 0 auto; /* Ensures the grid stays centered in its container */
+  max-width: 800px; /* Optionally limit the grid's width */
 `;
 
 const PaginationContainer = styled.div`
@@ -180,4 +172,5 @@ const Message = styled.p`
   text-align: center;
   color: #6c757d;
   font-size: 1.2rem;
+  grid-column: 1 / -1;
 `;

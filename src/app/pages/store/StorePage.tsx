@@ -5,6 +5,7 @@ import { StoreService } from "../../api/StoreService";
 import { MainLayout, SectionContainer } from "../../components/Layout";
 import { SectionIdEnum, Store } from "../../types";
 import {
+  OffersSection,
   StoreInformationSection,
   StoreOffersSection,
   StoreProductsSection,
@@ -39,7 +40,7 @@ export const StorePage = () => {
             <StoreOffersSection />
             <StoreProductsSection
               storeId={store?.id}
-              productCategories={store?.productCategories}
+              productCategories={store?.productCategories ?? []}
             />
           </StoreContainer>
         )}
