@@ -49,6 +49,7 @@ const RotatingCake = ({ children }: { children: ReactNode }) => {
 const GradientContainer = styled.div`
   width: 100%;
   height: 80vh;
+  margin: 0 auto;
   //background: rgb(63,94,251);
   background: radial-gradient(circle, #C47B83 0%, rgba(255,255,255,1) 63%);
   
@@ -235,12 +236,12 @@ const [cardMessage, setCardMessage] = useState<string>(""); // Save the message
       <div style={{ display: 'flex', flexDirection: 'row',justifyContent: 'center', width: '100%' }}>
        <CakeButton
         onClick={captureCakeScene}
-        style={{ marginRight: '1rem' }}
+        style={{ marginRight: '1rem',border: '2px solid #6a66667a' }}
       >
         Save & Shop
       </CakeButton>
       <CakeButton
-        onClick={handleOpenPopup}>Review</CakeButton>
+        onClick={handleOpenPopup} style={{ border: '2px solid #6a66667a' }}>Review</CakeButton>
      </div >
       {showReviewPopup && (
   <ReviewCake
@@ -342,7 +343,7 @@ const [cardMessage, setCardMessage] = useState<string>(""); // Save the message
 
        ]}
        
-        style={{ width: '100%' , height: '30px'}}/></ConfigProvider>
+        style={{ width: '100%' ,margin: '0 auto'}}/></ConfigProvider>
        <div ref={containerRef} style={{ width: '100%', margin: '0 auto' , justifyContent: 'center' , alignItems: 'center' , height: '80%'}}>
         <Canvas  camera={{ position: [0, 16, -22], fov: 18 }} 
         gl={{ preserveDrawingBuffer: true }}

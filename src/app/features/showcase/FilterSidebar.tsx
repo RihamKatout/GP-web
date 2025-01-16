@@ -4,6 +4,7 @@ import { CategoryCard, SearchField } from "../../components/common";
 import React, { useEffect } from "react";
 import { StoreCategoryService } from "../../api";
 import { Divider } from "antd";
+import { Theme } from "../../utils/Theme";
 
 const CategoriesContainer = styled("div")({
   display: "flex",
@@ -108,7 +109,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <Divider
         style={{borderColor: '#1a1a19b3' , fontWeight: "bold"}}
       >
-        Categories
+       <h3 style={{ fontFamily: "DynaPuff" ,  color: Theme.colors.secondary_dark , fontWeight: 400 , fontSize: '1.1rem'}}>Categories</h3> 
       </Divider>
       <CategoriesContainer>
         <div
@@ -150,7 +151,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <Divider
          style={{borderColor: '#1a1a19b3' , fontWeight: "bold"}}
       >
-        Product options
+       <h3 style={{ fontFamily: "DynaPuff" ,  color: Theme.colors.secondary_dark , fontWeight: 400 , fontSize: '1.1rem'}}>Product options</h3> 
       </Divider>
 
       {/* product options  */}
@@ -195,8 +196,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       Customizable
     </OptionLabel>
 
-    <Divider style={{ borderColor: "#d4d4d4", fontWeight: "bold" }}>
-      Price Range
+    <Divider style={{ borderColor: '#1a1a19b3' , fontWeight: "bold" }}>
+     <h3 style={{ fontFamily: "DynaPuff" ,  color: Theme.colors.secondary_dark , fontWeight: 400 , fontSize: '1.1rem'}}>Price Range</h3> 
     </Divider>
     <PriceRangeContainer>
       <h6>Price</h6>
@@ -231,30 +232,33 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 };
 const Button = styled("button")(({ theme }) => ({
   padding: "0.5rem 1rem",
-  backgroundColor: "#e4bcbc",
   color: "#1b1a1a",
-  border: "2px solid #131313ae",
+  border:'none',
   borderRadius: "15px",
   fontWeight: 600,
   width: "250px",
   textAlign: "center",
   cursor: "pointer",
+  fontFamily: "Overlock",
   transition: "background-color 0.3s",
-
-  "&:hover": {
-    backgroundColor: "white",
-  },
+  backgroundColor: Theme.colors.primary,
+  boxShadow: '0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset',
+  '&:hover': {
+      transform: "scale(1.05);",
+      boxShadow: '0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset',
+      backgroundColor: Theme.colors.secondary_light,
+       }
 }));
 
 const ProductOptionsContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
   gap: "1rem",
-  //marginTop: "1rem",
   padding: "0.5rem",
-  border: "1px solid #d4d4d4",
-  borderRadius: "10px",
-  backgroundColor: "#f9f9f9",
+  borderRadius: "15px",
+  backgroundColor: "#ffffff",
+  textAlign: "center",
+  //boxShadow: "0rem 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.065)",
 });
 
 const OptionLabel = styled("label")({
@@ -262,11 +266,14 @@ const OptionLabel = styled("label")({
   alignItems: "center",
   gap: "0.5rem",
   fontSize: "1rem",
-  fontWeight: 500,
+  fontWeight: 600,
   color: "#333",
+  fontFamily: "Delius Swash Caps",
+  textAlign: "center",
   "& input": {
     marginRight: "0.5rem",
     accentColor: "#e4bcbc",
+    
   },
   "&:hover": {
     color: "#1b1a1a",
@@ -283,8 +290,13 @@ const PriceRangeContainer = styled("div")({
 
 const PriceInput = styled("input")({
   padding: "0.4rem",
-  borderRadius: "0.25rem",
-  border: "1px solid #ccc",
+  borderRadius: 10,
   width: "30%",
   fontSize: "0.9rem",
+  boxShadow: "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5)",
+  border: "1px solid rgba(217, 217, 217, 0.5)",
+  "&:focus": {
+        outline: "none",
+        boxShadow: "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5)",
+      }
 });

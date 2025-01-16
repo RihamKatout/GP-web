@@ -20,16 +20,16 @@ const ToppingSelector: React.FC<ToppingSelectorProps> = ({ onSelectLayer, onSele
           <ColorLabel>Select The Layer:</ColorLabel>
         </Divider>
         </div>
-        <div style={{ width: '100%' }}>
-        <CakeButton onClick={() => onSelectLayer(2)} style={{fontWeight: '500' , marginRight: '10px' , marginLeft: '10px'}}>
+      <div style={{ width: '100%' }}>
+        <CakeButton onClick={() => onSelectLayer(2)} style={{marginRight: '10px' , marginLeft: '10px', marginBottom: '10px'}}>
           
           2 Layer
         </CakeButton>
-        <CakeButton onClick={() => onSelectLayer(3)} style={{fontWeight: '500', marginRight: '10px' , marginLeft: '10px'}}>
+        <CakeButton onClick={() => onSelectLayer(3)} style={{ marginRight: '10px' , marginLeft: '10px' }}>
           
           3 Layer
         </CakeButton>
-        <CakeButton onClick={() => onSelectLayer(4)} style={{fontWeight: '500', marginRight: '10px' , marginLeft: '10px'}}>
+        <CakeButton onClick={() => onSelectLayer(4)} style={{ marginRight: '10px' , marginLeft: '10px'}}>
           
           4 Layer
         </CakeButton>
@@ -45,26 +45,26 @@ const ToppingSelector: React.FC<ToppingSelectorProps> = ({ onSelectLayer, onSele
           <img
             src={roundIcon}
             alt="Round"
-            style={{ width: '60px', height: '60px', marginRight: '8px' }}
+            style={{ width: '60px', height: '60px', marginRight: '8px', marginBottom: '8px' }}
           />
-          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Round</div>
+          <div style={{marginTop: '5px' , textAlign: 'center' }}>Round</div>
         </CakeButton>
         
         <CakeButton onClick={() => onSelectShape('heart')} style={{ marginRight: '10px', marginLeft: '10px'}}>
           <img
             src={heartIcon}
             alt="Heart"
-            style={{ width: '60px', height: '60px', marginRight: '8px' }}
+            style={{ width: '60px', height: '60px', marginRight: '8px', marginBottom: '8px'  }}
           />
-          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Heart</div>
+          <div style={{marginTop: '5px' , textAlign: 'center' }}>Heart</div>
         </CakeButton>
         <CakeButton onClick={() => onSelectShape('square')} style={{ marginRight: '10px', marginLeft: '10px'}}>
           <img
             src={squareIcon}
             alt="Square"
-            style={{ width: '60px', height: '60px', marginRight: '8px' }}
+            style={{ width: '60px', height: '60px', marginRight: '8px' , marginBottom: '8px' }}
           />
-          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Square</div>
+          <div style={{marginTop: '5px' , textAlign: 'center' }}>Square</div>
           
         </CakeButton>
         </div>

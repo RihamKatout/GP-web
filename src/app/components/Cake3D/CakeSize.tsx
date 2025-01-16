@@ -25,19 +25,31 @@ const SizeLabel = styled.label<{ selected: boolean }>`
 
   div {
     padding: 10px 15px;
-    border: 2px solid #c47b83;
+    border:  1px solid rgba(217, 217, 217, 0.5);
     border-radius: 8px;
     background-color: ${(props) => (props.selected ? "#c47b83" : "#fff")};
     color: ${(props) => (props.selected ? "#fff" : "#c47b83")};
     transition: all 0.3s ease;
     text-align: center;
-    span.price {
-      color: black; /* Ensure the price is always black */
-    }
+    font-weight: bold;
+  font-size: 1rem;
+  font-family: 'Overlock', sans-serif; 
+  &:hover {
+    
+    transform: scale(1.05);
+    cursor: pointer;
+  }background-color: ${({ theme }) => theme.colors.wight}; 
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
 
-    &:hover {
-      transform: scale(1.05);
-    }
+  &:hover {
+    //background-color: ${({ theme }) => theme.colors.secondary}; 
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.028) inset;
+  }
+
   }
 `;
 

@@ -6,6 +6,7 @@ import img2 from '../../../assets/store/discount2.png';
 import img1 from '../../../assets/store/discountChar.png';
 import riham from '../../../assets/characters/riham.png';
 import riham1 from '../../../assets/characters/loginChar.png';
+import { Divider } from "antd";
 const offers = [
   {
     id: 1,
@@ -68,7 +69,12 @@ export const StoreOffersSection = () => {
 
   return (
     <Container>
+      <div style={{ width: "90%", margin: "0 auto" }}>
+      <Divider style={{ borderColor: "#1a1a19b3" }}>
       <Title>Exclusive Offers</Title>
+      </Divider>
+      </div>
+      
       <Slider>
         <Button onClick={handlePrev}>{"<"}</Button>
         <OfferCard>
@@ -88,7 +94,12 @@ export const StoreOffersSection = () => {
         ))}
       </Dots>
       <ReviewsSection>
-        <h2>Customer Reviews</h2>
+      <div style={{ width: "90%", margin: "0 auto" }}>
+      <Divider style={{ borderColor: "#1a1a19b3" }}>
+      <Title>Customer Reviews</Title>
+      </Divider>
+      </div>
+     
         <ReviewsList>
   {reviews.map((review) => (
     <ReviewCard key={review.id}>
@@ -111,10 +122,8 @@ const Container = styled.div`
   grid-area: storeOffers;
   display: flex;
   flex-direction: column;
-  //justify-content: center;
   align-items: center;
   background-color: #f8f9fa;
-  //padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   
@@ -123,8 +132,11 @@ const Container = styled.div`
 const Title = styled.h2`
   font-size: 1.5rem;
   font-weight: bold;
-  color: #333;
+  color: ${Theme.colors.secondary_dark};
   margin-top: 1rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-family:'Delius';
 `;
 
 const Slider = styled.div`
@@ -149,7 +161,7 @@ const OfferCard = styled.div`
   text-align: center;
    
   img {
-    width: 100%; /* Full width of the card */
+    width: 120%; /* Full width of the card */
     height: auto;
     border-radius: 10px;
     margin-bottom: 1rem;
@@ -158,6 +170,8 @@ const OfferCard = styled.div`
     font-size: 1.2rem;
     color: ${({ theme }) => theme.colors.primary_dark};
     margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-family: "Overlock", serif;
   }
 
   p {
@@ -199,19 +213,12 @@ const Dot = styled.button<{ active: boolean }>`
   }
 `;
 const ReviewsSection = styled.div`
-  margin-top: 4rem;
+  margin-top: 2rem;
   width: 100%;
   max-width: 600px;
   text-align: center;
   margin-bottom: 2rem;
   
-
-  h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 1rem;
-  }
 `;
 
 const ReviewsList = styled.div`
@@ -256,6 +263,8 @@ const ReviewerName = styled.h4`
   font-size: 1rem;
   color: ${({ theme }) => theme.colors.primary_dark};
   margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-family: "Overlock", serif;
 `;
 
 const ReviewText = styled.p`

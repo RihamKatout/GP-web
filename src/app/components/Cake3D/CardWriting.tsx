@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { CohereClient } from "cohere-ai";
 import { Divider } from "antd";
 import { ColorInput, ColorLabel } from "../../styles/CakeComponentStyles/ColorPicker.styled";
-//import { CakeButton } from "../../styles/CakeComponentStyles/Cake.styled";
 import AI from "../../../assets/cake/CardIcon/ai.png";
 import Hand from "../../../assets/cake/CardIcon/hand.png";
 
@@ -22,23 +21,33 @@ const DividerWrapper = styled.div`
 `;
 
 const RadioGroup = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   display: flex;
   gap: 10px;
   justify-content: center;
 
   label {
-    margin-right: 10px;
-    font-size: 16px;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    
     input {
       margin-right: 5px;
+      display: none;
+      
     }
+
     img {
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 45px;
       object-fit: contain;
-      border-radius: 5px;
+      border-radius: 15px;
+      margin-left: 5px;
+      border: 2px solid rgba(217, 217, 217, 0.5);
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.176) inset;
     }
   }
 `;
@@ -47,9 +56,26 @@ const Input = styled.input`
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  margin-bottom: 10px;
-  border: 2px solid #C47B83;
+  margin-bottom: 5px;
+  border: 2px solid #c47b83;
   border-radius: 4px;
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  
+  input {
+    flex: 1;
+    outline: none;
+    border-radius: 15px;
+   border: 1px solid rgb(220, 220, 220);
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5);
+      &:focus {
+        border: 2px solid #e4bcbc;
+      }
+  }
 `;
 
 const Textarea = styled.textarea`
@@ -57,56 +83,73 @@ const Textarea = styled.textarea`
   height: 80px;
   padding: 10px;
   font-size: 16px;
-  margin-bottom: 1px;
-  border: 2px solid #C47B83;
-  border-radius: 4px;
+  outline: none;
+  border: 2px solid #c47b83;
+  border-radius: 15px;
+  border: 1px solid rgb(220, 220, 220);
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5);
+      &:focus {
+        border: 2px solid #e4bcbc;
+      }
 `;
 
- const Button = styled.button`
+const Button = styled.button`
   background-color: #ffffff;
   color: #141313;
   width: 8.5em;
   height: 3.3em;
-  border: #C47B83 0.17em solid;
-  border-radius: 11px;
+  border: rgba(217, 217, 217, 0.5) 0.17em solid;
+  border-radius: 15px;
   text-align: center;
   transition: all 0.6s ease;
-  margin-top: 5px;
+  //margin-top: 5px;
+  font-family: 'Overlock', sans-serif; 
+  font-weight: bold;
+  box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
 
   &:hover {
-    //background-color: ${({theme}) => theme.colors.secondary};
-    transform: scale(1.05);
-    cursor: pointer;
+    //background-color: ${({ theme }) => theme.colors.secondary}; 
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.028) inset;
   }
-// `;
+`;
 
 const OutputContainer = styled.div`
-  margin-top: 20px;
+  //margin-top: 20px;
 
   h3 {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     font-size: 18px;
-    font-weight: bold; 
+    font-weight: bold;
+    
   }
 
   p {
-    border: 1px solid #ccc;
-    padding: 10px;
+    
+    padding: 15px;
     white-space: pre-line;
     font-size: 16px;
+    border-radius: 15px;
+    border: 1px solid rgb(220, 220, 220);
+    box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5);
+    color:${({theme})=> theme.colors.primary_dark}  
   }
 `;
-interface CardWritingProps {
-  onSaveMessage: (message: string) => void; // Callback to save the message
-}
-const CardWriting: React.FC<CardWritingProps> = ({ onSaveMessage }) =>{
-  const [output, setOutput] = useState<string>(""); // Stores the AI-generated message
-  const [loading, setLoading] = useState<boolean>(false); // Loading state
-  const [useAI, setUseAI] = useState<boolean>(false); // Toggle between handwriting and AI writing
 
-  const [customPrompt, setCustomPrompt] = useState<string>(""); // Custom input for AI
-  const [senderName, setSenderName] = useState<string>(""); // Sender's name
-  const [recipientName, setRecipientName] = useState<string>(""); // Recipient's name
+interface CardWritingProps {
+  onSaveMessage: (message: string) => void;
+}
+
+const CardWriting: React.FC<CardWritingProps> = ({ onSaveMessage }) => {
+  const [output, setOutput] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [useAI, setUseAI] = useState<boolean>(false);
+  const [customPrompt, setCustomPrompt] = useState<string>("");
+  const [senderName, setSenderName] = useState<string>("");
+  const [recipientName, setRecipientName] = useState<string>("");
 
   const generateText = async (): Promise<void> => {
     if (!customPrompt.trim() || !senderName.trim() || !recipientName.trim()) {
@@ -130,7 +173,10 @@ const CardWriting: React.FC<CardWritingProps> = ({ onSaveMessage }) =>{
         returnLikelihoods: "NONE",
       });
 
-      setOutput(response.generations[0].text.trim());
+      setOutput(
+        `From: ${senderName}\nTo: ${recipientName}\n\n` +
+        response.generations[0].text.trim()
+      );
     } catch (error) {
       console.error("Error generating text:", error);
       setOutput("Failed to generate text.");
@@ -140,7 +186,7 @@ const CardWriting: React.FC<CardWritingProps> = ({ onSaveMessage }) =>{
   };
 
   const saveMessage = () => {
-    const message = output || customPrompt; // Use AI output or handwritten message
+    const message = output || customPrompt;
     if (message.trim()) {
       onSaveMessage(message);
     }
@@ -155,112 +201,44 @@ const CardWriting: React.FC<CardWritingProps> = ({ onSaveMessage }) =>{
       </DividerWrapper>
 
       <RadioGroup>
-        <label
-        style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            cursor: 'pointer',
-          }}>
+        <label>
           <ColorInput
             type="radio"
             name="writingMode"
             value="handwriting"
             checked={!useAI}
             onChange={() => setUseAI(false)}
-            style={{ display: 'none' }}
           />
-          
-          <div
-                style={{
-                  width: '50px',
-                  height: '50px',
-                  
-                  display : 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: '15px',
-                  
-                  border: !useAI ? '2px solid #C47B83' : '1px solid #ccc',
-                }}
-              >
-              <img
-                src={Hand}
-                //alt={filling.name}
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  objectFit: 'contain',
-                  marginBottom: '10px',
-                  borderRadius: '5px',
-                }}
-              />
-              </div>
-            
-          <span style={{  fontSize: '15px' }}>Hand Writing</span>
+          <img src={Hand} alt="Handwriting" />
+          <span>Hand Writing</span>
         </label>
-        <label
-        style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            cursor: 'pointer',
-          }}>
+        <label>
           <ColorInput
             type="radio"
             name="writingMode"
             value="aiWriting"
             checked={useAI}
             onChange={() => setUseAI(true)}
-            style={{ display: 'none' }}
           />
-          
-          <div 
-            
-                style={{
-                  width: '50px',
-                  height: '50px',
-                  //backgroundColor: useAI ? '#C47B83' : '#ccc',
-                  display : 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: '15px',
-                  
-                  border: useAI ? '2px solid #C47B83' : '1px solid #ccc',
-                }}
-                  >
-                  <img
-                src={AI}
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  objectFit: 'contain',
-                  borderRadius: '5px',
-                  marginBottom: '10px',
-
-                }}
-              />
-                  </div>
-              
-            
-          <span style={{  fontSize: '15px' }}>AI</span>
+          <img src={AI} alt="AI Writing" />
+          <span>AI</span>
         </label>
       </RadioGroup>
 
-      <div>
+      <InputGroup>
         <Input
           type="text"
-          placeholder="Your name (Sender)"
+          placeholder="Sender"
           value={senderName}
           onChange={(e) => setSenderName(e.target.value)}
         />
         <Input
           type="text"
-          placeholder="Recipient's name"
+          placeholder=" Recipient"
           value={recipientName}
           onChange={(e) => setRecipientName(e.target.value)}
         />
-      </div>
+      </InputGroup>
 
       {useAI ? (
         <div>
@@ -268,32 +246,29 @@ const CardWriting: React.FC<CardWritingProps> = ({ onSaveMessage }) =>{
             placeholder="Write what you want the AI to include in the card..."
             value={customPrompt}
             onChange={(e) => setCustomPrompt(e.target.value)}
-            rows={5}
           />
           {output && (
-        <OutputContainer>
-          <h3>Generated Message:</h3>
-          <p>{output}</p>
-        </OutputContainer>
-      )}
+            <OutputContainer>
+              <h3>Generated Message:</h3>
+              <p>{output}</p>
+            </OutputContainer>
+          )}
           <Button onClick={generateText} disabled={loading}>
             {loading ? "Generating..." : "Generate AI"}
           </Button>
-          <Button onClick={saveMessage}>Save Message</Button>
+          <Button onClick={saveMessage} style={{ marginLeft: "10px" }}>
+            Save Message
+          </Button>
         </div>
       ) : (
         <Textarea
           placeholder="Write the message for the card by hand..."
           value={customPrompt}
           onChange={(e) => setCustomPrompt(e.target.value)}
-          rows={5}
         />
       )}
-     <div style={{ alignItems: 'center'}}>
-      
-        {!useAI && <Button onClick={saveMessage}>Save Message</Button>}
-      
-      </div>
+
+      {!useAI && <Button onClick={saveMessage}>Save Message</Button>}
     </CardContainer>
   );
 };

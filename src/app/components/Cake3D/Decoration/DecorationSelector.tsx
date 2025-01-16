@@ -16,28 +16,40 @@ import rose from '../../../../assets/cake/ToppingIcon/Decoration/rose.png'
 // Define the CakeButton component
 const CakeButton = styled.button<{ active: boolean }>`
    background-color: #ffffff;
-  color: #141313;
+  color: ${({theme}) => theme.colors.primary_dark};
   width: 7.5em;
   height: 5.5em;
-  border: #C47B83 0.17em solid;
-  border-radius: 11px;
+  border:  1px solid rgba(217, 217, 217, 0.5);
+  border-radius: 15px;
   text-align: center;
   transition: all 0.6s ease;
   margin-top: 8px;
   margin-right: 8px;
   margin-left: 10px;
-
-
+  font-weight: 700;
+  font-size: 1.1rem;
+  font-family: 'Overlock', sans-serif;
   &:hover {
-    //background-color: ${({theme}) => theme.colors.secondary};
+    
     transform: scale(1.05);
     cursor: pointer;
+  }background-color: ${({ theme }) => theme.colors.wight}; 
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+
+  &:hover {
+    //background-color: ${({ theme }) => theme.colors.secondary}; 
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.028) inset;
   }
 
   img {
     width: 80px;
     height: 80px;
     margin-right: 8px;
+    margin-top: 5px;
   }
 `;
 
@@ -77,7 +89,7 @@ const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecorat
           active={selectedDecoration === 'strawberry'}
         >
         <img src={strawberry}  />
-        <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Strawberry</div>
+        <div style={{marginTop: '8px' , textAlign: 'center' }}>Strawberry</div>
         </CakeButton>
         
         <CakeButton
@@ -85,7 +97,7 @@ const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecorat
           active={selectedDecoration === 'cherry'}
         >
           <img src={cherry}  />
-          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Cherry</div>
+          <div style={{marginTop: '8px' , textAlign: 'center' }}>Cherry</div>
         </CakeButton>
         
         
@@ -102,28 +114,28 @@ const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecorat
           active={selectedDecoration === 'choco'}
          >
           <img src={choco}  />
-          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Choco</div>
+          <div style={{marginTop: '8px' , textAlign: 'center' }}>Choco</div>
         </CakeButton>
         <CakeButton
           onClick={() => handleMidDecorationClick('raspberry')}
           active={selectedDecoration === 'raspberry'}
         >
           <img src={raspbery}  />
-          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Raspberry</div>
+          <div style={{marginTop: '8px' , textAlign: 'center' }}>Raspberry</div>
         </CakeButton>
         <CakeButton
           onClick={() => handleMidDecorationClick('chocoPar')}
           active={selectedDecoration === 'chocoPar'}
         >
           <img src={chocopar}  />
-          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>ChocoPar</div>
+          <div style={{marginTop: '8px' , textAlign: 'center' }}>ChocoPar</div>
         </CakeButton>
         <CakeButton
           onClick={() => handleMidDecorationClick('rose')}
           active={selectedDecoration === 'rose'}
         >
           <img src={rose}  />
-          <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Rose</div>
+          <div style={{marginTop: '8px' , textAlign: 'center' }}>Rose</div>
         </CakeButton>
 
       </div>

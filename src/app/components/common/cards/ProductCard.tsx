@@ -3,43 +3,49 @@ import { Product } from "../../../types";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Rating from "@mui/material/Rating";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { ProductPreview } from "../../../features";
+import cart1 from "../../../../assets/Icons/cart1.png"; // Ensure the file path is correct or place the file in the public folder
+  
 
 const ProductCardStyle = styled.div`
   width: 200px;
   display: flex;
-  height: 300px;
+  height: 320px;
   position: relative;
   flex-direction: column;
-  img {
+  box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.17);
+  border-radius: 15px;
+
+  .img1 {
     object-fit: fit;
-    border-radius: 10px;
+    border-radius: 15px;
     width: 100% !important;
-    height: 55% !important;
-    padding: 0 2rem 2rem 2rem;
-    background: linear-gradient(135deg, rgb(227, 227, 227), rgb(196, 162, 214));
+    height: 140px !important;
   }
+
   .product-details {
     display: flex;
     padding: 0.5rem;
-    margin-top: -1.5rem;
+    //margin-top: -1.5rem;
     border-radius: 10px;
-    height: 55% !important;
+    height: 55%;
     flex-direction: column;
     background-color: white;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.35);
+
     h6 {
       cursor: pointer;
       font-size: 1rem;
       font-weight: bold;
       font-family: "Delius Swash Caps", serif;
+
       &:hover {
         text-decoration: underline;
         color: rgb(144, 101, 167);
       }
     }
+
     .description {
       margin: 0.5rem 0;
       overflow: hidden;
@@ -50,55 +56,63 @@ const ProductCardStyle = styled.div`
       color: rgb(130, 130, 130);
       -webkit-box-orient: vertical;
     }
+
     .price {
-      gap: 0;
       display: flex;
       flex-direction: column;
+      margin-left: 12px;
+
       p {
         margin: 0;
-        padding: 0;
         font-weight: bold;
         font-size: 1.15rem;
       }
     }
+
     .price-cart {
-      gap: 2rem;
       display: flex;
       margin-top: auto;
-      align-items: flex-end;
+      align-items: center;
       justify-content: space-between;
+
       button {
-        height: 30px;
         border: none;
         background-color: transparent;
         border-radius: 50%;
         transition: background-color 0.5s;
-        &:hover {
+        
+        img {
+          object-fit: cover;
+          //height: 45px; /* Ensures consistent display */
+          width: 60px; 
+          margin-left: 1rem;
+          &:hover {
           cursor: pointer;
           background-color: rgba(161, 136, 173, 0.4);
+        }
         }
       }
     }
   }
+
   .wishlist {
     z-index: 1;
     top: 0.5rem;
     right: 0.5rem;
-    cursor: pointer;
     position: absolute;
     color: rgb(94, 94, 94);
+
     &:hover {
       color: rgb(0, 0, 0);
     }
   }
 `;
 
-// TODO : wishlist and cart functionality
 const CustomizableTag = styled.div`
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: ${({theme}) => theme.colors.primary_dark};
+  background-color: ${({ theme }) => theme.colors.primary_dark};
   color: white;
   font-size: 0.8rem;
   font-weight: bold;
@@ -106,24 +120,28 @@ const CustomizableTag = styled.div`
   border-radius: 5px;
   z-index: 2;
 `;
+
 const StoreName = styled.div`
   font-size: 0.9rem;
-  font-weight: bold;
-  color: ${({theme}) => theme.colors.primary_dark};
+  //font-weight: bold;
+  color: ${({ theme }) => theme.colors.primary_dark};
   text-align: left;
   margin-bottom: 0.3rem;
+  font-family:"Delius Swash Caps", serif;
 `;
 
 export const ProductCard: React.FC<Product> = (product) => {
   const navigate = useNavigate();
   const isAvailable = product.isAvailable && product.stock > 0;
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleAddToCart = () => {
     setIsModalOpen(true);
-    console.log("added to cart");
+    console.log("Added to cart");
   };
+
   const handleAddToWishlist = () => {
-    console.log("added to wishlist");
+    console.log("Added to wishlist");
   };
 
   return (
@@ -134,10 +152,9 @@ export const ProductCard: React.FC<Product> = (product) => {
         setIsModalOpen={setIsModalOpen}
       />
       <ProductCardStyle>
-        {/* Add the Customizable Tag */}
         {product.isCustomizable && <CustomizableTag>3D</CustomizableTag>}
 
-        <img src={product.imageurl} alt={product.name} />
+        <img src={product.imageurl} alt={product.name} className="img1" />
 
         <FavoriteBorderIcon
           className="wishlist"
@@ -145,8 +162,7 @@ export const ProductCard: React.FC<Product> = (product) => {
         />
 
         <div className="product-details">
-          {/* Add Store Name */}
-          <StoreName>{product.storeName}</StoreName>
+          <StoreName>--{product.storeName}--</StoreName>
 
           <h6 onClick={() => navigate("/product/" + product.id)}>
             {product.name}
@@ -159,10 +175,11 @@ export const ProductCard: React.FC<Product> = (product) => {
                   textDecoration: "underline",
                 }}
               >
-                {product.isAvailable ? "Out of stock" : "unavailable"}
+                {product.isAvailable ? "Out of stock" : "Unavailable"}
               </span>
             )}
           </h6>
+
           <Rating
             name="half-rating-read"
             defaultValue={product.rating}
@@ -170,16 +187,15 @@ export const ProductCard: React.FC<Product> = (product) => {
             readOnly
             size="small"
           />
+
           <p className="description">{product.description}</p>
+
           <div className="price-cart">
             <div className="price">
               <p>${product.price}</p>
             </div>
             <button onClick={handleAddToCart}>
-              <AddShoppingCartIcon
-                sx={{ color: "#6a437c", height: "20px", fontWeight: "700" }}
-              />
-              {/* Add to cart */}
+              <img src={cart1} alt="Add to Cart" />
             </button>
           </div>
         </div>
