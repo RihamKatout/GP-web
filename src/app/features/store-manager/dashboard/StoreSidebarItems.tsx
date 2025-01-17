@@ -1,5 +1,4 @@
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
-import LogoutIcon from "@mui/icons-material/Logout";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import Inventory2Icon from '@mui/icons-material/Inventory2';

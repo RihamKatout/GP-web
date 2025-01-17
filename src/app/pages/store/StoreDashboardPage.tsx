@@ -3,14 +3,18 @@ import styled from "styled-components";
 import StoreIcon from "@mui/icons-material/Store";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { StoreDashboardSectionsEnum } from "../../types";
-import { StoreDashboardSection, StoreDashboardSidebar } from "../../features";
-import { useParams } from "react-router-dom";
+import {
+  ProductsManagementSection,
+  StoreAnalyticsSection,
+  StoreDashboardSidebar,
+} from "../../features";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const StoreDashboardPage = () => {
   const [selectedSection, setSelectedSection] =
     useState<StoreDashboardSectionsEnum>(StoreDashboardSectionsEnum.Dashboard);
   const { id } = useParams();
-
+  const navigate = useNavigate();
   return (
     <Container>
       <StoreName>
@@ -22,14 +26,18 @@ export const StoreDashboardPage = () => {
       </SectionName>
       <Home>
         <NotificationsIcon fontSize="large" />
-        <button>Back to home</button>
+        <button onClick={() => navigate("/")}>Back to home</button>
       </Home>
       <StoreDashboardSidebar
         selectedSection={selectedSection}
         setSelectedSection={setSelectedSection}
       />
       {selectedSection === StoreDashboardSectionsEnum.Dashboard && (
-        <StoreDashboardSection />
+        <StoreAnalyticsSection />
+      )}
+
+      {selectedSection === StoreDashboardSectionsEnum.Products && (
+        <ProductsManagementSection />
       )}
     </Container>
   );
@@ -47,6 +55,27 @@ const Container = styled.div`
     "sidebar main main";
   p {
     margin: 0;
+  }
+  .main {
+    gap: 0.5rem;
+    width: auto;
+    height: fit-content;
+    grid-area: main;
+    display: grid;
+    padding: 0 1rem 1rem 1rem;
+    p {
+      margin: 0;
+      color: ${({ theme }) => theme.colors.gray};
+    }
+    & > div {
+      gap: 0.5rem;
+      padding: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+      background-color: ${({ theme }) => theme.colors.gray_light};
+    }
   }
 `;
 
