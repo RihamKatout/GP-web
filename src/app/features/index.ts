@@ -47,3 +47,5 @@ export * from "./profile/ProfileInfoSection";
 // store manager
 export * from "./store-manager/MyStoresSection";
 export * from "./store-manager/ManagerStoreCard";
+export * from "./store-manager/dashboard/StoreDashboardSidebar";
+export * from "./store-manager/dashboard/StoreDashboardSection";

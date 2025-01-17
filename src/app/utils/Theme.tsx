@@ -10,13 +10,14 @@ export const Theme = {
     secondary_extra_light: "rgb(229, 237, 253)", // extra light navy
     white: "rgba(255, 255, 255, 1)",
     black: "rgba(0, 0, 0, 1)",
-    gray_light: "rgba(240, 240, 240, 1)",
+    gray_light: "rgb(245, 245, 245)",
     gray: "rgba(130, 130, 130, 1)",
     tan: "rgba(240, 230, 220, 1)", // tan
     tan_dark: "rgb(206, 88, 75)", // tan
     tan_light: "rgb(248, 242, 237)", // light tan
     danger: "rgb(193, 74, 74)",
     success: "rgb(50, 156, 50)",
+    orange: "rgb(255, 140, 0)",
   },
   fonts: {
     family: "Delius",
