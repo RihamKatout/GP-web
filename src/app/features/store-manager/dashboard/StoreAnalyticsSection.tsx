@@ -11,9 +11,11 @@ import { Product } from "../../../types";
 
 interface StoreAnalyticsSectionProps {
   lowStock: Product[];
+  handleOpenProduct: (productId: number) => void;
 }
 export const StoreAnalyticsSection: React.FC<StoreAnalyticsSectionProps> = ({
   lowStock,
+  handleOpenProduct
 }) => {
   const topProducts = [
     { name: "product1", id: 1, orders: 10, revenue: 200 },
@@ -87,7 +89,7 @@ export const StoreAnalyticsSection: React.FC<StoreAnalyticsSectionProps> = ({
         ))}
       </VerticalContainer>
 
-      <LowStock lowStock={lowStock}/>
+      <LowStock lowStock={lowStock} handleOpenProduct={handleOpenProduct} />
       <VerticalContainer style={{ gridArea: "categories1" }}>
         <p>Revenue by categories</p>
       </VerticalContainer>

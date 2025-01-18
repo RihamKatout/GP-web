@@ -14,4 +14,7 @@ export const ProductService = {
     const response = await clientAxios.get(`/product/${id}`);
     return response.data;
   },
+  deleteProduct: async (id: number): Promise<void> => {
+    await clientAxios.delete(`/product/${id}`);
+  },
 };

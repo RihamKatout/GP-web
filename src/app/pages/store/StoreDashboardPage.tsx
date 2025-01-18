@@ -4,6 +4,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Product, StoreDashboardSectionsEnum } from "../../types";
 import {
+  ProductDetailsSection,
   ProductsManagementSection,
   StoreAnalyticsSection,
   StoreDashboardSidebar,
@@ -13,11 +14,14 @@ import { useQuery } from "react-query";
 import { StoreManagerService } from "../../api";
 
 export const StoreDashboardPage = () => {
-  const [selectedSection, setSelectedSection] =
-    useState<StoreDashboardSectionsEnum>(StoreDashboardSectionsEnum.Dashboard);
-  const [lowStock, setLowStock] = useState<Product[]>([]);
   const { id } = useParams();
   const navigate = useNavigate();
+  const [productId, setProductId] = useState<number | undefined>(undefined);
+  const [lowStock, setLowStock] = useState<Product[]>([]);
+  const [selectedSection, setSelectedSection] =
+    useState<StoreDashboardSectionsEnum>(StoreDashboardSectionsEnum.Dashboard);
+
+  // get analytics data
   const { data } = useQuery(
     ["analytics", id],
     () => StoreManagerService.getStoreAnalytics(Number(id)),
@@ -27,9 +31,14 @@ export const StoreDashboardPage = () => {
         setLowStock(data.lowStock || []);
       },
       refetchOnWindowFocus: false,
-      staleTime: Infinity,
     }
   );
+
+  const handleOpenProduct = (productId: number) => {
+    setSelectedSection(StoreDashboardSectionsEnum.ProductDetails);
+    setProductId(productId);
+  };
+
   return (
     <Container>
       <StoreName>
@@ -46,9 +55,16 @@ export const StoreDashboardPage = () => {
       <StoreDashboardSidebar
         selectedSection={selectedSection}
         setSelectedSection={setSelectedSection}
+        setProductId={setProductId}
       />
+
+      {selectedSection === StoreDashboardSectionsEnum.ProductDetails &&
+        productId && <ProductDetailsSection productId={productId}/>}
       {selectedSection === StoreDashboardSectionsEnum.Dashboard && (
-        <StoreAnalyticsSection lowStock={lowStock} />
+        <StoreAnalyticsSection
+          lowStock={lowStock}
+          handleOpenProduct={handleOpenProduct}
+        />
       )}
 
       {selectedSection === StoreDashboardSectionsEnum.Products && (
@@ -56,6 +72,7 @@ export const StoreDashboardPage = () => {
           lowStock={lowStock}
           storeId={Number(id)}
           storeCategoryId={data?.storeCategoryId || 0}
+          handleOpenProduct={handleOpenProduct}
         />
       )}
     </Container>

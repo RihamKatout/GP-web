@@ -4,9 +4,13 @@ import { Product } from "../../../../types";
 
 interface LowStockProps {
   lowStock: Product[];
+  handleOpenProduct: (productId: number) => void;
 }
 
-export const LowStock: React.FC<LowStockProps> = ({ lowStock }) => {
+export const LowStock: React.FC<LowStockProps> = ({
+  lowStock,
+  handleOpenProduct,
+}) => {
   return (
     <VerticalContainer
       style={{
@@ -29,7 +33,12 @@ export const LowStock: React.FC<LowStockProps> = ({ lowStock }) => {
       </div>
       {lowStock?.map((product) => (
         <div key={product.id} className="lowStock">
-          <p>{product.name}</p>
+          <p
+            className="productName"
+            onClick={() => handleOpenProduct(product.id)}
+          >
+            {product.name}
+          </p>
           <p>{product.stock}</p>
         </div>
       ))}

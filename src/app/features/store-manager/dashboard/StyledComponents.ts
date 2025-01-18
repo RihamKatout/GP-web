@@ -33,5 +33,11 @@ export const VerticalContainer = styled.div`
     gap: 0.5rem;
     grid-template-columns: 5fr 1fr;
     grid-template-rows: 1fr;
+    .productName {
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 `;

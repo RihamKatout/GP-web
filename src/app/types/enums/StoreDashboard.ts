@@ -8,4 +8,5 @@ export enum StoreDashboardSectionsEnum {
   Log = "Log",
   Reports = "Reports",
   Settings = "Settings",
+  ProductDetails = "Product details",
 }

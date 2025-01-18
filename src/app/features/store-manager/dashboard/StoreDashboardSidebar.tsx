@@ -1,15 +1,17 @@
 import styled from "styled-components";
 import { StoreSidebarItems } from "./StoreSidebarItems";
-import React, { useState } from "react";
+import React from "react";
 import { StoreDashboardSectionsEnum } from "../../../types";
 
 interface StoreDashboardSidebarProps {
   selectedSection: StoreDashboardSectionsEnum;
   setSelectedSection: (section: StoreDashboardSectionsEnum) => void;
+  setProductId: (productId?: number) => void;
 }
 export const StoreDashboardSidebar: React.FC<StoreDashboardSidebarProps> = ({
   selectedSection,
   setSelectedSection,
+  setProductId,
 }) => {
   return (
     <Container>
@@ -17,7 +19,10 @@ export const StoreDashboardSidebar: React.FC<StoreDashboardSidebarProps> = ({
         <SidebarItem
           key={item.id}
           active={selectedSection === item.section}
-          onClick={() => setSelectedSection(item.section)}
+          onClick={() => {
+            setSelectedSection(item.section);
+            setProductId(undefined);
+          }}
         >
           {item.icon}
           <p>{item.title}</p>
