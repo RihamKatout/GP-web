@@ -21,6 +21,7 @@ export interface Product {
   };
   inWishlist: boolean;
   numberOfReviews: number;
+  categoryId?: number;
 }
 
 export interface ProductFilters {

@@ -5,87 +5,76 @@ import { DashboardCard } from "./StyledComponents";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { LowStock } from "./components/LowStock";
-import { useState } from "react";
-import { set } from "zod";
+import React, { useEffect, useState } from "react";
+import { Category, Product, ProductFilters } from "../../../types";
+import { useQuery } from "react-query";
+import { ProductService, StoreCategoryService } from "../../../api";
 
-const ActiveProducts = [
-  {
-    id: 1,
-    name: "Product 1",
-    price: 200,
-    orders: 20,
-    stock: 100,
-    imageURL:
-      "https://drive.google.com/thumbnail?id=1gMy5DYxIIIB5QSX0y4HTRwb-sL55INpc",
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    price: 300,
-    orders: 30,
-    stock: 200,
-    imageURL:
-      "https://drive.google.com/thumbnail?id=1gMy5DYxIIIB5QSX0y4HTRwb-sL55INpc",
-  },
-  {
-    id: 3,
-    name: "Product 3",
-    price: 400,
-    orders: 40,
-    stock: 300,
-    imageURL:
-      "https://drive.google.com/thumbnail?id=1gMy5DYxIIIB5QSX0y4HTRwb-sL55INpc",
-  },
-  {
-    id: 4,
-    name: "Product 4",
-    price: 500,
-    orders: 50,
-    stock: 400,
-    imageURL:
-      "https://drive.google.com/thumbnail?id=1gMy5DYxIIIB5QSX0y4HTRwb-sL55INpc",
-  },
-];
+interface ProductsManagementSectionProps {
+  lowStock: Product[];
+  storeId: number;
+  storeCategoryId: number;
+}
 
-const ArchivedProducts = [
-  {
-    id: 2,
-    name: "Product 2",
-    price: 300,
-    orders: 30,
-    stock: 200,
-    imageURL:
-      "https://drive.google.com/thumbnail?id=1gMy5DYxIIIB5QSX0y4HTRwb-sL55INpc",
-  },
-  {
-    id: 3,
-    name: "Product 3",
-    price: 400,
-    orders: 40,
-    stock: 300,
-    imageURL:
-      "https://drive.google.com/thumbnail?id=1gMy5DYxIIIB5QSX0y4HTRwb-sL55INpc",
-  },
-  {
-    id: 4,
-    name: "Product 4",
-    price: 500,
-    orders: 50,
-    stock: 400,
-    imageURL:
-      "https://drive.google.com/thumbnail?id=1gMy5DYxIIIB5QSX0y4HTRwb-sL55INpc",
-  },
-];
-
-export const ProductsManagementSection = () => {
+export const ProductsManagementSection: React.FC<
+  ProductsManagementSectionProps
+> = ({ lowStock, storeId, storeCategoryId }) => {
   // true = active products, false = archived products
   const [productsType, setProductsType] = useState<boolean>(true);
-  const [products, setProducts] = useState(ActiveProducts);
-
+  const [activeProducts, setActiveProducts] = useState<Product[]>([]);
+  const [archivedProducts, setArchivedProducts] = useState<Product[]>([]);
+  const [productsToDisplay, setProductsToDisplay] = useState<Product[]>([]);
+  const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
+  const [categories, setCategories] = useState<Category[]>([]);
+  useEffect(() => {
+    let tmpProducts = productsType ? activeProducts : archivedProducts;
+    if (categoryId) {
+      setProductsToDisplay(
+        tmpProducts.filter((product) => product.categoryId === categoryId)
+      );
+    } else setProductsToDisplay(tmpProducts);
+  }, [productsType, categoryId, activeProducts, archivedProducts]);
   const handleProductsTypeChange = () => {
-    setProducts(productsType ? ArchivedProducts : ActiveProducts);
     setProductsType((prev) => !prev);
   };
+
+  const handleCategoryChange = (categoryId: string) => {
+    setCategoryId(Number(categoryId));
+  };
+
+  const filters: ProductFilters = {
+    storeId: storeId,
+    page: 0,
+    size: 20,
+  };
+
+  // fetch store products
+  useQuery(["products", storeId], () => ProductService.fetchProducts(filters), {
+    keepPreviousData: true,
+    onSuccess: (data) => {
+      setActiveProducts(data.content.filter((product) => product.isAvailable));
+      setArchivedProducts(
+        data.content.filter((product) => !product.isAvailable)
+      );
+      scrollTo({ top: 0, behavior: "smooth" });
+    },
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+  });
+
+  // fetch store categories
+  useQuery(
+    ["categories", storeId],
+    () => StoreCategoryService.getStoreCategoryById(storeCategoryId),
+    {
+      keepPreviousData: true,
+      onSuccess: (data) => {
+        setCategories(data.data.productCategories);
+      },
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+    }
+  );
 
   return (
     <Container className="main">
@@ -96,11 +85,14 @@ export const ProductsManagementSection = () => {
           <p>200</p>
         </div>
       </DashboardCard>
-      <DashboardCard style={{ gridArea: "addProduct", cursor: "pointer" }}>
+      <div
+        className="addProduct"
+        style={{ boxShadow: "none", backgroundColor: "transparent" }}
+      >
         <AddCircleIcon style={{ color: "green" }} />
         <h6>Add product</h6>
-      </DashboardCard>
-      <LowStock />
+      </div>
+      <LowStock lowStock={lowStock} />
       <ProductsContainer>
         <div className="products-header">
           <button
@@ -123,13 +115,26 @@ export const ProductsManagementSection = () => {
           >
             Archived
           </button>
+          <div className="category-filter">
+            <p>Category</p>
+            <CategorySelect
+              onChange={(e) => handleCategoryChange(e.target.value)}
+            >
+              <option value={undefined}>All</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </CategorySelect>
+          </div>
         </div>
         <div className="products-list">
           <div
             className="product"
             style={{
               fontSize: "0.9rem",
-              backgroundColor: "rgba(255, 140, 0, 0.3)",
+              borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
               padding: "0.2rem",
             }}
           >
@@ -141,13 +146,14 @@ export const ProductsManagementSection = () => {
             <p>Stock</p>
           </div>
 
-          {products.map((product, index) => (
+          {productsToDisplay.map((product, index) => (
             <div key={product.id} className="product">
               <span>{index + 1}.</span>
-              <img src={product.imageURL} alt="product" />
+              <img src={product.imageurl} alt="product" />
               <p>{product.name}</p>
               <p>{product.price} $</p>
-              <p>{product.orders}</p>
+              {/* <p>{product.orders}</p> */}
+              <p>200</p>
               <p>{product.stock}</p>
               <EditIcon style={{ color: "gray" }} />
               <DeleteForeverIcon style={{ color: "red" }} />
@@ -165,6 +171,27 @@ const Container = styled.div`
   grid-template-areas:
     "card1 addProduct none none"
     "products products products lowStock";
+  .addProduct {
+    grid-area: addProduct;
+    h6 {
+      margin: 0;
+      color: ${({ theme }) => theme.colors.secondary_dark};
+    }
+    svg {
+      font-size: 1.7rem;
+      color: ${({ theme }) => theme.colors.success};
+    }
+  }
+  .category-filter {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    gap: 0.5rem;
+    p {
+      font-size: 0.8rem;
+      color: ${({ theme }) => theme.colors.black};
+    }
+  }
 `;
 
 const ProductsContainer = styled.div`
@@ -178,6 +205,7 @@ const ProductsContainer = styled.div`
     width: 100%;
     gap: 0.5rem;
     display: flex;
+    margin-bottom: 0.5rem;
     justify-content: flex-start;
     button {
       border-radius: 0.5rem;
@@ -189,6 +217,8 @@ const ProductsContainer = styled.div`
 
   .products-list {
     width: 100%;
+    max-height: 70vh;
+    overflow-y: scroll;
     .product {
       display: grid;
       grid-template-columns: 0.2fr 0.4fr 2fr 1fr 1fr 1fr 0.2fr 0.2fr;
@@ -214,3 +244,9 @@ const ProductsContainer = styled.div`
     }
   }
 `;
+
+const CategorySelect = styled("select")({
+  padding: "0.1rem",
+  borderRadius: "0.5rem",
+  border: "2px solid #1b1a1a",
+});

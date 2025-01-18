@@ -31,7 +31,7 @@ export const VerticalContainer = styled.div`
     width: 100%;
     display: grid;
     gap: 0.5rem;
-    grid-template-columns: 3fr 1fr 1fr;
+    grid-template-columns: 5fr 1fr;
     grid-template-rows: 1fr;
   }
 `;

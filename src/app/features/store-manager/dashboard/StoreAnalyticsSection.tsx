@@ -5,9 +5,16 @@ import PendingIcon from "@mui/icons-material/Pending";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import { DashboardCard, VerticalContainer } from "./StyledComponents";
 import { LowStock } from "./components/LowStock";
+import { Product } from "../../../types";
 
 // TODO: fix responsive
-export const StoreAnalyticsSection = () => {
+
+interface StoreAnalyticsSectionProps {
+  lowStock: Product[];
+}
+export const StoreAnalyticsSection: React.FC<StoreAnalyticsSectionProps> = ({
+  lowStock,
+}) => {
   const topProducts = [
     { name: "product1", id: 1, orders: 10, revenue: 200 },
     { name: "product2", id: 2, orders: 5, revenue: 100 },
@@ -54,7 +61,7 @@ export const StoreAnalyticsSection = () => {
         <p>Revenues</p>
       </VerticalContainer>
       <VerticalContainer style={{ gridArea: "topProducts" }}>
-        <p>Top Products</p>
+        <p>Top Products by orders</p>
         <div
           className="product"
           style={{
@@ -80,7 +87,7 @@ export const StoreAnalyticsSection = () => {
         ))}
       </VerticalContainer>
 
-      <LowStock />
+      <LowStock lowStock={lowStock}/>
       <VerticalContainer style={{ gridArea: "categories1" }}>
         <p>Revenue by categories</p>
       </VerticalContainer>

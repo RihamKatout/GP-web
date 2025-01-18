@@ -2,24 +2,39 @@ import { useState } from "react";
 import styled from "styled-components";
 import StoreIcon from "@mui/icons-material/Store";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { StoreDashboardSectionsEnum } from "../../types";
+import { Product, StoreDashboardSectionsEnum } from "../../types";
 import {
   ProductsManagementSection,
   StoreAnalyticsSection,
   StoreDashboardSidebar,
 } from "../../features";
 import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { StoreManagerService } from "../../api";
 
 export const StoreDashboardPage = () => {
   const [selectedSection, setSelectedSection] =
     useState<StoreDashboardSectionsEnum>(StoreDashboardSectionsEnum.Dashboard);
+  const [lowStock, setLowStock] = useState<Product[]>([]);
   const { id } = useParams();
   const navigate = useNavigate();
+  const { data } = useQuery(
+    ["analytics", id],
+    () => StoreManagerService.getStoreAnalytics(Number(id)),
+    {
+      enabled: !!id,
+      onSuccess: (data) => {
+        setLowStock(data.lowStock || []);
+      },
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+    }
+  );
   return (
     <Container>
       <StoreName>
         <StoreIcon fontSize="large" />
-        <p>Sweet touches</p>
+        <p>{data?.storeName}</p>
       </StoreName>
       <SectionName>
         <p>{selectedSection}</p>
@@ -33,11 +48,15 @@ export const StoreDashboardPage = () => {
         setSelectedSection={setSelectedSection}
       />
       {selectedSection === StoreDashboardSectionsEnum.Dashboard && (
-        <StoreAnalyticsSection />
+        <StoreAnalyticsSection lowStock={lowStock} />
       )}
 
       {selectedSection === StoreDashboardSectionsEnum.Products && (
-        <ProductsManagementSection />
+        <ProductsManagementSection
+          lowStock={lowStock}
+          storeId={Number(id)}
+          storeCategoryId={data?.storeCategoryId || 0}
+        />
       )}
     </Container>
   );

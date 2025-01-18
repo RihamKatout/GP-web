@@ -1,4 +1,4 @@
-import { Category, StoreStatusEnum } from "..";
+import { Category, Product, StoreStatusEnum } from "..";
 
 export type Store = {
   id: number;
@@ -11,4 +11,16 @@ export type Store = {
   numberOfReviews?: number;
   rating?: number;
   productCategories?: Category[];
+};
+
+export type StoreAnalytics = {
+  totalRevenues?: number;
+  completedOrders?: number;
+  pendingOrders?: number;
+  inProgressOrders?: number;
+  revenues?: number[];
+  topProducts?: Product[];
+  lowStock?: Product[];
+  storeName?: string;
+  storeCategoryId?: number;
 };
