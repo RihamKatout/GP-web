@@ -10,6 +10,7 @@ import { CartService } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
 
+import { Theme } from "../../utils/Theme";
 // handle payment
 const CartContainer = styled.div`
   padding: 1rem;
@@ -30,7 +31,9 @@ const CartItemsContainer = styled.div`
   width: 60vw;
   overflow: hidden;
   border-radius: 0.6rem;
-  border: 2px solid #6a437c;
+  border: 2px solid rgba(0, 0, 0, 0.084);
+  border-radius: 1rem;
+  box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.17);
   @media (max-width: 1000px) {
     width: 90vw;
   }
@@ -43,7 +46,7 @@ const CartItemsContainer = styled.div`
       padding: 0.7rem 1rem;
       margin: 0;
       color: white;
-      background-color: #6a437c;
+      background-color: ${({ theme }) => theme.colors.secondary};;
       cursor: pointer;
     }
     &:last-child {
@@ -73,11 +76,14 @@ const ClearButtonsContainer = styled.div`
 const CheckoutContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #;
-  border: 2px solid #6a437c;
+  background-color: #ffff;
+  border: 2px solid rgba(0, 0, 0, 0.084);
   padding: 1rem 2rem;
   text-align: center;
-  border-radius: 0.6rem;
+  max-width: 450px;
+  //margin: 0 auto;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.17);
   gap: 0.5rem;
   div {
     width: 100%;
@@ -119,6 +125,16 @@ export const CartSection: React.FC<CartSectionProps> = ({
     scrollTo(0, 0);
     setSelectedItems(undefined);
   }, []);
+    
+/////cake
+ ///const context = useContext(ShopContext);
+
+  // if (!context) {
+  //   console.error("CakeCart must be used within a ShopContextProvider");
+  //   return null;
+  // }
+
+  //const {  getTotalCartAmount,cakeImages } = context;
 
   const handleDeleteSelectedItems = async () => {
     if (
@@ -171,7 +187,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
     },
     {}
   );
-
+ 
   return (
     <CartContainer>
       {/* cart items */}
@@ -192,6 +208,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
               ))}
             </div>
           ))}
+           {/* <CakeCart setSelectedItems={setSelectedItems} checkedItems={selectedItems || []}/> */}
       </CartItemsContainer>
 
       {/* cart summary */}
@@ -210,7 +227,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
             {cartItems?.reduce(
               (total, item) =>
                 selectedItems?.includes(item.id)
-                  ? total + item.product.price * item.quantity
+                  ? total + item.product.price * item.quantity 
                   : total,
               0
             )}
@@ -241,12 +258,12 @@ export const CartSection: React.FC<CartSectionProps> = ({
           </h5>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-          <Input type="text" placeholder="promo code" color="#6a437c" />
-          <Button style={{ backgroundColor: "#6a437c", color: "white" }}>
+          <Input type="text" placeholder="promo code" color="${({ theme }) => theme.colors.secondary};" />
+          <Button style={{ backgroundColor: Theme.colors.secondary, color: "white" }}>
             Apply
           </Button>
         </div>
-        <Button style={{ backgroundColor: "#6a437c", color: "white" }}>
+        <Button style={{ backgroundColor:Theme.colors.secondary, color: "white" }}>
           Pay
         </Button>
         <ClearButtonsContainer>
@@ -269,7 +286,9 @@ export const CartSection: React.FC<CartSectionProps> = ({
             Clear my cart
           </Button>
         </ClearButtonsContainer>
+        
       </CheckoutContainer>
+      
     </CartContainer>
   );
 };

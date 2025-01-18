@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { CohereClient } from "cohere-ai";
 import { Divider } from "antd";
 import { ColorInput, ColorLabel } from "../../styles/CakeComponentStyles/ColorPicker.styled";
-import AI from "../../../assets/cake/CardIcon/ai.png";
-import Hand from "../../../assets/cake/CardIcon/hand.png";
+import AI from "../../../assets/cake/CardIcon/AI1.png";
+import Hand from "../../../assets/cake/CardIcon/pen1.png";
 
 const CardContainer = styled.div`
   padding: 20px;
@@ -39,8 +39,8 @@ const RadioGroup = styled.div`
     }
 
     img {
-      width: 50px;
-      height: 45px;
+      width: 70px;
+      height: 50px;
       object-fit: contain;
       border-radius: 15px;
       margin-left: 5px;
@@ -140,10 +140,11 @@ const OutputContainer = styled.div`
 `;
 
 interface CardWritingProps {
-  onSaveMessage: (message: string) => void;
+  cardId: string;
+  onSaveMessage: (id: string, message: string) => void;
 }
 
-const CardWriting: React.FC<CardWritingProps> = ({ onSaveMessage }) => {
+const CardWriting: React.FC<CardWritingProps> = ({cardId, onSaveMessage }) => {
   const [output, setOutput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [useAI, setUseAI] = useState<boolean>(false);
@@ -188,10 +189,9 @@ const CardWriting: React.FC<CardWritingProps> = ({ onSaveMessage }) => {
   const saveMessage = () => {
     const message = output || customPrompt;
     if (message.trim()) {
-      onSaveMessage(message);
+      onSaveMessage(cardId, message);
     }
   };
-
   return (
     <CardContainer>
       <DividerWrapper>

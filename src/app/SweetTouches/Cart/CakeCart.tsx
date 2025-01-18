@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { ShopContext } from "../../context/SweetContext";
 
@@ -51,7 +51,19 @@ const Description = styled.div`
   }
 `;
 
-const CakeCart: React.FC = () => {
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+`;
+
+interface CakeCartProps {
+  setSelectedItems: React.Dispatch<React.SetStateAction<Number[] | undefined>>;
+  checkedItems?: Number[];
+}
+
+const CakeCart: React.FC <CakeCartProps> = ({setSelectedItems , checkedItems = [],}) => {
   const context = useContext(ShopContext);
 
   if (!context) {
@@ -60,6 +72,15 @@ const CakeCart: React.FC = () => {
   }
 
   const { cakeImages } = context;
+  //const [selectedCakes, setSelectedItems] = useState<number[]>([]);
+
+  // const handleCheckboxChange = (index: number) => {
+  //   setSelectedItems((prev) =>
+  //     prev.includes(index)
+  //       ? prev.filter((i) => i !== index) // Uncheck: remove from selectedCakes
+  //       : [...prev, index] // Check: add to selectedCakes
+  //   );
+  // };
 
   if (!cakeImages || cakeImages.length === 0) {
     return <p>No cakes have been added yet!</p>;
@@ -69,6 +90,19 @@ const CakeCart: React.FC = () => {
     <CakeCartContainer>
       {cakeImages.map((image, index) => (
         <CakeCard key={index}>
+          <CheckboxContainer>
+            <input
+              type="checkbox"
+              checked={checkedItems.includes(index)}
+              onChange={() => {if (!checkedItems.includes(index)) {
+                setSelectedItems((prev) => [...(prev || []), index]);
+              } else {
+                setSelectedItems((prev) => prev?.filter((id) => id !== index));
+              }
+            }}
+            />
+            
+          </CheckboxContainer>
           <img src={image.image} alt={`Cake Design ${index + 1}`} />
 
           <Description>
