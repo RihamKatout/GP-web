@@ -16,6 +16,10 @@ export const ProductSizes: React.FC<ProductSizesProps> = ({
   setSelectedSize,
   setPrice,
 }) => {
+  console.log("Sizes", sizes);
+  console.log("Selected Size", selectedSize);
+  console.log("Set Price", setPrice);
+  //console.log("price", price);
   return (
     <>
       {sizes && Object.keys(sizes).length > 0 ? (

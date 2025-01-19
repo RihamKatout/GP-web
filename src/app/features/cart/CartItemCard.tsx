@@ -8,6 +8,8 @@ import messageIcon from "../../../assets/Icons/message.png";//messageIcon
 import { useState } from "react";
 import CardWriting from "../../components/Cake3D/CardWriting";
 import { Modal as AntdModal } from "antd";
+import previewIcon from "../../../assets/Icons/message.png"; // Preview icon
+import ReviewModal from "./ReviewModal";
 
 // TODO: view order details
 
@@ -30,24 +32,11 @@ const ProductDetailsContainer = styled.div`
   justify-content: flex-start;
   width: 100%;
   gap: 0.5rem;
-  /* label {
-    font-size: 0.85rem;
-    padding: 0.1rem 0.5rem;
-    border-radius: 0.2rem;
-    background-color: rgb(228, 228, 228);
-  } */
+  
   div {
     margin-left: auto;
   }
 `;
-// import styled from "styled-components";
-// import { CartItem } from "../../types";
-// import React, { useState } from "react";
-// import { CartService } from "../../api";
-// import { useNavigate } from "react-router-dom";
-// import deleteIcon from "../../../assets/Icons/trash.jpg";
-import previewIcon from "../../../assets/Icons/message.png"; // Preview icon
-import ReviewModal from "./ReviewModal";
 
 
 // Add styles and constants as needed...
@@ -87,7 +76,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
       }
     }
   };
-
+ console.log(item?.product?.price);
   const openModal = () => setIsModalOpen(true); // Open modal
   const closeModal = () => setIsModalOpen(false); // Close modal
   console.log(item.details);
@@ -193,7 +182,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
           productName={item.product.name}
           price={item.product.price}
           size={item.size}
-          stock={item.product.stock}
+          imageurl={item.product.imageurl}
           details={item.details} 
           quantity={quantity}       />
       )}

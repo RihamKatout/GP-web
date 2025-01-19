@@ -8,7 +8,7 @@ interface ReviewModalProps {
   productName: string;
   price: number;
   size: string;
-  stock: number;
+  imageurl: string;
   details: string;
   quantity: number;
 }
@@ -19,7 +19,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   productName,
   price,
   size,
-  stock,
+  imageurl,
   quantity,
   details,
 }) => {
@@ -29,6 +29,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
     <Modal open={isOpen} onCancel={onClose} footer={null}>
       <ModalContent>
         <h3>Product Details</h3>
+        <img src={imageurl} alt="product" style={{ width: "100px" }} />
         <p>
           <b>Name:</b> {productName}
         </p>
@@ -42,7 +43,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
           <b>Quantity:</b> {quantity}
         </p>
         <p>
-          <b>Stock:</b> {stock}
+          {/* <b>Stock:</b> {stock} */}
         </p>
         <h3>Preview Message</h3>
       <p>{details || "No message provided."}</p>

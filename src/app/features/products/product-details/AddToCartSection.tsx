@@ -108,6 +108,7 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
     setCardMessage(message1);
     console.log(`Message saved for card ${id}: ${message1}`);
   }
+console.log(selectedSize,price);
 
   return (
     <AddToCartContainer>
