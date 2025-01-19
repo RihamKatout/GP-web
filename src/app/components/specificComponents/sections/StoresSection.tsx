@@ -134,6 +134,7 @@ const CategoryTab = styled.button<{ active: boolean }>`
   }
 `;
 
+
 const StoresContainer = styled.div`
  display: flex;
   justify-content: center;

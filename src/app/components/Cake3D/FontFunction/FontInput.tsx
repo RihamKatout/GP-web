@@ -25,7 +25,7 @@ const FontInput: React.FC<FontInputProps> = ({ onTextChange, onToggleFont, textV
         onChange={(e) => onTextChange(e.target.value)}
         placeholder="Enter Text"
       />
-      <CakeButton onClick={onToggleFont}>Toggle Font</CakeButton>
+      <CakeButton style={{ marginTop: '10px' , width: '50%', height: '100%'}} onClick={onToggleFont}>Toggle Font</CakeButton>
 
       {/* Color Selector for text color */}
       <div style={{ width: '100%', margin: '0 auto' }}>

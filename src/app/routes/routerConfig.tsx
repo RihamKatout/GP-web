@@ -61,7 +61,7 @@ const routerConfig = createBrowserRouter([
     path: "/cake",
     element: (
       <MainLayout>
-        <SweetNavbar />
+        
         <CakeScene></CakeScene>
       </MainLayout>
     ),

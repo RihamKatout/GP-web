@@ -165,7 +165,7 @@ export const UserMenuIcons = [
         overflow: "hidden", // Cuts off the extra image
         position: "relative",
       }}
-    >
+      >
       <img
         src={doorImg}
         alt="Logout"

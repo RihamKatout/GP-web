@@ -28,9 +28,9 @@ const ColorPickerContainer = styled.div`
 
 const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColorChange }) => {
   const predefinedColors = [
-    { name: 'Red', color: '#f5a7a7' },
-    { name: 'Green', color: '#6b3c2e' },
-    { name: 'Blue', color: '#e1b168' },
+    { name: 'Pink', color: '#f5a7a7' },
+    { name: 'Chocolate', color: '#6b3c2e' },
+    { name: 'Cream', color: '#e1b168' },
   ];
 
   function handleColorChange(color: string) {
@@ -75,10 +75,11 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColorChange 
                   borderRadius: '11px',
                   marginBottom: '25px',
                   marginTop: '10px',
+                  boxShadow: '0 1rem 1.25rem 0 rgba(217, 217, 217, 0.339), 0 0.75rem 0.5rem rgba(255, 255, 255, 0.361) inset, 0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.286) inset',
                   border: selectedColor === colorOption.color ? '2px solid #000' : '1px solid #ccc',
                 }}
               />
-              <span style={{ marginTop: '5px', fontSize: '12px' }}>{colorOption.name}</span>
+              <span style={{ marginTop: '5px', fontSize: '16px' , fontFamily: 'Overlock', fontWeight: 'bold' }}>{colorOption.name}</span>
             </label>
           ))}
           {/* Custom Color Picker */}
@@ -115,7 +116,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ selectedColor, onColorChange 
                 border:  '2px solid #ccc',
               }}
             />
-            <span style={{ marginTop: '5px', fontSize: '15px' }}>Custom</span>
+            <span style={{ marginTop: '5px', fontSize: '16px' , fontFamily: 'Overlock', fontWeight: 'bold'}}>Custom</span>
           </label>
         </ColorRadioContainer>
       </ColorPickerContainer>

@@ -11,9 +11,11 @@ import { debounce} from "@mui/material";
 import styled from "styled-components";
 import { useQuery } from "react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { Carousel } from "antd";
 
+import { Carousel } from "antd";
+import bunny from "../../../assets/characters/Bunny.png"
+import cat from "../../../assets/characters/cat.png"
+import bear from "../../../assets/characters/Bear.png"
 // TODO: fix carousel 
 // prevent opening model for unavailable products
 // prevent unlogged users from adding to cart
@@ -134,10 +136,9 @@ export const ShowcasePage = () => {
                 <button onClick={handleNavigate}>Shop Now!</button>
               </div>
               <div className="video-section">
-                <DotLottieReact
-                  src="https://lottie.host/5c1ddec6-8660-4f4f-8f3a-b84709af35d3/erNiHaEgGO.lottie"
-                  loop
-                  autoplay
+                <img
+                  src={bunny}
+                  style={{maxWidth: "780px" , height: "auto"}}
                 />
               </div>
             </div>
@@ -146,7 +147,7 @@ export const ShowcasePage = () => {
 
         {/* Additional Slides */}
         <div>
-        <HeroContainer style={{ background: `linear-gradient(to bottom, #A68EFE, #ffffff)` }}><div className="content">
+        <HeroContainer><div className="content">
               <div className="text-section">
                 <h1>
                   GO TO <span>Shop Accessories</span> !!
@@ -159,16 +160,14 @@ export const ShowcasePage = () => {
                 <button onClick={handleNavigate}>Shop Now!</button>
               </div>
               <div className="video-section">
-                <DotLottieReact
-                  src="https://lottie.host/3aa8be32-16c8-4623-a2f6-57cf95a2e5f6/2lYh6nruxW.lottie"
-                  loop
-                  autoplay
-                />
-              </div>
+              <img
+                  src={cat}
+                  style={{maxWidth: "800px" , height: "auto"}}
+                />              </div>
             </div></HeroContainer>
         </div>
         <div>
-        <HeroContainer style={{ background: `linear-gradient(to bottom, #A68EFE, #ffffff)` }}><div className="content">
+        <HeroContainer ><div className="content">
               <div className="text-section">
                 <h1>
                   GO TO <span>Shop Accessories</span> !!
@@ -181,11 +180,9 @@ export const ShowcasePage = () => {
                 <button onClick={handleNavigate}>Shop Now!</button>
               </div>
               <div className="video-section" style={{maxWidth: "550px" , marginLeft: "120px"}}>
-                <DotLottieReact
-                  src="https://lottie.host/15488898-2254-4876-91b7-5d669be66ee3/9gVqkdYQRg.lottie"
-                  loop
-                  autoplay
-
+              <img
+                  src={bear}
+                  style={{maxWidth: "780px" , height: "auto"}}
                 />
               </div>
             </div></HeroContainer>
@@ -228,7 +225,7 @@ const HeroContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to bottom, #d0828b49, #ffffff);
+  margin: 0 auto;
   color: ${({ theme }) => theme.colors.text || "#000"};
   transition: 0.2s;
   padding: 20px;
@@ -250,37 +247,45 @@ const HeroContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     gap: 15px;
-    margin-left: 60px;
+    margin-left: 100px;
     width: 80%;
 
     h1 {
       font-size: 2rem;
       font-weight: bold;
       margin-top: 40px;
+      font-family:"Delius Swash Caps", serif;
       span {
         color: ${({ theme }) => theme.colors.primary || "#e63946"};
       }
     }
 
     p {
-      font-size: 1rem;
+      font-size: 1.2rem;
       line-height: 1.5;
+      font-family: "Overlock", serif;
     }
 
     button {
-      border-radius: 10px;
+      border-radius: 15px;
       width: 200px;
       padding: 10px;
-      background-color:#e4bcbc;
       color: #2b2929;
       border: none;
       cursor: pointer;
       transition: background-color 0.3s;
       margin-top: 20px;
-      border: 2px solid #131313ae;
-      &:hover {
-        background-color: ${({ theme }) => theme.colors.primary || "white"};
-      }
+      background-color: ${({ theme }) => theme.colors.primary}; 
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.secondary}; 
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+  }
     }
   }
   .video-section {

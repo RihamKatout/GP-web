@@ -28,7 +28,7 @@ export const StoreInformationSection: React.FC<StoreInformationSectionProps> = (
               readOnly
               size="small"
             />
-            <ReviewCount>{store?.numberOfReviews || 0} reviews</ReviewCount>
+            <ReviewCount>{store?.numberOfReviews || 4 } reviews</ReviewCount>
           </RatingContainer>
         </StoreDetails>
       </ProfileSection>

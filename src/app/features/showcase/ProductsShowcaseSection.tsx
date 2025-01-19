@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { Pagination, useMediaQuery } from "@mui/material";
 import { Product } from "../../types";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
+import { Theme } from "../../utils/Theme";
 
 const ShowcaseBody = styled("div")({
   display: "flex",
@@ -19,22 +20,27 @@ const ShowcaseBody = styled("div")({
 const SortSelect = styled("select")({
   padding: "0.2rem",
   borderRadius: "15px",
-  border: "2px solid #1b1a1a",
+  border: "2px solid rgba(74, 73, 73, 0.339)",
+  boxShadow: "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5)",
+  fontFamily: "Delius Swash Caps",
 });
 const Button = styled.button`
   padding: 0.5rem 1rem;
-  background-color: #e4bcbc;
   color: #1b1a1a;
-  border: 2px solid #131313ae;
+  border: 1px solid rgba(255, 255, 255, 0.52);
   border-radius: 15px;
   font-weight: 600;
   width: 100px;
   text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s;
+  //transition: background-color 0.3s;
+  background-color: ${({ theme }) => theme.colors.primary}; 
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primary || "white"};
+    background-color: ${({ theme }) => theme.colors.secondary_light}; 
   }
 `;
 
@@ -106,9 +112,9 @@ export const ProductsShowcaseSection: React.FC<
             gap: isMobile ? "0.2rem" : "1rem",
           }}
         >
-          <Button style={{ fontSize: "0.83rem" }}>For you</Button>
-          <Button style={{ fontSize: "0.83rem" }}>Top sellers</Button>
-          <Button style={{ fontSize: "0.83rem" }}>Newest</Button>
+          <Button style={{ fontSize: "0.83rem" , fontFamily: "Delius Swash Caps", }}>For you</Button>
+          <Button style={{ fontSize: "0.83rem" , fontFamily: "Delius Swash Caps",}}>Top sellers</Button>
+          <Button style={{ fontSize: "0.83rem",fontFamily: "Delius Swash Caps", }}>Newest</Button>
         </CardsGrid>
         <div
           style={{

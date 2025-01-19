@@ -1,44 +1,55 @@
-import {  styled } from "@mui/material";
+
 import { Category } from "../../types";
 import { CategoryCard, SearchField } from "../../components/common";
-import React, { useEffect } from "react";
-import { StoreCategoryService } from "../../api";
+import React, { useEffect , useState} from "react";
+import { StoreCategoryService, StoreService } from "../../api";
 import { Divider } from "antd";
+import { Theme } from "../../utils/Theme";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
+import img from "../../../assets/characters/loginChar.png";
+import styled from "styled-components";
+import Slider from "react-slick";
 
-const CategoriesContainer = styled("div")({
-  display: "flex",
-  padding: "0",
-  marginBottom: "-1.5rem",
-  alignItems: "center",
-  width: "100%",
-  flexWrap: "wrap",
-  justifyContent: "center",
-});
 
-const SidebarContainer = styled("div")(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.5rem",
-  padding: "1rem",
-  width: "18vw",
-  height: "100%",
-  overflow: "hidden",
-  borderRight: "1px solid black",
-  [theme.breakpoints.down("md")]: {
-    width: "30vw",
-  },
-  [theme.breakpoints.down("sm")]: {
-    width: "100%",
-    height: "auto",
-    borderRight: "none",
-    borderBottom: "1px solid black",
-    padding: "0.5rem",
-  },
-}));
+const CategoriesContainer = styled.div`
+  display: flex;
+  padding: 0;
+  margin-bottom: -1.5rem;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const SidebarContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  width: 18vw;
+  height: 100%;
+  overflow: hidden;
+  border-right: 1px solid black;
+
+  @media (max-width: 960px) {
+    width: 30vw;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid black;
+    padding: 0.5rem;
+  }
+`;
+
 
 interface FilterSidebarProps {
   storeCategoryId: number;
   handleProductOptionsChange: (options: FilterOptions) => void;
+  categories?: Category[];
 }
 
 export interface FilterOptions {
@@ -48,17 +59,57 @@ export interface FilterOptions {
   minPrice?: number;
   maxPrice?: number;
   categoryId?: number;
+ 
 }
 
 // TODO : put productCategories in a carousel, fix mobile responsiveness, and handle searching
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   storeCategoryId,
   handleProductOptionsChange,
+  categories,
 }) => {
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3, // Number of visible slides at a time
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 960, // Adjust for medium screens
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 600, // Adjust for small screens
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+  
+
+   const navigate = useNavigate(); // Hook for navigation
+ 
+   const { data: stores, isLoading } = useQuery(
+    ["stores", storeCategoryId],
+    () => StoreService.getStoresByStoreCategoryId(storeCategoryId),
+    {
+        keepPreviousData: true,
+        onSuccess: (data) => console.log("Stores fetched successfully:", data),
+    }
+);
+
+const [showStores, setShowStores] = React.useState(false); // New state for toggling stores
+ 
   // product categories
   const [productCategories, setProductCategories] = React.useState<Category[]>(
     []
   );
+  
   const [filterOptions, setFilterOptions] = React.useState<FilterOptions>({
     available: undefined,
     threeDModel: undefined,
@@ -89,26 +140,67 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     };
     fetchStoreCategory();
   }, []);
-
+console.log(storeCategoryId)
   // filter options
   const handleFilterButtonClick = () => {
     console.log("Filter data:", filterOptions);
     handleProductOptionsChange(filterOptions);
   };
-
+  const handleViewStores = () => {
+    setShowStores(!showStores); // Toggle visibility
+  };
+  
   return (
     <SidebarContainer>
       {/* search Section */}
       <SearchField />
-      <Button
-        
-      >
-        View stores
-      </Button>
+      <Button onClick={handleViewStores}> {showStores ? "Hide Stores" : "View Stores"}</Button>
+      {showStores && stores && stores.length > 0 && (
+      <div style={{ alignContent: "center" }}>
+        {stores.length > 1 ? (
+          <Slider {...settings}>
+            {stores.map((store) => (
+              <StoreCard key={store.id}>
+                <div>
+                  <StoreImage>
+                    <img src={store.logoURL || img} alt={store.name} />
+                  </StoreImage>
+                  <StoreName>{store.name}</StoreName>
+                  <StoreDetails>{store.description}</StoreDetails>
+                </div>
+                <div>
+                  <VisitButton onClick={() => navigate(`/store/${store.id}`)}>
+                    Visit
+                  </VisitButton>
+                </div>
+              </StoreCard>
+            ))}
+          </Slider>
+        ) : (
+          // Fallback if only one store
+          stores.map((store) => (
+            <StoreCard key={store.id}>
+              <div>
+                <StoreImage>
+                  <img src={store.logoURL || img} alt={store.name} />
+                </StoreImage>
+                <StoreName>{store.name}</StoreName>
+                <StoreDetails>{store.description}</StoreDetails>
+              </div>
+              <div>
+                <VisitButton onClick={() => navigate(`/store/${store.id}`)}>
+                  Visit
+                </VisitButton>
+              </div>
+            </StoreCard>
+          ))
+        )}
+      </div>
+    )}
       <Divider
         style={{borderColor: '#1a1a19b3' , fontWeight: "bold"}}
       >
-        Categories
+       <h3 style={{ fontFamily: "DynaPuff" ,  color: Theme.colors.secondary_dark , fontWeight: 400 , fontSize: '1.1rem'}}>Categories</h3> 
       </Divider>
       <CategoriesContainer>
         <div
@@ -150,7 +242,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <Divider
          style={{borderColor: '#1a1a19b3' , fontWeight: "bold"}}
       >
-        Product options
+       <h3 style={{ fontFamily: "DynaPuff" ,  color: Theme.colors.secondary_dark , fontWeight: 400 , fontSize: '1.1rem'}}>Product options</h3> 
       </Divider>
 
       {/* product options  */}
@@ -195,8 +287,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       Customizable
     </OptionLabel>
 
-    <Divider style={{ borderColor: "#d4d4d4", fontWeight: "bold" }}>
-      Price Range
+    <Divider style={{ borderColor: '#1a1a19b3' , fontWeight: "bold" }}>
+     <h3 style={{ fontFamily: "DynaPuff" ,  color: Theme.colors.secondary_dark , fontWeight: 400 , fontSize: '1.1rem'}}>Price Range</h3> 
     </Divider>
     <PriceRangeContainer>
       <h6>Price</h6>
@@ -231,30 +323,33 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 };
 const Button = styled("button")(({ theme }) => ({
   padding: "0.5rem 1rem",
-  backgroundColor: "#e4bcbc",
   color: "#1b1a1a",
-  border: "2px solid #131313ae",
+  border:'none',
   borderRadius: "15px",
   fontWeight: 600,
   width: "250px",
   textAlign: "center",
   cursor: "pointer",
+  fontFamily: "Overlock",
   transition: "background-color 0.3s",
-
-  "&:hover": {
-    backgroundColor: "white",
-  },
+  backgroundColor: Theme.colors.primary,
+  boxShadow: '0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset',
+  '&:hover': {
+      transform: "scale(1.05);",
+      boxShadow: '0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset',
+      backgroundColor: Theme.colors.secondary_light,
+       }
 }));
 
 const ProductOptionsContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
   gap: "1rem",
-  //marginTop: "1rem",
   padding: "0.5rem",
-  border: "1px solid #d4d4d4",
-  borderRadius: "10px",
-  backgroundColor: "#f9f9f9",
+  borderRadius: "15px",
+  backgroundColor: "#ffffff",
+  textAlign: "center",
+  //boxShadow: "0rem 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.065)",
 });
 
 const OptionLabel = styled("label")({
@@ -262,11 +357,14 @@ const OptionLabel = styled("label")({
   alignItems: "center",
   gap: "0.5rem",
   fontSize: "1rem",
-  fontWeight: 500,
+  fontWeight: 600,
   color: "#333",
+  fontFamily: "Delius Swash Caps",
+  textAlign: "center",
   "& input": {
     marginRight: "0.5rem",
     accentColor: "#e4bcbc",
+    
   },
   "&:hover": {
     color: "#1b1a1a",
@@ -283,8 +381,88 @@ const PriceRangeContainer = styled("div")({
 
 const PriceInput = styled("input")({
   padding: "0.4rem",
-  borderRadius: "0.25rem",
-  border: "1px solid #ccc",
+  borderRadius: 10,
   width: "30%",
   fontSize: "0.9rem",
+  boxShadow: "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5)",
+  border: "1px solid rgba(217, 217, 217, 0.5)",
+  "&:focus": {
+        outline: "none",
+        boxShadow: "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5)",
+      }
 });
+
+
+
+/////////for the store
+const StoreCard = styled.div`
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: transform 0.3s;
+  width: 220px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensures consistent spacing between elements */
+  height: 310px; /* Makes all cards the same height */
+  margin-left: 15px;
+  &:hover {
+    //transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+const StoreName = styled.h3`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: ${({theme})=> theme.colors.primary_dark};
+  margin: 0.5rem 0;
+  font-family: "Overlock", serif;
+`;
+
+const StoreDetails = styled.p`
+  font-size: 1rem;
+  color: #666;
+`;
+
+const StoreImage = styled.div`
+  margin: 0 auto 1rem;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const VisitButton = styled.button`
+  //margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #6a437c;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  //bottom: 200px;
+  cursor: pointer;
+  font-size: 1rem;
+  background-color: ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+                    0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
+                    0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+        background-color: ${({ theme }) => theme.colors.secondary_light};
+  }
+`;

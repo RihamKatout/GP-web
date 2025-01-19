@@ -8,6 +8,10 @@ import { useAuth } from "../../../context";
 import { Product, ProductSizeEnum } from "../../../types";
 import { CartService } from "../../../api";
 import { ProductColors, ProductSizes } from "../..";
+import CardWriting from "../../../components/Cake3D/CardWriting";
+import { Modal as AntdModal } from "antd";
+import messageIcon from "../../../../assets/Icons/message.png"; //messageIcon
+import { message } from "antd";
 
 const { Dragger } = Upload;
 
@@ -36,21 +40,25 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
 
   const handleAddToCart = async () => {
     if (!isLoggedIn) {
+      message.error("You need to log in to add items to the cart.");
       return;
     }
+
     if (!isAvailable) {
-      // TODO: show error message
+      message.warning("This item is not available.");
       return;
     }
+
     try {
       await CartService.addItem({
         product,
         size: selectedSize,
         quantity,
         details,
-        //image: uploadedImage, // Include uploaded image in the request
       });
+      message.success("Item added to cart successfully!");
     } catch (e: any) {
+      message.error("Item already exists in the cart!");
       console.error(e?.response?.data?.errors?.[0]);
     }
   };
@@ -66,19 +74,23 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
 
     if (file.originFileObj) {
       const reader = new FileReader();
-
       reader.onload = () => {
         if (reader.result) {
-          setUploadedImage(reader.result as string); // Set image as a Base64 URI
+          setUploadedImage(reader.result as string);
         }
       };
-
       reader.readAsDataURL(file.originFileObj);
+      const blob = file.originFileObj;
+      console.log("Blob:", blob);
     }
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   useEffect(() => {
-    setDetails("");
+    setDetails("" );
     setQuantity(1);
     if (product.colors?.length !== 0) setSelectedColor(product.colors?.[0]);
     const availableSizes = Object.keys(product.sizePrices) as Array<
@@ -87,6 +99,16 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
     setSelectedSize(availableSizes[0]);
     setPrice(product.sizePrices[availableSizes[0]]);
   }, [product]);
+
+  console.log("vb",details);
+  
+  const [message1, setCardMessage] = useState<string>("");
+
+  function handleSaveMessage(id: string, message1: string): void {
+    setCardMessage(message1);
+    console.log(`Message saved for card ${id}: ${message1}`);
+  }
+console.log(selectedSize,price);
 
   return (
     <AddToCartContainer>
@@ -107,34 +129,13 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
                 setSelectedSize={setSelectedSize}
                 setPrice={setPrice}
               />
+
               <Input
                 placeholder="Add your details here"
                 value={details}
-                onChange={(e) => setDetails(e.target.value)}
+                onChange={(e) => setDetails(e.target.value )}
                 style={{ width: "100%", marginTop: "0.5rem" }}
               />
-
-              {/* Image Uploader */}
-              {/* <Dragger
-                accept="image/*"
-                maxCount={2}
-                onChange={handleFileChange}
-                style={{ marginTop: "1rem", padding: "1rem" , width: '50%' , margin: '0 auto'}}
-              >
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p>Click or drag an image to upload</p>
-              </Dragger>
-              */}
-              {/* Preview 
-              {uploadedImage && (
-                <ImagePreview>
-                  <img src={uploadedImage} alt="Uploaded" />
-                </ImagePreview>
-              )}
-              */}
-               
 
               <SummarySection>
                 <div className="summary-section" style={{ gap: "0.8rem" }}>
@@ -159,6 +160,17 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
                   <p style={{ fontSize: "0.85rem" }}>Total</p>
                   <p style={{ fontSize: "1.2rem" }}>{price * quantity}$</p>
                 </div>
+                <button
+                  onClick={openModal}
+                  style={{ cursor: "pointer", background: "none", border: "none" }}
+                >
+                  <img
+                    src={messageIcon}
+                    alt="Delete"
+                    style={{ width: "70px", height: "40px" }}
+                  />
+                </button>
+
                 <button className="add-button" onClick={handleAddToCart}>
                   Add
                 </button>
@@ -173,22 +185,44 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
             maxWidth="100%"
           />
         )}
+        <Modal
+          open={isModalOpen}
+          onCancel={closeModal}
+          footer={[
+            <button key="cancel" onClick={closeModal}>
+              Cancel
+            </button>,
+          ]}
+        >
+          <CardWriting cardId={product.name} onSaveMessage={handleSaveMessage} />
+        </Modal>
       </SectionContent>
     </AddToCartContainer>
   );
 };
 
-const ImagePreview = styled.div`
-  margin-top: 1rem;
-  text-align: center;
+const Modal = styled(AntdModal)`
+  .ant-modal-content {
+    border-radius: 1rem;
+  }
 
-  img {
-    max-width: 80%;
-    max-height: 120px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  .ant-modal-header {
+    background-color: #6a437c;
+    color: white;
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .ant-modal-body {
+    padding: 1.5rem;
+  }
+
+  .ant-modal-footer {
+    border-top: 1px solid #f0f0f0;
+    padding: 1rem;
+    border-radius: 0 0 1rem 1rem;
   }
 `;
+
 const AddToCartContainer = styled.div`
   width: auto;
   height: auto;

@@ -49,6 +49,7 @@ const RotatingCake = ({ children }: { children: ReactNode }) => {
 const GradientContainer = styled.div`
   width: 100%;
   height: 80vh;
+  margin: 0 auto;
   //background: rgb(63,94,251);
   background: radial-gradient(circle, #C47B83 0%, rgba(255,255,255,1) 63%);
   
@@ -93,7 +94,7 @@ const CakeScene = () => {
 
 //// Color Function ////
 const [layerColor, setLayerColor] = useState('#e8ad82');
-const [fillLayerColor, setFillLayerColor] = useState('#D2691E');// color for filling ( must be 3)
+const [fillLayerColor, setFillLayerColor] = useState('#de7f3b');// color for filling ( must be 3)
 
 const [toppingColor, setToppingColor] = useState('#fb87c3');// all the topping is the same color
 
@@ -121,11 +122,15 @@ const handleConfirmPopup = () => {
   console.log("Cake added to cart!"); // Additional logic can go here
 };
 const [cardMessage, setCardMessage] = useState<string>(""); // Save the message
+const [messages, setMessages] = useState<{ [key: string]: string }>({});
 
+  const handleSaveMessage = (id: string, message: string) => {
+    setMessages((prev) => ({ ...prev, [id]: message }));
+  };
 
 ///////////////Cake Sizing & Price////////////////
   const [cakeSize, setCakeSize] = useState<string>("Regular"); // Default size
-  const [cakePrice, setCakePrice] = useState<number>(20); // Default price
+   const [cakePrice, setCakePrice] = useState<number>(20); // Default price
 
   const handleSizeChange = (size: string, price: number) => {
     setCakeSize(size);
@@ -231,16 +236,16 @@ const [cardMessage, setCardMessage] = useState<string>(""); // Save the message
       case 3:
         return <ColumnContainer style={{width:'100%'}}>
          
-       <CardWriting onSaveMessage={(message) => setCardMessage(message)}/>
+         <CardWriting cardId="card1" onSaveMessage={handleSaveMessage} />
       <div style={{ display: 'flex', flexDirection: 'row',justifyContent: 'center', width: '100%' }}>
        <CakeButton
         onClick={captureCakeScene}
-        style={{ marginRight: '1rem' }}
+        style={{ marginRight: '1rem',border: '2px solid #6a66667a' }}
       >
         Save & Shop
       </CakeButton>
       <CakeButton
-        onClick={handleOpenPopup}>Review</CakeButton>
+        onClick={handleOpenPopup} style={{ border: '2px solid #6a66667a' }}>Review</CakeButton>
      </div >
       {showReviewPopup && (
   <ReviewCake
@@ -249,6 +254,7 @@ const [cardMessage, setCardMessage] = useState<string>(""); // Save the message
     cardMessage={cardMessage} // Pass the card message
     cakeSize={cakeSize}
     cakePrice={cakePrice}
+    cakeDescription={cakeDescription}
   />
 )}
 
@@ -272,42 +278,68 @@ const [cardMessage, setCardMessage] = useState<string>(""); // Save the message
   }
 
   const { addCakeImage } = context;
+  const fillingOptions = [
+    { name: 'chocolate', color: '#AB6C53' },//#AB6C53
+    { name: 'caramel', color: '#de7f3b'  },//#D2691E
+    { name: 'blueberry', color: '#603d70' },
+    { name: 'strawberry', color: '#E03C3E' },
+  ];
   
-
+  const getFillingNameByColor = (color: string) => {
+    const filling = fillingOptions.find(option => option.color === color);
+    return filling ? filling.name : 'unknown';
+  };
+  
+  // Usage example
+  const fillLayerColorName = getFillingNameByColor(fillLayerColor);
+  const cakeDescription = `Its a ${numLayers} layer cake, with ${fillLayerColorName} filling, and this Topping message: (${userText})`;
   const captureCakeScene = async () => {
     if (!containerRef.current || !rendererRef.current) {
-      console.error('Container or renderer is not initialized.');
+      console.error("Container or renderer is not initialized.");
       return;
     }
-
+  
     try {
       // Step 1: Capture the WebGL content as an image
       const webglCanvas = rendererRef.current.domElement;
-      const webglImage = webglCanvas.toDataURL('image/png');
-
+      const webglImage = webglCanvas.toDataURL("image/png");
+  
       // Step 2: Add the WebGL image to the DOM temporarily
       const img = new Image();
       img.src = webglImage;
-      img.style.position = 'absolute';
-      img.style.zIndex = '100';
-      img.style.pointerEvents = 'none'; // Prevent interaction with the image
+      img.style.position = "absolute";
+      img.style.zIndex = "100";
+      img.style.pointerEvents = "none"; // Prevent interaction with the image
       containerRef.current.appendChild(img);
-
+  
       // Step 3: Capture the full HTML page with the WebGL overlay
       const htmlCanvas = await html2canvas(containerRef.current, { useCORS: true });
-
+  
       // Step 4: Remove the temporary WebGL image
       containerRef.current.removeChild(img);
-
-      // Step 5: Save the combined image
-      const finalImage = htmlCanvas.toDataURL('image/png');
-      setCart((prevCart) => [...prevCart, finalImage]);
-      addCakeImage(finalImage ,cakeSize, cakePrice);
-     
+  
+      // Step 5: Compress the image using canvas.toBlob
+      htmlCanvas.toBlob(
+        (blob) => {
+          if (blob) {
+            // Store the Blob in your context or state
+            const compressedImageURL = URL.createObjectURL(blob);
+            setCart((prevCart) => [...prevCart, compressedImageURL]);
+            
+            addCakeImage(compressedImageURL, cakeSize, cakePrice, cakeDescription);
+            console.log(cakeDescription);
+          } else {
+            console.error("Error creating Blob from canvas.");
+          }
+        },
+        "image/png",
+        0.8 // Compression quality (0.1 = lowest, 1 = highest)
+      );
     } catch (error) {
-      console.error('Error capturing the cake scene:', error);
+      console.error("Error capturing the cake scene:", error);
     }
   };
+  
   
 
 
@@ -342,7 +374,7 @@ const [cardMessage, setCardMessage] = useState<string>(""); // Save the message
 
        ]}
        
-        style={{ width: '100%' , height: '30px'}}/></ConfigProvider>
+        style={{ width: '100%' ,margin: '0 auto'}}/></ConfigProvider>
        <div ref={containerRef} style={{ width: '100%', margin: '0 auto' , justifyContent: 'center' , alignItems: 'center' , height: '80%'}}>
         <Canvas  camera={{ position: [0, 16, -22], fov: 18 }} 
         gl={{ preserveDrawingBuffer: true }}
@@ -622,3 +654,5 @@ import styled from 'styled-components';
 import { ReviewCake } from './ReviewCake';
 import CakeSize from './CakeSize';
 export default CakeScene;
+import { useEffect } from 'react';
+
