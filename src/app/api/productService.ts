@@ -14,7 +14,6 @@ export const ProductService = {
     const response = await clientAxios.get(`/product`, {
       params: filters,
     });
-    console.log(response.data);
     return response.data;
   },
   getProductById: async (id: number): Promise<ProductDetail> => {

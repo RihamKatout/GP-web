@@ -6,7 +6,6 @@ import Rating from "@mui/material/Rating";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { ProductPreview } from "../../../features";
 import cart1 from "../../../../assets/Icons/cart1.png"; // Ensure the file path is correct or place the file in the public folder
-  
 
 const ProductCardStyle = styled.div`
   width: 200px;
@@ -80,16 +79,16 @@ const ProductCardStyle = styled.div`
         background-color: transparent;
         border-radius: 50%;
         transition: background-color 0.5s;
-        
+
         img {
           object-fit: cover;
           //height: 45px; /* Ensures consistent display */
-          width: 60px; 
+          width: 60px;
           margin-left: 1rem;
           &:hover {
-          cursor: pointer;
-          background-color: rgba(161, 136, 173, 0.4);
-        }
+            cursor: pointer;
+            background-color: rgba(161, 136, 173, 0.4);
+          }
         }
       }
     }
@@ -127,13 +126,14 @@ const StoreName = styled.div`
   color: ${({ theme }) => theme.colors.primary_dark};
   text-align: left;
   margin-bottom: 0.3rem;
-  font-family:"Delius Swash Caps", serif;
+  font-family: "Delius Swash Caps",  serif;
 `;
 
 export const ProductCard: React.FC<ProductWithStoreDto> = (productDto) => {
   const product: Product = productDto.product;
   const navigate = useNavigate();
-  const isAvailable = product.isAvailable && product.stock > 0;
+  const isAvailable =
+    (product.isAvailable && product.stock > 0) || !product.needStock;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddToCart = () => {
@@ -153,7 +153,9 @@ export const ProductCard: React.FC<ProductWithStoreDto> = (productDto) => {
         setIsModalOpen={setIsModalOpen}
       />
       <ProductCardStyle>
-        {productDto.product.is3dCustomizable && <CustomizableTag>3D</CustomizableTag>}
+        {productDto.product.is3dCustomizable && (
+          <CustomizableTag>3D</CustomizableTag>
+        )}
 
         <img src={product.mainImageURL} alt={product.name} className="img1" />
 

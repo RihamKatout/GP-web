@@ -48,17 +48,27 @@ export const ProductsManagementSection: React.FC<
   };
 
   // fetch store products
-  useQuery(["products", storeId], () => ProductService.fetchProducts(filters), {
-    keepPreviousData: true,
-    onSuccess: (data) => {
-      setActiveProducts(data.content.filter((product) => product.isAvailable));
-      setArchivedProducts(
-        data.content.filter((product) => !product.isAvailable)
-      );
-      scrollTo({ top: 0, behavior: "smooth" });
-    },
-    refetchOnWindowFocus: false,
-  });
+  useQuery(
+    ["products", storeId],
+    () => ProductService.filterProducts(filters),
+    {
+      keepPreviousData: true,
+      onSuccess: (data) => {
+        setActiveProducts(
+          data.content
+            .filter((productDto) => productDto.product.isAvailable)
+            .map((dto) => dto.product)
+        );
+        setArchivedProducts(
+          data.content
+            .filter((productDto) => !productDto.product.isAvailable)
+            .map((dto) => dto.product)
+        );
+        scrollTo({ top: 0, behavior: "smooth" });
+      },
+      refetchOnWindowFocus: false,
+    }
+  );
 
   // fetch store categories
   useQuery(
@@ -166,14 +176,14 @@ export const ProductsManagementSection: React.FC<
           {productsToDisplay.map((product, index) => (
             <div key={product.id} className="product">
               <span>{index + 1}.</span>
-              <img src={product.imageurl} alt="product" />
+              <img src={product.mainImageURL} alt="product" />
               <p
                 className="productName"
                 onClick={() => handleOpenProduct(product.id)}
               >
                 {product.name}
               </p>
-              <p>{product.price} $</p>
+              <p>{product.basePrice} $</p>
               {/* <p>{product.orders}</p> */}
               <p>200</p>
               <p>{product.stock}</p>

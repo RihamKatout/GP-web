@@ -1,13 +1,10 @@
 import { Input } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Upload } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
 import { PleaseLoginModal } from "../../../pages";
 import { useAuth } from "../../../context";
 import { Product, ProductSizeEnum } from "../../../types";
 import { CartService } from "../../../api";
-import { ProductColors, ProductSizes } from "../..";
 import CardWriting from "../../../components/Cake3D/CardWriting";
 import { Modal as AntdModal } from "antd";
 import messageIcon from "../../../../assets/Icons/message.png"; //messageIcon
@@ -16,25 +13,16 @@ import { message } from "antd";
 
 interface AddToCartSectionProps {
   product: Product;
-  setSelectedSize: React.Dispatch<React.SetStateAction<ProductSizeEnum>>;
-  selectedSize: ProductSizeEnum;
-  price: number;
-  setPrice: (price: number) => void;
   isAvailable: boolean;
 }
 
 export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
   product,
-  setSelectedSize,
-  selectedSize,
-  price,
-  setPrice,
   isAvailable,
 }) => {
   const { isLoggedIn } = useAuth();
   const [details, setDetails] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState<string>();
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
   const handleAddToCart = async () => {
@@ -49,12 +37,12 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
     }
 
     try {
-      await CartService.addItem({
-        product,
-        size: selectedSize,
-        quantity,
-        details,
-      });
+      // await CartService.addItem({
+      //   product,
+      //   size: selectedSize,
+      //   quantity,
+      //   details,
+      // });
       message.success("Item added to cart successfully!");
     } catch (e: any) {
       message.error("Item already exists in the cart!");
@@ -107,7 +95,6 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
     setCardMessage(message1);
     console.log(`Message saved for card ${id}: ${message1}`);
   }
-console.log(selectedSize,price);
 
   return (
     <AddToCartContainer>
@@ -117,15 +104,7 @@ console.log(selectedSize,price);
         {isLoggedIn ? (
           <>
             <div className="product-info">
-              <ProductColors
-                selectedColor={selectedColor}
-                setSelectedColor={setSelectedColor}
-              />
-              <ProductSizes
-                selectedSize={selectedSize}
-                setSelectedSize={setSelectedSize}
-                setPrice={setPrice}
-              />
+              
 
               <Input
                 placeholder="Add your details here"
@@ -155,7 +134,7 @@ console.log(selectedSize,price);
                 </div>
                 <div className="summary-section">
                   <p style={{ fontSize: "0.85rem" }}>Total</p>
-                  <p style={{ fontSize: "1.2rem" }}>{price * quantity}$</p>
+                  {/* <p style={{ fontSize: "1.2rem" }}>{price * quantity}$</p> */}
                 </div>
                 <button
                   onClick={openModal}

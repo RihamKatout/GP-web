@@ -6,7 +6,6 @@ import { Divider, Input } from "@mui/material";
 import { CartService } from "../../api";
 import { useAuth } from "../../context";
 import { PleaseLoginModal } from "../../pages";
-import { ProductColors, ProductSizes } from "..";
 
 interface ProductPreviewProps {
   product: Product;
@@ -23,7 +22,6 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
   const [details, setDetails] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState<number>(0);
-  const [selectedColor, setSelectedColor] = useState<string>();
   const [selectedSize, setSelectedSize] = useState<ProductSizeEnum>(
     ProductSizeEnum.S
   );
@@ -56,12 +54,12 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
     if (isModalOpen) {
       setDetails("");
       setQuantity(1);
-      if (product.colors?.length !== 0) setSelectedColor(product.colors?.[0]);
-      const availableSizes = Object.keys(product.sizePrices) as Array<
-        keyof typeof product.sizePrices
-      >;
-      setSelectedSize(availableSizes[0]);
-      setPrice(product.sizePrices[availableSizes[0]]);
+      // if (product.colors?.length !== 0) setSelectedColor(product.colors?.[0]);
+      // const availableSizes = Object.keys(product.sizePrices) as Array<
+      //   keyof typeof product.sizePrices
+      // >;
+      // setSelectedSize(availableSizes[0]);
+      // setPrice(product.sizePrices[availableSizes[0]]);
     }
   }, [isModalOpen, product]);
 
@@ -76,19 +74,8 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
               margin: "0.4rem 0",
             }}
           />
-          <img src={product?.imageurl} alt={product?.name} />
+          {/* <img src={product?.imageurl} alt={product?.name} /> */}
           <div className="product-info">
-            <ProductColors
-              colors={product?.colors}
-              selectedColor={selectedColor}
-              setSelectedColor={setSelectedColor}
-            />
-            <ProductSizes
-              sizes={product?.sizePrices}
-              selectedSize={selectedSize}
-              setSelectedSize={setSelectedSize}
-              setPrice={setPrice}
-            />
             <p style={{ marginTop: "1rem" }}>add your details</p>
             <Input
               placeholder="Details"

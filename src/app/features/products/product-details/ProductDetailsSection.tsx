@@ -18,9 +18,9 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
     ProductSizeEnum.S
   );
   const [price, setPrice] = useState<number>(product.basePrice);
-  const isAvailable = product?.isAvailable && product?.stock > 0;
+  const isAvailable =
+    (product?.isAvailable && product?.stock > 0) || !product.needStock;
 
-  console.log("productDto", productDto);
   return (
     <SectionContainer>
       <CustomizableProduct isCustomizable={product?.is3dCustomizable} />
@@ -34,9 +34,7 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
       </ProductAndReviewsContainer>
 
       <StoreAndCartContainer>
-        <StoreCard
-          storeInfo={storeInfo}
-        />
+        <StoreCard storeInfo={storeInfo} />
         <AddToCartSection
           product={product}
           selectedSize={selectedSize}

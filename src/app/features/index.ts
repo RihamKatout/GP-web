@@ -19,8 +19,6 @@ export * from "./cart/CartItemCard";
 
 // products
 export * from "./products/ProductPreview";
-export * from "./products/common/ProductColors";
-export * from "./products/common/ProductSizes";
 export * from "./products/product-details/ProductDetailsSection";
 export * from "./products/product-details/ProductDetailsCard";
 export * from "./products/product-details/StoreCard";
