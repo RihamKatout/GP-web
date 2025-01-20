@@ -13,7 +13,6 @@ import { Modal as AntdModal } from "antd";
 import messageIcon from "../../../../assets/Icons/message.png"; //messageIcon
 import { message } from "antd";
 
-const { Dragger } = Upload;
 
 interface AddToCartSectionProps {
   product: Product;

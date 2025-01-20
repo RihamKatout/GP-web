@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ConfigurationAttribute } from "./ConfigurationAttribute";
 import styled from "styled-components";
 
@@ -18,15 +18,25 @@ interface ProductConfigurationProps {
       }>;
     }>;
   };
+  setPrice: any;
 }
 export const ProductConfiguration: React.FC<ProductConfigurationProps> = ({
   config,
+  setPrice,
 }) => {
+  const [configPriceImpact, setConfigPriceImpact] = React.useState<number>(0);
+  useEffect(() => {
+    setPrice((prevPrice: number) => prevPrice + configPriceImpact);
+  }, [configPriceImpact]);
   return (
     <Container>
       <h6>{config.name}</h6>
+      <p>price: {configPriceImpact}</p>
       {config.configurationAttributes.map((attr) => (
-        <ConfigurationAttribute attribute={attr} isColor = {attr.type === "COLOR"}/>
+        <ConfigurationAttribute
+          attribute={attr}
+          setConfigPriceImpact={setConfigPriceImpact}
+        />
       ))}
     </Container>
   );

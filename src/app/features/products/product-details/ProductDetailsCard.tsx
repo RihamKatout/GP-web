@@ -5,7 +5,7 @@ import { ReviewSection, WishlistButton } from "../..";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { Divider, Rating } from "@mui/material";
-import { ProductDetail, ProductSizeEnum } from "../../../types";
+import { ProductDetail } from "../../../types";
 import { DefaultStoreImg } from "../../../../assets";
 import { ProductConfiguration } from "..";
 
@@ -13,16 +13,12 @@ import { ProductConfiguration } from "..";
 //TODO: fix error message
 interface ProductDetailsCardProps {
   productDto: ProductDetail;
-  setSelectedSize: React.Dispatch<React.SetStateAction<ProductSizeEnum>>;
-  selectedSize: ProductSizeEnum;
   price: number;
   setPrice: (price: number) => void;
   isAvailable: boolean;
 }
 export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   productDto,
-  setSelectedSize,
-  selectedSize,
   price,
   setPrice,
   isAvailable,
@@ -51,7 +47,6 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   const navigate = useNavigate();
   const [isWishlisted, setIsWishlisted] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const [selectedColor, setSelectedColor] = useState<string>();
 
   useEffect(() => {
     setPrice(product.basePrice);
@@ -141,7 +136,7 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
             {product?.description}.
           </p>
           {configurations?.map((config) => (
-            <ProductConfiguration config={config} key={config.id} />
+            <ProductConfiguration config={config} key={config.id} setPrice={setPrice}/>
           ))}
         </div>
       </ProductCard>

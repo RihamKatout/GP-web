@@ -27,8 +27,6 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
       <ProductAndReviewsContainer>
         <ProductDetailsCard
           productDto={productDto}
-          selectedSize={selectedSize}
-          setSelectedSize={setSelectedSize}
           price={price}
           setPrice={setPrice}
           isAvailable={isAvailable}
