@@ -20,12 +20,13 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
   const [price, setPrice] = useState<number>(product.basePrice);
   const isAvailable = product?.isAvailable && product?.stock > 0;
 
+  console.log("productDto", productDto);
   return (
     <SectionContainer>
       <CustomizableProduct isCustomizable={product?.is3dCustomizable} />
       <ProductAndReviewsContainer>
         <ProductDetailsCard
-          product={product}
+          productDto={productDto}
           selectedSize={selectedSize}
           setSelectedSize={setSelectedSize}
           price={price}
@@ -76,7 +77,6 @@ const StoreAndCartContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  //justify-content: space-between;
   width: 30%;
   @media (max-width: 780px) {
     width: 100%;

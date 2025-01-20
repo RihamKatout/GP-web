@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import AliceCarousel from "react-alice-carousel";
-import {
-  ProductColors,
-  ProductSizes,
-  ReviewSection,
-  WishlistButton,
-} from "../..";
+import { ReviewSection, WishlistButton } from "../..";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { Divider, Rating } from "@mui/material";
-import { Product, ProductSizeEnum } from "../../../types";
+import { ProductDetail, ProductSizeEnum } from "../../../types";
+import { DefaultStoreImg } from "../../../../assets";
+import { ProductConfiguration } from "..";
 
 //TODO: fix reviews
 //TODO: fix error message
 interface ProductDetailsCardProps {
-  product: Product;
+  productDto: ProductDetail;
   setSelectedSize: React.Dispatch<React.SetStateAction<ProductSizeEnum>>;
   selectedSize: ProductSizeEnum;
   price: number;
@@ -23,28 +20,28 @@ interface ProductDetailsCardProps {
   isAvailable: boolean;
 }
 export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
-  product,
+  productDto,
   setSelectedSize,
   selectedSize,
   price,
   setPrice,
   isAvailable,
 }) => {
+  const { product, inWishlist, store, configurations } = productDto;
   const handleDragStart = (e: any) => e.preventDefault();
-
   const items = [
     <img
-      src={product?.imageurl}
+      src={product?.mainImageURL}
       onDragStart={handleDragStart}
       role="presentation"
     />,
     <img
-      src={product?.imageurl}
+      src={product?.mainImageURL}
       onDragStart={handleDragStart}
       role="presentation"
     />,
     <img
-      src={product?.imageurl}
+      src={product?.mainImageURL}
       onDragStart={handleDragStart}
       role="presentation"
     />,
@@ -57,8 +54,8 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   const [selectedColor, setSelectedColor] = useState<string>();
 
   useEffect(() => {
-    setPrice(product.price);
-    setIsWishlisted(product?.inWishlist ?? false);
+    setPrice(product.basePrice);
+    setIsWishlisted(inWishlist ?? false);
   }, []);
 
   return (
@@ -73,10 +70,13 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
           <>
             <div
               className="store-info"
-              onClick={() => navigate(`/store/${product?.storeIdTmp}`)}
+              onClick={() => navigate(`/store/${store?.storeId}`)}
             >
-              <img src={product?.storeLogoUrl} alt={product?.storeName} />
-              <p>{product?.storeName} store</p>
+              <img
+                src={store?.storeLogoURL || DefaultStoreImg}
+                alt={store?.storeName}
+              />
+              <p>{store?.storeName} store</p>
             </div>
             <Divider
               style={{
@@ -115,7 +115,10 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
               readOnly
               size="medium"
             />
-            <p style={{ color: "rgb(150, 150, 150)" }}> ({product.numberOfReviews} reviews)</p>
+            <p style={{ color: "rgb(150, 150, 150)" }}>
+              {" "}
+              ({product.numberOfReviews} reviews)
+            </p>
           </div>
           {isAvailable ? (
             <></>
@@ -135,26 +138,11 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
             </p>
           )}
           <p className="description">
-            {product?.description}
-            {product?.description}
-            {product?.description}
-            {product?.description}
-            {product?.description}
-            {product?.description}
-            {product?.description}
             {product?.description}.
           </p>
-          <ProductColors
-            colors={product?.colors}
-            selectedColor={selectedColor}
-            setSelectedColor={setSelectedColor}
-          />
-          <ProductSizes
-            sizes={product?.sizePrices}
-            selectedSize={selectedSize}
-            setSelectedSize={setSelectedSize}
-            setPrice={setPrice}
-          />
+          {configurations?.map((config) => (
+            <ProductConfiguration config={config} key={config.id} />
+          ))}
         </div>
       </ProductCard>
       <Divider style={{ backgroundColor: "gray", marginTop: "-1rem" }} />
@@ -235,20 +223,6 @@ const ProductCard = styled.div`
     .description {
       color: ${({ theme }) => theme.colors.secondary};
       text-align: justify;
-    }
-
-    button {
-      height: 40px;
-      width: 40px;
-      border: none;
-      margin: 0 0 0 auto;
-      background-color: transparent;
-      border-radius: 50%;
-      transition: background-color 0.5s;
-      &:hover {
-        cursor: pointer;
-        background-color: rgba(131, 126, 176, 0.4);
-      }
     }
   }
   .store-info {
