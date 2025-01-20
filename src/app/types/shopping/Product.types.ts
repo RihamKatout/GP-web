@@ -1,27 +1,126 @@
-import { ProductSizeEnum } from "../enums/ProductSizeEnum";
+// for listing data - showcase
+export interface ProductWithStoreDto {
+  product: {
+    id: number;
+    name: string;
+    description: string;
+    mainImageURL: string;
+    basePrice: number;
+    stock: number;
+    stockEdge: number;
+    needStock: boolean;
+    isAvailable: boolean;
+    model3dURL: string | null;
+    is3dCustomizable: boolean;
+    defaultFeatures: boolean;
+    rating: number;
+    numberOfReviews: number;
+    categoryId: number;
+  };
+  storeBasicInfo: {
+    storeId: number;
+    storeName: string;
+    storeLogoURL: string | null;
+  };
+  inWishlist: boolean;
+}
+
+// for product details page
+export interface ProductDetail {
+  product: {
+    id: number;
+    name: string;
+    description: string;
+    mainImageURL: string;
+    basePrice: number;
+    stock: number;
+    stockEdge: number;
+    needStock: boolean;
+    isAvailable: boolean;
+    model3dURL: string | null;
+    is3dCustomizable: boolean;
+    defaultFeatures: boolean;
+    rating: number;
+    numberOfReviews: number;
+    categoryId: number;
+  };
+  store: {
+    storeId: number;
+    storeName: string;
+    storeLogoURL: string | null;
+  };
+  inWishlist: boolean;
+  configurations: Array<{
+    id: number;
+    name: string;
+    allowsMultipleUnits: boolean;
+    unitPriceImpact: number;
+    configurationAttributes: Array<{
+      id: number;
+      name: string;
+      type: string;
+      choices: Array<{
+        name: string;
+        priceImpact: number;
+      }>;
+    }>;
+  }>;
+}
+
+// for product management - manager
+export interface ProductManagementDto {
+  product: {
+    id: number;
+    name: string;
+    description: string;
+    mainImageURL: string;
+    basePrice: number;
+    stock: number;
+    stockEdge: number;
+    needStock: boolean;
+    isAvailable: boolean;
+    model3dURL: string | null;
+    is3dCustomizable: boolean;
+    defaultFeatures: boolean;
+    rating: number;
+    numberOfReviews: number;
+    categoryId: number;
+  };
+  storeId: number;
+  configurations: Array<{
+    id: number;
+    name: string;
+    allowsMultipleUnits: boolean;
+    unitPriceImpact: number;
+    configurationAttributes: Array<{
+      id: number;
+      name: string;
+      type: string;
+      choices: Array<{
+        name: string;
+        priceImpact: number;
+      }>;
+    }>;
+  }>;
+  categoryId: number;
+}
 
 export interface Product {
   id: number;
   name: string;
   description: string;
-  price: number;
-  stock: number | 0;
-  imageurl: string;
-  createdDate: string;
-  rating: number;
+  mainImageURL: string;
+  basePrice: number;
+  stock: number;
+  stockEdge: number;
+  needStock: boolean;
   isAvailable: boolean;
-  isCustomizable: boolean;
-  model3dURL?: string;
-  storeName: string;
-  storeIdTmp: number;
-  storeLogoUrl?: string;
-  colors: string[];
-  sizePrices: {
-    [key in ProductSizeEnum]: number;
-  };
-  inWishlist: boolean;
+  model3dURL: string | null;
+  is3dCustomizable: boolean;
+  defaultFeatures: boolean;
+  rating: number;
   numberOfReviews: number;
-  categoryId?: number;
+  categoryId: number;
 }
 
 export interface ProductFilters {

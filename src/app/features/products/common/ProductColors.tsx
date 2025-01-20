@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 interface ProductColorsProps {
-  colors: string[];
+  colors?: string[];
   selectedColor?: string;
   setSelectedColor: (color: string) => void;
 }
@@ -18,7 +18,7 @@ export const ProductColors: React.FC<ProductColorsProps> = ({
         <>
           <p>Colors</p>
           <Options>
-            {colors.map((color) => (
+            {colors?.map((color) => (
               <div
                 key={color}
                 onClick={() => setSelectedColor(color)}

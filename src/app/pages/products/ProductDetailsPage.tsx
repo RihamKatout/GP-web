@@ -17,12 +17,10 @@ export const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
 
   const {
-    data: product,
-    isLoading,
-    error,
+    data: productDto,
   } = useQuery(
     ["product", id],
-    () => ProductService.fetchProductById(Number(id)),
+    () => ProductService.getProductById(Number(id)),
     {
       enabled: !!id,
       cacheTime: 0,
@@ -30,14 +28,14 @@ export const ProductDetailsPage = () => {
   );
 
   //TODO: fix
-  if (!product) return <div>Product not found</div>;
+  if (!productDto) return <div>Product not found</div>;
 
   return (
     <MainLayout>
       <SectionContainer sectionId={SectionIdEnum.product}>
-        {product ? (
+        {productDto ? (
           <>
-            <ProductSection product={product}></ProductSection>
+            <ProductSection productDto={productDto}></ProductSection>
             <SimilarSection></SimilarSection>
           </>
         ) : (

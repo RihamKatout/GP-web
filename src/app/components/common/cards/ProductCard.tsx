@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Product } from "../../../types";
+import { Product, ProductWithStoreDto } from "../../../types";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Rating from "@mui/material/Rating";
@@ -130,7 +130,8 @@ const StoreName = styled.div`
   font-family:"Delius Swash Caps", serif;
 `;
 
-export const ProductCard: React.FC<Product> = (product) => {
+export const ProductCard: React.FC<ProductWithStoreDto> = (productDto) => {
+  const product: Product = productDto.product;
   const navigate = useNavigate();
   const isAvailable = product.isAvailable && product.stock > 0;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -147,14 +148,14 @@ export const ProductCard: React.FC<Product> = (product) => {
   return (
     <>
       <ProductPreview
-        product={product}
+        product={productDto.product}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
       <ProductCardStyle>
-        {product.isCustomizable && <CustomizableTag>3D</CustomizableTag>}
+        {productDto.product.is3dCustomizable && <CustomizableTag>3D</CustomizableTag>}
 
-        <img src={product.imageurl} alt={product.name} className="img1" />
+        <img src={product.mainImageURL} alt={product.name} className="img1" />
 
         <FavoriteBorderIcon
           className="wishlist"
@@ -162,9 +163,9 @@ export const ProductCard: React.FC<Product> = (product) => {
         />
 
         <div className="product-details">
-          <StoreName>--{product.storeName}--</StoreName>
+          <StoreName>--{productDto.storeBasicInfo.storeName}--</StoreName>
 
-          <h6 onClick={() => navigate("/product/" + product.id)}>
+          <h6 onClick={() => navigate("/product/" + productDto.product.id)}>
             {product.name}
             {!isAvailable && (
               <span
@@ -192,7 +193,7 @@ export const ProductCard: React.FC<Product> = (product) => {
 
           <div className="price-cart">
             <div className="price">
-              <p>${product.price}</p>
+              <p>${product.basePrice}</p>
             </div>
             <button onClick={handleAddToCart}>
               <img src={cart1} alt="Add to Cart" />

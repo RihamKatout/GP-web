@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ProductSizeEnum } from "../../../types";
 
 interface ProductSizesProps {
-  sizes: {
+  sizes?: {
     [key in ProductSizeEnum]: number;
   };
   selectedSize?: ProductSizeEnum;

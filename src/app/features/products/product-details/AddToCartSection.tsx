@@ -92,12 +92,12 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
   useEffect(() => {
     setDetails("" );
     setQuantity(1);
-    if (product.colors?.length !== 0) setSelectedColor(product.colors?.[0]);
-    const availableSizes = Object.keys(product.sizePrices) as Array<
-      keyof typeof product.sizePrices
-    >;
-    setSelectedSize(availableSizes[0]);
-    setPrice(product.sizePrices[availableSizes[0]]);
+    // if (product.colors?.length !== 0) setSelectedColor(product.colors?.[0]);
+    // const availableSizes = Object.keys(product.sizePrices) as Array<
+    //   keyof typeof product.sizePrices
+    // >;
+    // setSelectedSize(availableSizes[0]);
+    // setPrice(product.sizePrices[availableSizes[0]]);
   }, [product]);
 
   console.log("vb",details);
@@ -119,12 +119,10 @@ console.log(selectedSize,price);
           <>
             <div className="product-info">
               <ProductColors
-                colors={product?.colors}
                 selectedColor={selectedColor}
                 setSelectedColor={setSelectedColor}
               />
               <ProductSizes
-                sizes={product?.sizePrices}
                 selectedSize={selectedSize}
                 setSelectedSize={setSelectedSize}
                 setPrice={setPrice}

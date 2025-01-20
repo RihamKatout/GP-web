@@ -4,15 +4,11 @@ import { StripedAwningsImg } from "../../../../assets";
 import { useNavigate } from "react-router-dom";
 
 interface StoreCardProps {
-  storeId: number;
-  storeName: string;
-  storeLogo?: string;
+  storeInfo: any
 }
 
 export const StoreCard: React.FC<StoreCardProps> = ({
-  storeId,
-  storeName,
-  storeLogo,
+  storeInfo
 }) => {
   const navigate = useNavigate();
   return (
@@ -20,12 +16,12 @@ export const StoreCard: React.FC<StoreCardProps> = ({
       <img
         style={{ width: "100%", zIndex: "2", marginTop: "-9%" }}
         src={StripedAwningsImg}
-        alt={storeName}
+        alt={storeInfo}
       />
-      <StoreInfo onClick={() => navigate(`/store/${storeId}`)}>
+      <StoreInfo onClick={() => navigate(`/store/${storeInfo.storeId}`)}>
         <div className="store-logo">
-          <img src={storeLogo} alt={storeName} />
-          <h4>{storeName}</h4>
+          <img src={storeInfo.storeLogo} alt={storeInfo.storeName} />
+          <h4>{storeInfo.storeName}</h4>
         </div>
         <p>write a short description about you here Sweet touches!</p>
         <button>Visit Store</button>

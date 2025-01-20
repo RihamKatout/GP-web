@@ -1,5 +1,9 @@
 import { MainLayout, SectionContainer } from "../../components/Layout";
-import { Product, ProductFilters, SectionIdEnum } from "../../types";
+import {
+  ProductFilters,
+  ProductWithStoreDto,
+  SectionIdEnum,
+} from "../../types";
 import {
   FilterOptions,
   FilterSidebar,
@@ -7,16 +11,16 @@ import {
 } from "../../features";
 import { useCallback, useEffect, useState } from "react";
 import { ProductService } from "../../api";
-import { debounce} from "@mui/material";
+import { debounce } from "@mui/material";
 import styled from "styled-components";
 import { useQuery } from "react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { Carousel } from "antd";
-import bunny from "../../../assets/characters/Bunny.png"
-import cat from "../../../assets/characters/cat.png"
-import bear from "../../../assets/characters/Bear.png"
-// TODO: fix carousel 
+import bunny from "../../../assets/characters/Bunny.png";
+import cat from "../../../assets/characters/cat.png";
+import bear from "../../../assets/characters/Bear.png";
+// TODO: fix carousel
 // prevent opening model for unavailable products
 // prevent unlogged users from adding to cart
 // show success message on adding to cart
@@ -60,7 +64,7 @@ export const ShowcasePage = () => {
   const updateSearchParams = useCallback(
     (newFilters: ProductFilters) => {
       const filteredParams = Object.entries(newFilters)
-        .filter(([, value]) => value !== undefined && value !== null )
+        .filter(([, value]) => value !== undefined && value !== null)
         .reduce((acc, [key, value]) => {
           acc[key] = value.toString();
           return acc;
@@ -83,14 +87,14 @@ export const ShowcasePage = () => {
   }, [filters]);
 
   // Fetch products
-  const [products, setProducts] = useState<Product[]>([]);
+  const [productsDto, setProductsDto] = useState<ProductWithStoreDto[]>([]);
   const { data, isLoading, isError } = useQuery(
     ["products", searchParams.toString()],
-    () => ProductService.fetchProducts(filters),
+    () => ProductService.filterProducts(filters),
     {
       keepPreviousData: true,
       onSuccess: (data) => {
-        setProducts(data.content);
+        setProductsDto(data.content);
         scrollTo({ top: 0, behavior: "smooth" });
       },
     }
@@ -108,90 +112,92 @@ export const ShowcasePage = () => {
     setFilters(updatedFilters);
     // debouncedSearch(updatedFilters);
   };
+
   const navigate = useNavigate();
-   
-  const handleNavigate = () => {
-    navigate("/cake");
-  };
 
   return (
     <MainLayout>
       {/* Hero Section */}
-      <div >
-      {/* Carousel Hero Section */}
-      <Carousel autoplay>
-        {/* Hero Slide */}
-        <div>
-          <HeroContainer>
-            <div className="content">
-              <div className="text-section">
-                <h1>
-                  GO TO <span>Shop Accessories</span> !!
-                </h1>
-                <p>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Eaque reiciendis inventore iste ratione ex alias quis magni at
-                  optio.
-                </p>
-                <button onClick={handleNavigate}>Shop Now!</button>
+      <div>
+        {/* Carousel Hero Section */}
+        <Carousel autoplay>
+          {/* Hero Slide */}
+          <div>
+            <HeroContainer>
+              <div className="content">
+                <div className="text-section">
+                  <h1>
+                    GO TO <span>Shop Accessories</span> !!
+                  </h1>
+                  <p>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Eaque reiciendis inventore iste ratione ex alias quis magni
+                    at optio.
+                  </p>
+                  <button onClick={() => navigate("/cake")}>Shop Now!</button>
+                </div>
+                <div className="video-section">
+                  <img
+                    src={bunny}
+                    style={{ maxWidth: "780px", height: "auto" }}
+                  />
+                </div>
               </div>
-              <div className="video-section">
-                <img
-                  src={bunny}
-                  style={{maxWidth: "780px" , height: "auto"}}
-                />
-              </div>
-            </div>
-          </HeroContainer>
-        </div>
+            </HeroContainer>
+          </div>
 
-        {/* Additional Slides */}
-        <div>
-        <HeroContainer><div className="content">
-              <div className="text-section">
-                <h1>
-                  GO TO <span>Shop Accessories</span> !!
-                </h1>
-                <p>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Eaque reiciendis inventore iste ratione ex alias quis magni at
-                  optio.
-                </p>
-                <button onClick={handleNavigate}>Shop Now!</button>
+          {/* Additional Slides */}
+          <div>
+            <HeroContainer>
+              <div className="content">
+                <div className="text-section">
+                  <h1>
+                    GO TO <span>Shop Accessories</span> !!
+                  </h1>
+                  <p>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Eaque reiciendis inventore iste ratione ex alias quis magni
+                    at optio.
+                  </p>
+                  <button onClick={()=>navigate("/cake")}>Shop Now!</button>
+                </div>
+                <div className="video-section">
+                  <img
+                    src={cat}
+                    style={{ maxWidth: "800px", height: "auto" }}
+                  />{" "}
+                </div>
               </div>
-              <div className="video-section">
-              <img
-                  src={cat}
-                  style={{maxWidth: "800px" , height: "auto"}}
-                />              </div>
-            </div></HeroContainer>
-        </div>
-        <div>
-        <HeroContainer ><div className="content">
-              <div className="text-section">
-                <h1>
-                  GO TO <span>Shop Accessories</span> !!
-                </h1>
-                <p>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Eaque reiciendis inventore iste ratione ex alias quis magni at
-                  optio.
-                </p>
-                <button onClick={handleNavigate}>Shop Now!</button>
+            </HeroContainer>
+          </div>
+          <div>
+            <HeroContainer>
+              <div className="content">
+                <div className="text-section">
+                  <h1>
+                    GO TO <span>Shop Accessories</span> !!
+                  </h1>
+                  <p>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Eaque reiciendis inventore iste ratione ex alias quis magni
+                    at optio.
+                  </p>
+                  <button onClick={()=>navigate("/cake")}>Shop Now!</button>
+                </div>
+                <div
+                  className="video-section"
+                  style={{ maxWidth: "550px", marginLeft: "120px" }}
+                >
+                  <img
+                    src={bear}
+                    style={{ maxWidth: "780px", height: "auto" }}
+                  />
+                </div>
               </div>
-              <div className="video-section" style={{maxWidth: "550px" , marginLeft: "120px"}}>
-              <img
-                  src={bear}
-                  style={{maxWidth: "780px" , height: "auto"}}
-                />
-              </div>
-            </div></HeroContainer>
-        </div>
-       
-      </Carousel>
-
-
-     </div>
+            </HeroContainer>
+          </div>
+        </Carousel>
+      </div>
       <SectionContainer sectionId={SectionIdEnum.products}>
         <ShowcaseContainer>
           {/* Sidebar */}
@@ -200,9 +206,9 @@ export const ShowcasePage = () => {
             handleProductOptionsChange={handleProductOptions}
           />
           <ProductsShowcaseSection
-            products={products}
+            productsDto={productsDto}
             isLoading={isLoading}
-            setProducts={setProducts}
+            setProductsDto={setProductsDto}
             handlePageChange={handlePageChange}
             page={
               data?.page || {
@@ -213,9 +219,7 @@ export const ShowcasePage = () => {
               }
             }
           />
-          
         </ShowcaseContainer>
-       
       </SectionContainer>
     </MainLayout>
   );
@@ -254,7 +258,7 @@ const HeroContainer = styled.div`
       font-size: 2rem;
       font-weight: bold;
       margin-top: 40px;
-      font-family:"Delius Swash Caps", serif;
+      font-family: "Delius Swash Caps",  serif;
       span {
         color: ${({ theme }) => theme.colors.primary || "#e63946"};
       }
@@ -275,17 +279,17 @@ const HeroContainer = styled.div`
       cursor: pointer;
       transition: background-color 0.3s;
       margin-top: 20px;
-      background-color: ${({ theme }) => theme.colors.primary}; 
-      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+      background-color: ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),
+        0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,
+        0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
 
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.secondary}; 
-      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
-  }
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.secondary};
+        box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),
+          0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,
+          0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+      }
     }
   }
   .video-section {
@@ -295,12 +299,10 @@ const HeroContainer = styled.div`
     width: 90%;
     height: fit-content;
     margin-top: 120px;
-    
-    .dotlottie-container {
 
+    .dotlottie-container {
       max-width: 100px;
       width: 90%;
     }
   }
 `;
-

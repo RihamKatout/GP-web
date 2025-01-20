@@ -1,12 +1,10 @@
-//import { Button } from "antd";
 import React, { useState } from "react";
 import { Loader, ProductCard } from "../../components/common";
 import { CardsGrid } from "../../styles";
 import styled from "styled-components";
 import { Pagination, useMediaQuery } from "@mui/material";
-import { Product } from "../../types";
+import { ProductWithStoreDto } from "../../types";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import { Theme } from "../../utils/Theme";
 
 const ShowcaseBody = styled("div")({
   display: "flex",
@@ -45,9 +43,9 @@ const Button = styled.button`
 `;
 
 interface ProductsShowcaseSectionProps {
-  products?: Product[];
+  productsDto?: ProductWithStoreDto[];
   isLoading: boolean;
-  setProducts: (products: Product[]) => void;
+  setProductsDto: (products: ProductWithStoreDto[]) => void;
   handlePageChange: (newPage: number) => void;
   page: {
     size: number;
@@ -59,28 +57,28 @@ interface ProductsShowcaseSectionProps {
 
 export const ProductsShowcaseSection: React.FC<
   ProductsShowcaseSectionProps
-> = ({ products, isLoading, setProducts, handlePageChange, page }) => {
+> = ({ productsDto, isLoading, setProductsDto, handlePageChange, page }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
   // product sorting
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [sortType, setSortType] = useState<string>("default");
 
   const handleSortChange = (sort: string) => {
-    if (sort === "default" || !products?.length) return;
+    if (sort === "default" || !productsDto?.length) return;
 
     setSortType(sort);
-    const newProducts = [...products].sort((a, b) => {
+    const newProductsDto = [...productsDto].sort((a, b) => {
       if (sort === "price") {
-        return sortDirection === "asc" ? a.price - b.price : b.price - a.price;
+        return sortDirection === "asc" ? a.product.basePrice - b.product.basePrice : b.product.basePrice - a.product.basePrice;
       }
       if (sort === "rating") {
         return sortDirection === "asc"
-          ? (a.rating || 0) - (b.rating || 0)
-          : (b.rating || 0) - (a.rating || 0);
+          ? (a.product.rating || 0) - (b.product.rating || 0)
+          : (b.product.rating || 0) - (a.product.rating || 0);
       }
       return 0;
     });
-    setProducts(newProducts);
+    setProductsDto(newProductsDto);
   };
 
   const handleSortDirectionChange = () => {
@@ -147,14 +145,8 @@ export const ProductsShowcaseSection: React.FC<
               width: "100%",
             }}
           >
-            {products?.map((product) => (
-              <ProductCard key={product.id} {...product} />
-            ))}
-            {products?.map((product) => (
-              <ProductCard key={product.id} {...product} />
-            ))}
-            {products?.map((product) => (
-              <ProductCard key={product.id} {...product} />
+            {productsDto?.map((productDto) => (
+              <ProductCard key={productDto.product.id} {...productDto} />
             ))}
           </div>
       )}

@@ -1,24 +1,28 @@
 import React, { useState } from "react";
-import { Product, ProductSizeEnum } from "../../../types";
+import { Product, ProductDetail, ProductSizeEnum } from "../../../types";
 import styled from "styled-components";
 import { ProductDetailsCard } from "./ProductDetailsCard";
 import { AddToCartSection, CustomizableProduct, StoreCard } from "../..";
 
 //TODO: fix responsive
 interface ProductSectionProps {
-  product: Product;
+  productDto: ProductDetail;
 }
 
-export const ProductSection: React.FC<ProductSectionProps> = ({ product }) => {
+export const ProductSection: React.FC<ProductSectionProps> = ({
+  productDto,
+}) => {
+  const product: Product = productDto.product;
+  const storeInfo = productDto.store;
   const [selectedSize, setSelectedSize] = useState<ProductSizeEnum>(
     ProductSizeEnum.S
   );
-  const [price, setPrice] = useState<number>(product.price);
+  const [price, setPrice] = useState<number>(product.basePrice);
   const isAvailable = product?.isAvailable && product?.stock > 0;
 
   return (
     <SectionContainer>
-      <CustomizableProduct isCustomizable={product?.isCustomizable} />
+      <CustomizableProduct isCustomizable={product?.is3dCustomizable} />
       <ProductAndReviewsContainer>
         <ProductDetailsCard
           product={product}
@@ -32,9 +36,7 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ product }) => {
 
       <StoreAndCartContainer>
         <StoreCard
-          storeId={product?.storeIdTmp}
-          storeName={product?.storeName}
-          storeLogo={product?.storeLogoUrl}
+          storeInfo={storeInfo}
         />
         <AddToCartSection
           product={product}
