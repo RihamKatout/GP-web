@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import AliceCarousel from "react-alice-carousel";
-import { ReviewSection, WishlistButton } from "../..";
+import { ProductPreview, ReviewSection, WishlistButton } from "../..";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { Divider, Rating } from "@mui/material";
 import { ProductDetail } from "../../../types";
 import { DefaultStoreImg } from "../../../../assets";
 import { ProductConfiguration } from "..";
-
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 //TODO: fix reviews
 //TODO: fix error message
 interface ProductDetailsCardProps {
@@ -24,6 +24,7 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   isAvailable,
 }) => {
   const { product, inWishlist, store, configurations } = productDto;
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const handleDragStart = (e: any) => e.preventDefault();
   const items = [
     <img
@@ -53,8 +54,16 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
     setIsWishlisted(inWishlist ?? false);
   }, []);
 
+  const handleAddToCart = () => {
+    setIsModalOpen(true);
+  };
   return (
     <Container>
+      <ProductPreview
+        product={productDto.product}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
       <Header>
         <h2>{product?.name}</h2>
         <h2>{price}$</h2>
@@ -102,6 +111,7 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
         </div>
 
         <div className="right-column">
+          <AddShoppingCartIcon onClick={handleAddToCart}/>
           <div className="rating">
             <Rating
               name="half-rating-read"
@@ -132,11 +142,13 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
                 : "Product is unavailable right now"}
             </p>
           )}
-          <p className="description">
-            {product?.description}.
-          </p>
+          <p className="description">{product?.description}.</p>
           {configurations?.map((config) => (
-            <ProductConfiguration config={config} key={config.id} setPrice={setPrice}/>
+            <ProductConfiguration
+              config={config}
+              key={config.id}
+              setPrice={setPrice}
+            />
           ))}
         </div>
       </ProductCard>

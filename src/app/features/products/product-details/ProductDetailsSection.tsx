@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Product, ProductDetail, ProductSizeEnum } from "../../../types";
+import { Product, ProductDetail } from "../../../types";
 import styled from "styled-components";
 import { ProductDetailsCard } from "./ProductDetailsCard";
-import { AddToCartSection, CustomizableProduct, StoreCard } from "../..";
+import { CustomizableProduct, StoreCard } from "../..";
 
 //TODO: fix responsive
 interface ProductSectionProps {
@@ -14,9 +14,6 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
 }) => {
   const product: Product = productDto.product;
   const storeInfo = productDto.store;
-  const [selectedSize, setSelectedSize] = useState<ProductSizeEnum>(
-    ProductSizeEnum.S
-  );
   const [price, setPrice] = useState<number>(product.basePrice);
   const isAvailable =
     (product?.isAvailable && product?.stock > 0) || !product.needStock;
@@ -35,14 +32,6 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
 
       <StoreAndCartContainer>
         <StoreCard storeInfo={storeInfo} />
-        <AddToCartSection
-          product={product}
-          selectedSize={selectedSize}
-          setSelectedSize={setSelectedSize}
-          price={price}
-          setPrice={setPrice}
-          isAvailable={isAvailable}
-        />
       </StoreAndCartContainer>
     </SectionContainer>
   );
