@@ -63,12 +63,12 @@ export const Navbar = () => {
     </Button>
   ));
 
-  const mappedUserIcons = UserMenuIcons.map(({ icon, path }) => (
+  const mappedUserIcons = UserMenuIcons.map(({ icon, path }, index) => (
     <IconButton
       edge="end"
       aria-label="user menu"
       sx={{ color: "black" }}
-      key={path}
+      key={index}
       onClick={() => {
         if (path === "/logout") {
           handleLogout();

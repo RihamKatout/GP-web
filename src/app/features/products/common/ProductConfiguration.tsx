@@ -20,6 +20,7 @@ export const ProductConfiguration: React.FC<ProductConfigurationProps> = ({
       <h6>{config.name}</h6>
       {config.configurationAttributes.map((attr) => (
         <ConfigurationAttributeComponent
+          key={attr.id}
           attribute={attr}
           setConfigPriceImpact={setConfigPriceImpact}
         />

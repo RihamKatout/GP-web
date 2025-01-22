@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { WishlistService } from "../../api/wishlistService";
-import { ProductCard } from "../../components/common";
+import { CustomSnackbar, ProductCard } from "../../components/common";
 import { Product, SectionIdEnum } from "../../types";
 import { MainLayout, SectionContainer } from "../../components/Layout";
 import { useQuery } from "react-query";
@@ -9,11 +9,12 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Popconfirm } from "antd";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { EmptyCart } from "../../features";
+import { set } from "zod";
 
 export const WishlistPage = () => {
   const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const fetchWishlist = async () => {
     try {
       const products = await WishlistService.getWishlist();
@@ -31,6 +32,7 @@ export const WishlistPage = () => {
     try {
       await WishlistService.clearWishlist();
       setWishlistItems([]);
+      setIsSnackbarOpen(true);
     } catch (error) {
       console.error("Error clearing wishlist:", error);
     }
@@ -43,6 +45,11 @@ export const WishlistPage = () => {
   return (
     <MainLayout>
       <SectionContainer sectionId={SectionIdEnum.wishlist}>
+        <CustomSnackbar
+          isSnackbarOpen={isSnackbarOpen}
+          setIsSnackbarOpen={setIsSnackbarOpen}
+          message="Wishlist cleared!"
+        />
         <Container>
           <div className="wishlist-header">
             <h3>
@@ -65,7 +72,7 @@ export const WishlistPage = () => {
           </div>
           <div>
             {wishlistItems.length === 0 ? (
-              <EmptyCart/>
+              <EmptyCart />
             ) : (
               <CardsContainer>
                 {wishlistItems.map((product) => (
@@ -92,7 +99,7 @@ const Container = styled.div`
   .wishlist-header {
     display: flex;
     padding: 1rem;
-    margin:0;
+    margin: 0;
     align-items: center;
     justify-content: space-between;
     box-shadow: 2px 2px 25px rgba(4, 42, 78, 0.17);

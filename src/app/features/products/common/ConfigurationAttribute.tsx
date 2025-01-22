@@ -26,9 +26,9 @@ export const ConfigurationAttributeComponent: React.FC<ProductConfigurationProps
       <p>{attribute.name}</p>
       <Choices>
         {attribute.choices.map((choice: Choice, index: number) => (
-          <div>
+          <div  key={choice.name}>
             {attribute.type === "COLOR" ? (
-              <div key={choice.name}>
+              <div>
                 <ColorButton
                   style={{
                     backgroundColor: choice.name,
