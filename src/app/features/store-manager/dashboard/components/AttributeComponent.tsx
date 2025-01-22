@@ -161,7 +161,7 @@ export const AttributeComponent: React.FC<AttributeProps> = ({
               <ChoiceItem key={idx}>
                 {attribute.type === "COLOR" ? (
                   <ColorPicker
-                    defaultValue={choice.name || "black"}
+                    defaultValue={choice.name || "transparent"}
                     showText
                     allowClear
                     onChange={(color) => handleColorChange(color, idx)}

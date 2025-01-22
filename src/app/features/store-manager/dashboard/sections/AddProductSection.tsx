@@ -11,6 +11,8 @@ import TextArea from "antd/es/input/TextArea";
 import { ConfigurationsContainer } from "../components/ConfigurationsContainer";
 import { ProductService } from "../../../../api";
 import { useParams } from "react-router-dom";
+import { productSchema } from "../../../../validations/product.validations";
+import { z } from "zod";
 
 interface AddProductSectionProps {
   categories: Category[];
@@ -42,14 +44,34 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
         configurationAttributes: [],
       },
     ],
+    mainImageUrl: "", // Add this new field
   });
 
   const updateProduct = (field: string, value: any) => {
     setProduct((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Add validation function
+  const validateProduct = () => {
+    try {
+      productSchema.parse(product);
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        error.errors.forEach((err) => {
+          message.error(`${err.path.join('.')}: ${err.message}`);
+        });
+      }
+      return false;
+    }
+  };
+
   const handleSave = async () => {
     try {
+      if (!validateProduct()) {
+        return;
+      }
+
       if (!product.categoryId) {
         message.error("Please select a category");
         return;
@@ -214,8 +236,16 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
       </CategoryContainer>
       <ProductImages>
         <h5>Product images</h5>
-        <h6>Main image</h6>
-        <h6>TODO</h6>
+        <div>
+          <h6>Main image URL</h6>
+          <Input
+            placeholder="Main image URL"
+            variant="filled"
+            value={product.mainImageUrl}
+            onChange={(e) => updateProduct("mainImageUrl", e.target.value)}
+            style={{ width: 400 }}
+          />
+        </div>
       </ProductImages>
       <CustomizationSection>
         <h5>Customization</h5>
