@@ -1,22 +1,20 @@
 import { clientAxios } from ".";
+import { Product } from "../types";
 
 export const WishlistService = {
-  getWishlist: async () => {
-    const response = await clientAxios.get("/wishlist");
-    return response;
+  getWishlist: async (): Promise<Product[]> => {
+    const { data } = await clientAxios.get("/wishlist");
+    return data;
   },
-  addProduct: async (id?: Number) => { 
+  addProduct: async (id: number): Promise<void> => {
     if (!id) return;
-    const response = await clientAxios.post(`/wishlist/${id}`);
-    return response;
+    await clientAxios.post(`/wishlist/${id}`);
   },
-  deleteProduct: async (id?: Number) => {
+  deleteProduct: async (id: number): Promise<void> => {
     if (!id) return;
-    const response = await clientAxios.delete(`/wishlist/${id}`);
-    return response;
+    await clientAxios.delete(`/wishlist/${id}`);
   },
-  clearWishlist: async () => {
-    const response = await clientAxios.delete(`/wishlist`);
-    return response;
+  clearWishlist: async (): Promise<void> => {
+    await clientAxios.delete(`/wishlist`);
   },
 };

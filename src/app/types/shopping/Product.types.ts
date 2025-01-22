@@ -17,7 +17,7 @@ export interface ProductWithStoreDto {
     numberOfReviews: number;
     categoryId: number;
   };
-  storeBasicInfo: {
+  storeBasicInfo?: {
     storeId: number;
     storeName: string;
     storeLogoURL: string | null;

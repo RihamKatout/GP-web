@@ -165,7 +165,11 @@ export const ProductCard: React.FC<ProductWithStoreDto> = (productDto) => {
         />
 
         <div className="product-details">
-          <StoreName>--{productDto.storeBasicInfo.storeName}--</StoreName>
+          {productDto.storeBasicInfo?.storeName ? (
+            <StoreName>--{productDto.storeBasicInfo.storeName}--</StoreName>
+          ) : (
+            <></>
+          )}
 
           <h6 onClick={() => navigate("/product/" + productDto.product.id)}>
             {product.name}

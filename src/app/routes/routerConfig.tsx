@@ -10,9 +10,9 @@ import {
   CartPage,
   StorePage,
   StoreDashboardPage,
+  WishlistPage,
 } from "../pages";
 import { Button, MainBody } from "../styles/Global.styled";
-import SweetNavbar from "../SweetTouches/component/SweetNavbar";
 import CakeScene from "../components/Cake3D/CakeComponent";
 import Hero from "../SweetTouches/component/Hero";
 import Navbar from "../SweetTouches/component/SweetNavbar";
@@ -58,10 +58,17 @@ const routerConfig = createBrowserRouter([
     ),
   },
   {
+    path: "/wishlist",
+    element: (
+      <ProtectedRoute>
+        <WishlistPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
     path: "/cake",
     element: (
       <MainLayout>
-        
         <CakeScene></CakeScene>
       </MainLayout>
     ),

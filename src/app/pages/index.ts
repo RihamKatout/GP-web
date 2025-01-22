@@ -4,7 +4,7 @@ export * from "./HomePage";
 export * from "./products/ShowcasePage";
 export * from "./products/ProductDetailsPage";
 export * from "./products/CartPage";
-
+export * from "./products/WishlistPage";
 // user
 export * from "./user/LoginPage";
 export * from "./user/RegisterPage";
@@ -22,6 +22,6 @@ export * from "./errors/LoggedInUserPage";
 // modals
 export * from "./modals/PleaseLogin";
 
-// store 
+// store
 export * from "./store/StorePage";
 export * from "./store/StoreDashboardPage";

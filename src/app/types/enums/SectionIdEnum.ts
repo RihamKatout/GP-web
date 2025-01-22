@@ -10,4 +10,5 @@ export const enum SectionIdEnum {
   unauthorized = "unauthorized",
   product = "product",
   store = "store",
+  wishlist = "wishlist",
 }
