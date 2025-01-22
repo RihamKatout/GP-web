@@ -1,5 +1,5 @@
 import React from "react";
-import { VerticalContainer } from "../StyledComponents";
+import { VerticalContainer } from "./StyledComponents";
 import { Product } from "../../../../types";
 
 interface LowStockProps {

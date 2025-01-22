@@ -1,34 +1,45 @@
 import styled from "styled-components";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
-import { DashboardCard } from "./StyledComponents";
+import { CategorySelect, DashboardCard } from "../components/StyledComponents";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { LowStock } from "./components/LowStock";
+import { LowStock } from "../components/LowStock";
 import React, { useEffect, useState } from "react";
-import { Category, Product, ProductFilters } from "../../../types";
+import {
+  Category,
+  Product,
+  ProductFilters,
+  StoreDashboardSectionsEnum,
+} from "../../../../types";
 import { useQuery } from "react-query";
-import { ProductService, StoreCategoryService } from "../../../api";
+import { ProductService } from "../../../../api";
 import { Popconfirm } from "antd";
 
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 interface ProductsManagementSectionProps {
   lowStock: Product[];
   storeId: number;
-  storeCategoryId: number;
   handleOpenProduct: (productId: number) => void;
+  categories: Category[];
+  setSelectedSection: (section: StoreDashboardSectionsEnum) => void;
 }
 
 export const ProductsManagementSection: React.FC<
   ProductsManagementSectionProps
-> = ({ lowStock, storeId, storeCategoryId, handleOpenProduct }) => {
+> = ({
+  lowStock,
+  storeId,
+  handleOpenProduct,
+  categories,
+  setSelectedSection,
+}) => {
   // true = active products, false = archived products
   const [productsType, setProductsType] = useState<boolean>(true);
   const [activeProducts, setActiveProducts] = useState<Product[]>([]);
   const [archivedProducts, setArchivedProducts] = useState<Product[]>([]);
   const [productsToDisplay, setProductsToDisplay] = useState<Product[]>([]);
   const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
-  const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
     let tmpProducts = productsType ? activeProducts : archivedProducts;
     if (categoryId) {
@@ -70,19 +81,6 @@ export const ProductsManagementSection: React.FC<
     }
   );
 
-  // fetch store categories
-  useQuery(
-    ["categories", storeId],
-    () => StoreCategoryService.getStoreCategoryById(storeCategoryId),
-    {
-      keepPreviousData: true,
-      onSuccess: (data) => {
-        setCategories(data.data.productCategories);
-      },
-      refetchOnWindowFocus: false,
-    }
-  );
-
   const handleCategoryChange = (categoryId: string) => {
     setCategoryId(Number(categoryId));
   };
@@ -103,18 +101,26 @@ export const ProductsManagementSection: React.FC<
     }
   };
 
+  const handleAddProduct = () => {
+    setSelectedSection(StoreDashboardSectionsEnum.AddProduct);
+  };
   return (
     <Container className="main">
       <DashboardCard style={{ gridArea: "card1" }}>
         <Inventory2Icon />
         <div>
           <h6>Total products</h6>
-          <p>200</p>
+          <p>{activeProducts.length + archivedProducts.length}</p>
         </div>
       </DashboardCard>
       <div
         className="addProduct"
-        style={{ boxShadow: "none", backgroundColor: "transparent" }}
+        style={{
+          boxShadow: "none",
+          backgroundColor: "transparent",
+          cursor: "pointer",
+        }}
+        onClick={handleAddProduct}
       >
         <AddCircleIcon style={{ color: "green" }} />
         <h6>Add product</h6>
@@ -215,6 +221,8 @@ const Container = styled.div`
     "products products products topProducts";
   .addProduct {
     grid-area: addProduct;
+    align-items: center;
+    gap: 0.5rem;
     h6 {
       margin: 0;
       color: ${({ theme }) => theme.colors.secondary_dark};
@@ -293,9 +301,3 @@ const ProductsContainer = styled.div`
     }
   }
 `;
-
-const CategorySelect = styled("select")({
-  padding: "0.1rem",
-  borderRadius: "0.5rem",
-  border: "2px solid #1b1a1a",
-});

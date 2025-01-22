@@ -1,23 +1,10 @@
 import React, { useEffect } from "react";
-import { ConfigurationAttribute } from "./ConfigurationAttribute";
+import { ConfigurationAttributeComponent } from "./ConfigurationAttribute";
 import styled from "styled-components";
+import { Configuration } from "../../../types";
 
 interface ProductConfigurationProps {
-  config: {
-    id: number;
-    name: string;
-    allowsMultipleUnits: boolean;
-    unitPriceImpact: number;
-    configurationAttributes: Array<{
-      id: number;
-      name: string;
-      type: string;
-      choices: Array<{
-        name: string;
-        priceImpact: number;
-      }>;
-    }>;
-  };
+  config: Configuration;
   setPrice: any;
 }
 export const ProductConfiguration: React.FC<ProductConfigurationProps> = ({
@@ -33,7 +20,7 @@ export const ProductConfiguration: React.FC<ProductConfigurationProps> = ({
       <h6>{config.name}</h6>
       <p>price: {configPriceImpact}</p>
       {config.configurationAttributes.map((attr) => (
-        <ConfigurationAttribute
+        <ConfigurationAttributeComponent
           attribute={attr}
           setConfigPriceImpact={setConfigPriceImpact}
         />

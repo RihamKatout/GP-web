@@ -3,9 +3,9 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PendingIcon from "@mui/icons-material/Pending";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
-import { DashboardCard, VerticalContainer } from "./StyledComponents";
-import { LowStock } from "./components/LowStock";
-import { Product } from "../../../types";
+import { DashboardCard, VerticalContainer } from "../components/StyledComponents";
+import { LowStock } from "../components/LowStock";
+import { Product } from "../../../../types";
 
 // TODO: fix responsive
 

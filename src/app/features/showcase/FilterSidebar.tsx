@@ -1,7 +1,6 @@
-
 import { Category } from "../../types";
 import { CategoryCard, SearchField } from "../../components/common";
-import React, { useEffect , useState} from "react";
+import React, { useEffect, useState } from "react";
 import { StoreCategoryService, StoreService } from "../../api";
 import { Divider } from "antd";
 import { Theme } from "../../utils/Theme";
@@ -10,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import img from "../../../assets/characters/loginChar.png";
 import styled from "styled-components";
 import Slider from "react-slick";
-
 
 const CategoriesContainer = styled.div`
   display: flex;
@@ -45,7 +43,6 @@ const SidebarContainer = styled.div`
   }
 `;
 
-
 interface FilterSidebarProps {
   storeCategoryId: number;
   handleProductOptionsChange: (options: FilterOptions) => void;
@@ -59,7 +56,6 @@ export interface FilterOptions {
   minPrice?: number;
   maxPrice?: number;
   categoryId?: number;
- 
 }
 
 // TODO : put productCategories in a carousel, fix mobile responsiveness, and handle searching
@@ -68,7 +64,6 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   handleProductOptionsChange,
   categories,
 }) => {
-
   const settings = {
     dots: true,
     infinite: true,
@@ -90,26 +85,25 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       },
     ],
   };
-  
 
-   const navigate = useNavigate(); // Hook for navigation
- 
-   const { data: stores, isLoading } = useQuery(
+  const navigate = useNavigate(); // Hook for navigation
+
+  const { data: stores, isLoading } = useQuery(
     ["stores", storeCategoryId],
     () => StoreService.getStoresByStoreCategoryId(storeCategoryId),
     {
-        keepPreviousData: true,
-        onSuccess: (data) => console.log("Stores fetched successfully:", data),
+      keepPreviousData: true,
+      onSuccess: (data) => console.log("Stores fetched successfully:", data),
     }
-);
+  );
 
-const [showStores, setShowStores] = React.useState(false); // New state for toggling stores
- 
+  const [showStores, setShowStores] = React.useState(false); // New state for toggling stores
+
   // product categories
   const [productCategories, setProductCategories] = React.useState<Category[]>(
     []
   );
-  
+
   const [filterOptions, setFilterOptions] = React.useState<FilterOptions>({
     available: undefined,
     threeDModel: undefined,
@@ -140,7 +134,7 @@ const [showStores, setShowStores] = React.useState(false); // New state for togg
     };
     fetchStoreCategory();
   }, []);
-console.log(storeCategoryId)
+  console.log(storeCategoryId);
   // filter options
   const handleFilterButtonClick = () => {
     console.log("Filter data:", filterOptions);
@@ -149,17 +143,39 @@ console.log(storeCategoryId)
   const handleViewStores = () => {
     setShowStores(!showStores); // Toggle visibility
   };
-  
+
   return (
     <SidebarContainer>
       {/* search Section */}
       <SearchField />
-      <Button onClick={handleViewStores}> {showStores ? "Hide Stores" : "View Stores"}</Button>
+      <Button onClick={handleViewStores}>
+        {" "}
+        {showStores ? "Hide Stores" : "View Stores"}
+      </Button>
       {showStores && stores && stores.length > 0 && (
-      <div style={{ alignContent: "center" }}>
-        {stores.length > 1 ? (
-          <Slider {...settings}>
-            {stores.map((store) => (
+        <div style={{ alignContent: "center" }}>
+          {stores.length > 1 ? (
+            <Slider {...settings}>
+              {stores.map((store) => (
+                <StoreCard key={store.id}>
+                  <div>
+                    <StoreImage>
+                      <img src={store.logoURL || img} alt={store.name} />
+                    </StoreImage>
+                    <StoreName>{store.name}</StoreName>
+                    <StoreDetails>{store.description}</StoreDetails>
+                  </div>
+                  <div>
+                    <VisitButton onClick={() => navigate(`/store/${store.id}`)}>
+                      Visit
+                    </VisitButton>
+                  </div>
+                </StoreCard>
+              ))}
+            </Slider>
+          ) : (
+            // Fallback if only one store
+            stores.map((store) => (
               <StoreCard key={store.id}>
                 <div>
                   <StoreImage>
@@ -174,33 +190,21 @@ console.log(storeCategoryId)
                   </VisitButton>
                 </div>
               </StoreCard>
-            ))}
-          </Slider>
-        ) : (
-          // Fallback if only one store
-          stores.map((store) => (
-            <StoreCard key={store.id}>
-              <div>
-                <StoreImage>
-                  <img src={store.logoURL || img} alt={store.name} />
-                </StoreImage>
-                <StoreName>{store.name}</StoreName>
-                <StoreDetails>{store.description}</StoreDetails>
-              </div>
-              <div>
-                <VisitButton onClick={() => navigate(`/store/${store.id}`)}>
-                  Visit
-                </VisitButton>
-              </div>
-            </StoreCard>
-          ))
-        )}
-      </div>
-    )}
-      <Divider
-        style={{borderColor: '#1a1a19b3' , fontWeight: "bold"}}
-      >
-       <h3 style={{ fontFamily: "DynaPuff" ,  color: Theme.colors.secondary_dark , fontWeight: 400 , fontSize: '1.1rem'}}>Categories</h3> 
+            ))
+          )}
+        </div>
+      )}
+      <Divider style={{ borderColor: "#1a1a19b3", fontWeight: "bold" }}>
+        <h3
+          style={{
+            fontFamily: "DynaPuff",
+            color: Theme.colors.secondary_dark,
+            fontWeight: 400,
+            fontSize: "1.1rem",
+          }}
+        >
+          Categories
+        </h3>
       </Divider>
       <CategoriesContainer>
         <div
@@ -239,92 +243,108 @@ console.log(storeCategoryId)
           </div>
         ))}
       </CategoriesContainer>
-      <Divider
-         style={{borderColor: '#1a1a19b3' , fontWeight: "bold"}}
-      >
-       <h3 style={{ fontFamily: "DynaPuff" ,  color: Theme.colors.secondary_dark , fontWeight: 400 , fontSize: '1.1rem'}}>Product options</h3> 
+      <Divider style={{ borderColor: "#1a1a19b3", fontWeight: "bold" }}>
+        <h3
+          style={{
+            fontFamily: "DynaPuff",
+            color: Theme.colors.secondary_dark,
+            fontWeight: 400,
+            fontSize: "1.1rem",
+          }}
+        >
+          Product options
+        </h3>
       </Divider>
 
       {/* product options  */}
       <ProductOptionsContainer>
-    <OptionLabel>
-      <input
-        type="checkbox"
-        checked={!!filterOptions.available}
-        onChange={(e) => {
-          setFilterOptions({
-            ...filterOptions,
-            available: e.target.checked ? true : undefined,
-          });
-        }}
-      />
-      Available
-    </OptionLabel>
-    <OptionLabel>
-      <input
-        type="checkbox"
-        checked={!!filterOptions.threeDModel}
-        onChange={(e) => {
-          setFilterOptions({
-            ...filterOptions,
-            threeDModel: e.target.checked ? true : undefined,
-          });
-        }}
-      />
-      3D Model
-    </OptionLabel>
-    <OptionLabel>
-      <input
-        type="checkbox"
-        checked={!!filterOptions.customizable}
-        onChange={(e) => {
-          setFilterOptions({
-            ...filterOptions,
-            customizable: e.target.checked ? true : undefined,
-          });
-        }}
-      />
-      Customizable
-    </OptionLabel>
+        <OptionLabel>
+          <input
+            type="checkbox"
+            checked={!!filterOptions.available}
+            onChange={(e) => {
+              setFilterOptions({
+                ...filterOptions,
+                available: e.target.checked ? true : undefined,
+              });
+            }}
+          />
+          Available
+        </OptionLabel>
+        <OptionLabel>
+          <input
+            type="checkbox"
+            checked={!!filterOptions.threeDModel}
+            onChange={(e) => {
+              setFilterOptions({
+                ...filterOptions,
+                threeDModel: e.target.checked ? true : undefined,
+              });
+            }}
+          />
+          3D Model
+        </OptionLabel>
+        <OptionLabel>
+          <input
+            type="checkbox"
+            checked={!!filterOptions.customizable}
+            onChange={(e) => {
+              setFilterOptions({
+                ...filterOptions,
+                customizable: e.target.checked ? true : undefined,
+              });
+            }}
+          />
+          Customizable
+        </OptionLabel>
 
-    <Divider style={{ borderColor: '#1a1a19b3' , fontWeight: "bold" }}>
-     <h3 style={{ fontFamily: "DynaPuff" ,  color: Theme.colors.secondary_dark , fontWeight: 400 , fontSize: '1.1rem'}}>Price Range</h3> 
-    </Divider>
-    <PriceRangeContainer>
-      <h6>Price</h6>
-      <PriceInput
-        type="number"
-        placeholder="Min"
-        value={filterOptions.minPrice || ""}
-        onChange={(e) => {
-          setFilterOptions({
-            ...filterOptions,
-            minPrice: e.target.value ? Number(e.target.value) : undefined,
-          });
-        }}
-      />
-      <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}> - </span>
-      <PriceInput
-        type="number"
-        placeholder="Max"
-        value={filterOptions.maxPrice || ""}
-        onChange={(e) => {
-          setFilterOptions({
-            ...filterOptions,
-            maxPrice: e.target.value ? Number(e.target.value) : undefined,
-          });
-        }}
-      />
-    </PriceRangeContainer>
-    <Button onClick={handleFilterButtonClick}>Apply Filters</Button>
-  </ProductOptionsContainer>
+        <Divider style={{ borderColor: "#1a1a19b3", fontWeight: "bold" }}>
+          <h3
+            style={{
+              fontFamily: "DynaPuff",
+              color: Theme.colors.secondary_dark,
+              fontWeight: 400,
+              fontSize: "1.1rem",
+            }}
+          >
+            Price Range
+          </h3>
+        </Divider>
+        <PriceRangeContainer>
+          <h6>Price</h6>
+          <PriceInput
+            type="number"
+            placeholder="Min"
+            value={filterOptions.minPrice || ""}
+            onChange={(e) => {
+              setFilterOptions({
+                ...filterOptions,
+                minPrice: e.target.value ? Number(e.target.value) : undefined,
+              });
+            }}
+          />
+          <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}> - </span>
+          <PriceInput
+            type="number"
+            placeholder="Max"
+            value={filterOptions.maxPrice || ""}
+            onChange={(e) => {
+              setFilterOptions({
+                ...filterOptions,
+                maxPrice: e.target.value ? Number(e.target.value) : undefined,
+              });
+            }}
+          />
+        </PriceRangeContainer>
+        <Button onClick={handleFilterButtonClick}>Apply Filters</Button>
+      </ProductOptionsContainer>
     </SidebarContainer>
   );
 };
 const Button = styled("button")(({ theme }) => ({
   padding: "0.5rem 1rem",
   color: "#1b1a1a",
-  border:'none',
+  border: "none",
   borderRadius: "15px",
   fontWeight: 600,
   width: "250px",
@@ -333,12 +353,14 @@ const Button = styled("button")(({ theme }) => ({
   fontFamily: "Overlock",
   transition: "background-color 0.3s",
   backgroundColor: Theme.colors.primary,
-  boxShadow: '0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset',
-  '&:hover': {
-      transform: "scale(1.05);",
-      boxShadow: '0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset',
-      backgroundColor: Theme.colors.secondary_light,
-       }
+  boxShadow:
+    "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset",
+  "&:hover": {
+    transform: "scale(1.05);",
+    boxShadow:
+      "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset",
+    backgroundColor: Theme.colors.secondary_light,
+  },
 }));
 
 const ProductOptionsContainer = styled("div")({
@@ -364,7 +386,6 @@ const OptionLabel = styled("label")({
   "& input": {
     marginRight: "0.5rem",
     accentColor: "#e4bcbc",
-    
   },
   "&:hover": {
     color: "#1b1a1a",
@@ -387,12 +408,10 @@ const PriceInput = styled("input")({
   boxShadow: "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5)",
   border: "1px solid rgba(217, 217, 217, 0.5)",
   "&:focus": {
-        outline: "none",
-        boxShadow: "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5)",
-      }
+    outline: "none",
+    boxShadow: "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5)",
+  },
 });
-
-
 
 /////////for the store
 const StoreCard = styled.div`
@@ -418,7 +437,7 @@ const StoreCard = styled.div`
 const StoreName = styled.h3`
   font-size: 1.5rem;
   font-weight: bold;
-  color: ${({theme})=> theme.colors.primary_dark};
+  color: ${({ theme }) => theme.colors.primary_dark};
   margin: 0.5rem 0;
   font-family: "Overlock", serif;
 `;
@@ -454,15 +473,15 @@ const VisitButton = styled.button`
   cursor: pointer;
   font-size: 1rem;
   background-color: ${({ theme }) => theme.colors.primary};
-      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+  box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),
+    0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,
+    0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
 
-      &:hover {
-        transform: scale(1.05);
-        box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                    0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                    0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
-        background-color: ${({ theme }) => theme.colors.secondary_light};
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),
+      0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,
+      0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+    background-color: ${({ theme }) => theme.colors.secondary_light};
   }
 `;

@@ -18,6 +18,8 @@ export const Theme = {
     danger: "rgb(193, 74, 74)",
     success: "rgb(50, 156, 50)",
     orange: "rgb(255, 140, 0)",
+    orange_light: "rgb(242, 209, 165)",
+    lightGray: "rgb(212, 212, 212)",
   },
   fonts: {
     family: "Delius",

@@ -25,83 +25,39 @@ export interface ProductWithStoreDto {
   inWishlist: boolean;
 }
 
+export interface Choice {
+  name: string;
+  priceImpact: number;
+}
+
+export interface ConfigurationAttribute {
+  id: number;
+  name: string;
+  type: string;
+  choices: Choice[];
+}
+
+export interface Configuration {
+  id: number;
+  name: string;
+  allowsMultipleUnits: boolean;
+  unitPriceImpact: number;
+  configurationAttributes: ConfigurationAttribute[];
+}
+
 // for product details page
 export interface ProductDetail {
-  product: {
-    id: number;
-    name: string;
-    description: string;
-    mainImageURL: string;
-    basePrice: number;
-    stock: number;
-    stockEdge: number;
-    needStock: boolean;
-    isAvailable: boolean;
-    model3dURL: string | null;
-    is3dCustomizable: boolean;
-    defaultFeatures: boolean;
-    rating: number;
-    numberOfReviews: number;
-    categoryId: number;
-  };
-  store: {
-    storeId: number;
-    storeName: string;
-    storeLogoURL: string | null;
-  };
+  product: Product;
+  store: StoreBasicInfoDto;
   inWishlist: boolean;
-  configurations: Array<{
-    id: number;
-    name: string;
-    allowsMultipleUnits: boolean;
-    unitPriceImpact: number;
-    configurationAttributes: Array<{
-      id: number;
-      name: string;
-      type: string;
-      choices: Array<{
-        name: string;
-        priceImpact: number;
-      }>;
-    }>;
-  }>;
+  configurations: Configuration[];
 }
 
 // for product management - manager
 export interface ProductManagementDto {
-  product: {
-    id: number;
-    name: string;
-    description: string;
-    mainImageURL: string;
-    basePrice: number;
-    stock: number;
-    stockEdge: number;
-    needStock: boolean;
-    isAvailable: boolean;
-    model3dURL: string | null;
-    is3dCustomizable: boolean;
-    defaultFeatures: boolean;
-    rating: number;
-    numberOfReviews: number;
-    categoryId: number;
-  };
+  product: Product;
   storeId: number;
-  configurations: Array<{
-    id: number;
-    name: string;
-    allowsMultipleUnits: boolean;
-    unitPriceImpact: number;
-    configurationAttributes: Array<{
-      id: number;
-      name: string;
-      type: string;
-      choices: Array<{
-        name: string;
-        priceImpact: number;
-      }>;
-    }>;
-  }>;
+  configurations: Configuration[];
   categoryId: number;
 }
 
@@ -154,4 +110,10 @@ export interface CartItemAdd {
   size: "S" | "M" | "L" | "XL" | "XXL";
   quantity: number;
   details: string;
+}
+
+export interface StoreBasicInfoDto {
+  storeId: number;
+  storeName: string;
+  storeLogoURL: string | null;
 }

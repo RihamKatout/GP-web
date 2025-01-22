@@ -76,7 +76,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
       }
     }
   };
- console.log(item?.product?.price);
+ console.log(item?.product?.basePrice);
   const openModal = () => setIsModalOpen(true); // Open modal
   const closeModal = () => setIsModalOpen(false); // Close modal
   console.log(item.details);
@@ -98,7 +98,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
             }}
           />
           <ProductImage
-            src={item?.product?.imageurl || "src/assets/shop-logo.png"}
+            src={item?.product?.mainImageURL || "src/assets/shop-logo.png"}
           />
         </ItemSection>
 
@@ -110,7 +110,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
             {item?.product?.name}
           </ItemHeader>
           <p>
-            {item?.product?.price}$ |{" "}
+            {item?.product?.basePrice}$ |{" "}
             <span style={{ fontWeight: "bold" }}>
               {!item?.product?.isAvailable ? (
                 <span style={{ color: "red" }}>unavailable</span>
@@ -180,9 +180,9 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
           isOpen={isModalOpen}
           onClose={closeModal}
           productName={item.product.name}
-          price={item.product.price}
+          price={item.product.basePrice}
           size={item.size}
-          imageurl={item.product.imageurl}
+          imageurl={item.product.mainImageURL}
           details={item.details} 
           quantity={quantity}       />
       )}

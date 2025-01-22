@@ -2,9 +2,9 @@ import { useState } from "react";
 import styled from "styled-components";
 import StoreIcon from "@mui/icons-material/Store";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Product, StoreDashboardSectionsEnum } from "../../types";
+import { Category, Product, StoreDashboardSectionsEnum } from "../../types";
 import {
-  ProductDetailsSection,
+  AddProductSection,
   ProductsManagementSection,
   StoreAnalyticsSection,
   StoreDashboardSidebar,
@@ -19,16 +19,18 @@ export const StoreDashboardPage = () => {
   const [productId, setProductId] = useState<number | undefined>(undefined);
   const [lowStock, setLowStock] = useState<Product[]>([]);
   const [selectedSection, setSelectedSection] =
-    useState<StoreDashboardSectionsEnum>(StoreDashboardSectionsEnum.Dashboard);
+    useState<StoreDashboardSectionsEnum>(StoreDashboardSectionsEnum.AddProduct);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   // get analytics data
-  const { data } = useQuery(
+  const { data: analytics } = useQuery(
     ["analytics", id],
     () => StoreManagerService.getStoreAnalytics(Number(id)),
     {
       enabled: !!id,
       onSuccess: (data) => {
         setLowStock(data.lowStock || []);
+        setCategories(data.productCategories || []);
       },
       refetchOnWindowFocus: false,
     }
@@ -43,7 +45,7 @@ export const StoreDashboardPage = () => {
     <Container>
       <StoreName>
         <StoreIcon fontSize="large" />
-        <p>{data?.storeName}</p>
+        <p>{analytics?.storeName}</p>
       </StoreName>
       <SectionName>
         <p>{selectedSection}</p>
@@ -58,8 +60,9 @@ export const StoreDashboardPage = () => {
         setProductId={setProductId}
       />
 
-      {selectedSection === StoreDashboardSectionsEnum.ProductDetails &&
-        productId && <ProductDetailsSection productId={productId}/>}
+      {selectedSection === StoreDashboardSectionsEnum.AddProduct && (
+        <AddProductSection categories={categories} setSelectedSection={setSelectedSection}/>
+      )}
       {selectedSection === StoreDashboardSectionsEnum.Dashboard && (
         <StoreAnalyticsSection
           lowStock={lowStock}
@@ -71,8 +74,9 @@ export const StoreDashboardPage = () => {
         <ProductsManagementSection
           lowStock={lowStock}
           storeId={Number(id)}
-          storeCategoryId={data?.storeCategoryId || 0}
           handleOpenProduct={handleOpenProduct}
+          categories={categories}
+          setSelectedSection={setSelectedSection}
         />
       )}
     </Container>
@@ -104,11 +108,8 @@ const Container = styled.div`
       color: ${({ theme }) => theme.colors.gray};
     }
     & > div {
-      gap: 0.5rem;
       padding: 0.8rem;
       display: flex;
-      align-items: center;
-      justify-content: flex-start;
       box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
       background-color: ${({ theme }) => theme.colors.gray_light};
     }

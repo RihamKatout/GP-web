@@ -4,7 +4,7 @@ import { useAuth } from "../../context";
 import { UnauthorizedPage } from "../../pages";
 import { StoreManagerService } from "../../api";
 import styled from "styled-components";
-import { ManagerStoreCard } from "./ManagerStoreCard";
+import { ManagerStoreCard } from "..";
 
 //TODO: add new store button 
 // fix responsive

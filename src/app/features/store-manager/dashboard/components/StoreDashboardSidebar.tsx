@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { StoreSidebarItems } from "./StoreSidebarItems";
 import React from "react";
-import { StoreDashboardSectionsEnum } from "../../../types";
+import { StoreDashboardSectionsEnum } from "../../../../types";
 
 interface StoreDashboardSidebarProps {
   selectedSection: StoreDashboardSectionsEnum;

@@ -7,7 +7,7 @@ import FeedbackIcon from '@mui/icons-material/Feedback';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import HistoryIcon from '@mui/icons-material/History';
 import SummarizeIcon from '@mui/icons-material/Summarize';
-import { StoreDashboardSectionsEnum } from "../../../types";
+import { StoreDashboardSectionsEnum } from "../../../../types";
 
 export const StoreSidebarItems = [
   {

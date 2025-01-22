@@ -9,4 +9,5 @@ export enum StoreDashboardSectionsEnum {
   Reports = "Reports",
   Settings = "Settings",
   ProductDetails = "Product details",
+  AddProduct = "Add product",
 }

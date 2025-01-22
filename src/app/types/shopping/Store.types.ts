@@ -23,4 +23,5 @@ export type StoreAnalytics = {
   lowStock?: Product[];
   storeName?: string;
   storeCategoryId?: number;
+  productCategories?: Category[];
 };

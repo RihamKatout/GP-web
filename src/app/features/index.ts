@@ -44,7 +44,7 @@ export * from "./profile/ProfileInfoSection";
 // store manager
 export * from "./store-manager/MyStoresSection";
 export * from "./store-manager/ManagerStoreCard";
-export * from "./store-manager/dashboard/StoreDashboardSidebar";
-export * from "./store-manager/dashboard/StoreAnalyticsSection";
-export * from "./store-manager/dashboard/ProductsManagementSection";
-export * from "./store-manager/dashboard/ProductDetailsSection";
+export * from "./store-manager/dashboard/components/StoreDashboardSidebar";
+export * from "./store-manager/dashboard/sections/StoreAnalyticsSection";
+export * from "./store-manager/dashboard/sections/ProductsManagementSection";
+export * from "./store-manager/dashboard/sections/AddProductSection";

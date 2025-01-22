@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const DashboardCard = styled.div`
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 0.8rem;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
   background-color: ${({ theme }) => theme.colors.gray_light};
   h6 {
@@ -24,9 +24,11 @@ export const DashboardCard = styled.div`
 `;
 
 export const VerticalContainer = styled.div`
+  gap: 0.5rem;
+  align-items: center;
   min-height: 250px;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   .lowStock {
     width: 100%;
     display: grid;
@@ -41,3 +43,9 @@ export const VerticalContainer = styled.div`
     }
   }
 `;
+
+export const CategorySelect = styled("select")({
+  padding: "0.1rem",
+  borderRadius: "0.5rem",
+  border: "2px solid #1b1a1a",
+});

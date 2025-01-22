@@ -1,8 +1,8 @@
 import React from "react";
-import { Store, StoreStatusEnum } from "../../types";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import { Store, StoreStatusEnum } from "../../types";
 import { DefaultStoreImg } from "../../../assets";
 interface ManagerStoreCardProps {
   store: Store;

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import { Choice, ConfigurationAttribute } from "../../../types";
 
 interface ProductConfigurationProps {
-  attribute: any;
+  attribute: ConfigurationAttribute;
   setConfigPriceImpact: React.Dispatch<React.SetStateAction<number>>;
 }
-export const ConfigurationAttribute: React.FC<ProductConfigurationProps> = ({
+export const ConfigurationAttributeComponent: React.FC<ProductConfigurationProps> = ({
   attribute,
   setConfigPriceImpact,
 }) => {
@@ -24,7 +25,7 @@ export const ConfigurationAttribute: React.FC<ProductConfigurationProps> = ({
     <Container>
       <p>{attribute.name}</p>
       <Choices>
-        {attribute.choices.map((choice: any, index: number) => (
+        {attribute.choices.map((choice: Choice, index: number) => (
           <div>
             {attribute.type === "COLOR" ? (
               <div key={choice.name}>
