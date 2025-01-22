@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import { ChromePicker } from "react-color";
 import { ConfigurationAttribute } from "../../../../types";
 import { useDebounce } from "../../../../hooks/useDebounce";
-import { Popconfirm, Select } from "antd";
+import { ColorPicker, Popconfirm, Select } from "antd";
 import { TextField } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -28,9 +27,6 @@ export const AttributeComponent: React.FC<AttributeProps> = ({
   const debouncedName = useDebounce(localName);
   const debouncedChoices = useDebounce(localChoices);
   const [showChoices, setShowChoices] = useState(true);
-  const [activeColorPicker, setActiveColorPicker] = useState<number | null>(
-    null
-  );
 
   // Update local state when prop changes
   useEffect(() => {
@@ -97,8 +93,8 @@ export const AttributeComponent: React.FC<AttributeProps> = ({
   };
 
   const handleColorChange = (color: any, choiceIndex: number) => {
-    handleChoiceChange(choiceIndex, "name", color.hex);
-    setActiveColorPicker(null);
+    const hexColor = color.toHexString();
+    handleChoiceChange(choiceIndex, "name", hexColor || "black");
   };
 
   return (
@@ -164,24 +160,13 @@ export const AttributeComponent: React.FC<AttributeProps> = ({
             {localChoices.map((choice, idx) => (
               <ChoiceItem key={idx}>
                 {attribute.type === "COLOR" ? (
-                  <ColorPickerContainer>
-                    <ColorPreview
-                      color={choice.name}
-                      style={{ width: "50px" }}
-                      onClick={() => setActiveColorPicker(idx)}
-                    />
-                    {activeColorPicker === idx && (
-                      <PopoverContainer>
-                        <PopoverCover
-                          onClick={() => setActiveColorPicker(null)}
-                        />
-                        <ChromePicker
-                          color={choice.name}
-                          onChange={(color) => handleColorChange(color, idx)}
-                        />
-                      </PopoverContainer>
-                    )}
-                  </ColorPickerContainer>
+                  <ColorPicker
+                    defaultValue={choice.name || "black"}
+                    showText
+                    allowClear
+                    onChange={(color) => handleColorChange(color, idx)}
+                    style={{height: "38px", alignItems: "center"}}
+                  />
                 ) : (
                   <input
                     type="text"
@@ -303,14 +288,14 @@ const AddChoiceButton = styled.button`
 
 const ChoicesList = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   flex-wrap: wrap;
   margin-top: 1rem;
 `;
 
 const ChoiceItem = styled.div`
   display: flex;
-  gap: 0.3rem;
+  gap: 0.5rem;
   align-items: center;
   padding: 0.8rem 0.5rem;
   background-color: ${({ theme }) => theme.colors.lightGray};
@@ -320,44 +305,10 @@ const ChoiceItem = styled.div`
     border: 1px solid ${({ theme }) => theme.colors.lightGray};
     border-radius: 0.25rem;
     font-size: 0.83rem;
-
+    width: 100px;
     &:focus {
       outline: none;
       border-color: ${({ theme }) => theme.colors.orange};
     }
   }
-`;
-
-const ColorPickerContainer = styled.div`
-  position: relative;
-  flex: 2;
-`;
-
-const ColorPreview = styled.div<{ color: string }>`
-  width: 100%;
-  height: 38px;
-  border-radius: 0.25rem;
-  background-color: ${(props) => props.color || "#fff"};
-  border: 1px solid ${({ theme }) => theme.colors.lightGray};
-  cursor: pointer;
-`;
-
-const PopoverContainer = styled.div`
-  position: absolute;
-  z-index: 2;
-  top: 100%;
-  left: 0;
-  margin-top: 0.5rem;
-  background-color: ${({ theme }) => theme.colors.white};
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-`;
-
-const PopoverCover = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
 `;

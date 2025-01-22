@@ -23,7 +23,6 @@ export const Product: React.FC<ProductProps> = ({ data, onClick }) => {
     throw new Error("ShopContextProvider is missing!");
   }
 
-  const { addToCart } = context;
 
   return (
     <ProductItem onClick={onClick}> {/* Trigger the click handler */}
@@ -34,7 +33,7 @@ export const Product: React.FC<ProductProps> = ({ data, onClick }) => {
         <ProductTitle>{productName}</ProductTitle>
         <ProductPrice>${price}</ProductPrice>
         <ButtonRow>
-          <button onClick={(e) => { e.stopPropagation(); addToCart(id); }}>
+          <button onClick={(e) => { e.stopPropagation();}}>
             Add to Cart
           </button>
         </ButtonRow>
