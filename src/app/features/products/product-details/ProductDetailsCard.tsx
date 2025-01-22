@@ -9,6 +9,7 @@ import { ProductDetail } from "../../../types";
 import { DefaultStoreImg } from "../../../../assets";
 import { ProductConfiguration } from "..";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { CustomSnackbar } from "../../../components/common";
 //TODO: fix reviews
 //TODO: fix error message
 interface ProductDetailsCardProps {
@@ -57,6 +58,7 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   const handleAddToCart = () => {
     setIsModalOpen(true);
   };
+
   return (
     <Container>
       <ProductPreview
@@ -111,7 +113,7 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
         </div>
 
         <div className="right-column">
-          <AddShoppingCartIcon onClick={handleAddToCart}/>
+          <AddShoppingCartIcon onClick={handleAddToCart} />
           <div className="rating">
             <Rating
               name="half-rating-read"

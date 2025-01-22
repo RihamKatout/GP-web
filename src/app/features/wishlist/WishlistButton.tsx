@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useAuth } from "../../context";
-import { CustomModal } from "../../components/common";
+import { CustomSnackbar, CustomModal } from "../../components/common";
 import { PleaseLoginModal } from "../../pages";
 import { WishlistService } from "../../api/wishlistService";
 
@@ -19,7 +19,7 @@ export const WishlistButton: React.FC<WishlistButtonProps> = ({
 }) => {
   const { isLoggedIn } = useAuth();
   const [isWishlistErrorOpen, setIsWishlistErrorOpen] = useState(false);
-
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const handleWishlistClick = async () => {
     if (!isLoggedIn) {
       setIsWishlistErrorOpen(true);
@@ -32,9 +32,15 @@ export const WishlistButton: React.FC<WishlistButtonProps> = ({
       WishlistService.addProduct(productId);
       setIsWishlisted(true);
     }
+    setIsSnackbarOpen(true);
   };
   return (
     <>
+      <CustomSnackbar
+        message={!isWishlisted ? "Removed from wishlist" : "Added to wishlist"}
+        isSnackbarOpen={isSnackbarOpen}
+        setIsSnackbarOpen={setIsSnackbarOpen}
+      />
       <CustomModal
         open={isWishlistErrorOpen}
         onClose={() => setIsWishlistErrorOpen(false)}

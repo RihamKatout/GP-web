@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { WishlistService } from "../../api/wishlistService";
-import { Grid, Typography } from "@mui/material";
 import { ProductCard } from "../../components/common";
 import { Product, SectionIdEnum } from "../../types";
 import { MainLayout, SectionContainer } from "../../components/Layout";
@@ -9,6 +8,7 @@ import styled from "styled-components";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Popconfirm } from "antd";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { EmptyCart } from "../../features";
 
 export const WishlistPage = () => {
   const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
@@ -65,9 +65,7 @@ export const WishlistPage = () => {
           </div>
           <div>
             {wishlistItems.length === 0 ? (
-              <Typography variant="h6" align="center">
-                Your wishlist is empty
-              </Typography>
+              <EmptyCart/>
             ) : (
               <CardsContainer>
                 {wishlistItems.map((product) => (
