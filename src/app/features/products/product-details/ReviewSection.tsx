@@ -26,6 +26,7 @@ const reviewsData = [
     feedback: "Very satisfied with the quality and customer service.",
   },
 ];
+
 const sliderSettings = {
   dots: false,
   infinite: true,

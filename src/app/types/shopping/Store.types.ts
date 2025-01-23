@@ -25,3 +25,18 @@ export type StoreAnalytics = {
   storeCategoryId?: number;
   productCategories?: Category[];
 };
+
+export interface StoreBasicInfoDto {
+  storeId: number;
+  storeName: string;
+  storeLogoURL: string | null;
+}
+
+export interface PremiumStore {
+  id: number;
+  name: string;
+  logo: string;
+  rating: number;
+  description: string;
+  premiumImage: string;
+}

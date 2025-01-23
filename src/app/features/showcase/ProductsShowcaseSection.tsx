@@ -6,42 +6,6 @@ import { Pagination, useMediaQuery } from "@mui/material";
 import { ProductWithStoreDto } from "../../types";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 
-const ShowcaseBody = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  height: "100%",
-  alignItems: "center",
-  margin: " 1rem 2rem",
-  flex: "1",
-});
-
-const SortSelect = styled("select")({
-  padding: "0.2rem",
-  borderRadius: "15px",
-  border: "2px solid rgba(74, 73, 73, 0.339)",
-  boxShadow: "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5)",
-  fontFamily: "Delius Swash Caps",
-});
-const Button = styled.button`
-  padding: 0.5rem 1rem;
-  color: #1b1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.52);
-  border-radius: 15px;
-  font-weight: 600;
-  width: 100px;
-  text-align: center;
-  cursor: pointer;
-  //transition: background-color 0.3s;
-  background-color: ${({ theme }) => theme.colors.primary}; 
-      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.secondary_light}; 
-  }
-`;
-
 interface ProductsShowcaseSectionProps {
   productsDto?: ProductWithStoreDto[];
   isLoading: boolean;
@@ -69,7 +33,9 @@ export const ProductsShowcaseSection: React.FC<
     setSortType(sort);
     const newProductsDto = [...productsDto].sort((a, b) => {
       if (sort === "price") {
-        return sortDirection === "asc" ? a.product.basePrice - b.product.basePrice : b.product.basePrice - a.product.basePrice;
+        return sortDirection === "asc"
+          ? a.product.basePrice - b.product.basePrice
+          : b.product.basePrice - a.product.basePrice;
       }
       if (sort === "rating") {
         return sortDirection === "asc"
@@ -101,7 +67,7 @@ export const ProductsShowcaseSection: React.FC<
           display: "flex",
           justifyContent: "space-between",
           width: "100%",
-          padding: isMobile ? "0" : "0 1.3rem",
+          padding: isMobile ? "0" : "0 1.5rem 0.3rem 1.3rem",
         }}
       >
         <CardsGrid
@@ -110,9 +76,9 @@ export const ProductsShowcaseSection: React.FC<
             gap: isMobile ? "0.2rem" : "1rem",
           }}
         >
-          <Button style={{ fontSize: "0.83rem" , fontFamily: "Delius Swash Caps", }}>For you</Button>
-          <Button style={{ fontSize: "0.83rem" , fontFamily: "Delius Swash Caps",}}>Top sellers</Button>
-          <Button style={{ fontSize: "0.83rem",fontFamily: "Delius Swash Caps", }}>Newest</Button>
+          <Button>For you</Button>
+          <Button>Top sellers</Button>
+          <Button>Newest</Button>
         </CardsGrid>
         <div
           style={{
@@ -136,19 +102,19 @@ export const ProductsShowcaseSection: React.FC<
       {isLoading ? (
         <Loader type="bouncing" />
       ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(210px, 210px))",
-              gap: "0.8rem",
-              justifyContent: "center",
-              width: "100%",
-            }}
-          >
-            {productsDto?.map((productDto) => (
-              <ProductCard key={productDto.product.id} {...productDto} />
-            ))}
-          </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(210px, 210px))",
+            gap: "0.8rem",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          {productsDto?.map((productDto) => (
+            <ProductCard key={productDto.product.id} {...productDto} />
+          ))}
+        </div>
       )}
       <Pagination
         count={page.totalPages}
@@ -159,3 +125,31 @@ export const ProductsShowcaseSection: React.FC<
     </ShowcaseBody>
   );
 };
+
+const Button = styled.button`
+  width: fit-content;
+  border: none;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  background-color: transparent;
+  transition: background-color 0.3s;
+  &:hover {
+    color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.secondary_dark};
+  }
+`;
+
+const SortSelect = styled.select`
+  padding: 0.1rem;
+  border-radius: 0.5rem;
+  border: 2px solid rgba(74, 73, 73, 0.339);
+  font-family: Overlock;
+`;
+
+const ShowcaseBody = styled.div`
+  width: 100%;
+  display: flex;
+  margin: 0 1rem;
+  flex-direction: column;
+`;

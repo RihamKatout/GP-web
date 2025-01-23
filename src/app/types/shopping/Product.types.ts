@@ -1,3 +1,5 @@
+import { StoreBasicInfoDto } from "..";
+
 // for listing data - showcase
 export interface ProductWithStoreDto {
   product: {
@@ -112,8 +114,3 @@ export interface CartItemAdd {
   details: string;
 }
 
-export interface StoreBasicInfoDto {
-  storeId: number;
-  storeName: string;
-  storeLogoURL: string | null;
-}
