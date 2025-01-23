@@ -48,12 +48,24 @@ const RotatingCake = ({ children }: { children: ReactNode }) => {
 };
 const GradientContainer = styled.div`
   width: 100%;
-  height: 80vh;
+  height: 80vh; /* Default height for large screens */
   margin: 0 auto;
-  //background: rgb(63,94,251);
-  background: radial-gradient(circle, #C47B83 0%, rgba(255,255,255,1) 63%);
-  
+  background: radial-gradient(circle, #C47B83 0%, rgba(255, 255, 255, 1) 63%);
+
+  /* Responsive adjustments */
+  @media (max-width: 1200px) {
+    height: 70vh; /* Slightly smaller height for medium screens */
+  }
+
+  @media (max-width: 900px) {
+    height: 60vh; /* Smaller height for tablets */
+  }
+
+  @media (max-width: 600px) {
+    height: 50vh; /* Even smaller height for mobile screens */
+  }
 `;
+
 const CakeScene = () => {
   const [userText, setUserText] = useState('');
   const [fontType, setFontType] = useState('/fonts/droid_sans_bold.typeface.json');
