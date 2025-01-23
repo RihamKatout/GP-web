@@ -4,11 +4,11 @@ export * from "./authentication/RegisterForm";
 
 // offers
 export * from "./offers/OffersSection";
-export * from "./showcase/ShowcaseHeader";
-// showcase
-export * from "./showcase/FilterSidebar";
-export * from "./showcase/ProductsShowcaseSection";
 
+// showcase
+export * from "./showcase/ShowcaseFilter";
+export * from "./showcase/ProductsShowcaseSection";
+export * from "./showcase/PremiumStoresSection";
 // stores
 export * from "../components/specificComponents/sections/StoreCategoriesSection";
 
