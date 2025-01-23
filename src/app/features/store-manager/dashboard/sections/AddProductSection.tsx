@@ -13,6 +13,10 @@ import { ProductService } from "../../../../api";
 import { useParams } from "react-router-dom";
 import { productSchema } from "../../../../validations/product.validations";
 import { z } from "zod";
+import { Upload } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
+
+const { Dragger } = Upload;
 
 interface AddProductSectionProps {
   categories: Category[];
@@ -23,7 +27,9 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
   categories,
   setSelectedSection,
 }) => {
-  const {id:storeId} = useParams();
+  const { id: storeId } = useParams();
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [product, setProduct] = useState({
     name: "",
     description: "",
@@ -44,14 +50,13 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
         configurationAttributes: [],
       },
     ],
-    mainImageUrl: "", // Add this new field
+    mainImageUrl: "",
   });
 
   const updateProduct = (field: string, value: any) => {
     setProduct((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Add validation function
   const validateProduct = () => {
     try {
       productSchema.parse(product);
@@ -59,10 +64,25 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
     } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach((err) => {
-          message.error(`${err.path.join('.')}: ${err.message}`);
+          message.error(`${err.path.join(".")}: ${err.message}`);
         });
       }
       return false;
+    }
+  };
+
+  const handleFileChange = (info: any) => {
+    const { fileList } = info;
+    if (fileList.length === 0) {
+      setUploadedImage(null);
+      setImagePreviewUrl("");
+      return;
+    }
+    const file = fileList[0].originFileObj;
+    if (file) {
+      setUploadedImage(file);
+      const url = URL.createObjectURL(file);
+      setImagePreviewUrl(url);
     }
   };
 
@@ -90,7 +110,7 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
           isAvailable: product.isAvailable,
           model3dURL: product.modelUrl || null,
           is3dCustomizable: product.is3dCustomizable,
-          defaultFeatures: true,
+          defaultFeatures: product.configurations.length > 1,
           rating: 0,
           numberOfReviews: 0,
           categoryId: product.categoryId,
@@ -110,6 +130,14 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
   };
 
   const handleAddNewCategory = () => {};
+
+  React.useEffect(() => {
+    return () => {
+      if (imagePreviewUrl) {
+        URL.revokeObjectURL(imagePreviewUrl);
+      }
+    };
+  }, [imagePreviewUrl]);
 
   return (
     <Container className="main">
@@ -236,15 +264,27 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
       </CategoryContainer>
       <ProductImages>
         <h5>Product images</h5>
-        <div>
-          <h6>Main image URL</h6>
-          <Input
-            placeholder="Main image URL"
-            variant="filled"
-            value={product.mainImageUrl}
-            onChange={(e) => updateProduct("mainImageUrl", e.target.value)}
-            style={{ width: 400 }}
-          />
+        <div className="main-image">
+          <div>
+            <h6>Main image</h6>
+            {uploadedImage && (
+              <ImagePreview>
+                <img src={imagePreviewUrl} alt="Uploaded" />
+              </ImagePreview>
+            )}
+          </div>
+          <Dragger
+            accept="image/*"
+            maxCount={1}
+            onChange={handleFileChange}
+            style={{ width: 210, fontSize: "0.8rem" }}
+            beforeUpload={() => false}
+          >
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined style={{ width: "40px" }} />
+            </p>
+            <p>Click or drag an image to upload</p>
+          </Dragger>
         </div>
       </ProductImages>
       <CustomizationSection>
@@ -284,7 +324,7 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
 
 const Container = styled.div`
   grid-template-columns: 2fr 1fr;
-  grid-template-rows: 0.3fr 0.8fr 2.5fr 4fr;
+  grid-template-rows: auto auto auto auto;
   grid-template-areas:
     "buttons buttons"
     "productInfo productCategory"
@@ -382,6 +422,12 @@ const ProductImages = styled.div`
   grid-area: productImage;
   flex-direction: column;
   gap: 1rem;
+  .main-image {
+    gap: 1rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
 `;
 
 const CustomizationSection = styled.div`
@@ -393,5 +439,17 @@ const CustomizationSection = styled.div`
   }
   .three-d-model {
     gap: 2rem;
+  }
+`;
+
+const ImagePreview = styled.div`
+  margin-top: 1rem;
+  text-align: center;
+
+  img {
+    max-width: 100%;
+    max-height: 110px;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 `;
