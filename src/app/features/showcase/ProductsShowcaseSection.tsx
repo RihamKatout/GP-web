@@ -139,8 +139,8 @@ export const ProductsShowcaseSection: React.FC<
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 200px))",
-              gap: "1rem",
+              gridTemplateColumns: "repeat(auto-fill, minmax(210px, 210px))",
+              gap: "0.8rem",
               justifyContent: "center",
               width: "100%",
             }}

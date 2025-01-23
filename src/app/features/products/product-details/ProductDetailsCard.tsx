@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import AliceCarousel from "react-alice-carousel";
-import { ProductPreview, ReviewSection, WishlistButton } from "../..";
+import { AddToCartPreview, ReviewSection, WishlistButton } from "../..";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { Divider, Rating } from "@mui/material";
@@ -61,7 +61,7 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
 
   return (
     <Container>
-      <ProductPreview
+      <AddToCartPreview
         product={productDto.product}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}

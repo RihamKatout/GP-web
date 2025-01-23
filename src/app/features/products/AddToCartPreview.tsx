@@ -13,7 +13,7 @@ interface ProductPreviewProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const ProductPreview: React.FC<ProductPreviewProps> = ({
+export const AddToCartPreview: React.FC<ProductPreviewProps> = ({
   isModalOpen,
   setIsModalOpen,
   product,
