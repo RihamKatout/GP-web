@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PremiumStore } from "../../types";
 import { Rating } from "@mui/material";
-import { NavyRobotImg } from "../../../assets";
 
 const PremiumStoresData: PremiumStore[] = [
   {

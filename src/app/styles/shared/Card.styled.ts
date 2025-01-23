@@ -6,8 +6,8 @@ export const StyledCategoryCard = styled(Card)<{
   type?: string;
   imageurl?: string;
 }>(({ theme, type, imageurl }) => ({
-  width: type === "STORE" ? "140px" : "70px",
-  height: type === "STORE" ? "130px" : "70px",
+  width: type === "STORE" ? "140px" : "60px",
+  height: type === "STORE" ? "130px" : "60px",
   textAlign: "center",
   borderRadius: type === "STORE" ? "25px" : "50%",
   background:

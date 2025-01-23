@@ -59,6 +59,7 @@ export const ProductsShowcaseSection: React.FC<
     <ShowcaseBody
       style={{
         width: isMobile ? "90%" : "auto",
+        margin: "0 1rem",
       }}
     >
       {/* showcase header (types and sorting) */}
@@ -67,16 +68,20 @@ export const ProductsShowcaseSection: React.FC<
           display: "flex",
           justifyContent: "space-between",
           width: "100%",
-          padding: isMobile ? "0" : "0 1.5rem 0.3rem 1.3rem",
+          padding: "1rem 1.5rem",
         }}
       >
         <CardsGrid
           style={{
-            padding: isMobile ? "0.5rem" : "1rem",
-            gap: isMobile ? "0.2rem" : "1rem",
+            padding: isMobile ? "0.5rem" : "0",
+            gap: isMobile ? "0.2rem" : "0.5rem",
           }}
         >
-          <Button>For you</Button>
+          <Button
+            style={{ backgroundColor: "rgba(27, 26, 52, 1)", color: "white" }}
+          >
+            For you
+          </Button>
           <Button>Top sellers</Button>
           <Button>Newest</Button>
         </CardsGrid>
@@ -84,7 +89,7 @@ export const ProductsShowcaseSection: React.FC<
           style={{
             display: "flex",
             alignItems: "center",
-            padding: "0 1rem",
+            padding: "0",
             cursor: "pointer",
           }}
         >
@@ -152,4 +157,5 @@ const ShowcaseBody = styled.div`
   display: flex;
   margin: 0 1rem;
   flex-direction: column;
+  align-items: center;
 `;

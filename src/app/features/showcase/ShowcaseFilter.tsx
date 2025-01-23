@@ -49,6 +49,7 @@ export const ShowcaseFilter: React.FC<FilterSidebarProps> = ({
       categoryId: categoryId,
       is3dCustomizable: undefined,
     };
+    setFilterOpen(false);
     setFilterOptions(newFilterOptions);
     handleProductOptionsChange(newFilterOptions);
   };
@@ -97,66 +98,108 @@ export const ShowcaseFilter: React.FC<FilterSidebarProps> = ({
         onClose={() => setFilterOpen(false)}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "right",
+          horizontal: "left",
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "right",
+          horizontal: "left",
         }}
+        sx={{ minWidth: "800px", maxWidth: "800px" }}
       >
+        <CategoriesContainer>
+          <div
+            key={0}
+            style={{
+              padding: "0.5rem",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CategoryCard
+              title="All"
+              id={0}
+              type="PRODUCT"
+              onClick={() => handleCategoryClick()}
+            />
+          </div>
+          {productCategories.map((category: Category) => (
+            <div
+              key={category.id}
+              style={{
+                padding: "0.55rem",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CategoryCard
+                title={category.name}
+                imageurl={category.imageurl}
+                id={category.id}
+                type="PRODUCT"
+                onClick={() => handleCategoryClick(category.id)}
+              />
+            </div>
+          ))}
+        </CategoriesContainer>
         <ProductOptionsContainer>
-          <OptionLabel>
-            <input
-              type="checkbox"
-              checked={!!filterOptions.available}
-              onChange={(e) => {
-                setFilterOptions({
-                  ...filterOptions,
-                  available: e.target.checked ? true : undefined,
-                });
-              }}
-            />
-            Available
-          </OptionLabel>
-          <OptionLabel>
-            <input
-              type="checkbox"
-              checked={!!filterOptions.threeDModel}
-              onChange={(e) => {
-                setFilterOptions({
-                  ...filterOptions,
-                  threeDModel: e.target.checked ? true : undefined,
-                });
-              }}
-            />
-            3D Model
-          </OptionLabel>
-          <OptionLabel>
-            <input
-              type="checkbox"
-              checked={!!filterOptions.customizable}
-              onChange={(e) => {
-                setFilterOptions({
-                  ...filterOptions,
-                  customizable: e.target.checked ? true : undefined,
-                });
-              }}
-            />
-            Customizable
-          </OptionLabel>
-          <OptionLabel>
-            <input
-              type="checkbox"
-              checked={!!filterOptions.is3dCustomizable}
-              onChange={(e) => {
-                setFilterOptions({
-                  ...filterOptions,
-                  is3dCustomizable: e.target.checked ? true : undefined,
-                });
-              }}
-            />
-            3d customizable
-          </OptionLabel>
+          <div className="filter-options">
+            <OptionLabel>
+              <input
+                type="checkbox"
+                checked={!!filterOptions.available}
+                onChange={(e) => {
+                  setFilterOptions({
+                    ...filterOptions,
+                    available: e.target.checked ? true : undefined,
+                  });
+                }}
+              />
+              Available
+            </OptionLabel>
+            <OptionLabel>
+              <input
+                type="checkbox"
+                checked={!!filterOptions.threeDModel}
+                onChange={(e) => {
+                  setFilterOptions({
+                    ...filterOptions,
+                    threeDModel: e.target.checked ? true : undefined,
+                  });
+                }}
+              />
+              3D Model
+            </OptionLabel>
+          </div>
+          <div className="filter-options">
+            <OptionLabel>
+              <input
+                type="checkbox"
+                checked={!!filterOptions.customizable}
+                onChange={(e) => {
+                  setFilterOptions({
+                    ...filterOptions,
+                    customizable: e.target.checked ? true : undefined,
+                  });
+                }}
+              />
+              Customizable
+            </OptionLabel>
+            <OptionLabel>
+              <input
+                type="checkbox"
+                checked={!!filterOptions.is3dCustomizable}
+                onChange={(e) => {
+                  setFilterOptions({
+                    ...filterOptions,
+                    is3dCustomizable: e.target.checked ? true : undefined,
+                  });
+                }}
+              />
+              3d customizable
+            </OptionLabel>
+          </div>
           <PriceRangeContainer>
             <h6>Price</h6>
             <PriceInput
@@ -186,44 +229,6 @@ export const ShowcaseFilter: React.FC<FilterSidebarProps> = ({
           <Button onClick={handleFilterButtonClick}>Apply Filters</Button>
         </ProductOptionsContainer>
       </Popover>
-
-      <CategoriesContainer>
-        <div
-          key={0}
-          style={{
-            padding: "0.5rem",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CategoryCard
-            title="All"
-            id={0}
-            type="PRODUCT"
-            onClick={() => handleCategoryClick()}
-          />
-        </div>
-        {productCategories.map((category: Category) => (
-          <div
-            key={category.id}
-            style={{
-              padding: "0.55rem",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <CategoryCard
-              title={category.name}
-              imageurl={category.imageurl}
-              id={category.id}
-              type="PRODUCT"
-              onClick={() => handleCategoryClick(category.id)}
-            />
-          </div>
-        ))}
-      </CategoriesContainer>
     </FilterContainer>
   );
 };
@@ -250,23 +255,30 @@ const Button = styled.button`
 `;
 
 const ProductOptionsContainer = styled.div`
-  gap: 1rem;
-  width: 300px;
+  gap: 0.2rem;
   padding: 1rem;
   display: flex;
   text-align: center;
   border-radius: 15px;
   flex-direction: column;
   background-color: ${({ theme }) => theme.colors.white};
+  .filter-options {
+    display: flex;
+    gap: 1rem;
+    & > * {
+      width: 50%;
+    }
+  }
 `;
 
 const OptionLabel = styled.label`
   gap: 0.3rem;
   display: flex;
   padding: 0.5rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   font-family: Overlock;
+  align-items: center;
 `;
 
 const PriceRangeContainer = styled("div")({
@@ -274,7 +286,8 @@ const PriceRangeContainer = styled("div")({
   alignItems: "center",
   gap: "0.5rem",
   flexWrap: "wrap",
-  justifyContent: "space-between",
+  padding: "0.5rem",
+  justifyContent: "flex-start",
 });
 
 const PriceInput = styled("input")({
@@ -295,7 +308,7 @@ const CategoriesContainer = styled.div`
   padding: 0;
   margin-bottom: -1.5rem;
   align-items: center;
-  width: 100%;
+  min-width: 450px;
   flex-wrap: wrap;
   justify-content: center;
 `;
@@ -304,7 +317,7 @@ const FilterContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 1rem;
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
   width: 100%;
   height: 100%;
   overflow: hidden;
