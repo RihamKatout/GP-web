@@ -6,7 +6,9 @@ import Rating from "@mui/material/Rating";
 import { AddToCartPreview, WishlistButton } from "../../../features";
 import cart1 from "../../../../assets/Icons/cart1.png";
 
-export const ProductCard: React.FC<ProductWithStoreDto> = (productDto) => {
+export const ProductCard: React.FC<ProductWithStoreDto & {
+  onWishlistRemove?: (productId: number) => void;
+}> = (productDto) => {
   const navigate = useNavigate();
   const product: Product = productDto.product;
   const [isWishlisted, setIsWishlisted] = useState(productDto.inWishlist);
@@ -31,6 +33,7 @@ export const ProductCard: React.FC<ProductWithStoreDto> = (productDto) => {
           isWishlisted={isWishlisted}
           setIsWishlisted={setIsWishlisted}
           productId={product.id}
+          onWishlistRemove={productDto.onWishlistRemove}
         />
         <img
           src={product.mainImageURL}

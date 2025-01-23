@@ -118,7 +118,86 @@ export const ShowcasePage = () => {
   return (
     <MainLayout>
       {/* Hero Section */}
+      <div>
+        {/* Carousel Hero Section */}
+        <Carousel autoplay>
+          {/* Hero Slide */}
+          <div>
+            <HeroContainer>
+              <div className="content">
+                <div className="text-section">
+                  <h1>
+                    GO TO <span>Shop Accessories</span> !!
+                  </h1>
+                  <p>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Eaque reiciendis inventore iste ratione ex alias quis magni
+                    at optio.
+                  </p>
+                  <button onClick={() => navigate("/cake")}>Shop Now!</button>
+                </div>
+                <div className="video-section">
+                  <img
+                    src={bunny}
+                    style={{ maxWidth: "780px", height: "auto" }}
+                  />
+                </div>
+              </div>
+            </HeroContainer>
+          </div>
 
+          {/* Additional Slides */}
+          <div>
+            <HeroContainer>
+              <div className="content">
+                <div className="text-section">
+                  <h1>
+                    GO TO <span>Shop Accessories</span> !!
+                  </h1>
+                  <p>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Eaque reiciendis inventore iste ratione ex alias quis magni
+                    at optio.
+                  </p>
+                  <button onClick={()=>navigate("/cake")}>Shop Now!</button>
+                </div>
+                <div className="video-section">
+                  <img
+                    src={cat}
+                    style={{ maxWidth: "800px", height: "auto" }}
+                  />{" "}
+                </div>
+              </div>
+            </HeroContainer>
+          </div>
+          <div>
+            <HeroContainer>
+              <div className="content">
+                <div className="text-section">
+                  <h1>
+                    GO TO <span>Shop Accessories</span> !!
+                  </h1>
+                  <p>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Eaque reiciendis inventore iste ratione ex alias quis magni
+                    at optio.
+                  </p>
+                  <button onClick={()=>navigate("/cake")}>Shop Now!</button>
+                </div>
+                <div
+                  className="video-section"
+                  style={{ maxWidth: "550px", marginLeft: "120px" }}
+                >
+                  <img
+                    src={bear}
+                    style={{ maxWidth: "780px", height: "auto" }}
+                  />
+                </div>
+              </div>
+            </HeroContainer>
+          </div>
+        </Carousel>
+      </div>
       <SectionContainer sectionId={SectionIdEnum.products}>
         <ShowcaseContainer>
           {/* Sidebar */}

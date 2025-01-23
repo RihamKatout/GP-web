@@ -10,12 +10,14 @@ interface WishlistButtonProps {
   isWishlisted: boolean;
   setIsWishlisted: (isWishlisted: boolean) => void;
   productId: number;
+  onWishlistRemove?: (productId: number) => void;
 }
 
 export const WishlistButton: React.FC<WishlistButtonProps> = ({
   isWishlisted,
   setIsWishlisted,
   productId,
+  onWishlistRemove,
 }) => {
   const { isLoggedIn } = useAuth();
   const [isWishlistErrorOpen, setIsWishlistErrorOpen] = useState(false);
@@ -26,10 +28,11 @@ export const WishlistButton: React.FC<WishlistButtonProps> = ({
       return;
     }
     if (isWishlisted) {
-      WishlistService.deleteProduct(productId);
+      await WishlistService.deleteProduct(productId);
       setIsWishlisted(false);
+      onWishlistRemove?.(productId);
     } else {
-      WishlistService.addProduct(productId);
+      await WishlistService.addProduct(productId);
       setIsWishlisted(true);
     }
     setIsSnackbarOpen(true);
