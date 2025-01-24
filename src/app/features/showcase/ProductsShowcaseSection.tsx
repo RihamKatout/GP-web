@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Pagination, useMediaQuery } from "@mui/material";
 import { ProductWithStoreDto } from "../../types";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 interface ProductsShowcaseSectionProps {
   productsDto?: ProductWithStoreDto[];
@@ -104,6 +105,28 @@ export const ProductsShowcaseSection: React.FC<
         </div>
       </div>
 
+      {(!productsDto || productsDto.length === 0) && (
+        <div
+          style={{
+            textAlign: "center",
+            display: "flex",
+            width: "60%",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: "4rem 0",
+          }}
+        >
+          <DotLottieReact
+            src="https://lottie.host/1f095e31-aaac-4a7c-a87a-3e82976b393c/1r1qnxeWn8.lottie"
+            loop
+            autoplay
+            style={{ width: "21vw", height: "18vw" }}
+          />
+          <p style={{ fontSize: "1.7rem" }}>
+            Products will be added to this category very soon—stay tuned!
+          </p>
+        </div>
+      )}
       {isLoading ? (
         <Loader type="bouncing" />
       ) : (
@@ -158,4 +181,5 @@ const ShowcaseBody = styled.div`
   margin: 0 1rem;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
