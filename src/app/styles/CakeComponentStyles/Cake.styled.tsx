@@ -56,17 +56,18 @@ export const ColumnContainer = styled.div`
   background-color: #ffffff;
   padding: 20px;
   border-radius: 20px;
-
+  align-content: center;
   @media (max-width: 900px) {
     padding: 15px; /* Adjust padding for smaller screens */
+    margin-top:20px;
   }
 `;
 
 export const CakeButton = styled.button`
   background-color: #ffffff;
   color: ${({ theme }) => theme.colors.primary_dark};
-  width: 7.3em;
-  height: 4.6em;
+  width: 7.3rem;
+  height: 4.6rem;
   border: 1px solid rgba(217, 217, 217, 0.5);
   border-radius: 15px;
   text-align: center;
@@ -92,8 +93,8 @@ export const CakeButton = styled.button`
   }
 
   @media (max-width: 600px) {
-    width: 100%; /* Full width for smaller screens */
-    height: auto; /* Adjust height */
+    width: 60%; /* Full width for smaller screens */
+    height: 4.3rem; /* Adjust height */
     font-size: 0.9rem; /* Adjust font size */
   }
 `;

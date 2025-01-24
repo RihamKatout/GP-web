@@ -47,7 +47,7 @@ export const ColorInput = styled.input`
 
 export const ColorLabel = styled.label`
   font-size: 1.2rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-right: 10px;
   margin-left: 10px;
   font-weight: 800;
