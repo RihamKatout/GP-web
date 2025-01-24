@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import emailjs from "emailjs-com";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -33,6 +34,36 @@ export const ForgotPassword = () => {
       );
       //navigate("/login");
     }, 1000);
+
+    // const onForgotPassword = (email: string) => {
+    //   // EmailJS Password Reset Email Configuration
+    //   const templateParams = {
+    //     user_email: email,
+    //     reset_link: "http://localhost:5173/forgot-password", // Change to your password reset page URL
+    //   };
+
+    //   // Send the email using EmailJS
+    //   emailjs
+    //     .send(
+    //       "service_9el3gcf",
+    //       "template_tjxhrls",
+    //       templateParams,
+    //       "3utpEi5L2w2bw-lZn"
+    //     )
+    //     .then(
+    //       (response: any) => {
+    //         console.log("Password reset email sent:", response);
+    //         messageApi.success("Password reset link sent! Check your email.");
+    //         navigate("/forgot-password"); // Redirect to reset password page
+    //       },
+    //       (error: any) => {
+    //         console.log("Failed to send email:", error);
+    //         messageApi.error(
+    //           "Failed to send password reset email. Please try again."
+    //         );
+    //       }
+    //     );
+    // };
   };
 
   return (
@@ -41,10 +72,7 @@ export const ForgotPassword = () => {
       <WelcomeText>Reset Password</WelcomeText>
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
-          <StyledInput
-            {...register("email")}
-            placeholder="Enter your email"
-          />
+          <StyledInput {...register("email")} placeholder="Enter your email" />
         </InputContainer>
         <ButtonContainer>
           <StyledButton type="submit" disabled={isSubmitting}>
@@ -122,7 +150,6 @@ const MainContainer = styled.div`
   border-radius: 20px;
   backdrop-filter: blur(8.5px);
   -webkit-backdrop-filter: blur(8.5px);
-  
 `;
 
 const InputContainer = styled.div`

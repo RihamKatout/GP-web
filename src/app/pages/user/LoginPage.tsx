@@ -1,70 +1,34 @@
 import LoginForm from "../../features/authentication/LoginForm";
 import styled from "styled-components";
-import img from "../../../assets/store/login.png"
+import img from "../../../assets/store/login.png";
 export const LoginPage = () => {
   return (
     <PageContainer>
-      {/* Lottie Animation as Background */}
-     <AnimatedBackground>
-      <img
-        src={img}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: '350px',
-          width: "100%",
-          height: "100%",
-          zIndex: -1, // Places animation behind content
-
-        }}
-      />
-     </AnimatedBackground>
-      {/* Centered Login Form */}
-      <CenteredContainer>
-        <LoginContainer>
-          <LoginForm />
-        </LoginContainer>
-      </CenteredContainer>
+      <LoginForm />
+      <AnimatedBackground>
+        <img src={img} />
+      </AnimatedBackground>
     </PageContainer>
   );
 };
 
-/////// Styled Components ///////
-
 const PageContainer = styled.div`
-  position: relative;
+  gap: 4rem;
+  width: 100vw;
+  display: flex;
+  padding: 2rem;
   height: 100vh;
   overflow: hidden;
-`;
-
-const CenteredContainer = styled.div`
-  display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100%;
+  justify-content: center;
 `;
 
-const LoginContainer = styled.div`
-  margin-right: 700px; /* Default margin for larger screens */
-
-  @media (max-width: 1024px) {
-    margin: 0 auto; /* Remove margin for smaller screens */
-    width: 70%; /* Adjust width for tablets */
-  }
-
-  @media (max-width: 768px) {
-    margin: 0 auto; 
-    width: 90%; /* Adjust width for mobile devices */
-    text-align: center; /* Center-align form content */
-  }
-
-  @media (max-width: 480px) {
-    width: 95%; /* Maximize width on very small screens */
-  }
-`;
 const AnimatedBackground = styled.div`
-
- @media (max-width: 768px) {
-    display: none; /* Hide animation on mobile devices */
- }
-`
+  width: 40%;
+  img {
+    width: 100%;
+  }
+  @media (max-width: 780px) {
+    display: none;
+  }
+`;
