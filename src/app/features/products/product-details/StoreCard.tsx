@@ -38,6 +38,7 @@ const ProductStoreContainer = styled.section`
   overflow: hidden;
   border-radius: 2rem;
   flex-direction: column;
+  margin-top: 2.5rem;
   background-color: transparent;
   justify-content: space-between;
   box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.17);

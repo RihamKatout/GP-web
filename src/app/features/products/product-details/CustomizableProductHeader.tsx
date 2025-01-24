@@ -20,11 +20,11 @@ export const CustomizableProduct: React.FC<CustomizableProductProps> = ({
             src="https://lottie.host/5ed3a060-3457-4dca-8bcd-20fd1935d6e6/murWSnXNyG.lottie"
             loop
             autoplay
-            style={{ width: "140px", height: "120px" }}
+            style={{ width: "100px", height: "100px" }}
           />
           <p>
-            You can design this product as you want{" "}
-            <span onClick={() => navigate("/cake")}>from here</span>
+            Customize this product in a 3D workspace,
+            <span onClick={() => navigate("/cake")}>start now!</span>
           </p>
         </Container>
       )}
@@ -42,7 +42,7 @@ const Container = styled.div`
   margin-bottom: -3.2rem;
   p {
     margin: 0 0 1rem -0.8rem;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   span {
     margin-left: 0.3rem;
@@ -54,8 +54,10 @@ const Container = styled.div`
   }
   @media (max-width: 780px) {
     p {
-      font-size: 1.2rem;
+      font-size: 1rem;
       margin-bottom: 1.5rem;
     }
+    span {
+      font-size: 0.9rem;}
   }
 `;

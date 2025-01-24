@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Rating } from "@mui/material";
 import { RihamImg } from "../../../../assets";
+import { Carousel } from "antd";
 // TODO:
 // open review as a model when it is clicked
 // handle view all reviews button
@@ -45,7 +46,15 @@ const sliderSettings = {
     },
   ],
 };
-
+const carouselSettings = {
+  dots: false,
+  dotPosition: "left" as const,
+  infinite: true,
+  speed: 500,
+  autoplay: true,
+  vertical: true,
+  verticalSwiping: true,
+};
 export const ReviewSection = () => {
   const [reviews, setReviews] = useState(reviewsData);
   const handleSeeAll = () => {
@@ -76,17 +85,41 @@ export const ReviewSection = () => {
           </Card>
         ))}
       </StyledSlider>
+      <StyledCarousel {...carouselSettings}>
+        {reviews.map((review) => (
+          <Card key={review.id} style={{ display: "flex" }}>
+            <div className="header">
+              <Avatar src={review.avatar} alt={review.name} />
+              <div className="name-rating">
+                <p>{review.name}</p>
+                <Rating
+                  name="half-rating-read"
+                  defaultValue={review.rating}
+                  precision={0.5}
+                  readOnly
+                  size="small"
+                />
+              </div>
+            </div>
+            <Feedback>{review.feedback}</Feedback>
+          </Card>
+        ))}
+      </StyledCarousel>
     </Container>
   );
 };
 
 const StyledSlider = styled(Slider)`
+  display: none;
   width: 100%;
   margin-left: -0.6rem;
   .slick-track {
     gap: 1rem;
     display: flex;
     justify-content: space-between;
+  }
+  @media (max-width: 780px) {
+    display: block;
   }
 `;
 
@@ -98,14 +131,13 @@ const Container = styled.div`
   width: 100%;
   flex-direction: column;
   border-radius: 0 1rem 1rem 1rem;
-  padding: 0 1rem 1rem 1rem;
   margin-top: 0.5rem;
 `;
 
 const Card = styled.div`
-  width: auto;
+  height: 120px !important;
+  width: 100%;
   padding: 1rem;
-  height: 120px;
   cursor: pointer;
   overflow: hidden;
   border-radius: 0.5rem;
@@ -122,6 +154,9 @@ const Card = styled.div`
     gap: 1rem;
     align-items: center;
     justify-content: flex-start;
+  }
+  @media (max-width: 780px) {
+    width: auto;
   }
 `;
 
@@ -156,5 +191,32 @@ const Button = styled.p`
   &:hover {
     color: ${({ theme }) => theme.colors.secondary_dark};
     text-decoration: underline;
+  }
+`;
+
+const StyledCarousel = styled(Carousel)`
+  margin: 0 auto;
+  align-items: center;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center;
+  .slick-list {
+    width: 100%;
+  }
+
+  .slick-track {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+  }
+
+  .slick-slide {
+    height: fit-content !important;
+    > div {
+      margin: 0.5rem 0;
+    }
+  }
+  @media (max-width: 780px) {
+    display: none !important;
   }
 `;

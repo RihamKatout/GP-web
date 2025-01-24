@@ -30,9 +30,10 @@ export const ProductConfiguration: React.FC<ProductConfigurationProps> = ({
 };
 
 const Container = styled.div`
-  padding: 0.5rem 1rem 0.2rem 1rem;
-  border: 1px solid black;
+  background-color: ${(props) => props.theme.colors.white};
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
   h6 {
     width: 100%;
     padding: 0 0 0.5rem 0;
