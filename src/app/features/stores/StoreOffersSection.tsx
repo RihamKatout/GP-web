@@ -6,7 +6,9 @@ import img2 from '../../../assets/store/discount2.png';
 import img1 from '../../../assets/store/discountChar.png';
 import riham from '../../../assets/characters/riham.png';
 import riham1 from '../../../assets/characters/loginChar.png';
+import mess from "../../../assets/Icons/message (2).png";
 import { Divider } from "antd";
+import { useNavigate } from "react-router-dom";
 const offers = [
   {
     id: 1,
@@ -57,6 +59,12 @@ const reviews = [
 
 
 export const StoreOffersSection = () => {
+  const navigate = useNavigate();
+
+  const goToChat = () => {
+    navigate("/chat");
+  };
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
@@ -70,20 +78,24 @@ export const StoreOffersSection = () => {
   return (
     <Container>
       <div style={{ width: "90%", margin: "0 auto" }}>
-      <Divider style={{ borderColor: "#1a1a19b3" }}>
-      <Title>Exclusive Offers</Title>
-      </Divider>
+        <Divider style={{ borderColor: "#1a1a19b3" }}>
+          <Title>Exclusive Offers</Title>
+        </Divider>
       </div>
-      
+
+      {/* Circular Chat Button */}
+      <ChatButton onClick={goToChat}><img src={mess} alt="Chat" style={{width: "70px", height: "35px"}} /></ChatButton>
+
       <Slider>
         <Button onClick={handlePrev}>{"<"}</Button>
         <OfferCard>
-         <img src={offers[currentIndex].image} alt={offers[currentIndex].title} />
-         <h3>{offers[currentIndex].title}</h3>
+          <img src={offers[currentIndex].image} alt={offers[currentIndex].title} />
+          <h3>{offers[currentIndex].title}</h3>
           <p>{offers[currentIndex].description}</p>
         </OfferCard>
         <Button onClick={handleNext}>{">"}</Button>
       </Slider>
+
       <Dots>
         {offers.map((_, index) => (
           <Dot
@@ -93,29 +105,30 @@ export const StoreOffersSection = () => {
           />
         ))}
       </Dots>
-      <ReviewsSection>
-      <div style={{ width: "90%", margin: "0 auto" }}>
-      <Divider style={{ borderColor: "#1a1a19b3" }}>
-      <Title>Customer Reviews</Title>
-      </Divider>
-      </div>
-     
-        <ReviewsList>
-  {reviews.map((review) => (
-    <ReviewCard key={review.id}>
-      <img src={review.image} alt={review.name} />
-      <div>
-        <ReviewerName>{review.name}</ReviewerName>
-        <ReviewText>{review.text}</ReviewText>
-      </div>
-    </ReviewCard>
-  ))}
-</ReviewsList>
 
+      <ReviewsSection>
+        <div style={{ width: "90%", margin: "0 auto" }}>
+          <Divider style={{ borderColor: "#1a1a19b3" }}>
+            <Title>Customer Reviews</Title>
+          </Divider>
+        </div>
+
+        <ReviewsList>
+          {reviews.map((review) => (
+            <ReviewCard key={review.id}>
+              <img src={review.image} alt={review.name} />
+              <div>
+                <ReviewerName>{review.name}</ReviewerName>
+                <ReviewText>{review.text}</ReviewText>
+              </div>
+            </ReviewCard>
+          ))}
+        </ReviewsList>
       </ReviewsSection>
     </Container>
   );
 };
+
 
 // Styled Components
 const Container = styled.div`
@@ -270,4 +283,29 @@ const ReviewerName = styled.h4`
 const ReviewText = styled.p`
   font-size: 0.9rem;
   color: #6c757d;
+`;
+
+const ChatButton = styled.button`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 70px;
+  height: 70px;
+  background-color: ${Theme.colors.secondary};
+  color: white;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s, transform 0.2s;
+  z-index: 100;
+
+  &:hover {
+    background-color: ${Theme.colors.secondary};
+    transform: scale(1.1);
+  }
 `;

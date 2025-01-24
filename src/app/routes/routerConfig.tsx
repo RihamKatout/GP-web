@@ -19,6 +19,7 @@ import Navbar from "../SweetTouches/component/SweetNavbar";
 import { MainLayout } from "../components/Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import { DashboardPage } from "../pages/admin/DashboardPage";
+import ChatPage from "../features/authentication/ChatPage";
 
 const routerConfig = createBrowserRouter([
   {
@@ -70,6 +71,14 @@ const routerConfig = createBrowserRouter([
     element: (
       <MainLayout>
         <CakeScene></CakeScene>
+      </MainLayout>
+    ),
+  },
+  {
+    path: "/chat",
+    element: (
+      <MainLayout>
+        <ChatPage/>
       </MainLayout>
     ),
   },
