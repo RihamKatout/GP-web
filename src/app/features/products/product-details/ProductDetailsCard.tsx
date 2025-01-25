@@ -68,6 +68,7 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
       />
       <AddToCartPreview
         product={productDto.product}
+        configurations={configurations}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />

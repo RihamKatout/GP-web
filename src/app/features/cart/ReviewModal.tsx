@@ -1,52 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 import { Modal } from "antd";
+import { CartItemDto } from "../../types";
 
 interface ReviewModalProps {
   isOpen: boolean;
   onClose: () => void;
-  productName: string;
-  price: number;
-  size: string;
-  imageurl: string;
-  details: string;
-  quantity: number;
+  item: CartItemDto;
 }
 
-const ReviewModal: React.FC<ReviewModalProps> = ({
-  isOpen,
-  onClose,
-  productName,
-  price,
-  size,
-  imageurl,
-  quantity,
-  details,
-}) => {
-  console.log("Details being :", details);
+const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, item }) => {
 
   return (
     <Modal open={isOpen} onCancel={onClose} footer={null}>
       <ModalContent>
         <h3>Product Details</h3>
-        <img src={imageurl} alt="product" style={{ width: "100px" }} />
-        <p>
-          <b>Name:</b> {productName}
-        </p>
-        <p>
-          <b>Price:</b> {price}$
-        </p>
-        <p>
-          <b>Size:</b> {size}
-        </p>
-        <p>
-          <b>Quantity:</b> {quantity}
-        </p>
-        <p>
-          {/* <b>Stock:</b> {stock} */}
-        </p>
-        <h3>Preview Message</h3>
-      <p>{details || "No message provided."}</p>
       </ModalContent>
     </Modal>
   );

@@ -18,16 +18,16 @@ export const ProductCard: React.FC<ProductWithStoreDto & {
 
   const handleAddToCart = () => {
     setIsModalOpen(true);
-    console.log("Added to cart");
   };
 
   return (
     <>
-      <AddToCartPreview
+      {/* <AddToCartPreview
         product={productDto.product}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-      />
+        configurations={productDto.product.c}
+      /> */}
       <ProductCardStyle>
         <WishlistButton
           isWishlisted={isWishlisted}

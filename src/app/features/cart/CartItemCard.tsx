@@ -1,51 +1,22 @@
-import styled from "styled-components";
-import { CartItem } from "../../types";
 import React from "react";
-import { CartService } from "../../api";
+import { useState } from "react";
+import { Popconfirm } from "antd";
+import styled from "styled-components";
+import ReviewModal from "./ReviewModal";
+import { CartItemDto } from "../../types";
 import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../../assets/Icons/trash.jpg";
-import messageIcon from "../../../assets/Icons/message.png";//messageIcon
-import { useState } from "react";
-import CardWriting from "../../components/Cake3D/CardWriting";
-import { Modal as AntdModal } from "antd";
-import previewIcon from "../../../assets/Icons/message.png"; // Preview icon
-import ReviewModal from "./ReviewModal";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { CartService } from "../../api";
 
 // TODO: view order details
-
-const ItemSection = styled.div`
-  display: flex;
-  justify-content: center;
-  &:nth-child(1) {
-    gap: 0.5rem;
-    align-items: center;
-  }
-  &:nth-child(2) {
-    flex-direction: column;
-    width: 100%;
-    align-items: flex-start;
-  }
-`;
-
-const ProductDetailsContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  gap: 0.5rem;
-  
-  div {
-    margin-left: auto;
-  }
-`;
-
-
 // Add styles and constants as needed...
 
 interface CartItemCardProps {
-  item: CartItem;
+  item: CartItemDto;
   setSelectedItems: React.Dispatch<React.SetStateAction<Number[] | undefined>>;
   checkedItems?: Number[];
-  setItems?: React.Dispatch<React.SetStateAction<CartItem[]>>;
+  setItems?: React.Dispatch<React.SetStateAction<CartItemDto[]>>;
   handleDeleteItem: (id: Number) => void;
 }
 
@@ -56,19 +27,28 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
   setItems,
   handleDeleteItem,
 }) => {
-  const [quantity, setQuantity] = useState(item.quantity);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const { cartItem } = item;
+  const { product } = cartItem;
   const navigate = useNavigate();
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [quantity, setQuantity] = useState(item.cartItem.quantity);
 
   const handleQuantityChange = async (value: number) => {
     if (value > 0) {
-      const updatedItem = await CartService.updateQuantity(item.id, value);
+      const updatedItem = await CartService.updateQuantity(
+        item.cartItem.id,
+        value
+      );
       setQuantity(value);
       if (setItems) {
         setItems((prev) => {
           if (prev) {
-            const index = prev.findIndex((i) => i.id === item.id);
-            prev[index] = updatedItem.data;
+            const index = prev.findIndex(
+              (i) => i.cartItem.id === item.cartItem.id
+            );
+            prev[index].cartItem = updatedItem.data;
             return [...prev];
           }
           return prev;
@@ -76,251 +56,210 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
       }
     }
   };
- console.log(item?.product?.basePrice);
-  const openModal = () => setIsModalOpen(true); // Open modal
-  const closeModal = () => setIsModalOpen(false); // Close modal
-  console.log(item.details);
+
   return (
     <div>
+      {isModalOpen && (
+        <ReviewModal isOpen={isModalOpen} onClose={closeModal} item={item} />
+      )}
       <ItemContainer>
-        <ItemSection>
-          <input
-            type="checkbox"
-            checked={checkedItems.includes(item.id)}
-            onChange={() => {
-              if (!checkedItems.includes(item.id)) {
-                setSelectedItems((prev) => [...(prev || []), item.id]);
-              } else {
-                setSelectedItems((prev) =>
-                  prev?.filter((id) => id !== item.id)
-                );
-              }
-            }}
-          />
-          <ProductImage
-            src={item?.product?.mainImageURL || "src/assets/shop-logo.png"}
-          />
-        </ItemSection>
-
-        <ItemSection>
-          <ItemHeader
-            onClick={() => navigate(`/product/${item?.product?.id}`)}
-            style={{ cursor: "pointer" }}
-          >
-            {item?.product?.name}
-          </ItemHeader>
-          <p>
-            {item?.product?.basePrice}$ |{" "}
-            <span style={{ fontWeight: "bold" }}>
-              {!item?.product?.isAvailable ? (
+        <input
+          type="checkbox"
+          checked={checkedItems.includes(cartItem.id)}
+          onChange={() => {
+            if (!checkedItems.includes(cartItem.id)) {
+              setSelectedItems((prev) => [...(prev || []), cartItem.id]);
+            } else {
+              setSelectedItems((prev) =>
+                prev?.filter((id) => id !== cartItem.id)
+              );
+            }
+          }}
+        />
+        <ProductImage
+          src={product?.mainImageURL || "src/assets/shop-logo.png"}
+        />
+        <ProductDetailsContainer>
+          <div>
+            <ItemHeader
+              onClick={() => navigate(`/product/${product?.id}`)}
+              style={{ cursor: "pointer" }}
+            >
+              {product?.name}
+            </ItemHeader>
+            <p>
+              {" "}
+              -- &nbsp;
+              {!product?.isAvailable ? (
                 <span style={{ color: "red" }}>unavailable</span>
-              ) : item?.product?.stock !== 0 &&
-                item?.product?.stock >= quantity ? (
-                <span style={{ color: "green" }}>in stock</span>
+              ) : (product?.stock !== 0 &&
+                  product?.stock >= cartItem.quantity) ||
+                !product?.needStock ? (
+                <span style={{ color: "green" }}>available</span>
               ) : (
                 <span style={{ color: "red" }}>out of stock</span>
               )}
-            </span>
-          </p>
-          <ProductDetailsContainer>
-            <ProductLabel>{item.size}</ProductLabel>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <QuantityButtonsContainer>
-                <button
-                  onClick={() => handleQuantityChange(quantity - 1)}
-                  disabled={quantity === 1}
-                >
-                  -
-                </button>
-                <p style={{ margin: "0" }}>{quantity}</p>
-                <button onClick={() => handleQuantityChange(quantity + 1)}>
-                  +
-                </button>
-              </QuantityButtonsContainer>
-
-              {/* Preview Icon Button */}
+            </p>
+          </div>
+          {/* preview item */}
+          <button onClick={openModal} className="preview">
+            View details
+          </button>
+        </ProductDetailsContainer>
+        <ItemSection>
+          <p className="price">{product?.basePrice} $</p>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <QuantityButtonsContainer>
               <button
-                onClick={openModal}
-                style={{
-                  cursor: "pointer",
-                  background: "none",
-                  border: "none",
-                }}
+                onClick={() => handleQuantityChange(cartItem.quantity - 1)}
+                disabled={cartItem.quantity === 1}
               >
-                <img
-                  src={previewIcon}
-                  alt="Preview"
-                  style={{ width: "55px", height: "45px" }}
-                />
+                -
               </button>
-
-              {/* Delete Icon */}
+              <p style={{ margin: "0" }}>{cartItem.quantity}</p>
               <button
-                onClick={() => handleDeleteItem(item.id)}
-                style={{
-                  cursor: "pointer",
-                  background: "none",
-                  border: "none",
-                }}
+                onClick={() => handleQuantityChange(cartItem.quantity + 1)}
               >
-                <img
-                  src={deleteIcon}
-                  alt="Delete"
-                  style={{ width: "55px", height: "45px" }}
-                />
+                +
               </button>
-            </div>
-          </ProductDetailsContainer>
+            </QuantityButtonsContainer>
+
+            <DeleteIcon>
+              <Popconfirm
+                title="Remove item"
+                description="Are you sure to remove this item?"
+                icon={<ErrorOutlineIcon style={{ color: "red" }} />}
+                onConfirm={() => handleDeleteItem(cartItem.id)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <img src={deleteIcon} alt="Delete" />
+              </Popconfirm>
+            </DeleteIcon>
+          </div>
         </ItemSection>
       </ItemContainer>
-
-      {/* Modal for Preview */}
-      {isModalOpen && (
-        <ReviewModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          productName={item.product.name}
-          price={item.product.basePrice}
-          size={item.size}
-          imageurl={item.product.mainImageURL}
-          details={item.details} 
-          quantity={quantity}       />
-      )}
     </div>
   );
 };
 
-  
-const ProductLabel = styled.label`
-  font-size: 0.85rem;
-  padding:0.3rem 0.6rem;
-  font-weight: bold;
-  border-radius: 15px;
-  text-align: center;
-  height: 40px;
-  background-color: ${({ theme }) => theme.colors.gray_light};
-  box-shadow:  
-              0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
-`
-
 const ItemContainer = styled.div`
-  background-color: white;
-  display: flex;
   gap: 1rem;
-  padding: 1rem;
-  border-bottom: 1px solid rgb(224, 224, 224);
-  border-radius: 8px;
   width: 100%;
+  display: flex;
+  padding: 1rem;
   overflow: hidden;
+  background-color: white;
+  height: 120px !important;
+  align-items: center;
+  border-bottom: 1px solid rgb(224, 224, 224);
   @media (max-width: 600px) {
     width: 90vw;
     padding: 0.8rem;
+  }
+  p {
+    margin: 0;
   }
 `;
 
 const ProductImage = styled.img`
   width: 80px;
   height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
-  background-color: rgb(188, 188, 188);
-  box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-              0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-              0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.125) inset;
-  @media (max-width: 780px) {
-    width: 20vw;
-    height: 20vw;
-  }
+  padding: 0.35rem;
+  object-fit: fill;
+  border-radius: 0.5rem;
+  background-color: rgb(230, 230, 230);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 `;
 
 const ItemHeader = styled.p`
   margin: 0;
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: #333;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 1.2rem;
   &:hover {
     text-decoration: underline;
-    color: #6a437c;
-  }
-  @media (max-width: 780px) {
-    font-size: 0.95rem;
+    color: ${({ theme }) => theme.colors.primary_dark};
   }
 `;
 
 const QuantityButtonsContainer = styled.div`
   display: flex;
-  align-items: center;
-  border: 1px solid rgba(217, 217, 217, 0.5);
-  border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-              0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-              0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+  align-items: center;
+  border-radius: 15px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   p {
-    margin: 0;
-    height: 30px;
-    width: 50px;
-    font-size: 1rem;
+    width: 30px;
+    height: 25px;
     display: flex;
-    justify-content: center;
+    font-size: 0.85rem;
     align-items: center;
+    justify-content: center;
     border-left: 1px solid rgb(174, 174, 174);
     border-right: 1px solid rgb(174, 174, 174);
   }
-
   button {
+    width: 25px;
     border: none;
-    background-color: #f5f5f5;
-    color: #333;
+    height: 25px;
     font-weight: bold;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-
+    background-color: #f5f5f5;
     &:hover {
-      background-color: ${({ theme }) => theme.colors.primary};
       color: white;
+      background-color: ${({ theme }) => theme.colors.primary_dark};
     }
-
     &:disabled {
-      background-color: rgb(224, 224, 224);
       cursor: not-allowed;
+      background-color: rgb(224, 224, 224);
     }
   }
 `;
 
-const Modal = styled(AntdModal)`
-  .ant-modal-content {
-    border-radius: 1rem;
-  }
-
-  .ant-modal-header {
-    background-color: #6a437c;
-    color: white;
-    border-radius: 1rem 1rem 0 0;
-  }
-
-  .ant-modal-body {
-    padding: 1.5rem;
-  }
-
-  .ant-modal-footer {
-    border-top: 1px solid #f0f0f0;
-    padding: 1rem;
-    border-radius: 0 0 1rem 1rem;
+const ItemSection = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  justify-content: space-between;
+  .price {
+    font-size: 1.2rem;
   }
 `;
 
-// const LetterIcon = styled(MailIcon)`
-//   color: #6a437c;
-//   cursor: pointer;
-//   transition: color 0.3s;
+const ProductDetailsContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  div {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .preview {
+    border: none;
+    color: white;
+    background-color: ${({ theme }) => theme.colors.primary_dark};
+    font-size: 0.8rem;
+    font-family: "Overlock", sans-serif;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.gray};
+    }
+  }
+`;
 
-//   &:hover {
-//     color: #4a2d5c;
-//   }
-// `;
+const DeleteIcon = styled.div`
+  img {
+    width: 25px;
+    height: 30px;
+    cursor: pointer;
+  }
+`;

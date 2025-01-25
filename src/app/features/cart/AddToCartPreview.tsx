@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CustomModal } from "../../components/common";
-import { Product, ProductSizeEnum } from "../../types";
+import { Configuration, Product, ProductSizeEnum } from "../../types";
 import { Divider, Input } from "@mui/material";
 import { CartService } from "../../api";
 import { useAuth } from "../../context";
@@ -9,37 +9,34 @@ import { PleaseLoginModal } from "../../pages";
 
 interface ProductPreviewProps {
   product: Product;
+  configurations: Configuration[];
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AddToCartPreview: React.FC<ProductPreviewProps> = ({
-  isModalOpen,
-  setIsModalOpen,
   product,
+  isModalOpen,
+  configurations,
+  setIsModalOpen,
 }) => {
   const { isLoggedIn } = useAuth();
   const [details, setDetails] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState<number>(0);
-  const [selectedSize, setSelectedSize] = useState<ProductSizeEnum>(
-    ProductSizeEnum.S
-  );
 
   // TODO: show success message
-  // add color to the request
   // show error message if there is an error
   const handleAddToCart = async () => {
     if (!isLoggedIn) {
       return;
     }
     try {
-      await CartService.addItem({
-        product,
-        size: selectedSize,
-        quantity,
-        details,
-      });
+      // await CartService.addItem({
+      //   product,
+      //   quantity,
+      //   details,
+      // });
     } catch (e: any) {
       console.error(e?.response?.data?.errors?.[0]);
     }

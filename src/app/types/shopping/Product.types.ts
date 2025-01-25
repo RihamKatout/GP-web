@@ -96,21 +96,3 @@ export interface ProductFilters {
   page: number | 0;
   size: number | 20;
 }
-
-export interface CartItem {
-  id: number;
-  product: Product;
-  size: "S" | "M" | "L" | "XL" | "XXL";
-  quantity: number;
-  storeId: number;
-  details: string;
-  storeName: string;
-}
-
-export interface CartItemAdd {
-  product: Product;
-  size: "S" | "M" | "L" | "XL" | "XXL";
-  quantity: number;
-  details: string;
-}
-
