@@ -20,6 +20,7 @@ import { MainLayout } from "../components/Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import { DashboardPage } from "../pages/admin/DashboardPage";
 import ChatPage from "../features/authentication/ChatPage";
+import HelpCenterChat from "../features/authentication/HelpCenterChat";
 
 const routerConfig = createBrowserRouter([
   {
@@ -79,6 +80,14 @@ const routerConfig = createBrowserRouter([
     element: (
       <MainLayout>
         <ChatPage/>
+      </MainLayout>
+    ),
+  },
+  {
+    path: "/chatHelper",
+    element: (
+      <MainLayout>
+        <HelpCenterChat/>
       </MainLayout>
     ),
   },
