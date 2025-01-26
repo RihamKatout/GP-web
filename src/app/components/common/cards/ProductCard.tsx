@@ -72,7 +72,7 @@ export const ProductCard: React.FC<ProductWithStoreDto & {
           />
           <TagsContainer>
             {productDto.product.is3dCustomizable && (
-              <CustomizableTag>3D</CustomizableTag>
+              <CustomizableTag2>3D</CustomizableTag2>
             )}
             {!product.defaultFeatures && (
               <CustomizableTag>Customizable</CustomizableTag>
@@ -173,6 +173,13 @@ const TagsContainer = styled.div`
 const CustomizableTag = styled.div`
   background-color: ${({ theme }) => theme.colors.secondary};
   color: ${({ theme }) => theme.colors.white};
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.3rem;
+  font-size: 0.7rem;
+`;
+const CustomizableTag2 = styled.div`
+  background-color: ${({ theme }) => theme.colors.golden};
+  color: ${({ theme }) => theme.colors.black};
   padding: 0.1rem 0.5rem;
   border-radius: 0.3rem;
   font-size: 0.7rem;

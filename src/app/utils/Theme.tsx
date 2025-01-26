@@ -20,6 +20,7 @@ export const Theme = {
     orange: "rgb(255, 140, 0)",
     orange_light: "rgb(242, 209, 165)",
     lightGray: "rgb(200, 200, 200)",
+    golden:"#f5db49",
   },
   fonts: {
     family: "Delius",

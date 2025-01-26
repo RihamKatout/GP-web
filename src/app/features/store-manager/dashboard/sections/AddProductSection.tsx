@@ -15,7 +15,7 @@ import { productSchema } from "../../../../validations/product.validations";
 import { z } from "zod";
 import { Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-
+import BackgroundRemover from "../../../../components/specificComponents/sections/BackgroundRemover";
 const { Dragger } = Upload;
 
 interface AddProductSectionProps {
@@ -286,6 +286,10 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
             <p>Click or drag an image to upload</p>
           </Dragger>
         </div>
+         {/* BackgroundRemover Integration */}
+         <Divider style={{ margin: "1rem 0" }} />
+        <h6>Background Remover</h6>
+        {uploadedImage && <BackgroundRemover imageFile={uploadedImage} />}
       </ProductImages>
       <CustomizationSection>
         <h5>Customization</h5>

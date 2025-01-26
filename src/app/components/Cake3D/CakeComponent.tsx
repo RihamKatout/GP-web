@@ -632,12 +632,12 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
           </group>
           </RotatingCake>
           <>
-          <MiniCharacter position={[4.0, 1.4, 0]} scale={0.55} rotation={[0, Math.PI / 2, 0.2]} />
+          <MiniCharacter position={[4.4, 1.4, 0]} scale={0.55} rotation={[0, Math.PI / 2, 0.2]} />
           <SpeechBubble
              texts={[...(currentStage === 1 ? ['"Hello There!😀"'] : []), ...(currentStage === 1 ? ['"Lets Make a Cake!"'] : []),...(currentStage === 1 ? ['"Show me Your Art"'] : []),
               ...(currentStage === 2 ? ['"Thats cool!"'] : []), ...(currentStage === 2 ? ['"Nice Coloring"'] : []),...(currentStage === 2? ['"Keep Going.."'] : []),...(currentStage === 2 ? ['"You are Talented"'] : []),
              ...(currentStage === 3 ? ['"Do Your Final Touch"'] : []),...(currentStage === 3 ? ['"Almost There!"'] : []),...(currentStage === 3 ? ['"Your cake is ready!"'] : []),]}
-             position={[4.0, 3.6, 0]}
+             position={[4.4, 3.6, 0]}
              interval={4000} // Change text every 3 seconds
              rotation={[0, 3.2, 0]}
           />

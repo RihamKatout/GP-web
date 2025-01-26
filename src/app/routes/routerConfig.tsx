@@ -21,6 +21,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { DashboardPage } from "../pages/admin/DashboardPage";
 import ChatPage from "../features/authentication/ChatPage";
 import HelpCenterChat from "../features/authentication/HelpCenterChat";
+import { NotFound } from "../pages/errors/NotFound";
 
 const routerConfig = createBrowserRouter([
   {
@@ -137,10 +138,7 @@ const routerConfig = createBrowserRouter([
     path: "*",
     element: (
       <MainBody>
-        <h1>404 Not Found</h1>
-        <Button>
-          <Link to="/">Go Home</Link>
-        </Button>
+        <NotFound/>
       </MainBody>
     ),
   },

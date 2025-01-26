@@ -1,4 +1,4 @@
-import logo from "./device.png";
+import logo from "../assets/Icons/logo2.png";
 export const logoImg = logo;
 
 import Unauthorized from "./errors/unauthorized.svg";

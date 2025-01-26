@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
@@ -9,38 +9,15 @@ const Container = styled.div`
   font-family: Arial, sans-serif;
 `;
 
-const Title = styled.h1`
-  color: #333;
-  margin-bottom: 20px;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-`;
-
-const FileInput = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
+const Button = styled.button`
+  padding: 10px 15px;
+  margin-top: 15px;
+  border: none;
+  background-color: #007bff;
+  color: white;
   border-radius: 5px;
+  font-size: 14px;
   cursor: pointer;
-`;
-
-const SubmitButton = styled.button`
-  padding: 10px 20px;
-  background-color: linear-gradient(45deg,rgb(249, 174, 179),rgb(184, 207, 253));
-  /* color: white; */
-  border: 1px solid rgb(252, 210, 247);
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: all 0.6s ease;
-
-  transform: translateY(20px) perspective(1000px);
-  transform-style: preserve-3d;
-
   &:hover {
     background-color: #0056b3;
   }
@@ -52,32 +29,34 @@ const ResultContainer = styled.div`
 `;
 
 const ResultImage = styled.img`
-  max-width: 90%;
+  max-width: 60%;
   border: 2px solid #ddd;
   border-radius: 10px;
 `;
 
-const BackgroundRemover: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
+interface BackgroundRemoverProps {
+  imageFile: File | null;
+}
+
+const BackgroundRemover: React.FC<BackgroundRemoverProps> = ({ imageFile }) => {
   const [result, setResult] = useState<string | null>(null);
-  const apiKey = 'HYdzGZeLNatLZkYQ7jn7HgnD';
+  const [isProcessing, setIsProcessing] = useState(false);
+  const apiKey = "HYdzGZeLNatLZkYQ7jn7HgnD";
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setFile(event.target.files[0]);
-    }
-  };
+  const removeBackground = async () => {
+    if (!imageFile) return;
 
-  const removeBackground = async (blob: File) => {
+    setIsProcessing(true);
+
     const formData = new FormData();
-    formData.append('size', 'auto');
-    formData.append('image_file', blob);
+    formData.append("size", "auto");
+    formData.append("image_file", imageFile);
 
     try {
-      const response = await fetch('https://api.remove.bg/v1.0/removebg', {
-        method: 'POST',
+      const response = await fetch("https://api.remove.bg/v1.0/removebg", {
+        method: "POST",
         headers: {
-          'X-Api-Key': apiKey,
+          "X-Api-Key": apiKey,
         },
         body: formData,
       });
@@ -90,31 +69,24 @@ const BackgroundRemover: React.FC = () => {
         throw new Error(`${response.status}: ${response.statusText}`);
       }
     } catch (error) {
-      console.error('Error removing background:', error);
-      alert('Failed to remove background. Please try again.');
+      console.error("Error removing background:", error);
+      alert("Failed to remove background. Please try again.");
+    } finally {
+      setIsProcessing(false);
     }
-  };
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!file) {
-      alert('Please select a file!');
-      return;
-    }
-    await removeBackground(file);
   };
 
   return (
     <Container>
-      <Title>Background Remover</Title>
-      <Form onSubmit={handleSubmit}>
-        <FileInput type="file" accept="image/*" onChange={handleFileChange} />
-        <SubmitButton type="submit">Remove Background</SubmitButton>
-      </Form>
-
+      <h5>Background Remover</h5>
+      {imageFile && !result && (
+        <Button onClick={removeBackground} disabled={isProcessing}>
+          {isProcessing ? "Processing..." : "Remove Background"}
+        </Button>
+      )}
       {result && (
         <ResultContainer>
-          <h2>Result:</h2>
+          <h6>Result:</h6>
           <ResultImage src={result} alt="Background removed" />
         </ResultContainer>
       )}
