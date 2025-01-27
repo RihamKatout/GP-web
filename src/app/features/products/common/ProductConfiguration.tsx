@@ -19,7 +19,6 @@ interface ProductConfigurationProps {
   setSelectedChoices?: React.Dispatch<
     React.SetStateAction<ConfigurationInstance[]>
   >;
-  selecedChoices?: ConfigurationInstance[];
   handleDeleteConfigInstance?: (instanceId: number, configId: number) => void;
 }
 export const ProductConfiguration: React.FC<ProductConfigurationProps> = ({
@@ -29,7 +28,6 @@ export const ProductConfiguration: React.FC<ProductConfigurationProps> = ({
   instanceId,
   mode,
   setSelectedChoices,
-  selecedChoices,
   handleDeleteConfigInstance,
 }) => {
   const handlePriceImpact = (priceImpact: number) => {
@@ -76,7 +74,6 @@ export const ProductConfiguration: React.FC<ProductConfigurationProps> = ({
           }
           enableButtons={mode !== "disabled"}
           setSelectedChoices={setSelectedChoices}
-          selecedChoices={selecedChoices}
           instanceId={instanceId}
         />
       ))}

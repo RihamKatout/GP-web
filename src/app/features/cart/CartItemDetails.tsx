@@ -40,7 +40,7 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
     ConfigurationInstance[]
   >(cartItemDto.cartItem.configurationInstances);
   const { configurations } = cartItemDto;
-  const { product, configurationInstances } = cartItemDto.cartItem;
+  const { product } = cartItemDto.cartItem;
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [snackbarInfo, setSnackbarInfo] = useState<{
     message: string;
@@ -260,7 +260,6 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
                     instanceId={instance.id}
                     mode={currentStatus === "edit" ? "editable" : "disabled"}
                     setSelectedChoices={setSelectedChoices}
-                    selecedChoices={selectedChoices}
                     handleDeleteConfigInstance={handleDeleteConfigInstance}
                   />
                 )

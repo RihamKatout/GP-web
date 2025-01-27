@@ -5,7 +5,6 @@ import {
   ConfigurationAttribute,
   ConfigurationInstance,
 } from "../../../types";
-import { set } from "firebase/database";
 
 interface ProductConfigurationProps {
   attribute: ConfigurationAttribute;
@@ -15,7 +14,6 @@ interface ProductConfigurationProps {
   setSelectedChoices?: React.Dispatch<
     React.SetStateAction<ConfigurationInstance[]>
   >;
-  selecedChoices?: ConfigurationInstance[];
   instanceId?: number;
 }
 export const ConfigurationAttributeComponent: React.FC<
@@ -25,7 +23,6 @@ export const ConfigurationAttributeComponent: React.FC<
   handlePriceImpact,
   value,
   enableButtons,
-  selecedChoices,
   setSelectedChoices,
   instanceId,
 }) => {
