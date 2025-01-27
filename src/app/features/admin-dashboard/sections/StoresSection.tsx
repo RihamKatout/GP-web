@@ -3,16 +3,20 @@ import { DashboardCard } from "../../store-manager/dashboard/components/StyledCo
 import StoreIcon from "@mui/icons-material/Store";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import BlockIcon from "@mui/icons-material/Block";
-import { Store, StoreStatusEnum } from "../../../types";
+import { Category, Store, StoreStatusEnum } from "../../../types";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { AdminService } from "../../../api";
+import { AdminService, StoreCategoryService } from "../../../api";
 import { Popconfirm } from "antd";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { CustomSnackbar } from "../../../components/common";
+import CategoryIcon from "@mui/icons-material/Category";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { DefaultCategoryIcon } from "../../../../assets";
 
-// TODO: handle delete and acticate store
-
+// TODO: handle delete store
 export const StoresSection = () => {
   const [stores, setStores] = useState<Store[]>([]);
   // true = under review, false = banned
@@ -25,6 +29,8 @@ export const StoresSection = () => {
     message: string;
     type: "success" | "error" | "warning" | "info";
   }>({ message: "", type: "success" });
+  const [storeCategories, setStoreCategories] = useState<Category[]>([]);
+
   // get stores
   useQuery(["stores"], () => AdminService.getAllStores(), {
     onSuccess: (data) => {
@@ -32,6 +38,17 @@ export const StoresSection = () => {
     },
     refetchOnWindowFocus: false,
   });
+
+  useQuery(
+    ["storeCategories"],
+    () => StoreCategoryService.getStoreCategories(),
+    {
+      onSuccess: (data) => {
+        setStoreCategories(data);
+      },
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const handleStatusToDisplayChange = (status: boolean) => {
     setStatusToDisplay(status);
@@ -57,7 +74,33 @@ export const StoresSection = () => {
         type: "success",
       });
       setSnackbarOpen(true);
-    } catch (e) {}
+    } catch (e) {
+      setSnackbarMessage({
+        message: "Failed to activate store",
+        type: "error",
+      });
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleDeleteCategory = async (categoryId: number) => {
+    try {
+      await StoreCategoryService.deleteStoreCategory(categoryId);
+      setSnackbarMessage({
+        message: "Category deleted successfully",
+        type: "success",
+      });
+      setSnackbarOpen(true);
+      setStoreCategories((prev) => {
+        return prev.filter((category) => category.id !== categoryId);
+      });
+    } catch (e) {
+      setSnackbarMessage({
+        message: "Failed to delete category",
+        type: "error",
+      });
+      setSnackbarOpen(true);
+    }
   };
 
   useEffect(() => {
@@ -179,18 +222,73 @@ export const StoresSection = () => {
           ))}
         </div>
       </StoresContainer>
+
+      {/* categories */}
+      <DashboardCard style={{ gridArea: "card4" }}>
+        <CategoryIcon />
+        <div>
+          <h6>Store categories</h6>
+          <p>{storeCategories.length}</p>
+        </div>
+      </DashboardCard>
+      <div
+        className="addStoreCategory"
+        style={{
+          boxShadow: "none",
+          backgroundColor: "transparent",
+          cursor: "pointer",
+        }}
+        // onClick={handleAddProduct}
+      >
+        <AddCircleIcon style={{ color: "green" }} />
+        <h6>Add store category</h6>
+      </div>
+      <StoresByCategoriesChart />
+      <StoreCategoriesConyainer>
+        <p>store categories</p>
+        <div
+          className="category"
+          style={{
+            backgroundColor: "rgba(255, 140, 0, 0.3)",
+          }}
+        >
+          <p>#</p>
+          <p className="cat-name">name</p>
+          <p>stores</p>
+        </div>
+        {storeCategories.map((category, index) => (
+          <div className="category" key={category.id}>
+            <p>{index + 1}.</p>
+            <img src={category.imageurl || DefaultCategoryIcon} alt="" />
+            <p className="cat-name">{category.name}</p>
+            <p>2</p>
+            <EditIcon style={{ color: "gray" }} />
+            <Popconfirm
+              title="Delete product"
+              description="Are you sure to delete this product?"
+              icon={<ErrorOutlineIcon style={{ color: "red" }} />}
+              onConfirm={() => handleDeleteCategory(category.id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <DeleteForeverIcon style={{ color: "red" }} />
+            </Popconfirm>
+          </div>
+        ))}
+      </StoreCategoriesConyainer>
     </Container>
   );
 };
 const Container = styled.div`
-  grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
+  max-height: 87vh;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 3.5fr 3.5fr;
   grid-template-areas:
-    "card1 card2 card3 none none"
-    "stores stores stores stores lowStock"
-    "stores stores stores stores topStores";
-  .addProduct {
-    grid-area: addProduct;
+    "card1 card2 card3  card4 addStoreCategory none"
+    "stores stores stores chart chart chart"
+    "stores stores stores categories categories categories";
+  .addStoreCategory {
+    grid-area: addStoreCategory;
     align-items: center;
     gap: 0.5rem;
     h6 {
@@ -274,6 +372,41 @@ const StoresContainer = styled.div`
       .delete {
         background-color: ${({ theme }) => theme.colors.lightGray};
       }
+    }
+  }
+`;
+
+const StoresByCategoriesChart = styled.div`
+  grid-area: chart;
+`;
+
+const StoreCategoriesConyainer = styled.div`
+  grid-area: categories;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow-y: scroll;
+  p {
+    width: 100%;
+    text-align: center;
+  }
+  .category {
+    gap: 0.5rem;
+    padding: 0.2rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.2fr 0.5fr 2fr 1fr 0.2fr 0.2fr;
+    .cat-name {
+      text-align: left;
+    }
+    svg {
+      cursor: pointer;
+      font-size: 1.4rem;
+    }
+    img {
+      width: 30px;
+      height: 30px;
     }
   }
 `;

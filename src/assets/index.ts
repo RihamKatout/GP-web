@@ -28,3 +28,6 @@ export const RihamImg = riham;
 // default
 import defaultStore from "./default/default-store-icon.png";
 export const DefaultStoreImg = defaultStore;
+
+import defaultCategoryIcon from "./default/default-category-icon.png";
+export const DefaultCategoryIcon = defaultCategoryIcon;
