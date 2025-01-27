@@ -34,16 +34,13 @@ export * from "./stores/StoreOffersSection";
 export * from "./stores/StoreProductsSection";
 
 // profile
-export * from "./profile/ProfileActivity";
-export * from "./profile/ProfileForm";
-export * from "./profile/ProfileShopping";
 export * from "./profile/SidebarItems";
 export * from "./profile/Sidebar";
 export * from "./profile/ProfileInfoSection";
 
 // store manager
-export * from "./store-manager/MyStoresSection";
-export * from "./store-manager/ManagerStoreCard";
+export * from "./profile/MyStoresSection";
+export * from "./profile/ManagerStoreCard";
 export * from "./store-manager/dashboard/components/StoreDashboardSidebar";
 export * from "./store-manager/dashboard/sections/StoreAnalyticsSection";
 export * from "./store-manager/dashboard/sections/ProductsManagementSection";
