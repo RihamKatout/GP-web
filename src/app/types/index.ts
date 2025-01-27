@@ -10,6 +10,7 @@ export * from "./enums/ProductSizeEnum";
 export * from "./enums/StoreStatusEnum";
 export * from "./enums/ProfileSectionsEnum";
 export * from "./enums/StoreDashboard";
+export * from "./enums/DashboardSectionsEnum";
 // shopping
 export * from "./shopping/Product.types";
 export * from "./shopping/Categories.types";
