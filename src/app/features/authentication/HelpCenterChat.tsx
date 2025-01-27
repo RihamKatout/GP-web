@@ -13,7 +13,7 @@ interface Message {
   status: "read" | "unread";
 }
 
-const ChatPage = () => {
+const HelpCenterChat = () => {
   const { user } = useAuth(); // Get logged-in user
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -41,7 +41,7 @@ const ChatPage = () => {
         if (user?.firstName === "Riham") {
           setAvailableUsers(usersList.filter((name) => name !== user.firstName));
         } else {
-          setAvailableUsers(["Riham"]);
+          setAvailableUsers(["Help Center"]);
         }
       }
     });
@@ -49,7 +49,7 @@ const ChatPage = () => {
 
   // Fetch messages
   useEffect(() => {
-    const messagesRef = ref(db, "messages");
+    const messagesRef = ref(db, "helpCenterMessages");
     onValue(messagesRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -64,7 +64,7 @@ const ChatPage = () => {
         filteredMessages
           .filter((msg) => msg.receiver === user?.firstName && msg.status === "unread")
           .forEach((msg) => {
-            const msgRef = ref(db, `messages/${msg.timestamp}`); // Assuming `timestamp` is unique
+            const msgRef = ref(db, `helpCenterMessages/${msg.timestamp}`); // Assuming `timestamp` is unique
             set(msgRef, { ...msg, status: "read" });
           });
       }
@@ -86,7 +86,7 @@ const ChatPage = () => {
   // Send a message
   const sendMessage = () => {
     if (input.trim() && receiver.trim()) {
-      const messagesRef = ref(db, "messages");
+      const messagesRef = ref(db, "helpCenterMessages");
       push(messagesRef, {
         text: input,
         sender: user?.firstName || "Anonymous",
@@ -152,7 +152,7 @@ const ChatPage = () => {
             fontWeight: "bold",
           }}
         >
-          {receiver ? `Chat with ${receiver}` : "Select a user to start chatting"}
+          {receiver ? `Chat with Help Center` : "Select a user to start chatting"}
         </div>
 
         <div
@@ -195,6 +195,7 @@ const ChatPage = () => {
                 </div>
               </div>
             ))}
+
         </div>
 
         <div style={{ padding: "1rem", borderTop: "1px solid #ddd" }}>
@@ -250,4 +251,4 @@ const ChatPage = () => {
   );
 };
 
-export default ChatPage;
+export default HelpCenterChat;

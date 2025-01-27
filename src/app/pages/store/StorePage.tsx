@@ -49,7 +49,7 @@ export const StorePage = () => {
 };
 
 const StoreContainer = styled.div`
-  margin: 2rem;
+  margin: 1rem;
   min-height: 100vh;
   display: grid;
   grid-template-columns: 3fr 1fr; /* Products take 3 columns, offers take 1 column */
