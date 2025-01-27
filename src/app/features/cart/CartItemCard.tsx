@@ -1,16 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Popconfirm } from "antd";
 import styled from "styled-components";
-import ReviewModal from "./ReviewModal";
+import { CartItemDetails } from "./CartItemDetails";
 import { CartItemDto } from "../../types";
 import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../../assets/Icons/trash.jpg";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { CartService } from "../../api";
-
-// TODO: view order details
-// Add styles and constants as needed...
 
 interface CartItemCardProps {
   item: CartItemDto;
@@ -18,6 +15,7 @@ interface CartItemCardProps {
   checkedItems?: Number[];
   setItems?: React.Dispatch<React.SetStateAction<CartItemDto[]>>;
   handleDeleteItem: (id: Number) => void;
+  setTotalPrice?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const CartItemCard: React.FC<CartItemCardProps> = ({
@@ -26,11 +24,13 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
   checkedItems = [],
   setItems,
   handleDeleteItem,
+  setTotalPrice,
 }) => {
-  const { cartItem } = item;
+  const { cartItem, configurations } = item;
   const { product } = cartItem;
   const navigate = useNavigate();
   const openModal = () => setIsModalOpen(true);
+  const [price, setPrice] = useState<number>(0);
   const closeModal = () => setIsModalOpen(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [quantity, setQuantity] = useState(item.cartItem.quantity);
@@ -41,6 +41,10 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
         item.cartItem.id,
         value
       );
+      if (checkedItems.includes(cartItem.id)) {
+        setTotalPrice &&
+          setTotalPrice((prev) => prev - price * quantity + price * value);
+      }
       setQuantity(value);
       if (setItems) {
         setItems((prev) => {
@@ -57,10 +61,33 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
     }
   };
 
+  useEffect(() => {
+    const priceSummation = cartItem.configurationInstances?.reduce(
+      (acc, configInst) => {
+        const configuration = configurations?.find(
+          (config) => config.id === configInst.configurationId
+        );
+        configInst?.choices?.forEach((choice) => {
+          const priceImpact = configuration?.configurationAttributes
+            ?.find((attr) => attr.id === choice.attributeId)
+            ?.choices?.find((ch) => ch.name === choice.choiceName)?.priceImpact;
+          acc += priceImpact || 0;
+        });
+        return acc;
+      },
+      0
+    );
+    setPrice(priceSummation + product.basePrice);
+  }, [item.cartItem]);
+
   return (
     <div>
       {isModalOpen && (
-        <ReviewModal isOpen={isModalOpen} onClose={closeModal} item={item} />
+        <CartItemDetails
+          isModalOpen={isModalOpen}
+          closeModal={closeModal}
+          cartItemDto={item}
+        />
       )}
       <ItemContainer>
         <input
@@ -68,8 +95,12 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
           checked={checkedItems.includes(cartItem.id)}
           onChange={() => {
             if (!checkedItems.includes(cartItem.id)) {
+              setTotalPrice &&
+                setTotalPrice((prev) => (prev || 0) + price * quantity);
               setSelectedItems((prev) => [...(prev || []), cartItem.id]);
             } else {
+              setTotalPrice &&
+                setTotalPrice((prev) => (prev || 0) - price * quantity);
               setSelectedItems((prev) =>
                 prev?.filter((id) => id !== cartItem.id)
               );
@@ -107,7 +138,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
           </button>
         </ProductDetailsContainer>
         <ItemSection>
-          <p className="price">{product?.basePrice} $</p>
+          <p className="price">{price} $</p>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <QuantityButtonsContainer>
               <button

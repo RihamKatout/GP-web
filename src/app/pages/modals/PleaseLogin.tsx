@@ -30,7 +30,9 @@ export const PleaseLoginModal: React.FC<Props> = ({
         <button
           onClick={() =>
             navigate("/login", {
-              state: { from: window.location.pathname },
+              state: {
+                from: `${window.location.pathname}${window.location.search}`,
+              },
             })
           }
         >

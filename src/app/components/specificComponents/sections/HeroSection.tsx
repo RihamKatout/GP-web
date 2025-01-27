@@ -49,7 +49,7 @@ export const HeroSection = () => {
             bottom="1rem"
             style={{ fontFamily: "DynaPuff", color: "#1e1c1" }}
           >
-            WELCOM TO{" "}
+            WELCOME TO{" "}
             <BlueText
               style={{
                 fontFamily: "DynaPuff",
@@ -64,14 +64,15 @@ export const HeroSection = () => {
           <Heading as="h3" size="h3" style={{ color: "#1e1c1c414" }}>
             its about{" "}
             <BlueText style={{ color: "#1e1c1c414" }}>
-              design and costom
+              design and customize
             </BlueText>{" "}
             your order as you like
           </Heading>
 
           <ParaText as="p" top="2rem" bottom="3rem">
-            you can order in whatever suit you tast!, these feature made just
-            for you
+            {/* TODO */}
+            {/* you can order in whatever suit you tast!, these feature made just
+            for you */}
           </ParaText>
 
           {/*--social icons-- */}

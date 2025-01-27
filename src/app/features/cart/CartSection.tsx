@@ -11,7 +11,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-// handle payment
+// TODO: handle payment
 interface CartSectionProps {
   cartItems: CartItemDto[];
   setItems?: React.Dispatch<React.SetStateAction<CartItemDto[]>>;
@@ -26,6 +26,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
   const [selectedItems, setSelectedItems] = useState<Number[] | undefined>(
     undefined
   );
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   useEffect(() => {
     scrollTo(0, 0);
     setSelectedItems(undefined);
@@ -36,6 +37,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
     await CartService.deleteItems(selectedItems);
     queryClient.invalidateQueries(["cart"]);
     setSelectedItems(undefined);
+    setTotalPrice(0);
   };
 
   const handleClearCart = async () => {
@@ -89,6 +91,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
                   setItems={setItems}
                   checkedItems={selectedItems || []}
                   handleDeleteItem={handleDeleteItem}
+                  setTotalPrice={setTotalPrice}
                 />
               ))}
             </div>
@@ -107,17 +110,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
         />
         <div className="Option">
           <p>Subtotal</p>
-          <h5>
-            {cartItems?.reduce(
-              (total, item) =>
-                selectedItems?.includes(item.cartItem.id)
-                  ? total +
-                    item.cartItem.product.basePrice * item.cartItem.quantity
-                  : total,
-              0
-            )}
-            $
-          </h5>
+          <h5>{totalPrice}$</h5>
         </div>
         <div className="Option">
           <p>Discount</p>
@@ -131,17 +124,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
           <p style={{ color: "black", fontWeight: "bold", fontSize: "1.1rem" }}>
             Total
           </p>
-          <h5>
-            {cartItems?.reduce(
-              (total, item) =>
-                selectedItems?.includes(item.cartItem.id)
-                  ? total +
-                    item.cartItem.product.basePrice * item.cartItem.quantity
-                  : total,
-              0
-            )}
-            $
-          </h5>
+          <h5>{totalPrice}$</h5>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
           <Input
@@ -162,7 +145,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
                 onConfirm={handleDeleteSelectedItems}
                 okText="Yes"
                 cancelText="No"
-                >
+              >
                 <DeleteOutlineIcon />
                 Remove selected items
               </Popconfirm>

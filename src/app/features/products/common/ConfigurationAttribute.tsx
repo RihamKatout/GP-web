@@ -1,25 +1,71 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Choice, ConfigurationAttribute } from "../../../types";
+import {
+  Choice,
+  ConfigurationAttribute,
+  ConfigurationInstance,
+} from "../../../types";
+import { set } from "firebase/database";
 
 interface ProductConfigurationProps {
   attribute: ConfigurationAttribute;
-  setConfigPriceImpact: React.Dispatch<React.SetStateAction<number>>;
+  value?: string;
+  handlePriceImpact: (priceImpact: number) => void;
+  enableButtons: boolean;
+  setSelectedChoices?: React.Dispatch<
+    React.SetStateAction<ConfigurationInstance[]>
+  >;
+  selecedChoices?: ConfigurationInstance[];
+  instanceId?: number;
 }
 export const ConfigurationAttributeComponent: React.FC<
   ProductConfigurationProps
-> = ({ attribute, setConfigPriceImpact }) => {
-  const [selectedChoice, setSelectedChoice] = React.useState<number>(0);
+> = ({
+  attribute,
+  handlePriceImpact,
+  value,
+  enableButtons,
+  selecedChoices,
+  setSelectedChoices,
+  instanceId,
+}) => {
+  const [selectedChoice, setSelectedChoice] = React.useState<number>(
+    value ? attribute.choices.findIndex((choice) => choice.name === value) : 0
+  );
+
   const handleChoice = (index: number) => {
-    setConfigPriceImpact(
+    if (!enableButtons) return;
+    const priceImpactChange =
       attribute.choices[index].priceImpact -
-        attribute.choices[selectedChoice].priceImpact
-    );
+      attribute.choices[selectedChoice].priceImpact;
+    handlePriceImpact(priceImpactChange);
     setSelectedChoice(index);
+    if (setSelectedChoices) {
+      setSelectedChoices((prev) =>
+        prev.map((instance) => {
+          if (instance.id === instanceId) {
+            return {
+              ...instance,
+              choices: instance.choices.map((choice) =>
+                choice.attributeId === attribute.id
+                  ? { ...choice, choiceName: attribute.choices[index].name }
+                  : choice
+              ),
+            };
+          }
+          return instance;
+        })
+      );
+    }
   };
+
   useEffect(() => {
-    setConfigPriceImpact(attribute.choices[selectedChoice].priceImpact);
+    handlePriceImpact(attribute.choices[selectedChoice].priceImpact);
+    return () => {
+      handlePriceImpact(-attribute.choices[selectedChoice].priceImpact);
+    };
   }, []);
+
   return (
     <Container>
       <p>{attribute.name}</p>
@@ -29,7 +75,10 @@ export const ConfigurationAttributeComponent: React.FC<
             key={choice.name}
             style={{
               borderRadius: "0.5rem",
-              border: selectedChoice === index ? "1px solid rgb(200, 200, 200)" : "none",
+              border:
+                selectedChoice === index
+                  ? "1px solid rgb(200, 200, 200)"
+                  : "none",
               backgroundColor:
                 selectedChoice === index
                   ? "rgba(240, 230, 220, 1)"
@@ -38,7 +87,7 @@ export const ConfigurationAttributeComponent: React.FC<
             onClick={() => handleChoice(index)}
           >
             {attribute.type === "COLOR" ? (
-              <ChoiceContainer>
+              <ChoiceContainer enable={enableButtons}>
                 <ColorButton color={choice.name} />
                 {choice.priceImpact ? (
                   <span className="price">+{choice.priceImpact}$</span>
@@ -47,8 +96,8 @@ export const ConfigurationAttributeComponent: React.FC<
                 )}
               </ChoiceContainer>
             ) : (
-              <ChoiceContainer>
-                {choice.name}
+              <ChoiceContainer enable={enableButtons}>
+                <p>{choice.name}</p>
                 {choice.priceImpact ? (
                   <span className="price">+{choice.priceImpact}$</span>
                 ) : (
@@ -74,6 +123,10 @@ const Container = styled.div`
       font-weight: 600;
     }
   }
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
 `;
 
 const Choices = styled.div`
@@ -91,26 +144,26 @@ const Choices = styled.div`
 
 const ColorButton = styled.div<{ color: string }>`
   background-color: ${(props) => props.color};
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, 0.2);
 `;
 
-const ChoiceContainer = styled.div`
+const ChoiceContainer = styled.div<{ enable?: boolean }>`
   gap: 0.5rem;
   display: flex;
-  cursor: pointer;
+  cursor: ${(props) => (props.enable ? "pointer" : "not-allowed")};
   align-items: center;
   border-radius: 0.5rem;
   padding: 0.3rem 0.5rem;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   p {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 600;
   }
   .price {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 600;
   }
 `;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 import AliceCarousel from "react-alice-carousel";
 import { AddToCartPreview, WishlistButton } from "../..";
@@ -15,6 +15,19 @@ interface ProductDetailsCardProps {
   productDto: ProductDetail;
 }
 
+const pricesReducer = (state: number, action: any) => {
+  switch (action.type) {
+    case "ADD_PRICE_IMPACT":
+      return state + action.priceImpact;
+    case "REMOVE_PRICE_IMPACT":
+      return state - action.priceImpact;
+    case "RESET_PRICE":
+      return action.basePrice;
+    default:
+      return state;
+  }
+};
+
 export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   productDto,
 }) => {
@@ -24,7 +37,7 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const { product, inWishlist, store, configurations } = productDto;
-  const [price, setPrice] = useState<number>(productDto.product.basePrice);
+  const [price, dispatchPrices] = useReducer(pricesReducer, 0);
   const isAvailable =
     (productDto.product?.isAvailable && productDto.product?.stock > 0) ||
     !productDto.product.needStock;
@@ -46,9 +59,12 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
     />,
   ];
   useEffect(() => {
-    setPrice(product.basePrice);
+    dispatchPrices({ type: "ADD_PRICE_IMPACT", priceImpact: product.basePrice });
     setIsWishlisted(inWishlist ?? false);
-  }, []);
+    return () => {
+      dispatchPrices({ type: "REMOVE_PRICE_IMPACT", priceImpact: product.basePrice });
+    };
+  }, [product.basePrice]);
 
   const handleAddToCart = () => {
     if (!isAvailable) {
@@ -150,7 +166,8 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
             <ProductConfiguration
               config={config}
               key={config.id}
-              setPrice={setPrice}
+              dispatchPrices={dispatchPrices}
+              mode="product"
             />
           ))}
           <button className="cart-icon" onClick={handleAddToCart}>

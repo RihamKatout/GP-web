@@ -26,4 +26,8 @@ export const CartService = {
     const response = await clientAxios.post(`/cart`, { ...item });
     return response;
   },
+  updateItem: async (id: number, item: CartItem) => {
+    const response = await clientAxios.put(`/cart/${id}`, { ...item });
+    return response;
+  },
 };
