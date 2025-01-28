@@ -7,11 +7,14 @@ export const StoreService = {
     return response.data;
   },
   getStoresByStoreCategoryId: async (id?: number): Promise<Store[]> => {
-    if(!id) {
+    if (!id) {
       const response = await clientAxios.get("/store");
       return response.data;
-    }   
+    }
     const response = await clientAxios.get(`/store?storeCategoryId=${id}`);
     return response.data;
+  },
+  deleteStore: async (storeId: number): Promise<void> => {
+    await clientAxios.delete(`/store/${storeId}`);
   },
 };

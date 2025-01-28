@@ -6,7 +6,7 @@ import BlockIcon from "@mui/icons-material/Block";
 import { Category, Store, StoreStatusEnum } from "../../../types";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { AdminService, StoreCategoryService } from "../../../api";
+import { AdminService, StoreCategoryService, StoreService } from "../../../api";
 import { Popconfirm } from "antd";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { CustomSnackbar } from "../../../components/common";
@@ -16,7 +16,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { DefaultCategoryIcon } from "../../../../assets";
 import { AddStoreCategoryModal } from "../components/AddStoreCategoryModal";
-import { set } from "firebase/database";
+import { StoresByCategoriesChart } from "..";
 
 // TODO: handle delete store
 export const StoresSection = () => {
@@ -68,7 +68,8 @@ export const StoresSection = () => {
   };
   const handleActivateStore = async (storeId: number) => {
     try {
-      await AdminService.activateStore(storeId);
+      if (statusToDisplay) await AdminService.activateStore(storeId);
+      else await AdminService.unbanStore(storeId);
       setStores((prevStores) => {
         const updatedStores = prevStores.map((store) => {
           if (store.id === storeId) {
@@ -79,13 +80,17 @@ export const StoresSection = () => {
         return updatedStores;
       });
       setSnackbarMessage({
-        message: "Store activated successfully",
+        message: statusToDisplay
+          ? "Store activated successfully"
+          : "Store unbanned successfully",
         type: "success",
       });
       setSnackbarOpen(true);
     } catch (e) {
       setSnackbarMessage({
-        message: "Failed to activate store",
+        message: statusToDisplay
+          ? "Failed to activate store"
+          : "Failed to unban store",
         type: "error",
       });
       setSnackbarOpen(true);
@@ -172,6 +177,25 @@ export const StoresSection = () => {
     setSnackbarOpen(true);
   };
 
+  const handleDeleteStoreRequest = async (storeId: number) => {
+    try {
+      await StoreService.deleteStore(storeId);
+      setStores((prev) => {
+        return prev.filter((store) => store.id !== storeId);
+      });
+      setSnackbarMessage({
+        message: "Store request deleted successfully",
+        type: "success",
+      });
+      setSnackbarOpen(true);
+    } catch (e) {
+      setSnackbarMessage({
+        message: "Failed to delete store request",
+        type: "error",
+      });
+      setSnackbarOpen(true);
+    }
+  };
   useEffect(() => {
     setStoresToDisplay(statusToDisplay ? underReviewStores : bannedStores);
   }, [statusToDisplay, underReviewStores, bannedStores]);
@@ -289,17 +313,36 @@ export const StoresSection = () => {
                   ? (store.creationDate as string).split("T")[0]
                   : "1/1/0000"}
               </p>
-              <button className="delete">delete</button>
+              {statusToDisplay ? (
+                <Popconfirm
+                  title="Delete store request"
+                  description="Are you sure to delete this store request?"
+                  icon={<ErrorOutlineIcon style={{ color: "green" }} />}
+                  onConfirm={() => handleDeleteStoreRequest(store.id)}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <button className="delete">delete</button>
+                </Popconfirm>
+              ) : (
+                <></>
+              )}
 
               <Popconfirm
-                title="Activate store"
-                description="Are you sure to activate this store?"
+                title={statusToDisplay ? "Activate store" : "Unban store"}
+                description={
+                  statusToDisplay
+                    ? "Are you sure to activate this store?"
+                    : "Are you sure to unban this store?"
+                }
                 icon={<ErrorOutlineIcon style={{ color: "green" }} />}
                 onConfirm={() => handleActivateStore(store.id)}
                 okText="Yes"
                 cancelText="No"
               >
-                <button className="activate">Activate</button>
+                <button className="activate">
+                  {statusToDisplay ? "activate" : "unban"}
+                </button>
               </Popconfirm>
             </div>
           ))}
@@ -326,9 +369,14 @@ export const StoresSection = () => {
         <AddCircleIcon style={{ color: "green" }} />
         <h6>Add store category</h6>
       </div>
-      <StoresByCategoriesChart />
+      <StoresByCategoriesChart
+        stores={stores.filter(
+          (store) => store.status === StoreStatusEnum.ACTIVE
+        )}
+        categories={storeCategories}
+      />
       <NewCategoryRequests />
-      <StoreCategoriesConyainer>
+      <StoreCategoriesContainer>
         <p>store categories</p>
         <div
           className="category"
@@ -348,9 +396,11 @@ export const StoresSection = () => {
             <p className="cat-name">{category.name}</p>
             <p>
               {
-                // get number of stores in this category
-                stores.filter((store) => store.storeCategoryId === category.id)
-                  .length
+                stores.filter(
+                  (store) =>
+                    store.storeCategoryId === category.id &&
+                    store.status === StoreStatusEnum.ACTIVE
+                ).length
               }
             </p>
             <EditIcon
@@ -375,7 +425,7 @@ export const StoresSection = () => {
             </Popconfirm>
           </div>
         ))}
-      </StoreCategoriesConyainer>
+      </StoreCategoriesContainer>
     </Container>
   );
 };
@@ -476,14 +526,10 @@ const StoresContainer = styled.div`
   }
 `;
 
-const StoresByCategoriesChart = styled.div`
-  grid-area: chart;
-`;
-
 const NewCategoryRequests = styled.div`
   grid-area: requests;
 `;
-const StoreCategoriesConyainer = styled.div`
+const StoreCategoriesContainer = styled.div`
   grid-area: categories;
   display: flex;
   flex-direction: column;

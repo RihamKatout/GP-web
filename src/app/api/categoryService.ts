@@ -1,4 +1,3 @@
-import { image } from "html2canvas/dist/types/css/types/image";
 import { clientAxios } from ".";
 import { Category } from "../types";
 

@@ -51,7 +51,7 @@
     "react-router-dom": "^6.11.2",
     "react-scroll": "^1.9.0",
     "react-slick": "^0.30.3",
-    "recharts": "^2.15.0",
+    "recharts": "^2.15.1",
     "slick-carousel": "^1.8.1",
     "styled-components": "5.3.6",
     "swiper": "^11.2.1",

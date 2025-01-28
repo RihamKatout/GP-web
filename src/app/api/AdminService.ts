@@ -8,5 +8,8 @@ export const AdminService = {
   },
   activateStore: async (storeId: number): Promise<void> => {
     await clientAxios.put(`/store/${storeId}/activate`);
-  }
+  },
+  unbanStore: async (storeId: number): Promise<void> => {
+    await clientAxios.put(`/store/${storeId}/unban`);
+  },
 };
