@@ -15,6 +15,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { DefaultCategoryIcon } from "../../../../assets";
+import { AddStoreCategoryModal } from "../components/AddStoreCategoryModal";
+import { set } from "firebase/database";
 
 // TODO: handle delete store
 export const StoresSection = () => {
@@ -30,8 +32,15 @@ export const StoresSection = () => {
     type: "success" | "error" | "warning" | "info";
   }>({ message: "", type: "success" });
   const [storeCategories, setStoreCategories] = useState<Category[]>([]);
-
-  // get stores
+  const [openAddCategoryModal, setOpenAddCategoryModal] = useState(false);
+  const [openEditCategoryModal, setOpenEditCategoryModal] = useState(false);
+  const [editInfo, setEditInfo] = useState<{
+    categoryId: number;
+    categoryNameToEdit: string;
+  }>({
+    categoryId: 0,
+    categoryNameToEdit: "",
+  });
   useQuery(["stores"], () => AdminService.getAllStores(), {
     onSuccess: (data) => {
       setStores(data);
@@ -39,7 +48,7 @@ export const StoresSection = () => {
     refetchOnWindowFocus: false,
   });
 
-  useQuery(
+  const fetchCategories = useQuery(
     ["storeCategories"],
     () => StoreCategoryService.getStoreCategories(),
     {
@@ -94,6 +103,14 @@ export const StoresSection = () => {
       setStoreCategories((prev) => {
         return prev.filter((category) => category.id !== categoryId);
       });
+      setStores((prev) => {
+        return prev.map((store) => {
+          if (store.storeCategoryId === categoryId) {
+            return { ...store, storeCategoryId: 1 };
+          }
+          return store;
+        });
+      });
     } catch (e) {
       setSnackbarMessage({
         message: "Failed to delete category",
@@ -101,6 +118,58 @@ export const StoresSection = () => {
       });
       setSnackbarOpen(true);
     }
+  };
+
+  const handleAddCategory = async (
+    id: number,
+    name: string,
+    imageurl: string
+  ) => {
+    const response = await StoreCategoryService.addStoreCategory(
+      name,
+      imageurl
+    );
+
+    if (!response.success) {
+      setSnackbarMessage({
+        message: response.error,
+        type: "error",
+      });
+    } else {
+      await fetchCategories.refetch();
+      setSnackbarMessage({
+        message: "Category added successfully",
+        type: "success",
+      });
+      setOpenAddCategoryModal(false);
+    }
+    setSnackbarOpen(true);
+  };
+
+  const handleEditCategory = async (
+    id: number,
+    name: string,
+    imageurl: string
+  ) => {
+    const response = await StoreCategoryService.editStoreCategory(
+      id,
+      name,
+      imageurl
+    );
+    if (!response.success) {
+      setSnackbarMessage({
+        message: response.error,
+        type: "error",
+      });
+    } else {
+      await fetchCategories.refetch();
+      setSnackbarMessage({
+        message: "Category updated successfully",
+        type: "success",
+      });
+      setOpenEditCategoryModal(false);
+    }
+    setSnackbarOpen(true);
   };
 
   useEffect(() => {
@@ -122,6 +191,20 @@ export const StoresSection = () => {
         setIsSnackbarOpen={setSnackbarOpen}
         message={snackbarMessage.message}
         type={snackbarMessage.type}
+      />
+      <AddStoreCategoryModal
+        open={openAddCategoryModal}
+        onClose={() => setOpenAddCategoryModal(false)}
+        actionHandler={handleAddCategory}
+        type="add"
+      />
+
+      <AddStoreCategoryModal
+        open={openEditCategoryModal}
+        onClose={() => setOpenEditCategoryModal(false)}
+        actionHandler={handleEditCategory}
+        type="edit"
+        editInfo={editInfo}
       />
       <DashboardCard style={{ gridArea: "card1" }}>
         <StoreIcon />
@@ -238,12 +321,13 @@ export const StoresSection = () => {
           backgroundColor: "transparent",
           cursor: "pointer",
         }}
-        // onClick={handleAddProduct}
+        onClick={() => setOpenAddCategoryModal(true)}
       >
         <AddCircleIcon style={{ color: "green" }} />
         <h6>Add store category</h6>
       </div>
       <StoresByCategoriesChart />
+      <NewCategoryRequests />
       <StoreCategoriesConyainer>
         <p>store categories</p>
         <div
@@ -253,6 +337,7 @@ export const StoresSection = () => {
           }}
         >
           <p>#</p>
+          <p className="cat-name">icon</p>
           <p className="cat-name">name</p>
           <p>stores</p>
         </div>
@@ -261,8 +346,23 @@ export const StoresSection = () => {
             <p>{index + 1}.</p>
             <img src={category.imageurl || DefaultCategoryIcon} alt="" />
             <p className="cat-name">{category.name}</p>
-            <p>2</p>
-            <EditIcon style={{ color: "gray" }} />
+            <p>
+              {
+                // get number of stores in this category
+                stores.filter((store) => store.storeCategoryId === category.id)
+                  .length
+              }
+            </p>
+            <EditIcon
+              style={{ color: "gray" }}
+              onClick={() => {
+                setEditInfo({
+                  categoryId: category.id,
+                  categoryNameToEdit: category.name,
+                });
+                setOpenEditCategoryModal(true);
+              }}
+            />
             <Popconfirm
               title="Delete product"
               description="Are you sure to delete this product?"
@@ -285,7 +385,7 @@ const Container = styled.div`
   grid-template-rows: 1fr 3.5fr 3.5fr;
   grid-template-areas:
     "card1 card2 card3  card4 addStoreCategory none"
-    "stores stores stores chart chart chart"
+    "stores stores stores chart chart requests"
     "stores stores stores categories categories categories";
   .addStoreCategory {
     grid-area: addStoreCategory;
@@ -380,6 +480,9 @@ const StoresByCategoriesChart = styled.div`
   grid-area: chart;
 `;
 
+const NewCategoryRequests = styled.div`
+  grid-area: requests;
+`;
 const StoreCategoriesConyainer = styled.div`
   grid-area: categories;
   display: flex;

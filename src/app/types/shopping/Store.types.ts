@@ -11,6 +11,7 @@ export type Store = {
   numberOfReviews?: number;
   rating?: number;
   productCategories?: Category[];
+  storeCategoryId?: number;
 };
 
 export type StoreAnalytics = {
