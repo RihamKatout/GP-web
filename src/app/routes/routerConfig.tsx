@@ -22,6 +22,7 @@ import { DashboardPage } from "../pages/admin/DashboardPage";
 import ChatPage from "../features/authentication/ChatPage";
 import HelpCenterChat from "../features/authentication/HelpCenterChat";
 import { NotFound } from "../pages/errors/NotFound";
+import OfferPage from "../features/offers/OfferPage";
 
 const routerConfig = createBrowserRouter([
   {
@@ -81,6 +82,14 @@ const routerConfig = createBrowserRouter([
     element: (
       <MainLayout>
         <ChatPage/>
+      </MainLayout>
+    ),
+  },
+  {
+    path: "/offerPage",
+    element: (
+      <MainLayout>
+        <OfferPage/>
       </MainLayout>
     ),
   },

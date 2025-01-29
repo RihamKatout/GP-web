@@ -106,12 +106,12 @@ const ProductCardStyle = styled.div`
     object-fit: fit;
     border-radius: 10px;
     width: 100% !important;
-    height: 53% !important;
+    height: 60% !important;
     padding: 0 2rem 2.5rem 2rem;
     background: linear-gradient(
       -135deg,
-      rgb(200, 200, 200),
-      rgb(105, 120, 167)
+      rgb(223, 222, 222),
+      rgb(245, 245, 245)
     );
   }
   .product-details {

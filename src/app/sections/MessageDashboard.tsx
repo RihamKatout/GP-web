@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { ref, push, onValue, set } from "firebase/database";
-import { db } from "../../../firebase/firebase";
-import { useAuth } from "../../context";
+import { db } from "../../firebase/firebase";
+import { useAuth } from "../context";
 import EmojiPicker from "emoji-picker-react";
-import { Theme } from "../../utils/Theme";
-import { useLocation } from "react-router-dom";
+import { Theme } from "../utils/Theme";
 
 interface Message {
   text: string;
@@ -14,15 +13,13 @@ interface Message {
   status: "read" | "unread";
 }
 
-const ChatPage = () => {
+const MessageDashboard = () => {
   const { user } = useAuth(); // Get logged-in user
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [receiver, setReceiver] = useState("");
   const [availableUsers, setAvailableUsers] = useState<string[]>([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const location = useLocation();
-  const storeName = location.state?.storeName; // Access the store name from state
 
   const chatContainerRef = useRef<HTMLDivElement>(null); // Ref for the chat container
 
@@ -44,7 +41,7 @@ const ChatPage = () => {
         if (user?.firstName === "Riham") {
           setAvailableUsers(usersList.filter((name) => name !== user.firstName));
         } else {
-          setAvailableUsers([storeName]);
+          setAvailableUsers(["Help Center"]);
         }
       }
     });
@@ -52,7 +49,7 @@ const ChatPage = () => {
 
   // Fetch messages
   useEffect(() => {
-    const messagesRef = ref(db, "messages");
+    const messagesRef = ref(db, "helpCenterMessages");
     onValue(messagesRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -67,7 +64,7 @@ const ChatPage = () => {
         filteredMessages
           .filter((msg) => msg.receiver === user?.firstName && msg.status === "unread")
           .forEach((msg) => {
-            const msgRef = ref(db, `messages/${msg.timestamp}`); // Assuming `timestamp` is unique
+            const msgRef = ref(db, `helpCenterMessages/${msg.timestamp}`); // Assuming `timestamp` is unique
             set(msgRef, { ...msg, status: "read" });
           });
       }
@@ -89,7 +86,7 @@ const ChatPage = () => {
   // Send a message
   const sendMessage = () => {
     if (input.trim() && receiver.trim()) {
-      const messagesRef = ref(db, "messages");
+      const messagesRef = ref(db, "helpCenterMessages");
       push(messagesRef, {
         text: input,
         sender: user?.firstName || "Anonymous",
@@ -114,7 +111,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div style={{ display: "flex", height: "90vh", padding: "20px", marginTop: "60px" }}>
+    <div style={{ display: "flex", height: "90vh", padding: "20px", marginTop: "0" , width:"100%"}}>
       <div
         style={{
           width: "25%",
@@ -146,7 +143,7 @@ const ChatPage = () => {
           ))}
         </ul>
       </div>
-
+  
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <div
           style={{
@@ -155,16 +152,17 @@ const ChatPage = () => {
             fontWeight: "bold",
           }}
         >
-          {receiver ? `Chat with ${receiver}` : "Select a user to start chatting"}
+          {receiver ? `Chat with Help Center` : "Select a user to start chatting"}
         </div>
-
+  
         <div
-          ref={chatContainerRef} // Attach the ref here
+          ref={chatContainerRef}
           style={{
             flex: 1,
             overflowY: "auto",
-            padding: "1rem",
+            paddingRight: "1rem",
             backgroundColor: "#f9f9f9",
+            //width:"900px",
           }}
         >
           {messages.map((msg, index) => (
@@ -177,29 +175,29 @@ const ChatPage = () => {
                 marginBottom: "1rem",
               }}
             >
-                <div
-                  style={{
-                    maxWidth: "60%",
-                    padding: "0.5rem 1rem",
-                    borderRadius: "15px",
-                    backgroundColor:
-                      msg.sender === user?.firstName ? "#DCF8C6" : "#FFF",
-                    color: "#333",
-                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  <strong style={{ fontSize: "0.8rem", display: "block" }}>
-                    {msg.sender}
-                  </strong>
-                  {msg.text}
-                  <div style={{ fontSize: "0.8rem", color: "#777", marginTop: "0.5rem" }}>
-                    {msg.status === "unread" ? "Unread" : "Read"} • {formatTimestamp(msg.timestamp)}
-                  </div>
+              <div
+                style={{
+                  maxWidth: "60%",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "15px",
+                  backgroundColor:
+                    msg.sender === user?.firstName ? "#DCF8C6" : "#FFF",
+                  color: "#333",
+                  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                <strong style={{ fontSize: "0.8rem", display: "block" }}>
+                  {msg.sender}
+                </strong>
+                {msg.text}
+                <div style={{ fontSize: "0.8rem", color: "#777", marginTop: "0.5rem" }}>
+                  {msg.status === "unread" ? "Unread" : "Read"} • {formatTimestamp(msg.timestamp)}
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
-
+  
         <div style={{ padding: "1rem", borderTop: "1px solid #ddd" }}>
           <div style={{ display: "flex", alignItems: "center" }}>
             <button
@@ -251,6 +249,7 @@ const ChatPage = () => {
       </div>
     </div>
   );
+  
 };
 
-export default ChatPage;
+export default MessageDashboard;

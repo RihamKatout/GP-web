@@ -9,6 +9,7 @@ import riham1 from '../../../assets/characters/loginChar.png';
 import mess from "../../../assets/Icons/message (2).png";
 import { Divider } from "antd";
 import { useNavigate } from "react-router-dom";
+import { Store } from "../../types";
 const offers = [
   {
     id: 1,
@@ -56,13 +57,15 @@ const reviews = [
     image: riham1,
   },
 ];
+interface StoreInformationSectionProps {
+  store: Store;
+}
 
-
-export const StoreOffersSection = () => {
+export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({ store }) => {
   const navigate = useNavigate();
 
   const goToChat = () => {
-    navigate("/chat");
+    navigate("/chat", { state: { storeName: store?.name } }); // Pass the store name via state
   };
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -287,11 +290,11 @@ const ReviewText = styled.p`
 
 const ChatButton = styled.button`
   position: fixed;
-  bottom: 20px;
+  bottom: 110px;
   right: 20px;
   width: 70px;
   height: 70px;
-  background-color: ${Theme.colors.secondary};
+  background-color: ${Theme.colors.primary_dark};
   color: white;
   border: none;
   border-radius: 50%;
