@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
-import { Category, Store } from "../../../types";
+import { Category, Store } from "../../../../types";
 
 interface ChartProps {
   stores: Store[];

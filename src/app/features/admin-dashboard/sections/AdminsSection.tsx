@@ -9,8 +9,10 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Popconfirm } from "antd";
 import InfoIcon from "@mui/icons-material/Info";
 import { CustomSnackbar } from "../../../components/common";
+import { AddAdminModal } from "../components/admins/AddAdminModal";
+import { AdminInfoModal } from "../components/admins/AdminInfoModal";
+import { set } from "lodash";
 export const AdminsSection = () => {
-  const handleAddNew = () => {};
   const [admins, setAdmins] = useState<User[]>([]);
   const [supports, setSupports] = useState<User[]>([]);
   const [snackbarInfo, setSnackbarInfo] = useState<
@@ -20,14 +22,20 @@ export const AdminsSection = () => {
     severity: "success",
   });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  useQuery(["admins"], () => AdminService.getAdminsAndSupports(), {
-    onSuccess: (data) => {
-      setAdmins(data.filter((user) => user.roles.includes("ADMIN")));
-      setSupports(data.filter((user) => !user.roles.includes("ADMIN")));
-    },
-    refetchOnWindowFocus: false,
-  });
+  const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
+  const [openAdminInfoModal, setOpenAdminInfoModal] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const fetchAdmins = useQuery(
+    ["admins"],
+    () => AdminService.getAdminsAndSupports(),
+    {
+      onSuccess: (data) => {
+        setAdmins(data.filter((user) => user.roles.includes("ADMIN")));
+        setSupports(data.filter((user) => !user.roles.includes("ADMIN")));
+      },
+      refetchOnWindowFocus: false,
+    }
+  );
   const handleDeleteSupport = async (id: number) => {
     try {
       await AdminService.deleteSupport(id);
@@ -44,6 +52,47 @@ export const AdminsSection = () => {
     }
     setSnackbarOpen(true);
   };
+  const handleAdd = async (userId: number, admin: boolean) => {
+    setIsAddAdminModalOpen(false);
+    try {
+      {
+        admin
+          ? await AdminService.addAdmin(userId)
+          : await AdminService.addSupport(userId);
+      }
+      fetchAdmins.refetch();
+      setSnackbarInfo({
+        message: "Admin added successfully",
+        severity: "success",
+      });
+    } catch (e: any) {
+      setSnackbarInfo({
+        message: e?.response?.data?.errors[0] || "Failed to add admin",
+        severity: "error",
+      });
+    }
+    setSnackbarOpen(true);
+  };
+  const handleViewAdminInfo = (userToView: User) => {
+    setOpenAdminInfoModal(true);
+    setUser(userToView);
+  };
+  const handleSendEmail = async (id: number, Subject: string, text: string) => {
+    setOpenAdminInfoModal(false);
+    try {
+      await AdminService.sendEmail(id, Subject, text);
+      setSnackbarInfo({
+        message: "Email sent successfully",
+        severity: "success",
+      });
+    } catch (e: any) {
+      setSnackbarInfo({
+        message: e?.response?.data?.errors[0] || "Failed to send email",
+        severity: "error",
+      });
+    }
+    setSnackbarOpen(true);
+  };
   return (
     <Container className="main">
       <CustomSnackbar
@@ -52,6 +101,19 @@ export const AdminsSection = () => {
         message={snackbarInfo?.message || ""}
         type={snackbarInfo?.severity || "success"}
       />
+      <AddAdminModal
+        open={isAddAdminModalOpen}
+        handleAdd={handleAdd}
+        onClose={() => setIsAddAdminModalOpen(false)}
+      />
+      {user && (
+        <AdminInfoModal
+          open={openAdminInfoModal}
+          onClose={() => setOpenAdminInfoModal(false)}
+          user={user}
+          handleSendEmail={handleSendEmail}
+        />
+      )}
       <div
         className="addNew"
         style={{
@@ -59,7 +121,7 @@ export const AdminsSection = () => {
           backgroundColor: "transparent",
           cursor: "pointer",
         }}
-        onClick={handleAddNew}
+        onClick={() => setIsAddAdminModalOpen(true)}
       >
         <AddCircleIcon style={{ color: "green" }} />
         <h6>Add new</h6>
@@ -77,7 +139,7 @@ export const AdminsSection = () => {
             <p>{admin.firstName + " " + admin.lastName}</p>
             <p>{admin.username}</p>
             <p></p>
-            <InfoIcon />
+            <InfoIcon onClick={() => handleViewAdminInfo(admin)} />
           </div>
         ))}
       </ListContainer>
@@ -93,7 +155,7 @@ export const AdminsSection = () => {
             <p>{index + 1}.</p>
             <p>{support.firstName + " " + support.lastName}</p>
             <p>{support.username}</p>
-            <InfoIcon />
+            <InfoIcon onClick={() => handleViewAdminInfo(support)} />
             <Popconfirm
               title="Remove support"
               description="Are you sure to remove this support?"

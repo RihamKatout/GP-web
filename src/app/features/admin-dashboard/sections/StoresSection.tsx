@@ -15,7 +15,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { DefaultCategoryIcon } from "../../../../assets";
-import { AddStoreCategoryModal } from "../components/AddStoreCategoryModal";
+import { AddStoreCategoryModal } from "../components/stores/AddStoreCategoryModal";
 import { StoresByCategoriesChart } from "..";
 
 // TODO: handle delete store

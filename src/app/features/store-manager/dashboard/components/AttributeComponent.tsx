@@ -24,8 +24,8 @@ export const AttributeComponent: React.FC<AttributeProps> = ({
 }) => {
   const [localName, setLocalName] = useState(attribute.name);
   const [localChoices, setLocalChoices] = useState(attribute.choices);
-  const debouncedName = useDebounce(localName);
-  const debouncedChoices = useDebounce(localChoices);
+  const debouncedName = useDebounce(localName, 500);
+  const debouncedChoices = useDebounce(localChoices, 500);
   const [showChoices, setShowChoices] = useState(true);
 
   // Update local state when prop changes

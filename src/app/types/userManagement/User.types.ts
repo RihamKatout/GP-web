@@ -1,11 +1,10 @@
-import { RoleEnum } from "..";
 
 export type User = {
   id: number;
   username: string;
   firstName: string;
   lastName: string;
-  roles: RoleEnum[];
+  roles: string[];
   userImageURL: string | null;
   signUpDate: Date;
   numberOfStores: number;

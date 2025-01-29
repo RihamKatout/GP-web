@@ -18,5 +18,22 @@ export const AdminService = {
   },
   deleteSupport: async (id: number): Promise<void> => {
     await clientAxios.delete(`/admin/${id}`);
-  }
+  },
+  addAdmin: async (userId: number): Promise<void> => {
+    await clientAxios.post("/admin", userId);
+  },
+  addSupport: async (userId: number): Promise<void> => {
+    await clientAxios.post("/admin/support", userId);
+  },
+  sendEmail: async (
+    userId: number,
+    subject: string,
+    text: string
+  ): Promise<void> => {
+    await clientAxios.post(`/admin/send-email`, {
+      toId: userId,
+      subject,
+      text,
+    });
+  },
 };

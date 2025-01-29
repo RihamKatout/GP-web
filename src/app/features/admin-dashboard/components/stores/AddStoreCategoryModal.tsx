@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { CustomModal } from "../../../components/common";
+import { CustomModal } from "../../../../components/common";
 import styled from "styled-components";
 
 interface AddStoreCategoryModalProps {
