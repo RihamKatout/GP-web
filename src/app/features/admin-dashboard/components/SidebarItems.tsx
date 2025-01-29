@@ -1,6 +1,6 @@
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
-import LocalMallIcon from "@mui/icons-material/LocalMall";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import StoreIcon from '@mui/icons-material/Store';
 import ForumIcon from '@mui/icons-material/Forum';
 import FeedbackIcon from '@mui/icons-material/Feedback';
@@ -18,16 +18,16 @@ export const SidebarItems = [
   },
   {
     id: 2,
+    title: "Admins",
+    icon: <AdminPanelSettingsIcon />,
+    section: DashboardSectionsEnum.Admins,
+  },
+  {
+    id: 3,
     title: "Stores",
     icon: <StoreIcon />,
-    section: DashboardSectionsEnum.Store,
+    section: DashboardSectionsEnum.Stores,
   },
-//   {
-//     id: 3,
-//     title: "Products",
-//     icon: <Inventory2Icon />,
-//     section: DashboardSectionsEnum.Products,
-//   },
   {
     id: 4,
     title: "Messages",

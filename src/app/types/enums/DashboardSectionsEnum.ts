@@ -6,4 +6,5 @@ export enum DashboardSectionsEnum {
   Reports = "Reports",
   Settings = "Settings",
   Stores = "Stores",
+  Admins = "Admins",
 }

@@ -1,29 +1,15 @@
 import { useState } from "react";
 import styled from "styled-components";
-import StoreIcon from "@mui/icons-material/Store";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import {
-  Category,
-  DashboardSectionsEnum,
-  Product,
-  StoreDashboardSectionsEnum,
-} from "../../types";
-import {
-  AddProductSection,
-  ProductsManagementSection,
-  StoreAnalyticsSection,
-  StoreDashboardSidebar,
-} from "../../features";
-import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import { StoreManagerService } from "../../api";
+import { DashboardSectionsEnum } from "../../types";
+import { useNavigate } from "react-router-dom";
 import { Sidebar } from "../../features/admin-dashboard/components/Sidebar";
-import { StoresSection } from "../../features/admin-dashboard";
+import { AdminsSection, StoresSection } from "../../features/admin-dashboard";
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
   const [selectedSection, setSelectedSection] = useState<DashboardSectionsEnum>(
-    DashboardSectionsEnum.Stores
+    DashboardSectionsEnum.Admins
   );
 
   // // get analytics data
@@ -53,6 +39,7 @@ export const DashboardPage = () => {
         setSelectedSection={setSelectedSection}
       />
       {selectedSection === DashboardSectionsEnum.Stores && <StoresSection />}
+      {selectedSection === DashboardSectionsEnum.Admins && <AdminsSection />}
     </Container>
   );
 };

@@ -1,5 +1,5 @@
 import { clientAxios } from ".";
-import { Store } from "../types";
+import { Store, User } from "../types";
 
 export const AdminService = {
   getAllStores: async (): Promise<Store[]> => {
@@ -12,4 +12,11 @@ export const AdminService = {
   unbanStore: async (storeId: number): Promise<void> => {
     await clientAxios.put(`/store/${storeId}/unban`);
   },
+  getAdminsAndSupports: async (): Promise<User[]> => {
+    const response = await clientAxios.get(`/admin`);
+    return response.data;
+  },
+  deleteSupport: async (id: number): Promise<void> => {
+    await clientAxios.delete(`/admin/${id}`);
+  }
 };

@@ -105,7 +105,7 @@ export const ProductsShowcaseSection: React.FC<
         </div>
       </div>
 
-      {(!productsDto || productsDto.length === 0) && (
+      {(!productsDto || productsDto.length === 0) && !isLoading && (
         <div
           style={{
             textAlign: "center",
