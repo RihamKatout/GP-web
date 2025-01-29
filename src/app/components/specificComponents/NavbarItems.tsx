@@ -161,6 +161,7 @@ export const UserMenuIcons = [
       </div>
     ),
     text: "Notifications",
+    path:"/offerPage",
   },
   {
     icon: (

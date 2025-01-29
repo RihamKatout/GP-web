@@ -36,7 +36,7 @@ export const StorePage = () => {
         {store && (
           <StoreContainer>
             <StoreInformationSection store={store} />
-            <StoreOffersSection />
+            <StoreOffersSection store={store}/>
             <StoreProductsSection
               storeId={store?.id}
               productCategories={store?.productCategories ?? []}

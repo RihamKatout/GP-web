@@ -19,6 +19,7 @@ import { useQuery } from "react-query";
 import { StoreManagerService } from "../../api";
 import { Sidebar } from "../../features/admin-dashboard/components/Sidebar";
 import { StoresSection } from "../../features/admin-dashboard";
+import MessageDashboard from "../../sections/MessageDashboard";
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ export const DashboardPage = () => {
         setSelectedSection={setSelectedSection}
       />
       {selectedSection === DashboardSectionsEnum.Stores && <StoresSection />}
+      {selectedSection === DashboardSectionsEnum.Messages && <MessageDashboard />}
     </Container>
   );
 };

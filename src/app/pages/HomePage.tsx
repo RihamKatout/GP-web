@@ -82,7 +82,7 @@ export const HomePage = () => {
         return (
           <SectionContainer sectionId={sectionId} key={sectionId}>
             {component}
-            <ChatButton onClick={goToChat}><img src={mess} alt="Chat" style={{width: "50px", height: "45px"}} /></ChatButton>
+            {/* <ChatButton onClick={goToChat}><img src={mess} alt="Chat" style={{width: "50px", height: "45px"}} /></ChatButton> */}
           </SectionContainer>
         );
       })}
