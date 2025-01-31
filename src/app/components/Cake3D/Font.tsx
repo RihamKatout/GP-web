@@ -17,7 +17,7 @@ const CakeFont: React.FC<CakeTextProps> = ({
   rotation = [Math.PI / 2, Math.PI, 0],
   maxCharsPerLine = 10,
   color = 'black',
-  fontSize = 0.3,
+  fontSize = 0.4,
   fontPath = '/fonts/helvetiker_regular.typeface.json',
 }) => {
   // Helper function to split text into lines with a max number of lines limit

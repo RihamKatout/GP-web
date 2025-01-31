@@ -9,7 +9,10 @@ import { DefaultStoreImg } from "../../../../assets";
 import { ProductConfiguration } from "..";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { CustomSnackbar } from "../../../components/common";
-
+import img from "../../../../assets/product/3dcakeTry.png";
+import img2 from "../../../../assets/product/3dCake.png";
+import img3 from "../../../../assets/product/3dHeart.png";
+import img4 from "../../../../assets/product/3dCharryCake.png";
 //TODO: fix reviews
 interface ProductDetailsCardProps {
   productDto: ProductDetail;
@@ -47,17 +50,58 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
       onDragStart={handleDragStart}
       role="presentation"
     />,
-    <img
-      src={product?.mainImageURL}
-      onDragStart={handleDragStart}
-      role="presentation"
-    />,
-    <img
-      src={product?.mainImageURL}
-      onDragStart={handleDragStart}
-      role="presentation"
-    />,
+    // <img
+    //   src={product?.mainImageURL}
+    //   onDragStart={handleDragStart}
+    //   role="presentation"
+    // />,
+    // <img
+    //   src={product?.mainImageURL}
+    //   onDragStart={handleDragStart}
+    //   role="presentation"
+    // />,
+
   ];
+
+  // Add an extra image only if product.id === 2
+if (product?.id === 2) {
+  items.push(
+    <img
+      src={img} // Replace with the actual image URL
+      onDragStart={handleDragStart}
+      role="presentation"
+    />
+  );
+}
+if (product?.id === 3) {
+  items.push(
+    <img
+      src={img2} // Replace with the actual image URL
+      onDragStart={handleDragStart}
+      role="presentation"
+    />
+  );
+}
+if (product?.id === 4) {
+  items.push(
+    <img
+      src={img3} // Replace with the actual image URL
+      onDragStart={handleDragStart}
+      role="presentation"
+    />
+  );
+}
+if (product?.id === 5) {
+  items.push(
+    <img
+      src={img4} // Replace with the actual image URL
+      onDragStart={handleDragStart}
+      role="presentation"
+    />
+  );
+}
+
+
   useEffect(() => {
     dispatchPrices({ type: "ADD_PRICE_IMPACT", priceImpact: product.basePrice });
     setIsWishlisted(inWishlist ?? false);
@@ -217,6 +261,7 @@ const ProductCard = styled.div`
 const ProductInfoColumn = styled.div`
   gap: 1rem;
   width: 35%;
+  
   display: flex;
   padding: 1rem;
   position: relative;
@@ -224,11 +269,15 @@ const ProductInfoColumn = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   img {
-    width: 100%;
-    padding: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1),
-      0 2px 25px rgba(79, 89, 121, 0.2) inset;
-  }
+  width: 100%;
+  height: 350px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1),
+              0 2px 25px rgba(79, 89, 121, 0.2) inset;
+  clip-path: inset(0px 0px 10px 0px);
+}
+
+
   .wishlist {
     position: absolute;
     z-index: 1000;
