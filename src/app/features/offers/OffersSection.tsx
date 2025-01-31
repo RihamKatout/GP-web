@@ -1,23 +1,24 @@
 import React from "react";
-import { Box, Typography, Button } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import img from "../../../assets/store/discount.png";
-import img2 from "../../../assets/store/discount2.png";
-import img1 from "../../../assets/store/discountChar.png";
 import { Theme } from "../../utils/Theme";
-import { Divider } from "antd";
 import { useNavigate } from "react-router-dom";
+import { OfferDto } from "../../types/shopping/Offers.types";
+import styled from "styled-components";
+import { Loader } from "../../components/common";
 
-// Mock data for offers
-const offersData = [
-  { id: 1, image: img, title: "Black Friday Sale", store: "For any product!", description: "Get up to 70% off on selected items!" },
-  { id: 2, image: img1, title: "Eid Sale", store: "Until the end of the month", description: "Celebrate Eid with exclusive discounts!" },
-  { id: 3, image: img2, title: "Mother's Day Specials", store: "For any store", description: "Show your love with up to 50% off!" },
-];
+interface OffersSectionProps {
+  offers: OfferDto[] | undefined;
+  isLoading: boolean;
+  error: any;
+}
 
-export const OffersSection: React.FC = () => {
+export const OffersSection: React.FC<OffersSectionProps> = ({
+  offers,
+  isLoading,
+  error,
+}) => {
   const navigate = useNavigate();
 
   const settings = {
@@ -31,112 +32,200 @@ export const OffersSection: React.FC = () => {
   };
 
   return (
-    <Box component="section" py={4}>
-      <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", margin: "1rem auto" }}>
-        <div style={{ width: "80%", margin: "0 auto" }}>
-          <Divider style={{ borderColor: "#1a1a19b3" }}>
-            <Typography
-              variant="h2"
-              style={{
-                fontFamily: "DynaPuff",
-                fontWeight: 400,
-                fontSize: "3.7rem",
-                color: Theme.colors.secondary_dark,
-                alignSelf: "center",
-              }}
-            >
-              Offers
-            </Typography>
-          </Divider>
-        </div>
-
-        {/* Offer Slider */}
+    <Container>
+      <h1>Offers</h1>
+      {isLoading ? (
+        <Loader type="bouncing" />
+      ) : error ? (
+        <h2 style={{ width: "100%", textAlign: "center", padding: "4rem" }}>
+          Sorry we couldn't load offers right now
+        </h2>
+      ) : (
         <Slider {...settings}>
-          {offersData.map((offer) => (
-            <div key={offer.id} style={{ display: "flex", alignItems: "center", padding: "15rem", gap: "8rem", width: "100%" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingRight: "8rem", paddingLeft: "14rem", width: "100%", flexWrap: "wrap", flexDirection: "row-reverse" }}>
-                <img
-                  alt={offer.title}
-                  src={offer.image}
-                  style={{ width: "45%", height: "400px", borderRadius: "10px", objectFit: "cover" }}
-                />
-                <div style={{ flex: 1 }}>
-                  <Typography
-                    variant="h3"
-                    style={{
-                      color: Theme.colors.primary_dark,
-                      fontWeight: "20px",
-                      marginBottom: "1rem",
-                      fontFamily: "Delius Swash Caps",
-                    }}
-                  >
-                    {offer.title}
-                  </Typography>
-                  <Typography
-                    variant="h4"
-                    style={{
-                      color: Theme.colors.primary,
-                      fontWeight: "bold",
-                      marginBottom: "1rem",
-                      fontFamily: "Delius",
-                    }}
-                  >
-                    {offer.store}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    style={{
-                      color: "rgb(27, 26, 52)",
-                      marginBottom: "1rem",
-                      fontSize: "1.2rem",
-                    }}
-                  >
-                    {offer.description}
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      padding: "10px 20px",
-                      fontSize: "1rem",
-                      marginTop: "1rem",
-                      backgroundColor: Theme.colors.primary,
-                      boxShadow:
-                        "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset",
-                      "&:hover": {
-                        transform: "scale(1.05);",
-                        boxShadow:
-                          "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset",
-                        backgroundColor: Theme.colors.secondary_light,
-                      },
-                    }}
-                    onClick={() => navigate("/offerPage")}
-                  >
-                    View More
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </Slider>
+          {offers &&
+            offers.map((offer) => (
+              <div>
+                <OfferContainer>
+                  <OfferInfoContainer>
+                    <p className="title">{offer.title}</p>
+                    <p className="end">
+                      <span className="remaining-time">
+                        {(() => {
+                          const timeRemaining =
+                            new Date(offer.endDate).getTime() -
+                            new Date().getTime();
 
-        {/* View More Button */}
-        {/* <div style={{ textAlign: "center", marginTop: "2rem" }}>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: Theme.colors.secondary,
-              fontSize: "1.2rem",
-              padding: "10px 30px",
-              "&:hover": {
-                backgroundColor: Theme.colors.secondary_dark,
-              },
-            }}
-            onClick={() => navigate("/offerPage")}
-          >
-            View More
-          </Button>
-        </div> */}
-      </div>
-    </Box>
+                          const daysRemaining = Math.max(
+                            0,
+                            Math.floor(timeRemaining / (1000 * 60 * 60 * 24))
+                          );
+                          const hoursRemaining = Math.max(
+                            0,
+                            Math.floor(
+                              (timeRemaining % (1000 * 60 * 60 * 24)) /
+                                (1000 * 60 * 60)
+                            )
+                          );
+
+                          return timeRemaining > 0
+                            ? `${daysRemaining} days, ${hoursRemaining} hours remaining`
+                            : "Ended";
+                        })()}
+                      </span>
+                      <span className="end-label">
+                        Ends on: {new Date(offer.endDate).toLocaleString()}
+                      </span>
+                    </p>
+                    <p className="description">{offer.description}</p>
+                    <button onClick={() => navigate(`/offer/${offer.id}`)}>
+                      View Offer
+                    </button>
+                  </OfferInfoContainer>
+                  <img alt={offer.title} src={offer.imageurl} />
+                </OfferContainer>
+              </div>
+            ))}
+        </Slider>
+      )}
+    </Container>
   );
 };
+
+const Container = styled.div`
+  gap: 1 rem;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  h1 {
+    margin: 0;
+    font-weight: 400;
+    font-size: 3.7rem;
+    font-family: "DynaPuff";
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  p {
+    margin: 0;
+  }
+
+  .slick-slider {
+    width: 70%;
+    margin: 0 auto;
+  }
+
+  .slick-dots {
+    bottom: -40px;
+
+    li button:before {
+      font-size: 12px;
+      color: #666;
+    }
+
+    li.slick-active button:before {
+      color: #000;
+    }
+  }
+
+  .slick-prev,
+  .slick-next {
+    width: 40px;
+    height: 40px;
+    z-index: 1;
+
+    &:before {
+      font-size: 40px;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover:before {
+      opacity: 1;
+    }
+  }
+
+  .slick-prev {
+    left: -50px;
+  }
+
+  .slick-next {
+    right: -50px;
+  }
+`;
+
+const OfferContainer = styled.div`
+  gap: 5rem;
+  margin: 1rem;
+  display: flex;
+  padding: 2rem;
+  border-radius: 1rem;
+  justify-content: center;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+  img {
+    width: 17vw;
+    height: 17vw;
+    margin: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  }
+`;
+
+const OfferInfoContainer = styled.div`
+  width: 30vw;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  .title {
+    font-weight: 700;
+    font-size: 3.1rem;
+    color: ${Theme.colors.secondary_dark};
+  }
+  .description {
+    color: ${Theme.colors.gray};
+  }
+  .end {
+    gap: 0.5rem;
+    display: flex;
+    width: fit-content;
+    align-items: center;
+  }
+
+  .end-label {
+    font-size: 0.9rem;
+    color: ${Theme.colors.gray};
+    letter-spacing: 0.5px;
+  }
+
+  .remaining-time {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: ${Theme.colors.secondary_dark};
+    text-shadow: 1px 1px 2px rgba(205, 58, 158, 0.2);
+    letter-spacing: 0.5px;
+    background: linear-gradient(
+      145deg,
+      rgba(255, 0, 0, 0.15),
+      rgba(0, 81, 255, 0.15)
+    );
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    display: inline-block;
+    box-shadow: 0 3px 5px rgba(58, 158, 205, 0.3);
+  }
+
+  button {
+    border-radius: 0.5rem;
+    border: none;
+    padding: 0.5rem;
+    margin-bottom: 1.5rem;
+    margin-top: auto;
+    background-color: ${Theme.colors.primary};
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: "Overlock";
+    box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),
+      0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,
+      0 0.25rem 0.5rem 0 rgba(205, 58, 158, 0.36) inset;
+  }
+`;

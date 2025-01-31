@@ -1,7 +1,6 @@
 import { SectionIdEnum } from "../../types";
 
 import { logoImg } from "../../../assets";
-import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import favoriteImg from "../../../assets/Icons/heart.png";
