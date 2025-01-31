@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { message } from "antd";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import emailjs from "emailjs-com";
 
 import {
   ButtonContainer,
@@ -18,6 +19,7 @@ import {
   WelcomeText,
 } from "./StyledComponents";
 
+// Validation schema
 const schema = z.object({
   username: z
     .string()
@@ -50,6 +52,7 @@ const RegisterForm = () => {
   const location = useLocation();
   const { registerUserContext } = useAuth();
   const [messageApi, contextHolder] = message.useMessage();
+
   const {
     register,
     handleSubmit,
@@ -84,6 +87,32 @@ const RegisterForm = () => {
     }
   }, [errors, messageApi]);
 
+  // Function to send verification email using EmailJS
+  const sendVerificationEmail = (email: string) => {
+    const templateParams = {
+      user_email: email,
+      reset_link: "http://localhost:5173/", // Change this to your actual home URL
+    };
+
+    emailjs
+      .send(
+        "service_4mswwre", // Replace with your actual EmailJS Service ID
+        "template_tjxhrls", // Replace with your actual EmailJS Template ID
+        templateParams,
+        "3utpEi5L2w2bw-lZn" // Replace with your actual EmailJS Public Key
+      )
+      .then(
+        (response) => {
+          console.log("Verification email sent:", response);
+          messageApi.success("Verification email sent! Check your inbox.");
+        },
+        (error) => {
+          console.log("Failed to send email:", error);
+          messageApi.error("Failed to send verification email. Please try again.");
+        }
+      );
+  };
+
   const onSubmit: SubmitHandler<registrationFormFields> = async (data) => {
     try {
       if (data.password !== data.confirmPassword) {
@@ -95,9 +124,14 @@ const RegisterForm = () => {
         return;
       }
 
+      // Register user
       await registerUserContext(data);
-      messageApi.success("Registration successful!");
-      navigate(location.state?.from || "/", { state: { showWelcome: true } });
+
+      // Send verification email
+      sendVerificationEmail(data.email);
+
+      messageApi.success("Registration successful! Check your email to verify.");
+      // navigate("/", { state: { showWelcome: true } });
     } catch (error: any) {
       messageApi.error(
         error.response?.data?.errors[0] || "Registration failed."
@@ -133,10 +167,7 @@ const RegisterForm = () => {
         </div>
         <div style={{ display: "flex", gap: "1rem", width: "100%" }}>
           <StyledInput {...register("username")} placeholder="Username" />
-          <StyledInput
-            {...register("phoneNumber")}
-            placeholder="Phone Number"
-          />
+          <StyledInput {...register("phoneNumber")} placeholder="Phone Number" />
         </div>
         <ButtonContainer>
           <StyledButton onClick={() => navigate("/")} style={{ width: "25%" }}>
@@ -147,7 +178,6 @@ const RegisterForm = () => {
           </StyledButton>
         </ButtonContainer>
       </FormContainer>
-      {/* Create Account link */}
 
       <LinkToRegister>
         Have an account? <StyledLink to="/login">Login</StyledLink>
