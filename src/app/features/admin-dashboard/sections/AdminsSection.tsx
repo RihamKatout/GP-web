@@ -11,7 +11,6 @@ import InfoIcon from "@mui/icons-material/Info";
 import { CustomSnackbar } from "../../../components/common";
 import { AddAdminModal } from "../components/admins/AddAdminModal";
 import { AdminInfoModal } from "../components/admins/AdminInfoModal";
-import { set } from "lodash";
 export const AdminsSection = () => {
   const [admins, setAdmins] = useState<User[]>([]);
   const [supports, setSupports] = useState<User[]>([]);

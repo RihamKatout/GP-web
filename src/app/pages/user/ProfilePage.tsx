@@ -3,14 +3,19 @@ import styled from "styled-components";
 import { MainLayout } from "../../components/Layout";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
-import { MyStoresSection, ProfileInfoSection, Sidebar } from "../../features";
+import {
+  AddStoreSection,
+  MyStoresSection,
+  ProfileInfoSection,
+  Sidebar,
+} from "../../features";
 import { ProfileSectionsEnum } from "../../types";
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
   const { logoutContext, user } = useAuth();
   const [selectedSection, setSelectedSection] = useState<ProfileSectionsEnum>(
-    ProfileSectionsEnum.Profile
+    ProfileSectionsEnum.AddStore
   );
 
   useEffect(() => {
@@ -38,10 +43,13 @@ export const ProfilePage = () => {
 
         <MainContent>
           {selectedSection === ProfileSectionsEnum.Profile && (
-            <ProfileInfoSection />
+            <ProfileInfoSection setSelectedSection={setSelectedSection} />
           )}
           {selectedSection === ProfileSectionsEnum.MyStores && (
             <MyStoresSection />
+          )}
+          {selectedSection === ProfileSectionsEnum.AddStore && (
+            <AddStoreSection setSelectedSection={setSelectedSection} />
           )}
         </MainContent>
       </UserProfileContainer>

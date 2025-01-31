@@ -1,5 +1,5 @@
 import { clientAxios } from ".";
-import { Store } from "../types";
+import { AddStoreDto, Store } from "../types";
 
 export const StoreService = {
   getStoreById: async (id: number): Promise<Store> => {
@@ -16,5 +16,9 @@ export const StoreService = {
   },
   deleteStore: async (storeId: number): Promise<void> => {
     await clientAxios.delete(`/store/${storeId}`);
+  },
+  addStore: async (store: AddStoreDto): Promise<void> => {
+    const response = await clientAxios.post("/store", store);
+    return response.data;
   },
 };

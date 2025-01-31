@@ -21,7 +21,6 @@ export const MyStoresSection = () => {
   const {
     data: stores,
     isLoading,
-    error,
   } = useQuery(["my_stores"], () => StoreManagerService.getStores(), {
     cacheTime: 0,
   });
@@ -43,6 +42,8 @@ export const MyStoresSection = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  max-height: 80vh;
+  overflow-y: auto;
 `;
 
 const Header = styled.div`

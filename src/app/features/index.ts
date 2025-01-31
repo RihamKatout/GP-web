@@ -37,6 +37,7 @@ export * from "./stores/StoreProductsSection";
 export * from "./profile/SidebarItems";
 export * from "./profile/Sidebar";
 export * from "./profile/ProfileInfoSection";
+export * from "./profile/AddStoreSection";
 
 // store manager
 export * from "./profile/MyStoresSection";

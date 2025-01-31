@@ -21,12 +21,10 @@ export const NavigationItems = [
 export const Logo = () => {
   const navigate = useNavigate();
   return (
-    <Box
-      component="div"
-      display="flex"
-      alignItems="center"
-      gap={1}
-      width="fit-content"
+    <img
+      height="38px"
+      src={logoImg}
+      alt="logo"
       onClick={() => {
         if (location.pathname !== "/") {
           navigate("/");
@@ -37,16 +35,7 @@ export const Logo = () => {
         }
       }}
       style={{ cursor: "pointer" }}
-    >
-      <div style={{ width: "70px", height: "50px", marginBottom: "10px" }} ><img width="110px" height="60px" src={logoImg} alt="logo" /></div>
-      
-      <Typography
-        variant="h5"
-        sx={{ width: "min-content", fontFamily: "DynaPuff", color: "black" }}
-      >
-        Craftopia
-      </Typography>
-    </Box>
+    />
   );
 };
 
@@ -161,7 +150,7 @@ export const UserMenuIcons = [
       </div>
     ),
     text: "Notifications",
-    path:"/offerPage",
+    path: "/offerPage",
   },
   {
     icon: (

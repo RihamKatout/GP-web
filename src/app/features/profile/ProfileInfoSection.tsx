@@ -5,11 +5,16 @@ import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Divider } from "@mui/material";
+import { ProfileSectionsEnum } from "../../types";
+import React from "react";
 
-//TODO: handle join us button click
-export const ProfileInfoSection = () => {
+interface ProfileInfoSectionProps {
+  setSelectedSection: (section: ProfileSectionsEnum) => void;
+}
+export const ProfileInfoSection: React.FC<ProfileInfoSectionProps> = ({
+  setSelectedSection,
+}) => {
   const { user } = useAuth();
-
   const status = user?.enabled ? "Active" : "Inactive";
   return (
     <Container isActive={user?.enabled || false}>
@@ -26,7 +31,7 @@ export const ProfileInfoSection = () => {
           <label>{status}</label>
         </div>
 
-        <Divider style={{backgroundColor: "black"}} />
+        <Divider style={{ backgroundColor: "black" }} />
 
         <div className="documentation">
           <h4>Documentation</h4>
@@ -43,7 +48,11 @@ export const ProfileInfoSection = () => {
       </div>
       <OwnStoreContainer>
         <h4>Want to have your own store?</h4>
-        <button>Join us</button>
+        <button
+          onClick={() => setSelectedSection(ProfileSectionsEnum.AddStore)}
+        >
+          Join us
+        </button>
         <DotLottieReact
           src="https://lottie.host/4bc5680f-e780-4cb6-8a67-5f3efe8a95a0/kG3JD7ugnD.lottie"
           loop
