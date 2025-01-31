@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Theme } from "../../utils/Theme";
-import img from '../../../assets/store/discount.png';
-import img2 from '../../../assets/store/discount2.png';
-import img1 from '../../../assets/store/discountChar.png';
-import riham from '../../../assets/characters/riham.png';
-import riham1 from '../../../assets/characters/loginChar.png';
+import img from "../../../assets/store/discount.png";
+import img2 from "../../../assets/store/discount2.png";
+import img1 from "../../../assets/store/discountChar.png";
+import riham from "../../../assets/characters/riham.png";
+import riham1 from "../../../assets/characters/loginChar.png";
 import mess from "../../../assets/Icons/message (2).png";
 import { Divider } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../types";
+import { OfferDto } from "../../types/shopping/Offers.types";
 const offers = [
   {
     id: 1,
@@ -59,13 +60,21 @@ const reviews = [
 ];
 interface StoreInformationSectionProps {
   store: Store;
+  offers: OfferDto[];
+  isLoading: boolean;
+  errors: any;
 }
 
-export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({ store }) => {
+export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({
+  store,
+  offers,
+  isLoading,
+  errors
+}) => {
   const navigate = useNavigate();
 
   const goToChat = () => {
-    navigate("/chat", { state: { storeName: store?.name } }); // Pass the store name via state
+    navigate("/chat", { state: { storeName: store?.name } });
   };
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -87,12 +96,17 @@ export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({ sto
       </div>
 
       {/* Circular Chat Button */}
-      <ChatButton onClick={goToChat}><img src={mess} alt="Chat" style={{width: "70px", height: "35px"}} /></ChatButton>
+      <ChatButton onClick={goToChat}>
+        <img src={mess} alt="Chat" style={{ width: "70px", height: "35px" }} />
+      </ChatButton>
 
       <Slider>
         <Button onClick={handlePrev}>{"<"}</Button>
         <OfferCard>
-          <img src={offers[currentIndex].image} alt={offers[currentIndex].title} />
+          {/* <img
+            src={offers[currentIndex].image}
+            alt={offers[currentIndex].title}
+          /> */}
           <h3>{offers[currentIndex].title}</h3>
           <p>{offers[currentIndex].description}</p>
         </OfferCard>
@@ -100,7 +114,7 @@ export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({ sto
       </Slider>
 
       <Dots>
-        {offers.map((_, index) => (
+        {offers?.map((_, index) => (
           <Dot
             key={index}
             active={index === currentIndex}
@@ -132,7 +146,6 @@ export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({ sto
   );
 };
 
-
 // Styled Components
 const Container = styled.div`
   grid-area: storeOffers;
@@ -142,7 +155,6 @@ const Container = styled.div`
   background-color: #f8f9fa;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  
 `;
 
 const Title = styled.h2`
@@ -152,7 +164,7 @@ const Title = styled.h2`
   margin-top: 1rem;
   text-align: center;
   margin-bottom: 0.5rem;
-  font-family:'Delius';
+  font-family: "Delius";
 `;
 
 const Slider = styled.div`
@@ -175,7 +187,7 @@ const OfferCard = styled.div`
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
-   
+
   img {
     width: 120%; /* Full width of the card */
     height: auto;
@@ -219,7 +231,8 @@ const Dot = styled.button<{ active: boolean }>`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${(props) => (props.active ? Theme.colors.secondary : "#ccc")};
+  background-color: ${(props) =>
+    props.active ? Theme.colors.secondary : "#ccc"};
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -234,7 +247,6 @@ const ReviewsSection = styled.div`
   max-width: 600px;
   text-align: center;
   margin-bottom: 2rem;
-  
 `;
 
 const ReviewsList = styled.div`
@@ -251,7 +263,8 @@ const ReviewsList = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) => theme.colors.primary_dark};; /* Thumb color */
+    background-color: ${({ theme }) =>
+      theme.colors.primary_dark}; /* Thumb color */
     border-radius: 10px; /* Rounded corners */
   }
 

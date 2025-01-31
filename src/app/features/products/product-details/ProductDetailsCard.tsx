@@ -50,63 +50,40 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
       onDragStart={handleDragStart}
       role="presentation"
     />,
-    // <img
-    //   src={product?.mainImageURL}
-    //   onDragStart={handleDragStart}
-    //   role="presentation"
-    // />,
-    // <img
-    //   src={product?.mainImageURL}
-    //   onDragStart={handleDragStart}
-    //   role="presentation"
-    // />,
-
   ];
 
-  // Add an extra image only if product.id === 2
-if (product?.id === 2) {
-  items.push(
-    <img
-      src={img} // Replace with the actual image URL
-      onDragStart={handleDragStart}
-      role="presentation"
-    />
-  );
-}
-if (product?.id === 3) {
-  items.push(
-    <img
-      src={img2} // Replace with the actual image URL
-      onDragStart={handleDragStart}
-      role="presentation"
-    />
-  );
-}
-if (product?.id === 4) {
-  items.push(
-    <img
-      src={img3} // Replace with the actual image URL
-      onDragStart={handleDragStart}
-      role="presentation"
-    />
-  );
-}
-if (product?.id === 5) {
-  items.push(
-    <img
-      src={img4} // Replace with the actual image URL
-      onDragStart={handleDragStart}
-      role="presentation"
-    />
-  );
-}
-
+  if (product?.id === 2) {
+    items.push(
+      <img src={img} onDragStart={handleDragStart} role="presentation" />
+    );
+  }
+  if (product?.id === 3) {
+    items.push(
+      <img src={img2} onDragStart={handleDragStart} role="presentation" />
+    );
+  }
+  if (product?.id === 4) {
+    items.push(
+      <img src={img3} onDragStart={handleDragStart} role="presentation" />
+    );
+  }
+  if (product?.id === 5) {
+    items.push(
+      <img src={img4} onDragStart={handleDragStart} role="presentation" />
+    );
+  }
 
   useEffect(() => {
-    dispatchPrices({ type: "ADD_PRICE_IMPACT", priceImpact: product.basePrice });
+    dispatchPrices({
+      type: "ADD_PRICE_IMPACT",
+      priceImpact: product.basePrice,
+    });
     setIsWishlisted(inWishlist ?? false);
     return () => {
-      dispatchPrices({ type: "REMOVE_PRICE_IMPACT", priceImpact: product.basePrice });
+      dispatchPrices({
+        type: "REMOVE_PRICE_IMPACT",
+        priceImpact: product.basePrice,
+      });
     };
   }, [product.basePrice]);
 
@@ -134,7 +111,7 @@ if (product?.id === 5) {
       />
       <Header>
         <h2>{product?.name}</h2>
-        <h2>{price}$</h2>
+        <h2>{price.toFixed(2)}$</h2>
       </Header>
       <ProductCard>
         {/* first section contains product info and wishlist button*/}
@@ -211,7 +188,7 @@ if (product?.id === 5) {
               config={config}
               key={config.id}
               dispatchPrices={dispatchPrices}
-              mode="product"
+              mode={"enabled"}
             />
           ))}
           <button className="cart-icon" onClick={handleAddToCart}>
@@ -261,7 +238,7 @@ const ProductCard = styled.div`
 const ProductInfoColumn = styled.div`
   gap: 1rem;
   width: 35%;
-  
+
   display: flex;
   padding: 1rem;
   position: relative;
@@ -269,14 +246,13 @@ const ProductInfoColumn = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   img {
-  width: 100%;
-  height: 350px;
-  padding: 1rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1),
-              0 2px 25px rgba(79, 89, 121, 0.2) inset;
-  clip-path: inset(0px 0px 10px 0px);
-}
-
+    width: 100%;
+    height: 350px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1),
+      0 2px 25px rgba(79, 89, 121, 0.2) inset;
+    clip-path: inset(0px 0px 10px 0px);
+  }
 
   .wishlist {
     position: absolute;

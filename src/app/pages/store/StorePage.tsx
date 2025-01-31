@@ -3,13 +3,14 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { StoreService } from "../../api/StoreService";
 import { MainLayout, SectionContainer } from "../../components/Layout";
-import { SectionIdEnum, Store } from "../../types";
+import { SectionIdEnum } from "../../types";
 import {
   StoreInformationSection,
   StoreOffersSection,
   StoreProductsSection,
 } from "../../features";
 import styled from "styled-components";
+import { OffersService } from "../../api";
 
 export const StorePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,7 +28,18 @@ export const StorePage = () => {
     cacheTime: 0,
   });
 
-  console.log("store", store);
+  const {
+    data: offers,
+    isLoading: offersLoading,
+    error: offersError,
+  } = useQuery(
+    ["offers", id],
+    () => OffersService.getOffersForStore(Number(id)),
+    {
+      enabled: !!id,
+      cacheTime: 0,
+    }
+  );
 
   return (
     <MainLayout>
@@ -36,7 +48,12 @@ export const StorePage = () => {
         {store && (
           <StoreContainer>
             <StoreInformationSection store={store} />
-            <StoreOffersSection store={store}/>
+            <StoreOffersSection
+              store={store}
+              offers={offers ?? []}
+              isLoading={offersLoading}
+              errors={offersError}
+            />
             <StoreProductsSection
               storeId={store?.id}
               productCategories={store?.productCategories ?? []}
