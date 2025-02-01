@@ -21,10 +21,10 @@ const ChatPage = () => {
   const [receiver, setReceiver] = useState("");
   const [availableUsers, setAvailableUsers] = useState<string[]>([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
-  const storeName = location.state?.storeName; // Access the store name from state
-
-  const chatContainerRef = useRef<HTMLDivElement>(null); // Ref for the chat container
+  const storeName = location.state?.storeName;
+  const displayName = user?.firstName === "Riham" ? "Sweet Touches" : user?.firstName;
 
   // Add the current user to Firebase
   useEffect(() => {
@@ -44,7 +44,7 @@ const ChatPage = () => {
         if (user?.firstName === "Riham") {
           setAvailableUsers(usersList.filter((name) => name !== user.firstName));
         } else {
-          setAvailableUsers([storeName]);
+          setAvailableUsers(["Sweet Touches"]);
         }
       }
     });
@@ -67,7 +67,7 @@ const ChatPage = () => {
         filteredMessages
           .filter((msg) => msg.receiver === user?.firstName && msg.status === "unread")
           .forEach((msg) => {
-            const msgRef = ref(db, `messages/${msg.timestamp}`); // Assuming `timestamp` is unique
+            const msgRef = ref(db, `messages/${msg.timestamp}`);
             set(msgRef, { ...msg, status: "read" });
           });
       }
@@ -81,10 +81,9 @@ const ChatPage = () => {
     }
   };
 
-  // Trigger scroll whenever messages update
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, receiver]);
 
   // Send a message
   const sendMessage = () => {
@@ -114,7 +113,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div style={{ display: "flex", height: "90vh", padding: "20px", marginTop: "60px" }}>
+    <div style={{ display: "flex", height: "90vh", padding: "50px", marginTop: "20px" }}>
       <div
         style={{
           width: "25%",
@@ -130,19 +129,20 @@ const ChatPage = () => {
         <ul style={{ listStyleType: "none", padding: 0 }}>
           {availableUsers.map((userFirstName) => (
             <li
-              key={userFirstName}
-              onClick={() => setReceiver(userFirstName)}
-              style={{
-                padding: "0.5rem 1rem",
-                marginBottom: "0.5rem",
-                borderRadius: "8px",
-                backgroundColor: receiver === userFirstName ? "#f0f0f0" : "#fff",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
-              {userFirstName}
-            </li>
+            key={userFirstName}
+            onClick={() => setReceiver(userFirstName === "Sweet Touches" ? "Riham" : userFirstName)}
+            style={{
+              padding: "0.5rem 1rem",
+              marginBottom: "0.5rem",
+              borderRadius: "8px",
+              backgroundColor: receiver === userFirstName ? "#f0f0f0" : "#fff",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            {userFirstName}
+          </li>
+          
           ))}
         </ul>
       </div>
@@ -159,7 +159,7 @@ const ChatPage = () => {
         </div>
 
         <div
-          ref={chatContainerRef} // Attach the ref here
+          ref={chatContainerRef}
           style={{
             flex: 1,
             overflowY: "auto",
@@ -177,27 +177,27 @@ const ChatPage = () => {
                 marginBottom: "1rem",
               }}
             >
-                <div
-                  style={{
-                    maxWidth: "60%",
-                    padding: "0.5rem 1rem",
-                    borderRadius: "15px",
-                    backgroundColor:
-                      msg.sender === user?.firstName ? "#DCF8C6" : "#FFF",
-                    color: "#333",
-                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  <strong style={{ fontSize: "0.8rem", display: "block" }}>
-                    {msg.sender}
-                  </strong>
-                  {msg.text}
-                  <div style={{ fontSize: "0.8rem", color: "#777", marginTop: "0.5rem" }}>
-                    {msg.status === "unread" ? "Unread" : "Read"} • {formatTimestamp(msg.timestamp)}
-                  </div>
+              <div
+                style={{
+                  maxWidth: "60%",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "15px",
+                  backgroundColor:
+                    msg.sender === user?.firstName ? "#DCF8C6" : "#FFF",
+                  color: "#333",
+                  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                <strong style={{ fontSize: "0.8rem", display: "block" }}>
+                  {msg.sender === "Riham" ? "Sweet Touches" : msg.sender}
+                </strong>
+                {msg.text}
+                <div style={{ fontSize: "0.8rem", color: "#777", marginTop: "0.5rem" }}>
+                  {msg.status === "unread" ? "Unread" : "Read"} • {formatTimestamp(msg.timestamp)}
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
 
         <div style={{ padding: "1rem", borderTop: "1px solid #ddd" }}>
@@ -215,17 +215,22 @@ const ChatPage = () => {
             >
               😊
             </button>
+            {showEmojiPicker && (
+    <div style={{ position: "absolute", bottom: "50px", left: "10px", zIndex: 10 }}>
+      <EmojiPicker onEmojiClick={handleEmojiClick} />
+    </div>
+  )}
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message..."
               style={{
-                flex: 1,
                 padding: "0.5rem",
                 borderRadius: "15px",
                 border: "1px solid #ccc",
                 marginRight: "0.5rem",
+                width: "80%",
               }}
             />
             <button
@@ -242,11 +247,6 @@ const ChatPage = () => {
               Send
             </button>
           </div>
-          {showEmojiPicker && (
-            <div style={{ position: "absolute", bottom: "80px", left: "10px" }}>
-              <EmojiPicker onEmojiClick={handleEmojiClick} />
-            </div>
-          )}
         </div>
       </div>
     </div>

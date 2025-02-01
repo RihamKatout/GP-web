@@ -12,6 +12,8 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { StoreManagerService } from "../../api";
+import { ChatFinishReason } from "cohere-ai/api";
+import ChatPage from "../../features/authentication/ChatPage";
 
 export const StoreDashboardPage = () => {
   const { id } = useParams();
@@ -78,6 +80,13 @@ export const StoreDashboardPage = () => {
           categories={categories}
           setSelectedSection={setSelectedSection}
         />
+      )}
+
+      {selectedSection === StoreDashboardSectionsEnum.Messages && (
+        <div style={{ height: "400px", marginTop:0}}>
+          <ChatPage />
+        </div>
+        
       )}
     </Container>
   );
