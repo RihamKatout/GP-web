@@ -1,37 +1,19 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
+//import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Theme } from "../../utils/Theme";
-import img from "../../../assets/store/discount.png";
-import img2 from "../../../assets/store/discount2.png";
-import img1 from "../../../assets/store/discountChar.png";
-import riham from "../../../assets/characters/riham.png";
-import riham1 from "../../../assets/characters/loginChar.png";
+import { useNavigate } from "react-router-dom";
+import { OfferDto } from "../../types/shopping/Offers.types";
+import styled from "styled-components";
+import { Loader } from "../../components/common";
 import mess from "../../../assets/Icons/message (2).png";
 import { Divider } from "antd";
-import { useNavigate } from "react-router-dom";
 import { Store } from "../../types";
-import { OfferDto } from "../../types/shopping/Offers.types";
-const offers = [
-  {
-    id: 1,
-    title: "50% Off on All Products",
-    description: "Limited time offer!",
-    image: img,
-  },
-  {
-    id: 2,
-    title: "Buy 1 Get 1 Free",
-    description: "Applicable on selected items.",
-    image: img2,
-  },
-  {
-    id: 3,
-    title: "Free Shipping",
-    description: "On orders above $50.",
-    image: img1,
-  },
-];
-
+import riham from "../../../assets/characters/riham.png";
+import riham1 from "../../../assets/characters/loginChar.png";
+import { useState } from "react";
+// Dummy reviews data
 const reviews = [
   {
     id: 1,
@@ -58,63 +40,82 @@ const reviews = [
     image: riham1,
   },
 ];
-interface StoreInformationSectionProps {
+
+
+
+interface StoreOffersSectionProps {
   store: Store;
-  offers: OfferDto[];
+  offers: OfferDto[] | undefined;
   isLoading: boolean;
   errors: any;
 }
 
-export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({
-  store,
+export const StoreOffersSection: React.FC<StoreOffersSectionProps> = ({
+   store,
   offers,
   isLoading,
-  errors
+  errors,
 }) => {
+  
   const navigate = useNavigate();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Chat navigation
   const goToChat = () => {
     navigate("/chat", { state: { storeName: store?.name } });
   };
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
+  // Next & Previous Slide Handlers
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % offers.length);
+    if (offers) {
+      setCurrentIndex((prev) => (prev + 1) % offers.length);
+    }
   };
+    const handlePrev = () => {
+      if (offers) {
+        setCurrentIndex((prev) => (prev - 1 + offers.length) % offers.length);
+      }
+    };
+  
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + offers.length) % offers.length);
-  };
+  // Slider settings
+  if (isLoading) {
+    return <Loader type="bouncing" />;
+  }
+
+  if (errors) {
+    return (
+      <h2 style={{ width: "100%", textAlign: "center", padding: "4rem" }}>
+        Sorry we couldn't load offers right now
+      </h2>
+    );
+  }
+ console.log("the offer",offers); 
 
   return (
     <Container>
-      <div style={{ width: "90%", margin: "0 auto" }}>
+      <div style={{ width: "100%", margin: "0 auto" }}>
         <Divider style={{ borderColor: "#1a1a19b3" }}>
           <Title>Exclusive Offers</Title>
         </Divider>
       </div>
 
       {/* Circular Chat Button */}
-      <ChatButton onClick={goToChat}>
-        <img src={mess} alt="Chat" style={{ width: "70px", height: "35px" }} />
-      </ChatButton>
-
+      <ChatButton onClick={goToChat}><img src={mess} alt="Chat" style={{width: "70px", height: "35px"}} /></ChatButton>
+      {/* Offers Slider */}
       <Slider>
         <Button onClick={handlePrev}>{"<"}</Button>
         <OfferCard>
-          {/* <img
-            src={offers[currentIndex].image}
-            alt={offers[currentIndex].title}
-          /> */}
-          <h3>{offers[currentIndex].title}</h3>
-          <p>{offers[currentIndex].description}</p>
+          {offers && <img src={offers[currentIndex]?.imageurl} alt={offers[currentIndex]?.title} />}
+          <h3>{offers ? offers[currentIndex]?.title : ""}</h3>
+          <p>{offers ? offers[currentIndex]?.description : ""}</p>
         </OfferCard>
         <Button onClick={handleNext}>{">"}</Button>
       </Slider>
 
+      {/* Dots for slider navigation */}
       <Dots>
-        {offers?.map((_, index) => (
+        {offers && offers.map((_, index) => (
           <Dot
             key={index}
             active={index === currentIndex}
@@ -123,8 +124,9 @@ export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({
         ))}
       </Dots>
 
+      {/* Customer Reviews */}
       <ReviewsSection>
-        <div style={{ width: "90%", margin: "0 auto" }}>
+        <div style={{ width: "100%", margin: "0 auto" }}>
           <Divider style={{ borderColor: "#1a1a19b3" }}>
             <Title>Customer Reviews</Title>
           </Divider>
@@ -155,6 +157,7 @@ const Container = styled.div`
   background-color: #f8f9fa;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
 `;
 
 const Title = styled.h2`
@@ -164,7 +167,7 @@ const Title = styled.h2`
   margin-top: 1rem;
   text-align: center;
   margin-bottom: 0.5rem;
-  font-family: "Delius";
+  font-family:'Delius';
 `;
 
 const Slider = styled.div`
@@ -187,10 +190,10 @@ const OfferCard = styled.div`
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
-
+   
   img {
-    width: 120%; /* Full width of the card */
-    height: auto;
+    width: 130px; /* Full width of the card */
+    height: 130px;
     border-radius: 10px;
     margin-bottom: 1rem;
   }
@@ -231,8 +234,7 @@ const Dot = styled.button<{ active: boolean }>`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${(props) =>
-    props.active ? Theme.colors.secondary : "#ccc"};
+  background-color: ${(props) => (props.active ? Theme.colors.secondary : "#ccc")};
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -247,6 +249,7 @@ const ReviewsSection = styled.div`
   max-width: 600px;
   text-align: center;
   margin-bottom: 2rem;
+  
 `;
 
 const ReviewsList = styled.div`
@@ -263,8 +266,7 @@ const ReviewsList = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) =>
-      theme.colors.primary_dark}; /* Thumb color */
+    background-color: ${({ theme }) => theme.colors.primary_dark};; /* Thumb color */
     border-radius: 10px; /* Rounded corners */
   }
 
@@ -300,7 +302,6 @@ const ReviewText = styled.p`
   font-size: 0.9rem;
   color: #6c757d;
 `;
-
 const ChatButton = styled.button`
   position: fixed;
   bottom: 110px;
@@ -325,3 +326,7 @@ const ChatButton = styled.button`
     transform: scale(1.1);
   }
 `;
+export default StoreOffersSection;
+
+
+

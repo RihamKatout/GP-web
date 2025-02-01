@@ -30,7 +30,7 @@ export const OffersSection: React.FC<OffersSectionProps> = ({
     autoplay: true,
     autoplaySpeed: 3000,
   };
-
+  console.log("the offer",offers); 
   return (
     <Container>
       <h1>Offers</h1>
