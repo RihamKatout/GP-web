@@ -4,7 +4,6 @@ import { db } from "../../../firebase/firebase";
 import { useAuth } from "../../context";
 import EmojiPicker from "emoji-picker-react";
 import { Theme } from "../../utils/Theme";
-
 interface Message {
   text: string;
   sender: string;
@@ -20,8 +19,8 @@ const HelpCenterChat = () => {
   const [receiver, setReceiver] = useState("");
   const [availableUsers, setAvailableUsers] = useState<string[]>([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
-  const chatContainerRef = useRef<HTMLDivElement>(null); // Ref for the chat container
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const displayName = user?.firstName === "Riham" ? "Help Center" : user?.firstName;
 
   // Add the current user to Firebase
   useEffect(() => {
@@ -64,7 +63,7 @@ const HelpCenterChat = () => {
         filteredMessages
           .filter((msg) => msg.receiver === user?.firstName && msg.status === "unread")
           .forEach((msg) => {
-            const msgRef = ref(db, `helpCenterMessages/${msg.timestamp}`); // Assuming `timestamp` is unique
+            const msgRef = ref(db, `helpCenterMessages/${msg.timestamp}`);
             set(msgRef, { ...msg, status: "read" });
           });
       }
@@ -78,10 +77,9 @@ const HelpCenterChat = () => {
     }
   };
 
-  // Trigger scroll whenever messages update
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, receiver]);
 
   // Send a message
   const sendMessage = () => {
@@ -127,19 +125,20 @@ const HelpCenterChat = () => {
         <ul style={{ listStyleType: "none", padding: 0 }}>
           {availableUsers.map((userFirstName) => (
             <li
-              key={userFirstName}
-              onClick={() => setReceiver(userFirstName)}
-              style={{
-                padding: "0.5rem 1rem",
-                marginBottom: "0.5rem",
-                borderRadius: "8px",
-                backgroundColor: receiver === userFirstName ? "#f0f0f0" : "#fff",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
-              {userFirstName}
-            </li>
+            key={userFirstName}
+            onClick={() => setReceiver(userFirstName === "Help Center" ? "Riham" : userFirstName)}
+            style={{
+              padding: "0.5rem 1rem",
+              marginBottom: "0.5rem",
+              borderRadius: "8px",
+              backgroundColor: receiver === userFirstName ? "#f0f0f0" : "#fff",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            {userFirstName}
+          </li>
+          
           ))}
         </ul>
       </div>
@@ -152,11 +151,11 @@ const HelpCenterChat = () => {
             fontWeight: "bold",
           }}
         >
-          {receiver ? `Chat with Help Center` : "Select a user to start chatting"}
+          {receiver ? `Chat with ${receiver}` : "Select a user to start chatting"}
         </div>
 
         <div
-          ref={chatContainerRef} // Attach the ref here
+          ref={chatContainerRef}
           style={{
             flex: 1,
             overflowY: "auto",
@@ -174,28 +173,27 @@ const HelpCenterChat = () => {
                 marginBottom: "1rem",
               }}
             >
-                <div
-                  style={{
-                    maxWidth: "60%",
-                    padding: "0.5rem 1rem",
-                    borderRadius: "15px",
-                    backgroundColor:
-                      msg.sender === user?.firstName ? "#DCF8C6" : "#FFF",
-                    color: "#333",
-                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  <strong style={{ fontSize: "0.8rem", display: "block" }}>
-                    {msg.sender}
-                  </strong>
-                  {msg.text}
-                  <div style={{ fontSize: "0.8rem", color: "#777", marginTop: "0.5rem" }}>
-                    {msg.status === "unread" ? "Unread" : "Read"} • {formatTimestamp(msg.timestamp)}
-                  </div>
+              <div
+                style={{
+                  maxWidth: "60%",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "15px",
+                  backgroundColor:
+                    msg.sender === user?.firstName ? "#DCF8C6" : "#FFF",
+                  color: "#333",
+                  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                <strong style={{ fontSize: "0.8rem", display: "block" }}>
+                  {msg.sender === "Riham" ? "Help Center" : msg.sender}
+                </strong>
+                {msg.text}
+                <div style={{ fontSize: "0.8rem", color: "#777", marginTop: "0.5rem" }}>
+                  {msg.status === "unread" ? "Unread" : "Read"} • {formatTimestamp(msg.timestamp)}
                 </div>
               </div>
-            ))}
-
+            </div>
+          ))}
         </div>
 
         <div style={{ padding: "1rem", borderTop: "1px solid #ddd" }}>
@@ -213,17 +211,22 @@ const HelpCenterChat = () => {
             >
               😊
             </button>
+            {showEmojiPicker && (
+    <div style={{ position: "absolute", bottom: "50px", left: "10px", zIndex: 10 }}>
+      <EmojiPicker onEmojiClick={handleEmojiClick} />
+    </div>
+  )}
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message..."
               style={{
-                flex: 1,
                 padding: "0.5rem",
                 borderRadius: "15px",
                 border: "1px solid #ccc",
                 marginRight: "0.5rem",
+                width: "80%",
               }}
             />
             <button
@@ -240,11 +243,6 @@ const HelpCenterChat = () => {
               Send
             </button>
           </div>
-          {showEmojiPicker && (
-            <div style={{ position: "absolute", bottom: "80px", left: "10px" }}>
-              <EmojiPicker onEmojiClick={handleEmojiClick} />
-            </div>
-          )}
         </div>
       </div>
     </div>
