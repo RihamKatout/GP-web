@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { ShopContext } from "../../context/SweetContext";
 import share from "../../../assets/cake/CardIcon/share.png";
+import EnhanceCakeImage from "./EnhanceCakeImage";
 interface CakeReviewPopupProps {
   onClose: () => void; 
   onConfirm: () => void; 
@@ -82,6 +83,7 @@ export const ReviewCake: React.FC<CakeReviewPopupProps> = ({
           <CancelButton onClick={onClose}>Cancel</CancelButton>
           <ConfirmButton onClick={onConfirm}>Add to Cart</ConfirmButton>
         </ButtonContainer>
+        {/* <EnhanceCakeImage/> */}
       </ModalContent>
     </ModalOverlay>
   );

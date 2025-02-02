@@ -109,7 +109,7 @@ const HelpCenterChat = () => {
   };
 
   return (
-    <div style={{ display: "flex", height: "90vh", padding: "20px", marginTop: "60px" }}>
+    <div style={{ display: "flex", height: "90vh", padding: "45px", marginTop: "15px" }}>
       <div
         style={{
           width: "25%",
