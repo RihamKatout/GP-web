@@ -1,6 +1,5 @@
 import { CardsGrid } from "../../../styles";
 import { CategoryCard, Loader } from "../../common";
-import { useMediaQuery, useTheme } from "@mui/material";
 import { Category } from "../../../types";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -47,8 +46,6 @@ export const StoreCategoriesSection: React.FC<StoreCategoriesSectionProps> = ({
   isLoading,
   error,
 }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
 
   if (error instanceof Error) return <p>Error: {error.message}</p>;
@@ -69,7 +66,7 @@ export const StoreCategoriesSection: React.FC<StoreCategoriesSectionProps> = ({
           alignItems: "center",
         }}
       >
-        {isMobile ? <h1>Shop Categories</h1> : <h1>Shop Categories</h1>}
+        <h1>Shop Categories</h1>
         {isLoading ? (
           <Loader type="bouncing" />
         ) : (

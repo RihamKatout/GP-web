@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CustomModal } from "../../components/common";
-import { Configuration, Product, ProductSizeEnum } from "../../types";
+import { Configuration, Product } from "../../types";
 import { Divider, Input } from "@mui/material";
-import { CartService } from "../../api";
 import { useAuth } from "../../context";
 import { PleaseLoginModal } from "../../pages";
 
 interface ProductPreviewProps {
   product: Product;
-  configurations: Configuration[];
+  configurations?: Configuration[];
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

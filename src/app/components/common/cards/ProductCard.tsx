@@ -6,9 +6,11 @@ import Rating from "@mui/material/Rating";
 import { AddToCartPreview, WishlistButton } from "../../../features";
 import cart1 from "../../../../assets/Icons/cart1.png";
 
-export const ProductCard: React.FC<ProductWithStoreDto & {
-  onWishlistRemove?: (productId: number) => void;
-}> = (productDto) => {
+export const ProductCard: React.FC<
+  ProductWithStoreDto & {
+    onWishlistRemove?: (productId: number) => void;
+  }
+> = (productDto) => {
   const navigate = useNavigate();
   const product: Product = productDto.product;
   const [isWishlisted, setIsWishlisted] = useState(productDto.inWishlist);
@@ -22,12 +24,11 @@ export const ProductCard: React.FC<ProductWithStoreDto & {
 
   return (
     <>
-      {/* <AddToCartPreview
+      <AddToCartPreview
         product={productDto.product}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        configurations={productDto.product.c}
-      /> */}
+      />
       <ProductCardStyle>
         <WishlistButton
           isWishlisted={isWishlisted}
@@ -96,7 +97,7 @@ export const ProductCard: React.FC<ProductWithStoreDto & {
 const ProductCardStyle = styled.div`
   width: 200px;
   display: flex;
-  height: 300px;
+  height: 300px !important;
   position: relative;
   flex-direction: column;
   p {
@@ -106,7 +107,7 @@ const ProductCardStyle = styled.div`
     object-fit: fit;
     border-radius: 10px;
     width: 100% !important;
-    height: 60% !important;
+    height: 180px !important;
     padding: 0 2rem 2.5rem 2rem;
     background: linear-gradient(
       -135deg,
@@ -120,7 +121,7 @@ const ProductCardStyle = styled.div`
     padding: 0.5rem;
     margin-top: -2rem;
     border-radius: 10px;
-    height: 55% !important;
+    height: 150px !important;
     flex-direction: column;
     background-color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
@@ -153,7 +154,7 @@ const ProductCardStyle = styled.div`
   }
   .wishlist {
     z-index: 1;
-    top: 140px;
+    top: 155px;
     right: 0.5rem;
     cursor: pointer;
     position: absolute;
