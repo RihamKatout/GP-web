@@ -13,10 +13,7 @@ import { ProductService } from "../../../../api";
 import { useParams } from "react-router-dom";
 import { productSchema } from "../../../../validations/product.validations";
 import { z } from "zod";
-import { Upload } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
-import { BackgroundRemover } from "../../..";
-const { Dragger } = Upload;
+import { ImageUploader } from "../../../../components/specificComponents/ImageUploader";
 
 interface AddProductSectionProps {
   categories: Category[];
@@ -29,8 +26,6 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
 }) => {
   const { id: storeId } = useParams();
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-  const [withoutBackground, setWithoutBackground] = useState<File | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [product, setProduct] = useState({
     name: "",
     description: "",
@@ -72,21 +67,6 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
     }
   };
 
-  const handleFileChange = (info: any) => {
-    const { fileList } = info;
-    if (fileList.length === 0) {
-      setUploadedImage(null);
-      setImagePreviewUrl("");
-      return;
-    }
-    const file = fileList[0].originFileObj;
-    if (file) {
-      setUploadedImage(file);
-      const url = URL.createObjectURL(file);
-      setImagePreviewUrl(url);
-    }
-  };
-
   const handleSave = async () => {
     try {
       if (!validateProduct()) {
@@ -118,11 +98,11 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
         storeId: Number(storeId),
         configurations: product.configurations,
         categoryId: product.categoryId,
-      }; 
+      };
 
       const result = await ProductService.createProduct(
         productData,
-        withoutBackground || uploadedImage
+        uploadedImage
       );
       message.success("Product created successfully with ID: " + result);
       setSelectedSection(StoreDashboardSectionsEnum.Products);
@@ -133,14 +113,6 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
   };
 
   const handleAddNewCategory = () => {};
-
-  React.useEffect(() => {
-    return () => {
-      if (imagePreviewUrl) {
-        URL.revokeObjectURL(imagePreviewUrl);
-      }
-    };
-  }, [imagePreviewUrl]);
 
   return (
     <Container className="main">
@@ -266,38 +238,10 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
         </div>
       </CategoryContainer>
       <ProductImages>
-        <h5>Product images</h5>
-        <div className="main-image">
-          <div>
-            <h6>Main image</h6>
-            {uploadedImage && (
-              <ImagePreview>
-                <img src={imagePreviewUrl} alt="Uploaded" />
-              </ImagePreview>
-            )}
-          </div>
-          <Dragger
-            accept="image/*"
-            maxCount={1}
-            onChange={handleFileChange}
-            style={{ width: 210, fontSize: "0.8rem" }}
-            beforeUpload={() => false}
-          >
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined style={{ width: "40px" }} />
-            </p>
-            <p>Click or drag an image to upload</p>
-          </Dragger>
-        </div>
-        {/* BackgroundRemover Integration */}
-        <Divider style={{ margin: "1rem 0" }} />
-        <h6>Background Remover</h6>
-        {uploadedImage && (
-          <BackgroundRemover
-            imageFile={uploadedImage}
-            setWithoutBackground={setWithoutBackground}
-          />
-        )}
+        <ImageUploader
+          setFinalImage={setUploadedImage}
+          imageName="Main image"
+        />
       </ProductImages>
       <CustomizationSection>
         <h5>Customization</h5>
@@ -432,14 +376,6 @@ const CategoryContainer = styled.div`
 
 const ProductImages = styled.div`
   grid-area: productImage;
-  flex-direction: column;
-  gap: 1rem;
-  .main-image {
-    gap: 1rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
 `;
 
 const CustomizationSection = styled.div`
@@ -451,17 +387,5 @@ const CustomizationSection = styled.div`
   }
   .three-d-model {
     gap: 2rem;
-  }
-`;
-
-const ImagePreview = styled.div`
-  margin-top: 1rem;
-  text-align: center;
-
-  img {
-    max-width: 100%;
-    max-height: 110px;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 `;
