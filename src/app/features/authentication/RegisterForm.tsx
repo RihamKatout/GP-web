@@ -102,12 +102,10 @@ const RegisterForm = () => {
         "3utpEi5L2w2bw-lZn" // Replace with your actual EmailJS Public Key
       )
       .then(
-        (response) => {
-          console.log("Verification email sent:", response);
+        () => {
           messageApi.success("Verification email sent! Check your inbox.");
         },
-        (error) => {
-          console.log("Failed to send email:", error);
+        () => {
           messageApi.error("Failed to send verification email. Please try again.");
         }
       );

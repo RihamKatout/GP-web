@@ -95,9 +95,7 @@ export const ProductsManagementSection: React.FC<
       setArchivedProducts((prevProducts) =>
         prevProducts.filter((product) => product.id !== productId)
       );
-      console.log("Product deleted successfully!");
     } catch (error) {
-      console.error("Failed to delete product:", error);
     }
   };
 

@@ -1,10 +1,9 @@
-import React from "react";
 import styled from "styled-components";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { message } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { seNavigate } from "react-router-dom";
 import emailjs from "emailjs-com";
 import { ButtonContainer, LinkToRegister, MainContainer, StyledButton, StyledForgotPasswordContainer, StyledInput, StyledLink, WelcomeText } from "../../features/authentication/StyledComponents";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
@@ -28,19 +27,16 @@ export const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    // Mock sending reset email
     setTimeout(() => {
       messageApi.success(
         `A password reset link has been sent to ${data.email}. (Simulated)`
       );
-      //navigate("/login");
     }, 1000);
 
     const onForgotPassword = (email: string) => {
-      // EmailJS Password Reset Email Configuration
       const templateParams = {
         user_email: email,
-        reset_link: "http://localhost:5173/forgot-password", // Change to your password reset page URL
+        reset_link: "http://localhost:5173/forgot-password",
       };
 
       // Send the email using EmailJS
@@ -52,13 +48,11 @@ export const ForgotPassword = () => {
           "3utpEi5L2w2bw-lZn"
         )
         .then(
-          (response: any) => {
-            console.log("Password reset email sent:", response);
+          () => {
             messageApi.success("Password reset link sent! Check your email.");
-            navigate("/forgot-password"); // Redirect to reset password page
+            navigate("/forgot-password");
           },
-          (error: any) => {
-            console.log("Failed to send email:", error);
+          () => {
             messageApi.error(
               "Failed to send password reset email. Please try again."
             );

@@ -55,7 +55,6 @@ export const AddStoreSection: React.FC<ProfileInfoSectionProps> = ({
   const onSubmit: SubmitHandler<AddStoreDto> = async (data) => {
     try {
       const response = await StoreService.addStore(data);
-      console.log("Store created successfully:", response);
       setNotification({
         message: "Store created successfully!",
         type: "success",

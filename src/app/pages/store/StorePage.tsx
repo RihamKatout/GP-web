@@ -69,8 +69,8 @@ const StoreContainer = styled.div`
   margin: 1rem;
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 3fr 1fr; /* Products take 3 columns, offers take 1 column */
-  grid-template-rows: auto 1fr; /* Auto height for info section, equal height for products and offers */
+  grid-template-columns: 3fr 1fr; 
+  grid-template-rows: auto 1fr; 
   grid-gap: 1rem;
   grid-template-areas:
     "storeInfo storeInfo"

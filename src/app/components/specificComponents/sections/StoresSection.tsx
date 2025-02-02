@@ -28,9 +28,6 @@ export const StoresSection: React.FC<StoresSectionProps> = ({ categories }) => {
     () => StoreService.getStoresByStoreCategoryId(selectedCategory),
     {
       keepPreviousData: true,
-      onSuccess: (data) => {
-        console.log(data);
-      },
     }
   );
 
