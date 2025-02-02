@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Sidebar } from "../../features/admin-dashboard/components/Sidebar";
 import { AdminsSection, StoresSection } from "../../features/admin-dashboard";
 import MessageDashboard from "../../sections/MessageDashboard";
+import HelpCenterChat from "../../features/authentication/HelpCenterChat";
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export const DashboardPage = () => {
       />
       {selectedSection === DashboardSectionsEnum.Stores && <StoresSection />}
       {selectedSection === DashboardSectionsEnum.Admins && <AdminsSection />}
-      {selectedSection === DashboardSectionsEnum.Messages && <MessageDashboard />}
+      {selectedSection === DashboardSectionsEnum.Messages && <HelpCenterChat />}
     </Container>
   );
 };

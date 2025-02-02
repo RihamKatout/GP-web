@@ -68,7 +68,7 @@ const FontLarge: React.FC<FontSmallProps> = ({ userText, fontType, selectedColor
         position={[0.3, 2.56, 0.7]}
         rotation={[Math.PI / 2, Math.PI, 0]}
         fontPath={fontType}
-        maxCharsPerLine={12}
+        maxCharsPerLine={9}
         color={selectedColor}
       />
     );
@@ -80,7 +80,7 @@ const FontLarge: React.FC<FontSmallProps> = ({ userText, fontType, selectedColor
           position={[0.3, 2.62, 0.7]}
           rotation={[Math.PI / 2, Math.PI, 0]}
           fontPath={fontType}
-          maxCharsPerLine={12}
+          maxCharsPerLine={7}
           color={selectedColor}
         />
       );

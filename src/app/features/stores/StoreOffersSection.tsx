@@ -1,13 +1,15 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Theme } from "../../utils/Theme";
-import riham from "../../../assets/characters/riham.png";
-import riham1 from "../../../assets/characters/loginChar.png";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import mess from "../../../assets/Icons/message (2).png";
 import { Divider } from "antd";
-import { useNavigate } from "react-router-dom";
-import { Store } from "../../types";
-import { OfferDto } from "../../types/shopping/Offers.types";
+import { OfferDto, Store } from "../../types";
+import riham from "../../../assets/characters/riham.png";
+import riham1 from "../../../assets/characters/loginChar.png";
+import { useState } from "react";
 import { Loader } from "../../components/common";
 
 const reviews = [
@@ -36,38 +38,43 @@ const reviews = [
     image: riham1,
   },
 ];
-interface StoreInformationSectionProps {
+
+interface StoreOffersSectionProps {
   store: Store;
-  offers: OfferDto[];
+  offers: OfferDto[] | undefined;
   isLoading: boolean;
   errors: any;
 }
 
-export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({
+export const StoreOffersSection: React.FC<StoreOffersSectionProps> = ({
   store,
   offers,
   isLoading,
   errors,
 }) => {
   const navigate = useNavigate();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Chat navigation
   const goToChat = () => {
     navigate("/chat", { state: { storeName: store?.name } });
   };
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
+  // Next & Previous Slide Handlers
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % offers.length);
+    if (offers) {
+      setCurrentIndex((prev) => (prev + 1) % offers.length);
+    }
   };
-
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + offers.length) % offers.length);
+    if (offers) {
+      setCurrentIndex((prev) => (prev - 1 + offers.length) % offers.length);
+    }
   };
 
   return (
     <Container>
-      <div style={{ width: "90%", margin: "0 auto" }}>
+      <div style={{ width: "100%", margin: "0 auto" }}>
         <Divider style={{ borderColor: "#1a1a19b3" }}>
           <Title>Exclusive Offers</Title>
         </Divider>
@@ -99,18 +106,21 @@ export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({
         </>
       )}
 
+      {/* Dots for slider navigation */}
       <Dots>
-        {offers?.map((_, index) => (
-          <Dot
-            key={index}
-            active={index === currentIndex}
-            onClick={() => setCurrentIndex(index)}
-          />
-        ))}
+        {offers &&
+          offers.map((_, index) => (
+            <Dot
+              key={index}
+              active={index === currentIndex}
+              onClick={() => setCurrentIndex(index)}
+            />
+          ))}
       </Dots>
 
+      {/* Customer Reviews */}
       <ReviewsSection>
-        <div style={{ width: "90%", margin: "0 auto" }}>
+        <div style={{ width: "100%", margin: "0 auto" }}>
           <Divider style={{ borderColor: "#1a1a19b3" }}>
             <Title>Customer Reviews</Title>
           </Divider>
@@ -175,8 +185,8 @@ const OfferCard = styled.div`
   text-align: center;
 
   img {
-    width: 120%; /* Full width of the card */
-    height: auto;
+    width: 130px;
+    height: 130px;
     border-radius: 10px;
     margin-bottom: 1rem;
   }
@@ -241,14 +251,13 @@ const ReviewsSection = styled.div`
 `;
 
 const ReviewsList = styled.div`
-  max-height: 350px; /* Adjust the height as needed */
-  overflow-y: auto; /* Enables vertical scrolling */
-  padding-right: 1rem; /* Space for scrollbar */
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 
-  /* Add styling for scrollbar */
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -291,7 +300,6 @@ const ReviewText = styled.p`
   font-size: 0.9rem;
   color: #6c757d;
 `;
-
 const ChatButton = styled.button`
   position: fixed;
   bottom: 110px;
@@ -316,3 +324,4 @@ const ChatButton = styled.button`
     transform: scale(1.1);
   }
 `;
+export default StoreOffersSection;

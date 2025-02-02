@@ -15,3 +15,4 @@ export * from "./shopping/Product.types";
 export * from "./shopping/Categories.types";
 export * from "./shopping/Store.types";
 export * from "./shopping/Cart.types";
+export * from "./shopping/Offers.types";

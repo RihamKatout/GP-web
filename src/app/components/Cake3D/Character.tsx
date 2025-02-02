@@ -36,7 +36,7 @@ const MiniCharacter = ({ position = [0, 0, 0], scale = 0.5, rotation = [0, 0, 0]
       }
 
       // Handle jumping (bobbing) animation
-      clockRef.current += 0.05; // Increment clock
+     // clockRef.current += 0.05; // Increment clock
       groupRef.current.position.y = position[1] + Math.sin(clockRef.current) * 0.2; // Bobbing effect
     }
   });
