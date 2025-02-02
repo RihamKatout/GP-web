@@ -2,12 +2,17 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import { useNavigate } from "react-router-dom";
 import room from "../../../../assets/store/room.png";
 import styled from "styled-components";
+import { SectionIdEnum } from "../../../types";
 
 export const HeroSection = () => {
-  const navigate = useNavigate();
+  const onStoresClick = () => {
+    const section = document.getElementById(SectionIdEnum.shop);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <Container>
       <ContentContainer>
@@ -19,8 +24,9 @@ export const HeroSection = () => {
           Customize products effortlessly and enjoy a unique shopping experience
           made especially for you and who you love.
         </Subheading>
-        <StyledButton>Explore Creative Stores</StyledButton>
-        {/* <Button onClick={() => navigate("/dashboard")}>Dashboard</Button> */}
+        <StyledButton onClick={onStoresClick}>
+          Explore Creative Stores
+        </StyledButton>
         <SocailIcons>
           <FacebookIcon />
           <LinkedInIcon />
@@ -49,7 +55,7 @@ const Container = styled.div`
 `;
 
 const ContentContainer = styled.div`
-margin-top: 4rem;
+  margin-top: 4rem;
   gap: 0.5rem;
   display: flex;
   flex-direction: column;

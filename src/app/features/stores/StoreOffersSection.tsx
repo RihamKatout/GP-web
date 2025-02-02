@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Theme } from "../../utils/Theme";
-import img from "../../../assets/store/discount.png";
-import img2 from "../../../assets/store/discount2.png";
-import img1 from "../../../assets/store/discountChar.png";
 import riham from "../../../assets/characters/riham.png";
 import riham1 from "../../../assets/characters/loginChar.png";
 import mess from "../../../assets/Icons/message (2).png";
@@ -11,26 +8,7 @@ import { Divider } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../types";
 import { OfferDto } from "../../types/shopping/Offers.types";
-const offers = [
-  {
-    id: 1,
-    title: "50% Off on All Products",
-    description: "Limited time offer!",
-    image: img,
-  },
-  {
-    id: 2,
-    title: "Buy 1 Get 1 Free",
-    description: "Applicable on selected items.",
-    image: img2,
-  },
-  {
-    id: 3,
-    title: "Free Shipping",
-    description: "On orders above $50.",
-    image: img1,
-  },
-];
+import { Loader } from "../../components/common";
 
 const reviews = [
   {
@@ -69,7 +47,7 @@ export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({
   store,
   offers,
   isLoading,
-  errors
+  errors,
 }) => {
   const navigate = useNavigate();
 
@@ -100,18 +78,26 @@ export const StoreOffersSection: React.FC<StoreInformationSectionProps> = ({
         <img src={mess} alt="Chat" style={{ width: "70px", height: "35px" }} />
       </ChatButton>
 
-      <Slider>
-        <Button onClick={handlePrev}>{"<"}</Button>
-        <OfferCard>
-          {/* <img
-            src={offers[currentIndex].image}
-            alt={offers[currentIndex].title}
-          /> */}
-          <h3>{offers[currentIndex].title}</h3>
-          <p>{offers[currentIndex].description}</p>
-        </OfferCard>
-        <Button onClick={handleNext}>{">"}</Button>
-      </Slider>
+      {isLoading || errors ? (
+        <Loader type="fading" />
+      ) : offers && offers.length > 0 ? (
+        <Slider>
+          <Button onClick={handlePrev}>{"<"}</Button>
+          <OfferCard>
+            <img
+              src={offers[currentIndex].imageurl}
+              alt={offers[currentIndex].title}
+            />
+            <h3>{offers[currentIndex]?.title}</h3>
+            <p>{offers[currentIndex]?.description}</p>
+          </OfferCard>
+          <Button onClick={handleNext}>{">"}</Button>
+        </Slider>
+      ) : (
+        <>
+          <p>We don't have offers now!</p>
+        </>
+      )}
 
       <Dots>
         {offers?.map((_, index) => (
@@ -195,11 +181,16 @@ const OfferCard = styled.div`
     margin-bottom: 1rem;
   }
   h3 {
-    font-size: 1.2rem;
-    color: ${({ theme }) => theme.colors.primary_dark};
-    margin-bottom: 0.5rem;
+    cursor: pointer;
     font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
     font-family: "Overlock", serif;
+    color: ${({ theme }) => theme.colors.primary_dark};
+    &:hover {
+      text-decoration: underline;
+      color: ${({ theme }) => theme.colors.secondary_dark};
+    }
   }
 
   p {

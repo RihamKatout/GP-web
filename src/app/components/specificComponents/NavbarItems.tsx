@@ -13,7 +13,7 @@ export const NavigationItems = [
   { text: "Home", to: SectionIdEnum.home },
   { text: "Offers", to: SectionIdEnum.offers },
   { text: "Categories", to: SectionIdEnum.categories },
-  { text: "Shop", to: SectionIdEnum.shop },
+  { text: "Stores", to: SectionIdEnum.shop },
   { text: "Help Center", to: SectionIdEnum.help },
 ];
 
@@ -182,6 +182,6 @@ export const UserMenuIcons = [
 ];
 
 export const AuthenticationButtons = [
-  { text: "Login", Path: "/login", borderColor: "rgb(0, 0, 0)" },
-  { text: "Register", Path: "/register", borderColor: "rgb(0, 0, 0)" },
+  { text: "Login", Path: "/login" },
+  { text: "Register", Path: "/register" },
 ];

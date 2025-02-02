@@ -127,9 +127,13 @@ const ProductCardStyle = styled.div`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
     h6 {
       margin: 0;
+      width: 160px !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       margin-bottom: -0.2rem;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: bold;
       font-family: "Delius Swash Caps", serif;
       &:hover {

@@ -1,29 +1,31 @@
 import React from "react";
 import styled from "styled-components";
-import { StripedAwningsImg } from "../../../../assets";
+import { DefaultStoreImg, StripedAwningsImg } from "../../../../assets";
 import { useNavigate } from "react-router-dom";
+import { StoreBasicInfoDto } from "../../../types";
 
 interface StoreCardProps {
-  storeInfo: any
+  storeInfo: StoreBasicInfoDto;
 }
 
-export const StoreCard: React.FC<StoreCardProps> = ({
-  storeInfo
-}) => {
+export const StoreCard: React.FC<StoreCardProps> = ({ storeInfo }) => {
   const navigate = useNavigate();
   return (
     <ProductStoreContainer>
       <img
         style={{ width: "100%", zIndex: "2", marginTop: "-9%" }}
         src={StripedAwningsImg}
-        alt={storeInfo}
+        alt={storeInfo.storeName}
       />
       <StoreInfo onClick={() => navigate(`/store/${storeInfo.storeId}`)}>
         <div className="store-logo">
-          <img src={storeInfo.storeLogo} alt={storeInfo.storeName} />
+          <img
+            src={storeInfo.storeLogoURL || DefaultStoreImg}
+            alt={storeInfo.storeName}
+          />
           <h4>{storeInfo.storeName}</h4>
         </div>
-        <p>write a short description about you here Sweet touches!</p>
+        <p>{storeInfo.description}</p>
         <button>Visit Store</button>
       </StoreInfo>
     </ProductStoreContainer>
@@ -48,11 +50,12 @@ const ProductStoreContainer = styled.section`
 `;
 
 const StoreInfo = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.7rem;
-  padding: 0 1rem 1rem 1rem;
+  padding: 1rem;
   img {
     width: 3rem;
     height: 3rem;
@@ -69,6 +72,7 @@ const StoreInfo = styled.div`
     }
   }
   p {
+    margin-bottom: auto;
     font-size: 1.1rem;
     text-align: center;
     color: ${({ theme }) => theme.colors.gray};
@@ -77,7 +81,7 @@ const StoreInfo = styled.div`
     border: none;
     width: 100%;
     background-color: rgba(210, 110, 126, 0.9);
-    
+
     padding: 0.4rem 1rem;
     font-size: 1.1rem;
     font-weight: 700;

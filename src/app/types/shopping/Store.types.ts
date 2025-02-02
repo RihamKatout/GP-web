@@ -46,6 +46,7 @@ export type StoreAnalytics = {
 export interface StoreBasicInfoDto {
   storeId: number;
   storeName: string;
+  description: string;
   storeLogoURL: string | null;
 }
 

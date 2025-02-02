@@ -246,7 +246,7 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
                 </button>
               )}
             </ButtonsContainer>
-            {selectedChoices?.map((instance) => {
+            {selectedChoices?.map((instance: ConfigurationInstance) => {
               const config = configurations.find(
                 (config) => config.id === instance.configurationId
               );
