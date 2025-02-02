@@ -46,3 +46,4 @@ export * from "./store-manager/dashboard/components/StoreDashboardSidebar";
 export * from "./store-manager/dashboard/sections/StoreAnalyticsSection";
 export * from "./store-manager/dashboard/sections/ProductsManagementSection";
 export * from "./store-manager/dashboard/sections/AddProductSection";
+export * from "./store-manager/dashboard/components/BackgroundRemover";

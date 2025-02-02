@@ -15,7 +15,7 @@ import { productSchema } from "../../../../validations/product.validations";
 import { z } from "zod";
 import { Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import BackgroundRemover from "../../../../components/specificComponents/sections/BackgroundRemover";
+import { BackgroundRemover } from "../../..";
 const { Dragger } = Upload;
 
 interface AddProductSectionProps {
@@ -29,6 +29,7 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
 }) => {
   const { id: storeId } = useParams();
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [withoutBackground, setWithoutBackground] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [product, setProduct] = useState({
     name: "",
@@ -113,14 +114,16 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
           defaultFeatures: product.configurations.length > 1,
           rating: 0,
           numberOfReviews: 0,
-          categoryId: product.categoryId,
         },
         storeId: Number(storeId),
         configurations: product.configurations,
         categoryId: product.categoryId,
-      };
+      }; 
 
-      const result = await ProductService.createProduct(productData);
+      const result = await ProductService.createProduct(
+        productData,
+        withoutBackground || uploadedImage
+      );
       message.success("Product created successfully with ID: " + result);
       setSelectedSection(StoreDashboardSectionsEnum.Products);
     } catch (error: any) {
@@ -286,10 +289,15 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
             <p>Click or drag an image to upload</p>
           </Dragger>
         </div>
-         {/* BackgroundRemover Integration */}
-         <Divider style={{ margin: "1rem 0" }} />
+        {/* BackgroundRemover Integration */}
+        <Divider style={{ margin: "1rem 0" }} />
         <h6>Background Remover</h6>
-        {uploadedImage && <BackgroundRemover imageFile={uploadedImage} />}
+        {uploadedImage && (
+          <BackgroundRemover
+            imageFile={uploadedImage}
+            setWithoutBackground={setWithoutBackground}
+          />
+        )}
       </ProductImages>
       <CustomizationSection>
         <h5>Customization</h5>

@@ -67,7 +67,7 @@ export interface Product {
   id: number;
   name: string;
   description: string;
-  mainImageURL: string;
+  mainImageURL?: string;
   basePrice: number;
   stock: number;
   stockEdge: number;
@@ -78,7 +78,7 @@ export interface Product {
   defaultFeatures: boolean;
   rating: number;
   numberOfReviews: number;
-  categoryId: number;
+  categoryId?: number;
 }
 
 export interface ProductFilters {
