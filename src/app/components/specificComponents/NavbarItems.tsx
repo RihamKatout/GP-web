@@ -8,6 +8,7 @@ import cartImg from "../../../assets/Icons/cart.png";
 import personImg from "../../../assets/Icons/person.png";
 import bellImg from "../../../assets/Icons/bell.png";
 import doorImg from "../../../assets/Icons/door.png";
+import styled from "styled-components";
 
 export const NavigationItems = [
   { text: "Home", to: SectionIdEnum.home },
@@ -38,144 +39,38 @@ export const Logo = () => {
   );
 };
 
+const StyledIcon = styled.img`
+  height: 27px;
+  max-width: 27px;
+  @media (max-width: 600px) {
+    height: 25px;
+    width: 25px;
+    margin-right: 0.5rem;
+  }
+`;
 export const UserMenuIcons = [
   {
-    icon: (
-      <div
-        style={{
-          width: 35,
-          height: 35,
-          overflow: "hidden",
-          position: "relative",
-        }}
-      >
-        <img
-          src={favoriteImg}
-          alt="Favorite"
-          style={{
-            width: "110px",
-            height: "68px",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            objectFit: "cover",
-          }}
-        />
-      </div>
-    ),
-    text: "Wishlist",
-    path: "/wishlist",
-  },
-  {
-    icon: (
-      <div
-        style={{
-          width: 35,
-          height: 35,
-          overflow: "hidden",
-          position: "relative",
-        }}
-      >
-        <img
-          src={cartImg}
-          alt="Cart"
-          style={{
-            width: "110px",
-            height: "70px",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            objectFit: "cover",
-          }}
-        />
-      </div>
-    ),
-    text: "Cart",
-    path: "/cart",
-  },
-  {
-    icon: (
-      <div
-        style={{
-          width: 35,
-          height: 45,
-          overflow: "hidden",
-          position: "relative",
-        }}
-      >
-        <img
-          src={personImg}
-          alt="Profile"
-          style={{
-            width: "100px",
-            height: "40px",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            objectFit: "cover",
-          }}
-        />
-      </div>
-    ),
-    text: "Profile",
-    path: "/profile",
-  },
-  {
-    icon: (
-      <div
-        style={{
-          width: 35,
-          height: 35,
-          overflow: "hidden",
-          position: "relative",
-        }}
-      >
-        <img
-          src={bellImg}
-          alt="Notifications"
-          style={{
-            width: "110px",
-            height: "70px",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            objectFit: "cover",
-          }}
-        />
-      </div>
-    ),
+    icon: <StyledIcon src={bellImg} alt="Notifications" />,
     text: "Notifications",
     path: "/offerPage",
   },
   {
-    icon: (
-      <div
-        style={{
-          width: 25,
-          height: 45,
-          overflow: "hidden",
-          position: "relative",
-        }}
-      >
-        <img
-          src={doorImg}
-          alt="Logout"
-          style={{
-            width: "50px",
-            height: "55px",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            objectFit: "cover",
-          }}
-        />
-      </div>
-    ),
+    icon: <StyledIcon src={personImg} alt="Profile" />,
+    text: "Profile",
+    path: "/profile",
+  },
+  {
+    icon: <StyledIcon src={cartImg} alt="Cart" />,
+    text: "Cart",
+    path: "/cart",
+  },
+  {
+    icon: <StyledIcon src={favoriteImg} alt="Favorite" />,
+    text: "Wishlist",
+    path: "/wishlist",
+  },
+  {
+    icon: <StyledIcon src={doorImg} alt="Logout" />,
     text: "Logout",
     path: "/logout",
   },

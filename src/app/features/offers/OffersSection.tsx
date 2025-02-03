@@ -30,7 +30,7 @@ export const OffersSection: React.FC<OffersSectionProps> = ({
     autoplay: true,
     autoplaySpeed: 3000,
   };
-  console.log("the offer",offers); 
+  console.log("the offer", offers);
   return (
     <Container>
       <h1>Offers</h1>
@@ -151,6 +151,9 @@ const Container = styled.div`
   .slick-next {
     right: -50px;
   }
+  @media (max-width: 780px) {
+    height: auto;
+  }
 `;
 
 const OfferContainer = styled.div`
@@ -167,6 +170,15 @@ const OfferContainer = styled.div`
     margin: 1.5rem;
     border-radius: 0.5rem;
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  }
+  @media (max-width: 780px) {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    img {
+      width: 90%;
+      height: auto;
+    }
   }
 `;
 
@@ -227,5 +239,8 @@ const OfferInfoContainer = styled.div`
     box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),
       0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,
       0 0.25rem 0.5rem 0 rgba(205, 58, 158, 0.36) inset;
+  }
+  @media (max-width: 780px) {
+    width: 90%;
   }
 `;

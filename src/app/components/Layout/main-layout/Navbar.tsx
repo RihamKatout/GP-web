@@ -74,7 +74,6 @@ export const Navbar = () => {
     <IconButton
       edge="end"
       aria-label="user menu"
-      sx={{ color: "black" }}
       key={index}
       onClick={() => {
         if (path === "/logout") {
@@ -122,7 +121,7 @@ export const Navbar = () => {
 
         {/* User menu icons or register/login buttons */}
         {!isMobile && (
-          <Box component="div" sx={{ display: "flex", gap: 2 }}>
+          <Box component="div" sx={{ display: "flex", gap: 1 }}>
             {isLoggedIn ? mappedUserIcons : mappedAuthenticationButtons}
           </Box>
         )}
