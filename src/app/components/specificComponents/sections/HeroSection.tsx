@@ -44,13 +44,21 @@ export const HeroSection = () => {
 };
 
 const Container = styled.div`
-  height: 90vh;
   padding: 2rem 4rem;
   display: flex;
   margin: 0 auto;
   max-width: 100vw;
   img {
     width: 60% !important;
+    @media (max-width: 1400px) {
+      width: 50% !important;
+    }
+    @media (max-width: 1000px) {
+      width: 40% !important;
+    }
+    @media (max-width: 900px) {
+      display: none;
+    }
   }
 `;
 
