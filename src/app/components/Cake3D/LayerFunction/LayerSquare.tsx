@@ -1,5 +1,6 @@
 import React from 'react'
-
+import { useLoader } from '@react-three/fiber';
+import * as THREE from 'three';
 interface LayerSquareProps {
     numLayers: number;
     layerColor?: string;
@@ -12,7 +13,7 @@ const LayerSquare :React.FC<LayerSquareProps> = ({
   fillLayerColor = '#D2691E',}) => 
     {
     const layers = [];
-
+      const cakeTexture = useLoader(THREE.TextureLoader, '/textuers/textures.jpg');
     for (let i = 0; i < numLayers; i++) {
       const yOffset = i * 1; // Adjust the offset based on the height of each layer
   
@@ -21,7 +22,7 @@ const LayerSquare :React.FC<LayerSquareProps> = ({
           
           <mesh position={[0, yOffset - 1, 0]}>
             <cylinderGeometry args={[2.3, 2.3, 0.72, 4, 10]} />
-            <meshLambertMaterial color={layerColor}  />
+            <meshStandardMaterial color={layerColor} map={cakeTexture} />
           </mesh>
           {i < numLayers - 1 && (
             <mesh position={[0, yOffset - 0.5, 0]}>
@@ -49,7 +50,7 @@ const FullLayerSquare :React.FC<LayerSquareProps> = ({
   layerColor = '#e8ad82',
   fillLayerColor = '#D2691E',}) => {
   const layers = [];
-
+  const cakeTexture = useLoader(THREE.TextureLoader, '/textuers/textures.jpg');
   for (let i = 0; i < numLayers; i++) {
     const yOffset = i * 1; // Adjust the offset based on the height of each layer
 
@@ -57,8 +58,8 @@ const FullLayerSquare :React.FC<LayerSquareProps> = ({
       <React.Fragment key={i}>
         
         <mesh position={[0, yOffset - 1, 0]}>
-          <cylinderGeometry args={[2.3, 2.3, 1, 4, 10]} />
-          <meshLambertMaterial color={layerColor}  />
+          <cylinderGeometry args={[2.32, 2.32, 1, 4, 10]} />
+          <meshStandardMaterial color={layerColor} map={cakeTexture} />
         </mesh>
         {i < numLayers - 1 && (
           <mesh position={[0, yOffset - 0.5, 0]}>

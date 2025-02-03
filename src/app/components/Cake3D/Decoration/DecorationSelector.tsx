@@ -109,7 +109,7 @@ const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecorat
       <div style={{ width: '100%' , margin: '0 auto' , justifyContent: 'center' , alignItems: 'center' }}>
         <div style={{ width: '100%', margin: '0 auto' }}>
                 <Divider style={{ borderColor: '#1a1a19b3' }}>
-                  <ColorLabel style={{ marginTop:"10px"}}>Select The Decoration:</ColorLabel>
+                  <ColorLabel style={{ marginTop:"10px"}}>Select The Decoration (+2$):</ColorLabel>
                 </Divider>
                </div>
         <CakeButton
@@ -134,7 +134,7 @@ const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecorat
       <div>
         <div style={{ width: '100%', margin: '0 auto' }}>
                 <Divider style={{ borderColor: '#1a1a19b3' }}>
-                  <ColorLabel>Select The Mid Decoration:</ColorLabel>
+                  <ColorLabel>Select The Mid Decoration (+2$):</ColorLabel>
                 </Divider>
          </div>
       <ButtonContainer>   

@@ -53,7 +53,7 @@ const FontRegular: React.FC<FontSmallProps> = ({ userText, fontType, selectedCol
           position={[0.3, 1.62, 0.7]}
           rotation={[Math.PI / 2, Math.PI, 0]}
           fontPath={fontType}
-          maxCharsPerLine={12}
+          maxCharsPerLine={9}
           color={selectedColor}
         />
       );

@@ -188,7 +188,7 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
       //   return null;
     }
   };
-
+  const finalPrice =cakePrice + (selectedDecoration ? 2 : 0) + (selectedMidDecoration ? 2 : 0);
   const renderRightColumn = () => {
     switch (currentStage) {
       case 1:
@@ -268,7 +268,7 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
     onConfirm={handleConfirmPopup}
     cardMessage={cardMessage} // Pass the card message
     cakeSize={cakeSize}
-    cakePrice={cakePrice}
+    cakePrice={finalPrice}
     cakeDescription={cakeDescription}
   />
   
@@ -656,9 +656,11 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
           style={{ transform: "rotate(180deg)" }}
         />
       </ResponsiveCakeButton>
-      <ResponsiveCakeButton onClick={nextStage} disabled={currentStage === 3}>
-        <img src={next} alt="Next" />
-      </ResponsiveCakeButton>
+      {currentStage !== 3 && (
+  <ResponsiveCakeButton onClick={nextStage}>
+    <img src={next} alt="Next" />
+  </ResponsiveCakeButton>
+)}
     </ButtonContainer>
         </GradientContainer>
       </MiddleColumn>

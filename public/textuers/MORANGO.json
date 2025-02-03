@@ -1,0 +1,30 @@
+{
+	"metadata": {
+		"version": 4.6,
+		"type": "Material",
+		"generator": "Material.toJSON"
+	},
+	"uuid": "eab54879-b41d-4c2a-b6fb-d5e803bd5d43",
+	"type": "MeshStandardMaterial",
+	"name": "MORANGO",
+	"color": 16777215,
+	"roughness": 1,
+	"metalness": 1,
+	"emissive": 0,
+	"envMapRotation": [0,0,0,
+		"XYZ"],
+	"envMapIntensity": 1,
+	"blendColor": 0,
+	"userData": {
+		"gltfExtensions": {
+			"KHR_materials_pbrSpecularGlossiness": {
+				"diffuseFactor": [1,1,1,1],
+				"diffuseTexture": {
+					"index": 0
+				},
+				"glossinessFactor": 0.6279678845253513,
+				"specularFactor": [0.044271260845508885,0.044271260845508885,0.044271260845508885]
+			}
+		}
+	}
+}

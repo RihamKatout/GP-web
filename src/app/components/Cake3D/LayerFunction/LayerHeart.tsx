@@ -13,7 +13,7 @@ const LayerHeart: React.FC<LayerHeartProps> = ({
   fillLayerColor = '#D2691E',
 }) => {
   const Heartlayers = [];
-
+  
   for (let i = 0; i < numLayers; i++) {
     const yOffset = i * 1; // Adjust the offset based on the height of each layer
 

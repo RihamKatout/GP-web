@@ -3,6 +3,10 @@ import { Store } from "../../types";
 import styled from "styled-components";
 import Rating from "@mui/material/Rating"; // Import Rating component from MUI
 import cover from "../../../assets/store/cover.png";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+
 interface StoreInformationSectionProps {
   store: Store;
 }
@@ -28,8 +32,21 @@ export const StoreInformationSection: React.FC<StoreInformationSectionProps> = (
               readOnly
               size="small"
             />
-            <ReviewCount>{store?.numberOfReviews || 4 } reviews</ReviewCount>
+            <ReviewCount>{store?.numberOfReviews || 4} reviews</ReviewCount>
           </RatingContainer>
+
+          {/* Social Media Links for Store ID 3 */}
+          {store?.id === 3 && (
+            <SocialIcons>
+              <a href="https://www.facebook.com/Sweet.Touches" target="_blank" rel="noopener noreferrer">
+                <FacebookIcon />
+              </a>
+              <a href="https://www.instagram.com/sweet.toaches?igsh=bTl5cGgyNnh5Nmp3" target="_blank" rel="noopener noreferrer">
+                <InstagramIcon />
+              </a>
+              {/* You can add a YouTube link if necessary */}
+            </SocialIcons>
+          )}
         </StoreDetails>
       </ProfileSection>
     </Container>
@@ -105,6 +122,22 @@ const RatingContainer = styled.div`
 const ReviewCount = styled.span`
   font-size: 14px;
   color: #444;
+`;
+
+const SocialIcons = styled.div`
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+  svg {
+    width: 2rem;
+    height: 2.5rem !important;
+    cursor: pointer;
+    transition: color 0.5s;
+    color: ${({ theme }) => theme.colors.primary_dark};
+    &:hover {
+      color: ${({ theme }) => theme.colors.secondary};
+    }
+  }
 `;
 
 export default StoreInformationSection;

@@ -118,8 +118,10 @@ const Button = styled.button`
 `;
 
 const OutputContainer = styled.div`
-  //margin-top: 20px;
-
+  margin-bottom: 20px;
+  max-height: 200px; /* Fixed height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  
   h3 {
     margin-bottom: 5px;
     font-size: 18px;
