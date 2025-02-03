@@ -1,4 +1,4 @@
-import { createBrowserRouter, Link } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import {
   HomePage,
   LoginPage,
@@ -12,7 +12,7 @@ import {
   StoreDashboardPage,
   WishlistPage,
 } from "../pages";
-import { Button, MainBody } from "../styles/Global.styled";
+import { MainBody } from "../styles/Global.styled";
 import CakeScene from "../components/Cake3D/CakeComponent";
 import Hero from "../SweetTouches/component/Hero";
 import Navbar from "../SweetTouches/component/SweetNavbar";
@@ -81,7 +81,7 @@ const routerConfig = createBrowserRouter([
     path: "/chat",
     element: (
       <MainLayout>
-        <ChatPage/>
+        <ChatPage />
       </MainLayout>
     ),
   },
@@ -89,7 +89,7 @@ const routerConfig = createBrowserRouter([
     path: "/offerPage",
     element: (
       <MainLayout>
-        <OfferPage/>
+        <OfferPage />
       </MainLayout>
     ),
   },
@@ -97,7 +97,7 @@ const routerConfig = createBrowserRouter([
     path: "/chatHelper",
     element: (
       <MainLayout>
-        <HelpCenterChat/>
+        <HelpCenterChat />
       </MainLayout>
     ),
   },
@@ -147,7 +147,7 @@ const routerConfig = createBrowserRouter([
     path: "*",
     element: (
       <MainBody>
-        <NotFound/>
+        <NotFound />
       </MainBody>
     ),
   },
