@@ -1,17 +1,24 @@
 import React, { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 import { CartItemDto, ConfigurationInstance } from "../../types";
-import { ProductConfiguration } from "../products";
+import { ProductConfigurationInstance } from "../products";
+import { useQueryClient } from "react-query";
 import { CustomModal, CustomSnackbar } from "../../components/common";
 import { CartService } from "../../api";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
+import AddIcon from "@mui/icons-material/Add";
+import { SelectChangeEvent } from "@mui/material/Select/SelectInput";
+import { Select } from "@mui/material";
+import { calcPriceSummation } from "./Service";
+
 interface CartItemDetailsProps {
   cartItemDto: CartItemDto;
   isModalOpen: boolean;
   closeModal: () => void;
   status?: "view" | "add" | "edit";
+  setCartItemDto?: React.Dispatch<React.SetStateAction<CartItemDto>>;
 }
 
 const pricesReducer = (state: number, action: any) => {
@@ -32,13 +39,19 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
   isModalOpen,
   closeModal,
   status,
+  setCartItemDto,
 }) => {
+  const queryClient = useQueryClient();
   const [currentStatus, setCurrentStatus] = useState<"view" | "add" | "edit">(
     status || "view"
   );
   const [selectedChoices, setSelectedChoices] = useState<
     ConfigurationInstance[]
   >(cartItemDto.cartItem.configurationInstances);
+  const [isSelectDisplayed, setIsSelectDisplayed] = useState(false);
+  const multipleAllowedConfigurations = cartItemDto.configurations.filter(
+    (config) => config.allowsMultipleUnits
+  );
   const { configurations } = cartItemDto;
   const { product } = cartItemDto.cartItem;
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
@@ -46,7 +59,13 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
     message: string;
     type: "success" | "error" | "warning" | "info";
   }>({ message: "", type: "success" });
-  const [price, dispatchPrices] = useReducer(pricesReducer, product.basePrice);
+  const initialPrice =
+    product.basePrice -
+    configurations.reduce(
+      (sum, config) => sum + (config.unitPriceImpact || 0),
+      0
+    );
+  const [price, dispatchPrices] = useReducer(pricesReducer, initialPrice);
   const isAvailable =
     (product?.isAvailable && product?.stock > 0) || !product.needStock;
 
@@ -56,10 +75,40 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
     quantity: cartItemDto?.cartItem?.quantity || 1,
   });
 
+  const initializeInstances = () => {
+    if (currentStatus === "add") {
+      const newInstances = configurations.map((config) => {
+        return {
+          id: -Math.random(),
+          configurationId: config.id,
+          choices: config.configurationAttributes.map((attr) => ({
+            attributeId: attr.id,
+            choiceName: attr.choices[0].name,
+          })),
+        };
+      });
+      setSelectedChoices(newInstances);
+      return;
+    }
+    setSelectedChoices(cartItemDto.cartItem.configurationInstances || []);
+  };
+
+  useEffect(() => {
+    initializeInstances();
+  }, [currentStatus]);
+  const handleRefetch = () => {
+    queryClient.invalidateQueries({ queryKey: ["cart"] });
+  };
+
   const handleDeleteConfigInstance = (instanceId: number, configId: number) => {
     const configInstancesCount = selectedChoices.filter(
       (instance) => instance.configurationId === configId
     ).length;
+
+    const instanceToDelete = selectedChoices.find(
+      (instance) => instance.id === instanceId
+    );
+    if (!instanceToDelete) return;
 
     if (configInstancesCount === 1) {
       setSnackbarInfo({
@@ -70,6 +119,31 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
       return;
     }
 
+    // If deleting an instance (in add mode or when configuration is not unique), subtract its choices price impact.
+    const config = configurations.find((c) => c.id === configId);
+    if (config) {
+      const priceImpactToRemove = instanceToDelete.choices.reduce(
+        (sum, choice) => {
+          const attribute = config.configurationAttributes.find(
+            (attr) => attr.id === choice.attributeId
+          );
+          if (attribute) {
+            const matchingChoice = attribute.choices.find(
+              (c) => c.name === choice.choiceName
+            );
+            return sum + (matchingChoice?.priceImpact || 0);
+          }
+          return sum;
+        },
+        0
+      );
+      if (currentStatus === "add") {
+        dispatchPrices({
+          type: "REMOVE_PRICE_IMPACT",
+          priceImpact: priceImpactToRemove,
+        });
+      }
+    }
     setSelectedChoices((prev) =>
       prev.filter((instance) => instance.id !== instanceId)
     );
@@ -87,32 +161,81 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
         tmpCartItem
       );
       if (response.status === 200) {
-        cartItemDto.cartItem = tmpCartItem;
-        setCurrentStatus("view");
         setSnackbarInfo({
           message: "Cart item updated successfully",
           type: "success",
         });
         setIsSnackbarOpen(true);
+        setCartItemDto && setCartItemDto(response.data);
+        handleRefetch();
+        setTimeout(() => {
+          const finalPrice = calcPriceSummation(response.data);
+          dispatchPrices({ type: "RESET_PRICE", basePrice: finalPrice || 0 });
+        }, 1);
+        setCurrentStatus("view");
       }
     } catch (e) {
-      // TODO: show error message
-      console.error(e);
+      setSnackbarInfo({
+        message: "Failed to update cart item",
+        type: "error",
+      });
+      setIsSnackbarOpen(true);
     }
   };
 
-  const handleDiscard = () => {
-    setCurrentStatus("view");
-    setFormData({
-      message: cartItemDto?.cartItem?.message || "",
-      details: cartItemDto?.cartItem?.details || "",
-      quantity: cartItemDto?.cartItem?.quantity || 1,
-    });
+  const handleAddCartItem = async () => {
+    try {
+      const response = await CartService.addItem({
+        ...cartItemDto.cartItem,
+        ...formData,
+        configurationInstances: selectedChoices,
+      });
+      if (response.status === 201) {
+        setSnackbarInfo({
+          message: "Cart item added successfully",
+          type: "success",
+        });
+        setIsSnackbarOpen(true);
+        setTimeout(() => {
+          closeModal();
+        }, 1000);
+        handleRefetch();
+      }
+    } catch (e) {
+      setSnackbarInfo({
+        message: "Failed to add cart item",
+        type: "error",
+      });
+      setIsSnackbarOpen(true);
+    }
   };
-  useEffect(() => {
-    dispatchPrices({ type: "RESET_PRICE", basePrice: product.basePrice });
-  }, [product.basePrice]);
+  const handleDiscard = () => {
+    closeModal();
+  };
 
+  const handleAddConfiguration = () => {
+    setIsSelectDisplayed(true);
+  };
+
+  const handleConfigurationChange = (e: SelectChangeEvent) => {
+    const configId = parseInt(e.target.value as string);
+    if (!configId) return;
+
+    const config = configurations.find((c) => c.id === configId);
+    if (!config) return;
+
+    const newInstance: ConfigurationInstance = {
+      id: -Math.random(),
+      configurationId: configId,
+      choices: config.configurationAttributes.map((attr) => ({
+        attributeId: attr.id,
+        choiceName: attr.choices[0].name,
+      })),
+    };
+
+    setSelectedChoices((prev) => [...prev, newInstance]);
+    setIsSelectDisplayed(false);
+  };
   return (
     <CustomModal open={isModalOpen} onClose={closeModal}>
       <CustomSnackbar
@@ -132,7 +255,7 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
         <ProductCard>
           <ProductInfoColumn>
             <img src={product?.mainImageURL} alt={product?.name} />
-            {currentStatus === "edit" ? (
+            {currentStatus !== "view" ? (
               <>
                 <InputGroup>
                   <p>Note</p>
@@ -186,7 +309,9 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
                     Discard
                   </button>
                   <button
-                    onClick={handleUpdate}
+                    onClick={
+                      status === "add" ? handleAddCartItem : handleUpdate
+                    }
                     className="filled-button"
                     style={{ width: "50%" }}
                   >
@@ -236,6 +361,42 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
 
           <SpecificationsColumn>
             <ButtonsContainer>
+              {currentStatus !== "view" && (
+                <>
+                  <button
+                    onClick={handleAddConfiguration}
+                    className="filled-button"
+                  >
+                    <AddIcon />
+                    configuration
+                  </button>
+                  {isSelectDisplayed && (
+                    <Select
+                      native
+                      sx={{
+                        minWidth: "200px",
+                        height: "32px",
+                        fontSize: "14px",
+                        "& select": {
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                        },
+                      }}
+                      value=""
+                      onChange={handleConfigurationChange}
+                    >
+                      <option value="" disabled>
+                        Choose configuration
+                      </option>
+                      {multipleAllowedConfigurations.map((config) => (
+                        <option key={config.id} value={config.id}>
+                          {config.name}
+                        </option>
+                      ))}
+                    </Select>
+                  )}
+                </>
+              )}
               {currentStatus === "view" && (
                 <button
                   onClick={() => setCurrentStatus("edit")}
@@ -246,21 +407,21 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
                 </button>
               )}
             </ButtonsContainer>
-            {selectedChoices?.map((instance: ConfigurationInstance) => {
+            {selectedChoices?.map((instance) => {
               const config = configurations.find(
                 (config) => config.id === instance.configurationId
               );
               return (
                 config && (
-                  <ProductConfiguration
+                  <ProductConfigurationInstance
+                    key={`${instance.id}-${currentStatus}`}
                     config={config}
-                    key={instance?.id}
                     dispatchPrices={dispatchPrices}
-                    choices={instance.choices}
-                    instanceId={instance.id}
-                    mode={currentStatus === "edit" ? "editable" : "disabled"}
+                    instance={instance}
+                    mode={currentStatus !== "view" ? "editable" : "disabled"}
                     setSelectedChoices={setSelectedChoices}
                     handleDeleteConfigInstance={handleDeleteConfigInstance}
+                    type="cart"
                   />
                 )
               );

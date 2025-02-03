@@ -1,18 +1,19 @@
 import React, { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 import AliceCarousel from "react-alice-carousel";
-import { AddToCartPreview, WishlistButton } from "../..";
+import { WishlistButton } from "../..";
 import { useNavigate } from "react-router-dom";
 import { Divider, Rating } from "@mui/material";
 import { ProductDetail } from "../../../types";
 import { DefaultStoreImg } from "../../../../assets";
-import { ProductConfiguration } from "..";
+import { ProductConfigurationInstance } from "..";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { CustomSnackbar } from "../../../components/common";
 import img from "../../../../assets/product/3dcakeTry.png";
 import img2 from "../../../../assets/product/3dCake.png";
 import img3 from "../../../../assets/product/3dHeart.png";
 import img4 from "../../../../assets/product/3dCharryCake.png";
+import { CartItemDetails } from "../../cart/CartItemDetails";
 //TODO: fix reviews
 interface ProductDetailsCardProps {
   productDto: ProductDetail;
@@ -103,12 +104,24 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
         message="Product is not available right now"
         type="error"
       />
-      <AddToCartPreview
-        product={productDto.product}
-        configurations={configurations}
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-      />
+      {isModalOpen && (
+        <CartItemDetails
+          isModalOpen={isModalOpen}
+          closeModal={() => setIsModalOpen(false)}
+          status="add"
+          cartItemDto={{
+            cartItem: {
+              id: 0,
+              storeId: productDto.store.storeId,
+              storeName: productDto.store.storeName,
+              quantity: 1,
+              product: productDto.product,
+              configurationInstances: [],
+            },
+            configurations: productDto.configurations,
+          }}
+        />
+      )}
       <Header>
         <h2>{product?.name}</h2>
         <h2>{price.toFixed(2)}$</h2>
@@ -184,11 +197,12 @@ export const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
 
         <SpecificationsColumn>
           {configurations?.map((config) => (
-            <ProductConfiguration
+            <ProductConfigurationInstance
               config={config}
               key={config.id}
               dispatchPrices={dispatchPrices}
               mode={"enabled"}
+              type="product"
             />
           ))}
           <button className="cart-icon" onClick={handleAddToCart}>

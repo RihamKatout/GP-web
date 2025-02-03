@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Product, ProductWithStoreDto } from "../../../types";
+import { Configuration, Product, ProductWithStoreDto } from "../../../types";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Rating from "@mui/material/Rating";
-import { AddToCartPreview, WishlistButton } from "../../../features";
+import { WishlistButton } from "../../../features";
 import cart1 from "../../../../assets/Icons/cart1.png";
+import { CartItemDetails } from "../../../features/cart/CartItemDetails";
+import { useQuery } from "react-query";
+import { ProductService } from "../../../api";
 
 export const ProductCard: React.FC<
   ProductWithStoreDto & {
@@ -14,21 +17,46 @@ export const ProductCard: React.FC<
   const navigate = useNavigate();
   const product: Product = productDto.product;
   const [isWishlisted, setIsWishlisted] = useState(productDto.inWishlist);
+  const [configurations, setConfigurations] = useState<Configuration[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isAvailable =
     (product.isAvailable && product.stock > 0) || !product.needStock;
 
-  const handleAddToCart = () => {
+  const { refetch } = useQuery(
+    ["product", product.id],
+    () => ProductService.getProductById(Number(product.id)),
+    {
+      enabled: false,
+      cacheTime: 0,
+    }
+  );
+
+  const handleAddToCart = async () => {
+    const { data } = await refetch();
+    setConfigurations(data?.configurations ?? []);
     setIsModalOpen(true);
   };
 
   return (
     <>
-      <AddToCartPreview
-        product={productDto.product}
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-      />
+      {isModalOpen && (
+        <CartItemDetails
+          isModalOpen={isModalOpen}
+          closeModal={() => setIsModalOpen(false)}
+          status="add"
+          cartItemDto={{
+            cartItem: {
+              id: 0,
+              storeId: productDto.storeBasicInfo?.storeId ?? 0,
+              storeName: productDto.storeBasicInfo?.storeName ?? "",
+              quantity: 1,
+              product: productDto.product,
+              configurationInstances: [],
+            },
+            configurations: configurations,
+          }}
+        />
+      )}
       <ProductCardStyle>
         <WishlistButton
           isWishlisted={isWishlisted}

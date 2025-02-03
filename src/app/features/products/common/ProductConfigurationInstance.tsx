@@ -1,59 +1,53 @@
 import React, { useEffect } from "react";
 import { ConfigurationAttributeComponent } from "./ConfigurationAttribute";
 import styled from "styled-components";
-import {
-  AttributeChoice,
-  Configuration,
-  ConfigurationInstance,
-} from "../../../types";
+import { Configuration, ConfigurationInstance } from "../../../types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Popconfirm } from "antd";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 interface ProductConfigurationProps {
   config: Configuration;
-  choices?: AttributeChoice[];
-  instanceId?: number;
+  instance?: ConfigurationInstance;
   dispatchPrices: React.Dispatch<any>;
   mode: "editable" | "disabled" | "enabled";
+  type: "cart" | "product";
   setSelectedChoices?: React.Dispatch<
     React.SetStateAction<ConfigurationInstance[]>
   >;
   handleDeleteConfigInstance?: (instanceId: number, configId: number) => void;
 }
-export const ProductConfiguration: React.FC<ProductConfigurationProps> = ({
+
+export const ProductConfigurationInstance: React.FC<
+  ProductConfigurationProps
+> = ({
   config,
   dispatchPrices,
-  choices,
-  instanceId,
+  instance,
   mode,
   setSelectedChoices,
   handleDeleteConfigInstance,
+  type,
 }) => {
   const handlePriceImpact = (priceImpact: number) => {
     dispatchPrices({ type: "ADD_PRICE_IMPACT", priceImpact });
   };
-
   useEffect(() => {
-    const initialPriceImpact = 0;
+    if (type === "cart") handlePriceImpact(config.unitPriceImpact || 0);
     return () => {
-      dispatchPrices({
-        type: "REMOVE_PRICE_IMPACT",
-        priceImpact: initialPriceImpact,
-      });
+      if (type === "cart") handlePriceImpact(-config.unitPriceImpact || 0);
     };
-  }, [dispatchPrices]);
-
+  }, []);
   return (
     <Container>
       <ConfigHeader>
         <h6>{config.name}</h6>
-        {mode === "editable" && handleDeleteConfigInstance && instanceId && (
+        {mode === "editable" && handleDeleteConfigInstance && instance?.id && (
           <Popconfirm
             title="Remove item"
             description="Are you sure to remove this item?"
             icon={<ErrorOutlineIcon style={{ color: "red" }} />}
-            onConfirm={() => handleDeleteConfigInstance(instanceId, config.id)}
+            onConfirm={() => instance.id && handleDeleteConfigInstance(instance.id, config.id)}
             okText="Yes"
             cancelText="No"
             overlayClassName="custom-popconfirm"
@@ -65,16 +59,16 @@ export const ProductConfiguration: React.FC<ProductConfigurationProps> = ({
       </ConfigHeader>
       {config.configurationAttributes.map((attr) => (
         <ConfigurationAttributeComponent
-          key={instanceId ? `${instanceId}-${attr.id}` : attr.id}
+          key={instance?.id ? `${instance.id}-${attr.id}` : attr.id}
           attribute={attr}
           handlePriceImpact={handlePriceImpact}
           value={
-            choices?.find((choice) => choice.attributeId === attr.id)
+            instance?.choices?.find((choice) => choice.attributeId === attr.id)
               ?.choiceName
           }
           enableButtons={mode !== "disabled"}
           setSelectedChoices={setSelectedChoices}
-          instanceId={instanceId}
+          instanceId={instance?.id}
         />
       ))}
     </Container>

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../../assets/Icons/trash.jpg";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { CartService } from "../../api";
+import { calcPriceSummation } from "./Service";
 
 interface CartItemCardProps {
   item: CartItemDto;
@@ -26,22 +27,21 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
   handleDeleteItem,
   setTotalPrice,
 }) => {
-  const { cartItem, configurations } = item;
-  const { product } = cartItem;
   const navigate = useNavigate();
+  const { product } = item.cartItem;
   const openModal = () => setIsModalOpen(true);
   const [price, setPrice] = useState<number>(0);
   const closeModal = () => setIsModalOpen(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [quantity, setQuantity] = useState(item.cartItem.quantity);
-
+  const [cartItemDto, setCartItemDto] = useState<CartItemDto>(item);
+  const [quantity, setQuantity] = useState(cartItemDto.cartItem.quantity);
   const handleQuantityChange = async (value: number) => {
     if (value > 0) {
       const updatedItem = await CartService.updateQuantity(
         item.cartItem.id,
         value
       );
-      if (checkedItems.includes(cartItem.id)) {
+      if (checkedItems.includes(cartItemDto.cartItem.id)) {
         setTotalPrice &&
           setTotalPrice((prev) => prev - price * quantity + price * value);
       }
@@ -62,23 +62,10 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
   };
 
   useEffect(() => {
-    const priceSummation = cartItem.configurationInstances?.reduce(
-      (acc, configInst) => {
-        const configuration = configurations?.find(
-          (config) => config.id === configInst.configurationId
-        );
-        configInst?.choices?.forEach((choice) => {
-          const priceImpact = configuration?.configurationAttributes
-            ?.find((attr) => attr.id === choice.attributeId)
-            ?.choices?.find((ch) => ch.name === choice.choiceName)?.priceImpact;
-          acc += priceImpact || 0;
-        });
-        return acc;
-      },
-      0
-    );
-    setPrice(priceSummation + product.basePrice);
-  }, [item.cartItem]);
+    setQuantity(cartItemDto.cartItem.quantity);
+    const priceSummation = calcPriceSummation(cartItemDto);
+    setPrice(priceSummation);
+  }, [cartItemDto]);
 
   return (
     <div>
@@ -86,23 +73,27 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
         <CartItemDetails
           isModalOpen={isModalOpen}
           closeModal={closeModal}
-          cartItemDto={item}
+          cartItemDto={cartItemDto}
+          setCartItemDto={setCartItemDto}
         />
       )}
       <ItemContainer>
         <input
           type="checkbox"
-          checked={checkedItems.includes(cartItem.id)}
+          checked={checkedItems.includes(cartItemDto.cartItem.id)}
           onChange={() => {
-            if (!checkedItems.includes(cartItem.id)) {
+            if (!checkedItems.includes(cartItemDto.cartItem.id)) {
               setTotalPrice &&
                 setTotalPrice((prev) => (prev || 0) + price * quantity);
-              setSelectedItems((prev) => [...(prev || []), cartItem.id]);
+              setSelectedItems((prev) => [
+                ...(prev || []),
+                cartItemDto.cartItem.id,
+              ]);
             } else {
               setTotalPrice &&
                 setTotalPrice((prev) => (prev || 0) - price * quantity);
               setSelectedItems((prev) =>
-                prev?.filter((id) => id !== cartItem.id)
+                prev?.filter((id) => id !== cartItemDto.cartItem.id)
               );
             }
           }}
@@ -124,7 +115,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
               {!product?.isAvailable ? (
                 <span style={{ color: "red" }}>unavailable</span>
               ) : (product?.stock !== 0 &&
-                  product?.stock >= cartItem.quantity) ||
+                  product?.stock >= cartItemDto.cartItem.quantity) ||
                 !product?.needStock ? (
                 <span style={{ color: "green" }}>available</span>
               ) : (
@@ -142,14 +133,18 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <QuantityButtonsContainer>
               <button
-                onClick={() => handleQuantityChange(cartItem.quantity - 1)}
-                disabled={cartItem.quantity === 1}
+                onClick={() =>
+                  handleQuantityChange(cartItemDto.cartItem.quantity - 1)
+                }
+                disabled={cartItemDto.cartItem.quantity === 1}
               >
                 -
               </button>
-              <p style={{ margin: "0" }}>{cartItem.quantity}</p>
+              <p style={{ margin: "0" }}>{cartItemDto.cartItem.quantity}</p>
               <button
-                onClick={() => handleQuantityChange(cartItem.quantity + 1)}
+                onClick={() =>
+                  handleQuantityChange(cartItemDto.cartItem.quantity + 1)
+                }
               >
                 +
               </button>
@@ -160,7 +155,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
                 title="Remove item"
                 description="Are you sure to remove this item?"
                 icon={<ErrorOutlineIcon style={{ color: "red" }} />}
-                onConfirm={() => handleDeleteItem(cartItem.id)}
+                onConfirm={() => handleDeleteItem(cartItemDto.cartItem.id)}
                 okText="Yes"
                 cancelText="No"
               >

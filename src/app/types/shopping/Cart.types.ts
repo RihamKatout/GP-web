@@ -6,7 +6,7 @@ export interface AttributeChoice {
 }
 
 export interface ConfigurationInstance {
-  id: number;
+  id?: number;
   configurationId: number;
   choices: AttributeChoice[];
 }

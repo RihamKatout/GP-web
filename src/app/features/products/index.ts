@@ -1,2 +1,2 @@
-export * from "./common/ProductConfiguration";
+export * from "./common/ProductConfigurationInstance";
 export * from "./common/ConfigurationAttribute";
