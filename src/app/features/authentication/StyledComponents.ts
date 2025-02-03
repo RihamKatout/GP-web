@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const StyledForgotPasswordContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  width: 85%;
+  width: 100%;
   margin-top: 5px;
   margin-bottom: 10px;
 `;
@@ -100,6 +100,8 @@ export const StyledLink = styled(Link)`
   text-decoration: none;
   font-weight: bold;
   font-family: "Overlock", serif;
+  text-align: center;
+  width: 100%;
   &:hover {
     text-decoration: underline;
   }
