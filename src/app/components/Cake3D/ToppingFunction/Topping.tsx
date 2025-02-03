@@ -414,7 +414,7 @@ function FullMixTopping({ color }: { color: string }) {
     return (
         <>
             
-            <BottomCream position={[0, -2.3, 0]} scale={[2.36, 2.36, 2.36]} rotation={[Math.PI / 2, 0, 0]} color={color}/>
+            <BottomCream position={[-0.02, -1.5, 0.05]} scale={[24.36, 23.36, 24.36]} rotation={[-Math.PI / 2, 0, 0]} color={color}/>
             
         </>
     );
