@@ -4,9 +4,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Theme } from "../../utils/Theme";
 import { useNavigate } from "react-router-dom";
-import { OfferDto } from "../../types/shopping/Offers.types";
+import { OfferDto , Offer } from "../../types/shopping/Offers.types";
 import styled from "styled-components";
 import { Loader } from "../../components/common";
+import { OffersService } from "../../api";
 
 interface OffersSectionProps {
   offers: OfferDto[] | undefined;

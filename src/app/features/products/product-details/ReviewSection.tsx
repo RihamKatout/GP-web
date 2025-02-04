@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Rating } from "@mui/material";
 import { RihamImg } from "../../../../assets";
-import { Carousel } from "antd";
+import { Carousel, Divider } from "antd";
 
 
 export const ReviewSection = () => {
@@ -54,21 +54,21 @@ export const ReviewSection = () => {
   };
   const sliderSettings = {
     dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    autoplay: true,
-    arrows: false,
-    centerMode: false,
-    responsive: [
-      {
-        breakpoint: 780,
-        settings: {
-          slidesToShow: 1,
-        },
+  infinite: true,
+  speed: 500,
+  slidesToShow: 2,
+  slidesToScroll: 1,
+  autoplay: true,
+  arrows: false,
+  centerMode: false,
+  responsive: [
+    {
+      breakpoint: 780,
+      settings: {
+        slidesToShow: 1,
       },
-    ],
+    },
+  ],
   };
   
   const carouselSettings = {
@@ -85,8 +85,12 @@ export const ReviewSection = () => {
 
   return (
     <Container>
+      <Divider style={{ borderColor: "#1a1a19b3" }}>
+      <h2 style={{fontSize: "25px"}}>Customer Reviews</h2>
+      </Divider>
+      
       {/* Desktop Carousel */}
-      <StyledCarousel autoplay>
+      <StyledCarousel {...carouselSettings}>
         {reviewsData.map((review) => {
           const isLong = review.feedback.length > 100; // Define long feedback
           const showFull = expandedReview === review.id;
@@ -103,14 +107,7 @@ export const ReviewSection = () => {
               </div>
               <Feedback>
                 {displayedText}
-                {isLong && (
-                  <ViewMore onClick={(e) => {
-                    e.stopPropagation(); // Prevent card click from opening modal
-                    toggleExpand(review.id);
-                  }}>
-                    {showFull ? " View Less" : " View More"}
-                  </ViewMore>
-                )}
+                {isLong && <span style={{color: "#ce3a70"}}>View more</span>}
               </Feedback>
             </Card>
           );
@@ -177,7 +174,7 @@ const Feedback = styled.p`
 `;
 
 const ViewMore = styled.span`
-  color: #29284e;
+  color: #6864d1;
   cursor: pointer;
   font-weight: bold;
   margin-left: 5px;

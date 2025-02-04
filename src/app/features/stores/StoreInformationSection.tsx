@@ -2,7 +2,7 @@ import React from "react";
 import { Store } from "../../types";
 import styled from "styled-components";
 import Rating from "@mui/material/Rating"; // Import Rating component from MUI
-import cover from "../../../assets/store/cover.png";
+import cover from "../../../assets/store/cover3.png";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
@@ -15,7 +15,7 @@ export const StoreInformationSection: React.FC<StoreInformationSectionProps> = (
   return (
     <Container>
       <CoverImage>
-        <img src={store?.coverURL || cover} alt="Cover" />
+        <img src={ store?.coverURL|| cover} alt="Cover" />
       </CoverImage>
       <ProfileSection>
         <ProfileImage>
@@ -64,7 +64,8 @@ const Container = styled.div`
 const CoverImage = styled.div`
   img {
     width: 100%;
-    height: 220px;
+    object-position: center 20%;/* Ensures the top of the image is visible */
+    height: 250px;
     object-fit: cover;
     border-radius: 15px 15px 0 0;
   }
@@ -74,8 +75,8 @@ const ProfileSection = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: -60px; /* Pulls the profile image into the cover */
-  padding: 20px;
+  margin-top: -80px; /* Pulls the profile image into the cover */
+  padding: 10px;
   background-color: #fff;
   border-radius: 15px;
 `;
@@ -128,6 +129,8 @@ const SocialIcons = styled.div`
   display: flex;
   gap: 0.8rem;
   margin-top: 0.5rem;
+  align-items: center;
+  justify-content: center;
   svg {
     width: 2rem;
     height: 2.5rem !important;

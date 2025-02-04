@@ -12,6 +12,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { SelectChangeEvent } from "@mui/material/Select/SelectInput";
 import { Select } from "@mui/material";
 import { calcPriceSummation } from "./Service";
+import CardWriting from "../../components/Cake3D/CardWriting";
+import { Modal, Button } from "antd";
 
 interface CartItemDetailsProps {
   cartItemDto: CartItemDto;
@@ -236,6 +238,26 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
     setSelectedChoices((prev) => [...prev, newInstance]);
     setIsSelectDisplayed(false);
   };
+
+  /////////Message Section
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleSaveMessage = (id: string, message: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      message: message, // Save the message in the input field
+    }));
+    setIsModalVisible(false); // Close modal after saving
+  };
+
   return (
     <CustomModal open={isModalOpen} onClose={closeModal}>
       <CustomSnackbar
@@ -271,6 +293,7 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
                     }
                   />
                 </InputGroup>
+                <button onClick={handleOpenModal}>Open Card Writing</button>
                 <InputGroup>
                   <p>Message</p>
                   <input
@@ -428,6 +451,9 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
             })}
           </SpecificationsColumn>
         </ProductCard>
+        <Modal open={isModalVisible} onCancel={handleCloseModal} footer={null} zIndex={3000}>
+        <CardWriting cardId="1" onSaveMessage={handleSaveMessage} />
+      </Modal>
       </Container>
     </CustomModal>
   );
