@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext , useState } from "react";
 import styled from "styled-components";
 import { ShopContext } from "../../context/SweetContext";
 import share from "../../../assets/cake/CardIcon/share.png";
@@ -20,6 +20,7 @@ export const ReviewCake: React.FC<CakeReviewPopupProps> = ({
   cakeDescription
 }) => {
   const context = useContext(ShopContext);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false); // State for success message
 
   if (!context) {
     console.error("CakeReviewPopup must be used within a ShopContextProvider");
@@ -60,6 +61,13 @@ export const ReviewCake: React.FC<CakeReviewPopupProps> = ({
       alert("Failed to share the image.");
     }
   };
+  const handleAddToCart = () => {
+    onConfirm();
+    setShowSuccessMessage(true); // Show message
+    setTimeout(() => {
+      setShowSuccessMessage(false); // Hide message after 2 seconds
+    }, 2000);
+  };
   
   return (
     <ModalOverlay>
@@ -79,8 +87,11 @@ export const ReviewCake: React.FC<CakeReviewPopupProps> = ({
        
         <ButtonContainer>
           <CancelButton onClick={onClose}>Cancel</CancelButton>
-          <ConfirmButton onClick={onConfirm}>Add to Cart</ConfirmButton>
+          <ConfirmButton onClick={handleAddToCart}>Add to Cart</ConfirmButton>
         </ButtonContainer>
+
+        {showSuccessMessage && <SuccessMessage>Added successfully!</SuccessMessage>}
+
         {/* <EnhanceCakeImage/> */}
       </ModalContent>
     </ModalOverlay>
@@ -234,4 +245,18 @@ const ConfirmButton = styled.button`
     transform: translateY(-2px);
     background: #fb7b7b;
   }
+`;
+const SuccessMessage = styled.div`
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: green;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  animation: fadeOut 2s ease-in-out;
+  z-index: 20000;
+
 `;
