@@ -16,3 +16,4 @@ export * from "./shopping/Categories.types";
 export * from "./shopping/Store.types";
 export * from "./shopping/Cart.types";
 export * from "./shopping/Offers.types";
+export * from "./shopping/Review.types";

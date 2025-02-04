@@ -1,47 +1,19 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Rating } from "@mui/material";
-import { RihamImg } from "../../../../assets";
+import { DefaultProfilePicture } from "../../../../assets";
 import { Carousel, Divider } from "antd";
+import { Review } from "../../../types";
 
-
-export const ReviewSection = () => {
+interface ReviewSectionProps {
+  reviews?: Review[];
+}
+export const ReviewSection: React.FC<ReviewSectionProps> = ({ reviews }) => {
   const [expandedReview, setExpandedReview] = useState<number | null>(null);
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const toggleExpand = (id: number) => {
-    setExpandedReview(expandedReview === id ? null : id);
-  };
-
-  interface Review {
-    id: number;
-    name: string;
-    avatar: string;
-    rating: number;
-    feedback: string;
-  }
-
-  const reviewsData: Review[] = [
-    {
-      id: 1,
-      name: "John Doe",
-      avatar: RihamImg,
-      rating: 5,
-      feedback:
-        "Amazing service! The products exceeded my expectations. This is a more detailed review explaining the wonderful experience I had with the product. The service was great, and the quality was superb. Highly recommend it to everyone!",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      avatar: RihamImg,
-      rating: 4,
-      feedback: "Very satisfied with the quality and customer service.",
-    },
-  ];
 
   const openModal = (review: Review) => {
     setSelectedReview(review);
@@ -54,23 +26,23 @@ export const ReviewSection = () => {
   };
   const sliderSettings = {
     dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 2,
-  slidesToScroll: 1,
-  autoplay: true,
-  arrows: false,
-  centerMode: false,
-  responsive: [
-    {
-      breakpoint: 780,
-      settings: {
-        slidesToShow: 1,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    autoplay: true,
+    arrows: false,
+    centerMode: false,
+    responsive: [
+      {
+        breakpoint: 780,
+        settings: {
+          slidesToShow: 1,
+        },
       },
-    },
-  ],
+    ],
   };
-  
+
   const carouselSettings = {
     dots: false,
     dotPosition: "left" as const,
@@ -80,34 +52,46 @@ export const ReviewSection = () => {
     vertical: true,
     verticalSwiping: true,
   };
-  
-  
 
   return (
     <Container>
       <Divider style={{ borderColor: "#1a1a19b3" }}>
-      <h2 style={{fontSize: "25px"}}>Customer Reviews</h2>
+        <h2 style={{ fontSize: "25px", fontFamily: "Overlock" }}>
+          Customer Reviews
+        </h2>
       </Divider>
-      
+
       {/* Desktop Carousel */}
       <StyledCarousel {...carouselSettings}>
-        {reviewsData.map((review) => {
+        {reviews?.map((review) => {
           const isLong = review.feedback.length > 100; // Define long feedback
           const showFull = expandedReview === review.id;
-          const displayedText = showFull ? review.feedback : review.feedback.slice(0, 100) + (isLong ? "..." : "");
+          const displayedText = showFull
+            ? review.feedback
+            : review.feedback.slice(0, 100) + (isLong ? "..." : "");
 
           return (
-            <Card key={review.id}>
-              <div className="header" onClick={() => openModal(review)}>
-                <Avatar src={review.avatar} alt={review.name} />
+            <Card key={review.id} onClick={() => openModal(review)}>
+              <div className="header">
+                <Avatar
+                  src={review.userInfo.imageurl || DefaultProfilePicture}
+                  alt={review.userInfo.username}
+                />
                 <div className="name-rating">
-                  <p>{review.name}</p>
-                  <Rating name="rating" value={review.rating} readOnly size="small" />
+                  <p>
+                    {review.userInfo.firstName + " " + review.userInfo.lastName}
+                  </p>
+                  <Rating
+                    name="rating"
+                    value={review.rating}
+                    readOnly
+                    size="small"
+                  />
                 </div>
               </div>
               <Feedback>
                 {displayedText}
-                {isLong && <span style={{color: "#ce3a70"}}>View more</span>}
+                {isLong && <span style={{ color: "#ce3a70" }}>View more</span>}
               </Feedback>
             </Card>
           );
@@ -118,9 +102,21 @@ export const ReviewSection = () => {
       {isModalOpen && selectedReview && (
         <ModalContainer>
           <ModalContent>
-            <Avatar1 src={selectedReview.avatar} alt={selectedReview.name} />
-            <h2>{selectedReview.name}</h2>
-            <Rating name="rating" value={selectedReview.rating} readOnly size="small" />
+            <Avatar1
+              src={selectedReview?.userInfo?.imageurl || DefaultProfilePicture}
+              alt={selectedReview.userInfo.username}
+            />
+            <h2>
+              {selectedReview.userInfo.firstName +
+                " " +
+                selectedReview.userInfo.lastName}
+            </h2>
+            <Rating
+              name="rating"
+              value={selectedReview.rating}
+              readOnly
+              size="small"
+            />
             <p>
               <strong>Review: </strong>
               {selectedReview.feedback}
@@ -152,6 +148,11 @@ const Card = styled.div`
   width: 100%;
   max-width: 400px;
   height: 180px;
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
 `;
 
 const Avatar = styled.img`
@@ -178,7 +179,7 @@ const ViewMore = styled.span`
   cursor: pointer;
   font-weight: bold;
   margin-left: 5px;
-  font-size:15px;
+  font-size: 15px;
 `;
 
 const ModalContainer = styled.div`

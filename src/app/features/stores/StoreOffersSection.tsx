@@ -6,44 +6,17 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import mess from "../../../assets/Icons/message (2).png";
 import { Divider } from "antd";
-import { OfferDto, Store } from "../../types";
-import riham from "../../../assets/characters/riham.png";
-import riham1 from "../../../assets/characters/loginChar.png";
+import { OfferDto, Review, Store } from "../../types";
 import { useState } from "react";
 import { Loader } from "../../components/common";
-
-const reviews = [
-  {
-    id: 1,
-    name: "Alice",
-    text: "Amazing store! Great offers and fast delivery.",
-    image: riham,
-  },
-  {
-    id: 2,
-    name: "John",
-    text: "Loved the discounts. Will shop again for sure!",
-    image: riham1,
-  },
-  {
-    id: 3,
-    name: "Sophia",
-    text: "Customer service was excellent. Highly recommend!",
-    image: riham,
-  },
-  {
-    id: 4,
-    name: "Sophia",
-    text: "Customer service was excellent. Highly recommend!",
-    image: riham1,
-  },
-];
+import { DefaultProfilePicture } from "../../../assets";
 
 interface StoreOffersSectionProps {
   store: Store;
   offers: OfferDto[] | undefined;
   isLoading: boolean;
   errors: any;
+  reviews?: Review[];
 }
 
 export const StoreOffersSection: React.FC<StoreOffersSectionProps> = ({
@@ -51,6 +24,7 @@ export const StoreOffersSection: React.FC<StoreOffersSectionProps> = ({
   offers,
   isLoading,
   errors,
+  reviews,
 }) => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -121,18 +95,21 @@ export const StoreOffersSection: React.FC<StoreOffersSectionProps> = ({
       {/* Customer Reviews */}
       <ReviewsSection>
         <div style={{ width: "100%", margin: "0 auto" }}>
-          <Divider style={{ borderColor: "#1a1a19b3" }}>
-            <Title>Customer Reviews</Title>
-          </Divider>
+          <Title>Customer Reviews</Title>
         </div>
 
         <ReviewsList>
-          {reviews.map((review) => (
+          {reviews?.map((review) => (
             <ReviewCard key={review.id}>
-              <img src={review.image} alt={review.name} />
+              <img
+                src={review.userInfo.imageurl || DefaultProfilePicture}
+                alt={review.userInfo.username}
+              />
               <div>
-                <ReviewerName>{review.name}</ReviewerName>
-                <ReviewText>{review.text}</ReviewText>
+                <ReviewerName>
+                  {review.userInfo.firstName + " " + review.userInfo.lastName}
+                </ReviewerName>
+                <ReviewText>{review.feedback}</ReviewText>
               </div>
             </ReviewCard>
           ))}

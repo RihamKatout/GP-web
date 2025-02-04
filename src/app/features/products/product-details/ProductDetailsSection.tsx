@@ -1,5 +1,5 @@
 import React from "react";
-import { Product, ProductDetail } from "../../../types";
+import { Product, ProductDetail, Review } from "../../../types";
 import styled from "styled-components";
 import { ProductDetailsCard } from "./ProductDetailsCard";
 import { CustomizableProduct, ReviewSection, StoreCard } from "../..";
@@ -7,10 +7,12 @@ import { CustomizableProduct, ReviewSection, StoreCard } from "../..";
 //TODO: fix responsive
 interface ProductSectionProps {
   productDto: ProductDetail;
+  reviews?: Review[];
 }
 
 export const ProductSection: React.FC<ProductSectionProps> = ({
   productDto,
+  reviews,
 }) => {
   const product: Product = productDto.product;
   const storeInfo = productDto.store;
@@ -23,7 +25,7 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
       </ProductContainer>
       <StoreAndReviewsContainer>
         <StoreCard storeInfo={storeInfo} />
-        <ReviewSection />
+        <ReviewSection reviews = {reviews}/>
       </StoreAndReviewsContainer>
     </SectionContainer>
   );

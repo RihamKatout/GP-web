@@ -10,7 +10,7 @@ import {
   StoreProductsSection,
 } from "../../features";
 import styled from "styled-components";
-import { OffersService } from "../../api";
+import { OffersService, ReviewService } from "../../api";
 
 export const StorePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,14 +19,23 @@ export const StorePage = () => {
     scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const {
-    data: store,
-    isLoading,
-    error,
-  } = useQuery(["store", id], () => StoreService.getStoreById(Number(id)), {
-    enabled: !!id,
-    cacheTime: 0,
-  });
+  const { data: store } = useQuery(
+    ["store", id],
+    () => StoreService.getStoreById(Number(id)),
+    {
+      enabled: !!id,
+      cacheTime: 0,
+    }
+  );
+
+  const { data: reviews } = useQuery(
+    ["reviews", id],
+    () => ReviewService.getReviewsForStore(Number(id)),
+    {
+      enabled: !!id,
+      cacheTime: 0,
+    }
+  );
 
   const {
     data: offers,
@@ -53,6 +62,7 @@ export const StorePage = () => {
               offers={offers ?? []}
               isLoading={offersLoading}
               errors={offersError}
+              reviews={reviews}
             />
             <StoreProductsSection
               storeId={store?.id}
@@ -69,8 +79,8 @@ const StoreContainer = styled.div`
   margin: 1rem;
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 3fr 1fr; 
-  grid-template-rows: auto 1fr; 
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: auto 1fr;
   grid-gap: 1rem;
   grid-template-areas:
     "storeInfo storeInfo"

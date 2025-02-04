@@ -13,3 +13,11 @@ export type User = {
   accountNonExpired: boolean;
   credentialsNonExpired: boolean;
 };
+
+export interface UserBasicInfo{
+  id: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+  imageurl: string | null;
+}

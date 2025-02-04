@@ -31,3 +31,6 @@ export const DefaultStoreImg = defaultStore;
 
 import defaultCategoryIcon from "./default/default-category-icon.png";
 export const DefaultCategoryIcon = defaultCategoryIcon;
+
+import defaultProfilePicture from "./default/default-profile-picture.png";
+export const DefaultProfilePicture = defaultProfilePicture;
