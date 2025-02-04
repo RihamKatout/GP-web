@@ -12,7 +12,14 @@ export interface OfferDto {
 }
 
 export interface Offer {
-  offerInfo: OfferDto;
+  length: number;
+  id: number;
+  publicOffer: boolean;
+  title: string;
+  description: string;
+  imageurl: string;
+  discount: number;
+  endDate: string;
   storeInfo?: StoreBasicInfoDto;
   products: ProductWithStoreDto[];
 }

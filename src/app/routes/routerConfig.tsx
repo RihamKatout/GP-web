@@ -22,7 +22,7 @@ import { DashboardPage } from "../pages/admin/DashboardPage";
 import ChatPage from "../features/authentication/ChatPage";
 import HelpCenterChat from "../features/authentication/HelpCenterChat";
 import { NotFound } from "../pages/errors/NotFound";
-import OfferPage from "../features/offers/OfferPage";
+import {OfferDetails} from "../features/offers/OfferDetails";
 
 const routerConfig = createBrowserRouter([
   {
@@ -86,10 +86,10 @@ const routerConfig = createBrowserRouter([
     ),
   },
   {
-    path: "/offerPage",
+    path: "/offer/:id",
     element: (
       <MainLayout>
-        <OfferPage />
+        <OfferDetails />
       </MainLayout>
     ),
   },
