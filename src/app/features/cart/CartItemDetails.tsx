@@ -293,21 +293,37 @@ export const CartItemDetails: React.FC<CartItemDetailsProps> = ({
                     }
                   />
                 </InputGroup>
-                <button onClick={handleOpenModal}>Open Card Writing</button>
                 <InputGroup>
-                  <p>Message</p>
-                  <input
-                    type="text"
-                    placeholder="Message"
-                    value={formData.message}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        message: e.target.value,
-                      }))
-                    }
-                  />
-                </InputGroup>
+  <p>Message</p>
+  {!isModalVisible ? (
+    <button
+      onClick={() => setIsModalVisible(true)}
+      className="filled-gray"
+      style={{
+        width: "60%",
+        border: "1px solid black",
+        fontSize: "1rem",
+        borderRadius: "0.5rem",
+        backgroundColor: "rgb(255, 209, 209)",
+      }}
+    >
+      Write a message
+    </button>
+  ) : (
+    <input
+      type="text"
+      placeholder="Message"
+      value={formData.message}
+      onChange={(e) =>
+        setFormData((prev) => ({
+          ...prev,
+          message: e.target.value,
+        }))
+      }
+    />
+  )}
+</InputGroup>
+
                 <InputGroup>
                   <p>Quantity</p>
                   <input
