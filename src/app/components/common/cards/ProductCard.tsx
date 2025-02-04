@@ -15,8 +15,9 @@ export const ProductCard: React.FC<
   }
 > = (productDto) => {
   const navigate = useNavigate();
-  const product: Product = productDto.product;
-  const [isWishlisted, setIsWishlisted] = useState(productDto.inWishlist);
+  const product: Product | undefined = productDto?.product;
+  if (!product) return null; 
+    const [isWishlisted, setIsWishlisted] = useState(productDto.inWishlist);
   const [configurations, setConfigurations] = useState<Configuration[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isAvailable =
