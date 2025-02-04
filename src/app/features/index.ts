@@ -18,7 +18,6 @@ export * from "./cart/EmptyCart";
 export * from "./cart/CartItemCard";
 
 // products
-export * from "./cart/AddToCartPreview";
 export * from "./products/product-details/ProductDetailsSection";
 export * from "./products/product-details/ProductDetailsCard";
 export * from "./products/product-details/StoreCard";
