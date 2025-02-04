@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
 import {
   AddStoreSection,
+  MyOrdersSection,
   MyStoresSection,
   ProfileInfoSection,
   Sidebar,
@@ -15,7 +16,7 @@ export const ProfilePage = () => {
   const navigate = useNavigate();
   const { logoutContext, user } = useAuth();
   const [selectedSection, setSelectedSection] = useState<ProfileSectionsEnum>(
-    ProfileSectionsEnum.AddStore
+    ProfileSectionsEnum.MyOrders
   );
 
   useEffect(() => {
@@ -50,6 +51,9 @@ export const ProfilePage = () => {
           )}
           {selectedSection === ProfileSectionsEnum.AddStore && (
             <AddStoreSection setSelectedSection={setSelectedSection} />
+          )}
+          {selectedSection === ProfileSectionsEnum.MyOrders && (
+            <MyOrdersSection/>
           )}
         </MainContent>
       </UserProfileContainer>

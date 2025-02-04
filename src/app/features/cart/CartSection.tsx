@@ -3,38 +3,54 @@ import styled from "styled-components";
 import { CartService } from "../../api";
 import { Divider } from "@mui/material";
 import { CartItemDto } from "../../types";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { Button, Input, Popconfirm } from "antd";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import InfoIcon from "@mui/icons-material/Info";
 
 // TODO: handle payment
 interface CartSectionProps {
   cartItems: CartItemDto[];
   setItems?: React.Dispatch<React.SetStateAction<CartItemDto[]>>;
+  selectedItems: CartItemDto[] | undefined;
+  setSelectedItems: React.Dispatch<
+    React.SetStateAction<CartItemDto[] | undefined>
+  >;
+  handlePayment: () => void;
+  deliveryCost: number;
+  totalPrice: number;
+  setTotalPrice: React.Dispatch<React.SetStateAction<number>>;
+  address?: string;
+  setAddress: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const CartSection: React.FC<CartSectionProps> = ({
   cartItems,
   setItems,
+  selectedItems,
+  setSelectedItems,
+  handlePayment,
+  deliveryCost,
+  totalPrice,
+  setTotalPrice,
+  address,
+  setAddress,
 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [selectedItems, setSelectedItems] = useState<Number[] | undefined>(
-    undefined
-  );
-  const [totalPrice, setTotalPrice] = useState<number>(0);
+
   useEffect(() => {
     scrollTo(0, 0);
-    setSelectedItems(undefined);
   }, []);
 
   const handleDeleteSelectedItems = async () => {
     if (!selectedItems) return;
-    await CartService.deleteItems(selectedItems);
+    const itemIds = selectedItems.map((item) => item.cartItem.id);
+    await CartService.deleteItems(itemIds);
     queryClient.invalidateQueries(["cart"]);
     setSelectedItems(undefined);
     setTotalPrice(0);
@@ -118,13 +134,13 @@ export const CartSection: React.FC<CartSectionProps> = ({
         </div>
         <div className="Option">
           <p>Delivery Service</p>
-          <h5>- $</h5>
+          <h5>{deliveryCost} $</h5>
         </div>
         <div className="Option">
           <p style={{ color: "black", fontWeight: "bold", fontSize: "1.1rem" }}>
             Total
           </p>
-          <h5>{totalPrice}$</h5>
+          <h5>{totalPrice + deliveryCost}$</h5>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
           <Input
@@ -134,7 +150,26 @@ export const CartSection: React.FC<CartSectionProps> = ({
           />
           <Button className="dark-button">Apply</Button>
         </div>
-        <Button className="dark-button">Pay</Button>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+          <p style={{ margin: "0" }}>Address</p>
+          <Input
+            type="text"
+            placeholder="address"
+            color="${({ theme }) => theme.colors.secondary};"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </div>
+        <Popconfirm
+          title="Complete payment"
+          description="Are you sure to complete payment?"
+          icon={<InfoIcon style={{ color: "blue" }} />}
+          onConfirm={handlePayment}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button className="dark-button">Pay</Button>
+        </Popconfirm>
         <ClearButtonsContainer>
           {selectedItems?.length ? (
             <Button disabled={!selectedItems?.length}>

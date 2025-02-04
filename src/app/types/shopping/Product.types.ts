@@ -96,3 +96,10 @@ export interface ProductFilters {
   page: number | 0;
   size: number | 20;
 }
+
+export interface ProductBasicInfo{
+  id: number;
+  name?: string;
+  mainImageURL?: string;
+  isAvailable?: boolean;
+}

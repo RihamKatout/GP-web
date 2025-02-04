@@ -12,8 +12,10 @@ import { calcPriceSummation } from "./Service";
 
 interface CartItemCardProps {
   item: CartItemDto;
-  setSelectedItems: React.Dispatch<React.SetStateAction<Number[] | undefined>>;
-  checkedItems?: Number[];
+  setSelectedItems: React.Dispatch<
+    React.SetStateAction<CartItemDto[] | undefined>
+  >;
+  checkedItems?: CartItemDto[];
   setItems?: React.Dispatch<React.SetStateAction<CartItemDto[]>>;
   handleDeleteItem: (id: Number) => void;
   setTotalPrice?: React.Dispatch<React.SetStateAction<number>>;
@@ -41,7 +43,7 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
         item.cartItem.id,
         value
       );
-      if (checkedItems.includes(cartItemDto.cartItem.id)) {
+      if (checkedItems.includes(item)) {
         setTotalPrice &&
           setTotalPrice((prev) => prev - price * quantity + price * value);
       }
@@ -80,21 +82,16 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
       <ItemContainer>
         <input
           type="checkbox"
-          checked={checkedItems.includes(cartItemDto.cartItem.id)}
+          checked={checkedItems.includes(item)}
           onChange={() => {
-            if (!checkedItems.includes(cartItemDto.cartItem.id)) {
+            if (!checkedItems.includes(item)) {
               setTotalPrice &&
                 setTotalPrice((prev) => (prev || 0) + price * quantity);
-              setSelectedItems((prev) => [
-                ...(prev || []),
-                cartItemDto.cartItem.id,
-              ]);
+              setSelectedItems((prev) => [...(prev || []), item]);
             } else {
               setTotalPrice &&
                 setTotalPrice((prev) => (prev || 0) - price * quantity);
-              setSelectedItems((prev) =>
-                prev?.filter((id) => id !== cartItemDto.cartItem.id)
-              );
+              setSelectedItems((prev) => prev?.filter((id) => id !== item));
             }
           }}
         />

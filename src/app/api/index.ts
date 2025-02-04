@@ -9,3 +9,4 @@ export * from "./AdminService";
 export * from "./UserService";
 export * from "./OffersService";
 export * from "./ReviewService";
+export * from "./OrderService";

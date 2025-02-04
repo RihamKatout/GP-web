@@ -24,24 +24,6 @@ export const ReviewSection: React.FC<ReviewSectionProps> = ({ reviews }) => {
     setIsModalOpen(false);
     setSelectedReview(null);
   };
-  const sliderSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    autoplay: true,
-    arrows: false,
-    centerMode: false,
-    responsive: [
-      {
-        breakpoint: 780,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
 
   const carouselSettings = {
     dots: false,
@@ -172,14 +154,6 @@ const Feedback = styled.p`
   text-align: left;
   color: #333;
   overflow: hidden;
-`;
-
-const ViewMore = styled.span`
-  color: #6864d1;
-  cursor: pointer;
-  font-weight: bold;
-  margin-left: 5px;
-  font-size: 15px;
 `;
 
 const ModalContainer = styled.div`
