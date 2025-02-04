@@ -636,8 +636,8 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
           </group>
           </RotatingCake>
           <>
-          <MiniCharacter position={[4.4, 1.8, 0]} scale={0.55} rotation={[0, Math.PI / 2, 0.2]} />
-          {/* <SpeechBubble
+          {/* <MiniCharacter position={[4.4, 1.8, 0]} scale={0.55} rotation={[0, Math.PI / 2, 0.2]} />
+          <SpeechBubble
              texts={[...(currentStage === 1 ? ['"Hello There!😀"'] : []), ...(currentStage === 1 ? ['"Lets Make a Cake!"'] : []),...(currentStage === 1 ? ['"Show me Your Art"'] : []),
               ...(currentStage === 2 ? ['"Thats cool!"'] : []), ...(currentStage === 2 ? ['"Nice Coloring"'] : []),...(currentStage === 2? ['"Keep Going.."'] : []),...(currentStage === 2 ? ['"You are Talented"'] : []),
              ...(currentStage === 3 ? ['"Do Your Final Touch"'] : []),...(currentStage === 3 ? ['"Almost There!"'] : []),...(currentStage === 3 ? ['"Your cake is ready!"'] : []),]}
