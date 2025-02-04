@@ -21,7 +21,7 @@ export const OfferDetails: React.FC = () => {
       },
     }
   );
-
+  console.log("Offer products:", offer);
   return (
     <div style={{ margin: "50px" }}>
       <h1>Offer Details</h1>
@@ -32,39 +32,29 @@ export const OfferDetails: React.FC = () => {
       ) : (
         offer && (
           <div>
-            <h2>{offer?.title}</h2>
-            <p>Description: {offer?.description}</p>
-            <p>Discount: {offer?.discount}%</p>
-            <p>End Date: {offer?.endDate}</p>
+            <h2>{offer?.offer?.title}</h2>
+            <p>Description: {offer?.offer?.description}</p>
+            <p>Discount: {offer?.offer?.discount}%</p>
+            <p>End Date: {offer?.offer?.endDate}</p>
             <img
-              src={offer?.imageurl}
-              alt={offer?.title}
+              src={offer?.offer?.imageurl}
+              alt={offer?.offer?.title}
               style={{ width: "200px", borderRadius: "8px" }}
             /> 
+
             
-            {offer?.products?.length ? (
-  <div>
-    <h3>Products:</h3>
-    <ul>
-      {/* {offer.products.map((product) => (
-        <li key={product.id} style={{ marginBottom: "10px", listStyle: "none", borderBottom: "1px solid #ddd", paddingBottom: "10px" }}>
-          <h4>{product.name}</h4>
-          <p>{product.description}</p>
-          <p>Price: ${product.basePrice}</p>
-          <img
-            src={product.mainImageURL}
-            alt={product.name}
-            style={{ width: "150px", borderRadius: "8px" }}
-          />
-        </li>
-      ))} */}
-    </ul>
-  </div>
+            
+{offer?.products?.length ? (
+  offer.products.map((productDto, index) => {
+    return productDto?.product ? (
+      <ProductCard key={productDto.product.id} {...productDto} />
+    ) : (
+      <p key={index}>Invalid product</p> // Helps detect missing product cases
+    );
+  })
 ) : (
   <p>No products available for this offer.</p>
 )}
-
-
           </div>
         )
       )}
