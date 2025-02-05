@@ -67,12 +67,14 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       </div>
       {/* BackgroundRemover Integration */}
       <Divider style={{ margin: "1rem 0" }} />
-      <h6>Background Remover</h6>
       {uploadedImage && (
-        <BackgroundRemover
-          imageFile={uploadedImage}
-          setWithoutBackground={setWithoutBackground}
-        />
+        <>
+          <h6>Background Remover</h6>
+          <BackgroundRemover
+            imageFile={uploadedImage}
+            setWithoutBackground={setWithoutBackground}
+          />
+        </>
       )}
     </Container>
   );

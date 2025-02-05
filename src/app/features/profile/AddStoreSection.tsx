@@ -11,7 +11,7 @@ import {
 import { StoreCategoryService } from "../../api/categoryService";
 import { StoreService } from "../../api";
 import { CustomSnackbar } from "../../components/common/CustomSnackbar";
-
+import { ImageUploader } from "../../components/specificComponents/ImageUploader";
 
 // TODO: add image uploader for logo and cover images
 interface SnackbarNotification {
@@ -31,6 +31,8 @@ export const AddStoreSection: React.FC<ProfileInfoSectionProps> = ({
     type: "success",
   });
 
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [coverFile, setCoverFile] = useState<File | null>(null);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -54,7 +56,7 @@ export const AddStoreSection: React.FC<ProfileInfoSectionProps> = ({
 
   const onSubmit: SubmitHandler<AddStoreDto> = async (data) => {
     try {
-      const response = await StoreService.addStore(data);
+      const response = await StoreService.addStore(data, logoFile, coverFile);
       setNotification({
         message: "Store created successfully!",
         type: "success",
@@ -75,8 +77,8 @@ export const AddStoreSection: React.FC<ProfileInfoSectionProps> = ({
 
   return (
     <MainContainer>
-      <WelcomeText>Create New Store</WelcomeText>
       <FormContainer onSubmit={handleSubmit(onSubmit)}>
+        <WelcomeText>Create New Store</WelcomeText>
         <InputWrapper>
           <StyledInput
             {...register("name")}
@@ -97,7 +99,7 @@ export const AddStoreSection: React.FC<ProfileInfoSectionProps> = ({
           )}
         </InputWrapper>
 
-        <InputWrapper>
+        {/* <InputWrapper>
           <StyledInput
             {...register("logoURL")}
             placeholder="Logo URL"
@@ -117,8 +119,7 @@ export const AddStoreSection: React.FC<ProfileInfoSectionProps> = ({
           {errors.coverURL && watch("coverURL") && (
             <ErrorMessage>{errors.coverURL.message}</ErrorMessage>
           )}
-        </InputWrapper>
-
+        </InputWrapper> */}
         <InputWrapper>
           <StyledSelect
             {...register("categoryId", { valueAsNumber: true })}
@@ -144,6 +145,20 @@ export const AddStoreSection: React.FC<ProfileInfoSectionProps> = ({
           </StyledButton>
         </ButtonContainer>
       </FormContainer>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          marginTop: "5rem",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+          borderRadius: "8px",
+          padding: "1rem",
+        }}
+      >
+        <ImageUploader imageName="Logo" setFinalImage={setLogoFile} />
+        <ImageUploader imageName="Cover" setFinalImage={setCoverFile} />
+      </div>
       <CustomSnackbar
         message={notification.message}
         isSnackbarOpen={isSnackbarOpen}
@@ -156,18 +171,18 @@ export const AddStoreSection: React.FC<ProfileInfoSectionProps> = ({
 
 const MainContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   padding: 2rem;
-  max-width: 600px;
+  width: 100%;
   margin: 0 auto;
+  gap: 2rem;
 `;
 
 const WelcomeText = styled.h2`
   font-size: 2rem;
   color: #333;
   margin-bottom: 2rem;
-  text-align: center;
+  text-align: left;
   font-family: "Overlock", sans-serif;
   font-weight: 700;
 `;
@@ -175,7 +190,7 @@ const WelcomeText = styled.h2`
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 60%;
   gap: 1rem;
 `;
 

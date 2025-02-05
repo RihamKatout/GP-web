@@ -12,8 +12,8 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { StoreManagerService } from "../../api";
-import { ChatFinishReason } from "cohere-ai/api";
 import ChatPage from "../../features/authentication/ChatPage";
+import StoreOrdersSection from "../../features/store-manager/dashboard/sections/StoreOrdersSection";
 
 export const StoreDashboardPage = () => {
   const { id } = useParams();
@@ -63,7 +63,10 @@ export const StoreDashboardPage = () => {
       />
 
       {selectedSection === StoreDashboardSectionsEnum.AddProduct && (
-        <AddProductSection categories={categories} setSelectedSection={setSelectedSection}/>
+        <AddProductSection
+          categories={categories}
+          setSelectedSection={setSelectedSection}
+        />
       )}
       {selectedSection === StoreDashboardSectionsEnum.Dashboard && (
         <StoreAnalyticsSection
@@ -82,11 +85,16 @@ export const StoreDashboardPage = () => {
         />
       )}
 
+      {selectedSection === StoreDashboardSectionsEnum.Orders && (
+        <StoreOrdersSection
+          storeId={Number(id)}
+        />
+      )}
+
       {selectedSection === StoreDashboardSectionsEnum.Messages && (
-        <div style={{ height: "400px", marginTop:0}}>
+        <div style={{ height: "400px", marginTop: 0 }}>
           <ChatPage />
         </div>
-        
       )}
     </Container>
   );

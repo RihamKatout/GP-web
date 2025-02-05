@@ -10,4 +10,12 @@ export const OrderService = {
     const response = await clientAxios.get(`/order`);
     return response.data;
   },
+  getStoreOrders: async (storeId: number) => {
+    const response = await clientAxios.get(`/order/store/${storeId}`);
+    return response.data;
+  },
+  updateSubOrderStatus: async (subOrderId: number, status: string) => {
+    const response = await clientAxios.put(`/order/${subOrderId}`, { status });
+    return response;
+  },
 };

@@ -16,7 +16,7 @@ export const ProfilePage = () => {
   const navigate = useNavigate();
   const { logoutContext, user } = useAuth();
   const [selectedSection, setSelectedSection] = useState<ProfileSectionsEnum>(
-    ProfileSectionsEnum.MyOrders
+    ProfileSectionsEnum.Profile
   );
 
   useEffect(() => {
