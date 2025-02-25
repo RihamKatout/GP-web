@@ -2,26 +2,27 @@ import { useRef } from "react";
 import emailjs from "@emailjs/browser";
 import styled from "styled-components";
 import video from "../../../assets/store/try.mp4";
-//import { Theme } from "../../../utils/Theme";
-// npm i @emailjs/browser
 
 const Contact = () => {
   const form = useRef<HTMLFormElement>(null);
 
-  const sendEmail = (e: { preventDefault: () => void; }) => {
+  const sendEmail = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     if (form.current) {
       emailjs
-        .sendForm('service_7o4fzgn', 'template_ae4fji9', form.current, '3utpEi5L2w2bw-lZn')
+        .sendForm(
+          "service_4mswwre",
+          "template_ae4fji9",
+          form.current,
+          "3utpEi5L2w2bw-lZn"
+        )
         .then(
           () => {
-            console.log('SUCCESS!');
-            form.current?.reset(); // Clear the form fields
+            form.current?.reset();
           },
           (error) => {
-            console.log('FAILED...', error.text);
-          },
+          }
         );
     }
   };
@@ -38,15 +39,8 @@ const Contact = () => {
         <input type="submit" value="Send" />
       </form>
 
-      {/* Replace Lottie animation with video */}
       <div className="video-container">
-        <video
-          src={video} // Replace with your video URL
-          autoPlay
-          loop
-          muted
-          controls={false} // Set to true if you want playback controls
-        />
+        <video src={video} autoPlay loop muted controls={false} />
       </div>
     </StyledContactForm>
   );
@@ -116,15 +110,15 @@ const StyledContactForm = styled.div`
       transition: background-color 0.3s;
       margin-top: 20px;
       background-color: ${({ theme }) => theme.colors.primary};
-      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),
+        0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,
+        0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
 
       &:hover {
         transform: scale(1.05);
-        box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                    0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                    0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+        box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),
+          0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,
+          0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
         background-color: ${({ theme }) => theme.colors.secondary_light};
       }
     }
@@ -132,15 +126,12 @@ const StyledContactForm = styled.div`
 
   .video-container {
     flex-shrink: 0;
-    width: 60%; /* Allocate space for the video */
+    width: 60%;
     display: flex;
     justify-content: center;
     align-items: center;
-
     video {
       width: 100%;
-      //border-radius: 10px; /* Optional: Add rounded corners */
-      //box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); Optional: Add shadow
     }
   }
 
@@ -161,7 +152,8 @@ const StyledContactForm = styled.div`
     form {
       font-size: 14px;
 
-      input, textarea {
+      input,
+      textarea {
         height: 30px;
       }
     }
@@ -171,7 +163,8 @@ const StyledContactForm = styled.div`
     form {
       font-size: 12px;
 
-      input, textarea {
+      input,
+      textarea {
         height: 25px;
       }
     }

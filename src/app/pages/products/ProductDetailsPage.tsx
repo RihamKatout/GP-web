@@ -1,12 +1,12 @@
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import { ProductService } from "../../api";
+import { ProductService, ReviewService } from "../../api";
 import { MainLayout, SectionContainer } from "../../components/Layout";
 import { SectionIdEnum } from "../../types";
 import styled from "styled-components";
 import "react-alice-carousel/lib/alice-carousel.css";
 import { useEffect } from "react";
-import { ProductSection } from "../../features";
+import { ProductSection, ReviewSection } from "../../features";
 
 const SimilarSection = styled.section``;
 
@@ -27,6 +27,17 @@ export const ProductDetailsPage = () => {
     }
   );
 
+  const {
+    data: reviews,
+  } = useQuery(
+    ["reviews", id],
+    () => ReviewService.getReviewForProduct(Number(id)),
+    {
+      enabled: !!id,
+      cacheTime: 0,
+    }
+  );
+
   //TODO: fix
   if (!productDto) return <div>Product not found</div>;
 
@@ -35,7 +46,7 @@ export const ProductDetailsPage = () => {
       <SectionContainer sectionId={SectionIdEnum.product}>
         {productDto ? (
           <>
-            <ProductSection productDto={productDto}></ProductSection>
+            <ProductSection productDto={productDto} reviews={reviews}></ProductSection>
             <SimilarSection></SimilarSection>
           </>
         ) : (

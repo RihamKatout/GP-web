@@ -1,7 +1,6 @@
 import React from 'react';
-
+import { useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
-
 interface HeartProps {
   position?: [number, number, number];
   scale?: [number, number, number];
@@ -14,6 +13,8 @@ const Heart: React.FC<HeartProps> = ({
   rotation = [0, 0, 0],
   color = '#FF69B4',
 }) => {
+  const cakeTexture = useLoader(THREE.TextureLoader, '/textuers/textures.jpg');
+
   // Define the heart shape
   const heartShape = new THREE.Shape();
 
@@ -35,7 +36,8 @@ const Heart: React.FC<HeartProps> = ({
 
   return (
     <mesh geometry={heartGeometry} position={position} scale={scale} rotation={rotation}>
-      <meshStandardMaterial color={color} />
+      <meshStandardMaterial color={color} map={cakeTexture} />
+
     </mesh>
   );
 }

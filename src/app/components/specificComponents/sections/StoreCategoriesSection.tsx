@@ -1,6 +1,5 @@
 import { CardsGrid } from "../../../styles";
 import { CategoryCard, Loader } from "../../common";
-import { useMediaQuery, useTheme } from "@mui/material";
 import { Category } from "../../../types";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -11,7 +10,6 @@ const CategoriesSectionContainer = styled.div`
   gap: 2rem;
   display: flex;
   justify-content: center;
-  // background-color: red;
   align-items: center;
   .shopImg {
     width: 28%;
@@ -19,6 +17,10 @@ const CategoriesSectionContainer = styled.div`
   }
   h1 {
     margin: 0;
+    font-family: "DynaPuff";
+    font-weight: 400;
+    font-size: 3.7rem;
+    color: rgb(27, 26, 52);
   }
   @media (max-width: 768px) {
     padding-top: 2rem;
@@ -27,6 +29,9 @@ const CategoriesSectionContainer = styled.div`
     .shopImg {
       width: 45%;
       height: 45%;
+    }
+    h1 {
+      font-size: 2.5rem;
     }
   }
 `;
@@ -41,8 +46,6 @@ export const StoreCategoriesSection: React.FC<StoreCategoriesSectionProps> = ({
   isLoading,
   error,
 }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
 
   if (error instanceof Error) return <p>Error: {error.message}</p>;
@@ -63,28 +66,7 @@ export const StoreCategoriesSection: React.FC<StoreCategoriesSectionProps> = ({
           alignItems: "center",
         }}
       >
-        {isMobile ? (
-          <h1
-            style={{
-              fontFamily: "DynaPuff",
-              fontWeight: "400",
-              fontSize: "2.5rem",
-            }}
-          >
-            Shop Categories
-          </h1>
-        ) : (
-          <h1
-            style={{
-              fontFamily: "DynaPuff",
-              fontWeight: "400",
-              fontSize: "3.7rem",
-              color: "rgb(27, 26, 52)",
-            }}
-          >
-            Shop Categories
-          </h1>
-        )}
+        <h1>Shop Categories</h1>
         {isLoading ? (
           <Loader type="bouncing" />
         ) : (

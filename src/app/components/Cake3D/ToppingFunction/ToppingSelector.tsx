@@ -51,7 +51,7 @@ const CakeButton = styled.button<{ active: boolean }>`
     transform: scale(1.05);
     cursor: pointer;
   }background-color: ${({ theme }) => theme.colors.wight}; 
-      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
+      box-shadow: 0 1rem 1.0rem 0 rgba(217, 217, 217, 0.5), 
                   0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
                   0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
 
@@ -59,7 +59,7 @@ const CakeButton = styled.button<{ active: boolean }>`
     //background-color: ${({ theme }) => theme.colors.secondary}; 
       box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
                   0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.028) inset;
+                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
   }
 
   img {
@@ -68,6 +68,23 @@ const CakeButton = styled.button<{ active: boolean }>`
     margin-right: 8px;
   }
 `;
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  // Small screen styles
+  @media (max-width: 768px) {
+    flex-direction: column; /* Stack buttons vertically */
+    height: 100px; /* Set a fixed height */
+    padding: 10px;
+    padding-bottom: 30px;
+    overflow-y: auto; /* Enable scrolling for overflow content */
+  }
+`;
+
 
 interface ToppingSelectorProps {
   onSelectTopping: (topping: string | null) => void;
@@ -107,9 +124,10 @@ const ToppingSelector: React.FC<ToppingSelectorProps> = ({
       <div style={{ width: '100%' , margin: '0 auto' , justifyContent: 'center' , alignItems: 'center' }}>
       <div style={{ width: '100%', margin: '0 auto' }}>
         <Divider style={{ borderColor: '#1a1a19b3' }}>
-          <ColorLabel>Select The Topping:</ColorLabel>
+          <ColorLabel style={{ marginTop:"10px"}}>Select The Topping:</ColorLabel>
         </Divider>
        </div>
+       <ButtonContainer>
         <CakeButton
           onClick={() => handleToppingClick('mix')}
           active={selectedTopping === 'mix'}
@@ -152,6 +170,7 @@ const ToppingSelector: React.FC<ToppingSelectorProps> = ({
           <img src={cramel} />
           {/* <div style={{marginTop: '5px' , textAlign: 'center' , fontWeight: '500'}}>Cramel</div> */}
         </CakeButton>
+        </ButtonContainer>
       </div>
 
       <div style={{ width: '100%' }}>

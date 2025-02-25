@@ -1,4 +1,4 @@
-import { createBrowserRouter, Link } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import {
   HomePage,
   LoginPage,
@@ -12,13 +12,17 @@ import {
   StoreDashboardPage,
   WishlistPage,
 } from "../pages";
-import { Button, MainBody } from "../styles/Global.styled";
+import { MainBody } from "../styles/Global.styled";
 import CakeScene from "../components/Cake3D/CakeComponent";
 import Hero from "../SweetTouches/component/Hero";
 import Navbar from "../SweetTouches/component/SweetNavbar";
 import { MainLayout } from "../components/Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import { DashboardPage } from "../pages/admin/DashboardPage";
+import ChatPage from "../features/authentication/ChatPage";
+import HelpCenterChat from "../features/authentication/HelpCenterChat";
+import { NotFound } from "../pages/errors/NotFound";
+import {OfferDetails} from "../features/offers/OfferDetails";
 
 const routerConfig = createBrowserRouter([
   {
@@ -74,6 +78,30 @@ const routerConfig = createBrowserRouter([
     ),
   },
   {
+    path: "/chat",
+    element: (
+      <MainLayout>
+        <ChatPage />
+      </MainLayout>
+    ),
+  },
+  {
+    path: "/offer/:id",
+    element: (
+      <MainLayout>
+        <OfferDetails />
+      </MainLayout>
+    ),
+  },
+  {
+    path: "/chatHelper",
+    element: (
+      <MainLayout>
+        <HelpCenterChat />
+      </MainLayout>
+    ),
+  },
+  {
     path: "/sweettouches",
     element: (
       <MainBody>
@@ -119,10 +147,7 @@ const routerConfig = createBrowserRouter([
     path: "*",
     element: (
       <MainBody>
-        <h1>404 Not Found</h1>
-        <Button>
-          <Link to="/">Go Home</Link>
-        </Button>
+        <NotFound />
       </MainBody>
     ),
   },

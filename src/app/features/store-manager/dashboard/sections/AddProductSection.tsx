@@ -13,6 +13,7 @@ import { ProductService } from "../../../../api";
 import { useParams } from "react-router-dom";
 import { productSchema } from "../../../../validations/product.validations";
 import { z } from "zod";
+import { ImageUploader } from "../../../../components/specificComponents/ImageUploader";
 
 interface AddProductSectionProps {
   categories: Category[];
@@ -23,7 +24,8 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
   categories,
   setSelectedSection,
 }) => {
-  const {id:storeId} = useParams();
+  const { id: storeId } = useParams();
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [product, setProduct] = useState({
     name: "",
     description: "",
@@ -44,14 +46,13 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
         configurationAttributes: [],
       },
     ],
-    mainImageUrl: "", // Add this new field
+    mainImageUrl: "",
   });
 
   const updateProduct = (field: string, value: any) => {
     setProduct((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Add validation function
   const validateProduct = () => {
     try {
       productSchema.parse(product);
@@ -59,7 +60,7 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
     } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach((err) => {
-          message.error(`${err.path.join('.')}: ${err.message}`);
+          message.error(`${err.path.join(".")}: ${err.message}`);
         });
       }
       return false;
@@ -90,17 +91,19 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
           isAvailable: product.isAvailable,
           model3dURL: product.modelUrl || null,
           is3dCustomizable: product.is3dCustomizable,
-          defaultFeatures: true,
+          defaultFeatures: product.configurations.length > 1,
           rating: 0,
           numberOfReviews: 0,
-          categoryId: product.categoryId,
         },
         storeId: Number(storeId),
         configurations: product.configurations,
         categoryId: product.categoryId,
       };
 
-      const result = await ProductService.createProduct(productData);
+      const result = await ProductService.createProduct(
+        productData,
+        uploadedImage
+      );
       message.success("Product created successfully with ID: " + result);
       setSelectedSection(StoreDashboardSectionsEnum.Products);
     } catch (error: any) {
@@ -235,17 +238,10 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
         </div>
       </CategoryContainer>
       <ProductImages>
-        <h5>Product images</h5>
-        <div>
-          <h6>Main image URL</h6>
-          <Input
-            placeholder="Main image URL"
-            variant="filled"
-            value={product.mainImageUrl}
-            onChange={(e) => updateProduct("mainImageUrl", e.target.value)}
-            style={{ width: 400 }}
-          />
-        </div>
+        <ImageUploader
+          setFinalImage={setUploadedImage}
+          imageName="Main image"
+        />
       </ProductImages>
       <CustomizationSection>
         <h5>Customization</h5>
@@ -284,7 +280,7 @@ export const AddProductSection: React.FC<AddProductSectionProps> = ({
 
 const Container = styled.div`
   grid-template-columns: 2fr 1fr;
-  grid-template-rows: 0.3fr 0.8fr 2.5fr 4fr;
+  grid-template-rows: auto auto auto auto;
   grid-template-areas:
     "buttons buttons"
     "productInfo productCategory"
@@ -380,8 +376,6 @@ const CategoryContainer = styled.div`
 
 const ProductImages = styled.div`
   grid-area: productImage;
-  flex-direction: column;
-  gap: 1rem;
 `;
 
 const CustomizationSection = styled.div`

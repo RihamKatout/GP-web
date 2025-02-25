@@ -48,8 +48,8 @@ export const ProductsManagementSection: React.FC<
       );
     } else setProductsToDisplay(tmpProducts);
   }, [productsType, categoryId, activeProducts, archivedProducts]);
-  const handleProductsTypeChange = () => {
-    setProductsType((prev) => !prev);
+  const handleProductsTypeChange = (status: boolean) => {
+    setProductsType(status);
   };
 
   const filters: ProductFilters = {
@@ -95,9 +95,7 @@ export const ProductsManagementSection: React.FC<
       setArchivedProducts((prevProducts) =>
         prevProducts.filter((product) => product.id !== productId)
       );
-      console.log("Product deleted successfully!");
     } catch (error) {
-      console.error("Failed to delete product:", error);
     }
   };
 
@@ -134,7 +132,7 @@ export const ProductsManagementSection: React.FC<
               fontWeight: productsType ? "bold" : "normal",
               borderColor: !productsType ? "orange" : "transparent",
             }}
-            onClick={handleProductsTypeChange}
+            onClick={()=>handleProductsTypeChange(true)}
           >
             Active ({activeProducts.length})
           </button>
@@ -144,7 +142,7 @@ export const ProductsManagementSection: React.FC<
               fontWeight: !productsType ? "bold" : "normal",
               borderColor: productsType ? "orange" : "transparent",
             }}
-            onClick={handleProductsTypeChange}
+            onClick={()=>handleProductsTypeChange(false)}
           >
             Archived ({archivedProducts.length})
           </button>

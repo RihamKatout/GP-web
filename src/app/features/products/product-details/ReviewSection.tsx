@@ -1,159 +1,197 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Rating } from "@mui/material";
-import { RihamImg } from "../../../../assets";
-// TODO:
-// open review as a model when it is clicked
-// handle view all reviews button
-// fetch reviews from the server
+import { DefaultProfilePicture } from "../../../../assets";
+import { Carousel, Divider } from "antd";
+import { Review } from "../../../types";
 
-const reviewsData = [
-  {
-    id: 1,
-    name: "John Doe",
-    avatar: RihamImg,
-    rating: 5,
-    feedback: "Amazing service! The products exceeded my expectations.",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    avatar: RihamImg,
-    rating: 4,
-    feedback: "Very satisfied with the quality and customer service.",
-  },
-];
-const sliderSettings = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 2,
-  slidesToScroll: 1,
-  autoplay: true,
-  arrows: false,
-  centerMode: false,
-  responsive: [
-    {
-      breakpoint: 780,
-      settings: {
-        slidesToShow: 1,
-      },
-    },
-  ],
-};
+interface ReviewSectionProps {
+  reviews?: Review[];
+}
+export const ReviewSection: React.FC<ReviewSectionProps> = ({ reviews }) => {
+  const [expandedReview, setExpandedReview] = useState<number | null>(null);
+  const [selectedReview, setSelectedReview] = useState<Review | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-export const ReviewSection = () => {
-  const [reviews, setReviews] = useState(reviewsData);
-  const handleSeeAll = () => {
-    console.log(reviewsData);
+  const openModal = (review: Review) => {
+    setSelectedReview(review);
+    setIsModalOpen(true);
   };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedReview(null);
+  };
+
+  const carouselSettings = {
+    dots: false,
+    dotPosition: "left" as const,
+    infinite: true,
+    speed: 500,
+    autoplay: true,
+    vertical: true,
+    verticalSwiping: true,
+  };
+
   return (
     <Container>
-      <Button onClick={handleSeeAll} style={{ marginBottom: "0.5rem" }}>
-        view all reviews
-      </Button>
-      <StyledSlider {...sliderSettings}>
-        {reviews.map((review) => (
-          <Card key={review.id} style={{ display: "flex" }}>
-            <div className="header">
-              <Avatar src={review.avatar} alt={review.name} />
-              <div className="name-rating">
-                <p>{review.name}</p>
-                <Rating
-                  name="half-rating-read"
-                  defaultValue={review.rating}
-                  precision={0.5}
-                  readOnly
-                  size="small"
+      <Divider style={{ borderColor: "#1a1a19b3" }}>
+        <h2 style={{ fontSize: "25px", fontFamily: "Overlock" }}>
+          Customer Reviews
+        </h2>
+      </Divider>
+
+      {/* Desktop Carousel */}
+      <StyledCarousel {...carouselSettings}>
+        {reviews?.map((review) => {
+          const isLong = review.feedback.length > 100; // Define long feedback
+          const showFull = expandedReview === review.id;
+          const displayedText = showFull
+            ? review.feedback
+            : review.feedback.slice(0, 100) + (isLong ? "..." : "");
+
+          return (
+            <Card key={review.id} onClick={() => openModal(review)}>
+              <div className="header">
+                <Avatar
+                  src={review.userInfo.imageurl || DefaultProfilePicture}
+                  alt={review.userInfo.username}
                 />
+                <div className="name-rating">
+                  <p>
+                    {review.userInfo.firstName + " " + review.userInfo.lastName}
+                  </p>
+                  <Rating
+                    name="rating"
+                    value={review.rating}
+                    readOnly
+                    size="small"
+                  />
+                </div>
               </div>
-            </div>
-            <Feedback>{review.feedback}</Feedback>
-          </Card>
-        ))}
-      </StyledSlider>
+              <Feedback>
+                {displayedText}
+                {isLong && <span style={{ color: "#ce3a70" }}>View more</span>}
+              </Feedback>
+            </Card>
+          );
+        })}
+      </StyledCarousel>
+
+      {/* Modal */}
+      {isModalOpen && selectedReview && (
+        <ModalContainer>
+          <ModalContent>
+            <Avatar1
+              src={selectedReview?.userInfo?.imageurl || DefaultProfilePicture}
+              alt={selectedReview.userInfo.username}
+            />
+            <h2>
+              {selectedReview.userInfo.firstName +
+                " " +
+                selectedReview.userInfo.lastName}
+            </h2>
+            <Rating
+              name="rating"
+              value={selectedReview.rating}
+              readOnly
+              size="small"
+            />
+            <p>
+              <strong>Review: </strong>
+              {selectedReview.feedback}
+            </p>
+            <CloseButton onClick={closeModal}>Close</CloseButton>
+          </ModalContent>
+        </ModalContainer>
+      )}
     </Container>
   );
 };
 
-const StyledSlider = styled(Slider)`
-  width: 100%;
-  margin-left: -0.6rem;
-  .slick-track {
-    gap: 1rem;
-    display: flex;
-    justify-content: space-between;
-  }
-`;
-
+// Styled Components
 const Container = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  width: 100%;
   flex-direction: column;
-  border-radius: 0 1rem 1rem 1rem;
-  padding: 0 1rem 1rem 1rem;
-  margin-top: 0.5rem;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem;
 `;
 
 const Card = styled.div`
-  width: auto;
+  background: white;
   padding: 1rem;
-  height: 120px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
   cursor: pointer;
-  overflow: hidden;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2),
-    0 2px 25px rgba(79, 89, 121, 0.1) inset;
-  .name-rating {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-  }
+  width: 100%;
+  max-width: 400px;
+  height: 180px;
   .header {
     display: flex;
-    gap: 1rem;
     align-items: center;
-    justify-content: flex-start;
+    margin-bottom: 1rem;
   }
 `;
 
 const Avatar = styled.img`
   border-radius: 50%;
-  object-fit: fill;
   width: 40px;
   height: 40px;
-  padding: 0;
+`;
+
+const Avatar1 = styled.img`
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
 `;
 
 const Feedback = styled.p`
   font-size: 0.9rem;
-  width: auto;
   text-align: left;
-  padding: 0.4rem 0 0 0.4rem;
-  color: ${({ theme }) => theme.colors.secondary};
+  color: #333;
   overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
 `;
 
-const Button = styled.p`
-  width: auto;
-  font-family: "Overlock", serif;
-  margin: 0 2rem;
-  text-align: right;
-  color: ${({ theme }) => theme.colors.primary_dark};
+const ModalContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+`;
+
+const CloseButton = styled.button`
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
   cursor: pointer;
+  border-radius: 5px;
+  margin-top: 1rem;
   &:hover {
-    color: ${({ theme }) => theme.colors.secondary_dark};
-    text-decoration: underline;
+    background-color: #0056b3;
   }
+`;
+
+const StyledCarousel = styled(Carousel)`
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
 `;

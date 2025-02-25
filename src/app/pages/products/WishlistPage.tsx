@@ -9,7 +9,6 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Popconfirm } from "antd";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { EmptyCart } from "../../features";
-import { set } from "zod";
 
 export const WishlistPage = () => {
   const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
@@ -36,6 +35,10 @@ export const WishlistPage = () => {
     } catch (error) {
       console.error("Error clearing wishlist:", error);
     }
+  };
+
+  const removeFromWishlist = (productId: number) => {
+    setWishlistItems(wishlistItems.filter((item) => item.id !== productId));
   };
 
   if (isLoading) {
@@ -80,6 +83,7 @@ export const WishlistPage = () => {
                     key={product.id}
                     product={product}
                     inWishlist={true}
+                    onWishlistRemove={removeFromWishlist}
                   />
                 ))}
               </CardsContainer>
@@ -102,13 +106,12 @@ const Container = styled.div`
     margin: 0;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 2px 2px 25px rgba(4, 42, 78, 0.17);
-    background-color: ${({ theme }) => theme.colors.secondary_dark};
+    border-bottom: 2px solid ${({ theme }) => theme.colors.secondary};
     h3 {
       margin: 0;
-      font-weight: 500;
+      font-weight: 700;
       font-family: "Delius", serif;
-      color: ${({ theme }) => theme.colors.white};
+      color: ${({ theme }) => theme.colors.secondary};
     }
   }
   .clear-wishlist {
@@ -138,5 +141,4 @@ const CardsContainer = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.17);
 `;

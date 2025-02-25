@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MainLayout } from "../../components/Layout";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
-import { MyStoresSection, ProfileInfoSection, Sidebar } from "../../features";
+import {
+  AddStoreSection,
+  MyOrdersSection,
+  MyStoresSection,
+  ProfileInfoSection,
+  Sidebar,
+} from "../../features";
 import { ProfileSectionsEnum } from "../../types";
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
   const { logoutContext, user } = useAuth();
   const [selectedSection, setSelectedSection] = useState<ProfileSectionsEnum>(
     ProfileSectionsEnum.Profile
@@ -20,30 +25,14 @@ export const ProfilePage = () => {
       logoutContext();
       navigate("/");
     }
+    if (selectedSection === ProfileSectionsEnum.AdminDashboard) {
+      navigate("/dashboard");
+    }
   }, [selectedSection]);
 
   if (!user) {
     navigate("/login", { state: { from: "/profile" } });
   }
-
-  const handleEditClick = () => setIsEditing(!isEditing);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
-
-  const handleSave = () => {
-    setIsEditing(false);
-  };
-
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // Update avatar logic here (e.g., API call to update avatar)
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   return (
     <MainLayout>
@@ -55,49 +44,17 @@ export const ProfilePage = () => {
 
         <MainContent>
           {selectedSection === ProfileSectionsEnum.Profile && (
-            <ProfileInfoSection />
+            <ProfileInfoSection setSelectedSection={setSelectedSection} />
           )}
           {selectedSection === ProfileSectionsEnum.MyStores && (
             <MyStoresSection />
           )}
-          {/* {selectedSection === SectionName.Profile && ( */}
-          {/* <>
-            <ProfileContent>
-              <ProfileHeader isEditing={isEditing}>
-                <ProfileHeaderColumn>
-                  <Avatar
-                    src={user?.userImageURL || riham}
-                    alt="User Avatar"
-                    isEditing={isEditing}
-                  />
-                  <UserName>{`${user?.firstName || ""} ${
-                    user?.lastName || ""
-                  }`}</UserName> */}
-          {/* <UserInfo>{user?.firstName || ''}</UserInfo> */}
-          {/* </ProfileHeaderColumn>
-                <EditButtonWrapper isEditing={isEditing}>
-                  <EditButton onClick={handleEditClick}>
-                    {isEditing ? "Cancel" : "Edit"}
-                  </EditButton>
-                </EditButtonWrapper>
-              </ProfileHeader>
-
-              {isEditing && user && (
-                <ProfileFormWrapper>
-                  <ProfileForm
-                    userInfo={user}
-                    handleChange={handleChange}
-                    handleSave={handleSave}
-                    handleAvatarChange={handleAvatarChange}
-                  />
-                </ProfileFormWrapper>
-              )}
-            </ProfileContent> */}
-          {/* 
-            <ProfileShopping />
-            <ProfileActivity />
-          </> */}
-          {/* )} */}
+          {selectedSection === ProfileSectionsEnum.AddStore && (
+            <AddStoreSection setSelectedSection={setSelectedSection} />
+          )}
+          {selectedSection === ProfileSectionsEnum.MyOrders && (
+            <MyOrdersSection/>
+          )}
         </MainContent>
       </UserProfileContainer>
     </MainLayout>

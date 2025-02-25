@@ -2,7 +2,6 @@ import  { useEffect, useState } from "react";
 import styled from "styled-components";
 import AOS from "aos";
 import "aos/dist/aos.css"; // Import AOS styles
-import VideoSource from "../../../assets/cake.mp4"; // Path to your .mp4 file
 import { useNavigate } from "react-router-dom"; // Import the hook
 import SweetNavbar from "./SweetNavbar"; 
 //import {Cake , ShopsComponent} from '../Sweet/SelectShop';
@@ -217,7 +216,6 @@ const Hero = () => {
             loop
             playsInline
           >
-            <source src={VideoSource} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>

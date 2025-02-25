@@ -1,17 +1,211 @@
-import { Button, Input } from "antd";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { CartItemCard } from "..";
 import styled from "styled-components";
-import { CartItem } from "../../types";
-import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
 import { CartService } from "../../api";
-import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
+import { CartItemDto } from "../../types";
+import { useEffect } from "react";
+import { useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { Button, Input, Popconfirm } from "antd";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import InfoIcon from "@mui/icons-material/Info";
 
-import { Theme } from "../../utils/Theme";
-// handle payment
+// TODO: handle payment
+interface CartSectionProps {
+  cartItems: CartItemDto[];
+  setItems?: React.Dispatch<React.SetStateAction<CartItemDto[]>>;
+  selectedItems: CartItemDto[] | undefined;
+  setSelectedItems: React.Dispatch<
+    React.SetStateAction<CartItemDto[] | undefined>
+  >;
+  handlePayment: () => void;
+  deliveryCost: number;
+  totalPrice: number;
+  setTotalPrice: React.Dispatch<React.SetStateAction<number>>;
+  address?: string;
+  setAddress: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export const CartSection: React.FC<CartSectionProps> = ({
+  cartItems,
+  setItems,
+  selectedItems,
+  setSelectedItems,
+  handlePayment,
+  deliveryCost,
+  totalPrice,
+  setTotalPrice,
+  address,
+  setAddress,
+}) => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
+
+  const handleDeleteSelectedItems = async () => {
+    if (!selectedItems) return;
+    const itemIds = selectedItems.map((item) => item.cartItem.id);
+    await CartService.deleteItems(itemIds);
+    queryClient.invalidateQueries(["cart"]);
+    setSelectedItems(undefined);
+    setTotalPrice(0);
+  };
+
+  const handleClearCart = async () => {
+    await CartService.clearCart();
+    queryClient.invalidateQueries(["cart"]);
+  };
+
+  const handleDeleteItem = async (id: Number) => {
+    await CartService.deleteItem(id);
+    queryClient.invalidateQueries(["cart"]);
+  };
+
+  const groupedItems = cartItems?.reduce(
+    (
+      acc: Record<
+        string,
+        { storeId: number; storeName: string; items: CartItemDto[] }
+      >,
+      itemDto: CartItemDto
+    ) => {
+      const storeId = itemDto.cartItem.storeId;
+      const storeName = itemDto.cartItem.storeName;
+
+      if (!acc[storeId]) {
+        acc[storeId] = {
+          storeId,
+          storeName,
+          items: [],
+        };
+      }
+
+      acc[storeId].items.push(itemDto);
+      return acc;
+    },
+    {}
+  );
+
+  return (
+    <CartContainer>
+      {/* cart items */}
+      <CartItemsContainer>
+        {groupedItems &&
+          Object.values(groupedItems).map(({ storeId, storeName, items }) => (
+            <div key={storeId} className="store-group">
+              <h3 onClick={() => navigate(`/store/${storeId}`)}>{storeName}</h3>
+              {items.map((item) => (
+                <CartItemCard
+                  key={item.cartItem.id}
+                  item={item}
+                  setSelectedItems={setSelectedItems}
+                  setItems={setItems}
+                  checkedItems={selectedItems || []}
+                  handleDeleteItem={handleDeleteItem}
+                  setTotalPrice={setTotalPrice}
+                />
+              ))}
+            </div>
+          ))}
+      </CartItemsContainer>
+
+      {/* cart summary */}
+      <CheckoutContainer>
+        <h3 style={{ fontWeight: "bold" }}>Summary</h3>
+        <Divider
+          style={{
+            backgroundColor: "black",
+            border: "1px solid black",
+            marginBottom: "1rem",
+          }}
+        />
+        <div className="Option">
+          <p>Subtotal</p>
+          <h5>{totalPrice}$</h5>
+        </div>
+        <div className="Option">
+          <p>Discount</p>
+          <h5>- $</h5>
+        </div>
+        <div className="Option">
+          <p>Delivery Service</p>
+          <h5>{deliveryCost} $</h5>
+        </div>
+        <div className="Option">
+          <p style={{ color: "black", fontWeight: "bold", fontSize: "1.1rem" }}>
+            Total
+          </p>
+          <h5>{totalPrice + deliveryCost}$</h5>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+          <Input
+            type="text"
+            placeholder="promo code"
+            color="${({ theme }) => theme.colors.secondary};"
+          />
+          <Button className="dark-button">Apply</Button>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+          <p style={{ margin: "0" }}>Address</p>
+          <Input
+            type="text"
+            placeholder="address"
+            color="${({ theme }) => theme.colors.secondary};"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </div>
+        <Popconfirm
+          title="Complete payment"
+          description="Are you sure to complete payment?"
+          icon={<InfoIcon style={{ color: "blue" }} />}
+          onConfirm={handlePayment}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button className="dark-button">Pay</Button>
+        </Popconfirm>
+        <ClearButtonsContainer>
+          {selectedItems?.length ? (
+            <Button disabled={!selectedItems?.length}>
+              <Popconfirm
+                title="Remove selected items"
+                description="Are you sure to remove selected items?"
+                icon={<ErrorOutlineIcon style={{ color: "red" }} />}
+                onConfirm={handleDeleteSelectedItems}
+                okText="Yes"
+                cancelText="No"
+              >
+                <DeleteOutlineIcon />
+                Remove selected items
+              </Popconfirm>
+            </Button>
+          ) : (
+            <></>
+          )}
+          <Button style={{ width: !selectedItems?.length ? "100%" : "50%" }}>
+            <Popconfirm
+              title="Clear cart"
+              description="Are you sure to clear your cart?"
+              icon={<ErrorOutlineIcon style={{ color: "red" }} />}
+              onConfirm={handleClearCart}
+              okText="Yes"
+              cancelText="No"
+            >
+              <DeleteForeverIcon />
+              Clear my cart
+            </Popconfirm>
+          </Button>
+        </ClearButtonsContainer>
+      </CheckoutContainer>
+    </CartContainer>
+  );
+};
 const CartContainer = styled.div`
   padding: 1rem;
   min-height: 100vh;
@@ -26,14 +220,12 @@ const CartContainer = styled.div`
 `;
 
 const CartItemsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 60vw;
+  display: flex;
   overflow: hidden;
-  border-radius: 0.6rem;
-  border: 2px solid rgba(0, 0, 0, 0.084);
-  border-radius: 1rem;
-  box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.17);
+  border-radius: 0.5rem;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   @media (max-width: 1000px) {
     width: 90vw;
   }
@@ -41,13 +233,14 @@ const CartItemsContainer = styled.div`
     padding: 0;
   }
   .store-group {
-    border-radius: 0.6rem;
-    h5 {
-      padding: 0.7rem 1rem;
+    h3 {
       margin: 0;
       color: white;
-      background-color: ${({ theme }) => theme.colors.secondary};;
       cursor: pointer;
+      font-weight: bold;
+      padding: 0.7rem 1rem;
+      font-family: "Overlock", sans-serif;
+      background-color: ${({ theme }) => theme.colors.secondary_dark};
     }
     &:last-child {
       border-bottom: none;
@@ -74,17 +267,15 @@ const ClearButtonsContainer = styled.div`
 `;
 
 const CheckoutContainer = styled.div`
+  gap: 0.5rem;
   display: flex;
-  flex-direction: column;
-  background-color: #ffff;
-  border: 2px solid rgba(0, 0, 0, 0.084);
+  max-width: 450px;
   padding: 1rem 2rem;
   text-align: center;
-  max-width: 450px;
-  //margin: 0 auto;
-  border-radius: 1rem;
-  box-shadow: 2px 2px 25px rgba(0, 0, 0, 0.17);
-  gap: 0.5rem;
+  border-radius: 0.5rem;
+  flex-direction: column;
+  background-color: #ffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   div {
     width: 100%;
   }
@@ -105,190 +296,8 @@ const CheckoutContainer = styled.div`
       margin: 0;
     }
   }
-`;
-
-interface CartSectionProps {
-  cartItems: CartItem[];
-  setItems?: React.Dispatch<React.SetStateAction<CartItem[]>>;
-}
-
-export const CartSection: React.FC<CartSectionProps> = ({
-  cartItems,
-  setItems,
-}) => {
-  const queryClient = useQueryClient();
-  const [selectedItems, setSelectedItems] = useState<Number[] | undefined>(
-    undefined
-  );
-  const navigate = useNavigate();
-  useEffect(() => {
-    scrollTo(0, 0);
-    setSelectedItems(undefined);
-  }, []);
-    
-/////cake
- ///const context = useContext(ShopContext);
-
-  // if (!context) {
-  //   console.error("CakeCart must be used within a ShopContextProvider");
-  //   return null;
-  // }
-
-  //const {  getTotalCartAmount,cakeImages } = context;
-
-  const handleDeleteSelectedItems = async () => {
-    if (
-      window.confirm(
-        "Are you sure you want to remove selected items from cart?"
-      )
-    ) {
-      if (!selectedItems) return;
-      console.log(selectedItems);
-      await CartService.deleteItems(selectedItems);
-      queryClient.invalidateQueries(["cart"]);
-      setSelectedItems(undefined);
-    }
-  };
-
-  const handleClearCart = async () => {
-    if (window.confirm("Are you sure you want to clear your cart?")) {
-      await CartService.clearCart();
-      queryClient.invalidateQueries(["cart"]);
-    }
-  };
-
-  const handleDeleteItem = async (id: Number) => {
-    if (window.confirm("Are you sure you want to remove item from your cart?")) {
-      await CartService.deleteItem(id);
-      queryClient.invalidateQueries(["cart"]);
-    }
+  .dark-button {
+    color: white;
+    background-color: ${({ theme }) => theme.colors.secondary_dark};
   }
-  const groupedItems = cartItems?.reduce(
-    (
-      acc: Record<
-        string,
-        { storeId: number; storeName: string; items: CartItem[] }
-      >,
-      item: CartItem
-    ) => {
-      const storeId = item.storeId;
-      const storeName = item.storeName;
-
-      if (!acc[storeId]) {
-        acc[storeId] = {
-          storeId,
-          storeName,
-          items: [],
-        };
-      }
-
-      acc[storeId].items.push(item);
-      return acc;
-    },
-    {}
-  );
- 
-  return (
-    <CartContainer>
-      {/* cart items */}
-      <CartItemsContainer>
-        {groupedItems &&
-          Object.values(groupedItems).map(({ storeId, storeName, items }) => (
-            <div key={storeId} className="store-group">
-              <h5 onClick={() => navigate(`/store/${storeId}`)}>{storeName}</h5>
-              {items.map((item) => (
-                <CartItemCard
-                  key={item.id}
-                  item={item}
-                  setSelectedItems={setSelectedItems}
-                  setItems={setItems}
-                  checkedItems={selectedItems || []}
-                  handleDeleteItem={handleDeleteItem}
-                />
-              ))}
-            </div>
-          ))}
-           {/* <CakeCart setSelectedItems={setSelectedItems} checkedItems={selectedItems || []}/> */}
-      </CartItemsContainer>
-
-      {/* cart summary */}
-      <CheckoutContainer>
-        <h3 style={{ fontWeight: "bold" }}>Summary</h3>
-        <Divider
-          style={{
-            backgroundColor: "black",
-            border: "1px solid black",
-            marginBottom: "1rem",
-          }}
-        />
-        <div className="Option">
-          <p>Subtotal</p>
-          <h5>
-            {cartItems?.reduce(
-              (total, item) =>
-                selectedItems?.includes(item.id)
-                  ? total + item.product.price * item.quantity 
-                  : total,
-              0
-            )}
-            $
-          </h5>
-        </div>
-        <div className="Option">
-          <p>Discount</p>
-          <h5>- $</h5>
-        </div>
-        <div className="Option">
-          <p>Delivery Service</p>
-          <h5>- $</h5>
-        </div>
-        <div className="Option">
-          <p style={{ color: "black", fontWeight: "bold", fontSize: "1.1rem" }}>
-            Total
-          </p>
-          <h5>
-            {cartItems?.reduce(
-              (total, item) =>
-                selectedItems?.includes(item.id)
-                  ? total + item.product.price * item.quantity
-                  : total,
-              0
-            )}
-            $
-          </h5>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-          <Input type="text" placeholder="promo code" color="${({ theme }) => theme.colors.secondary};" />
-          <Button style={{ backgroundColor: Theme.colors.secondary, color: "white" }}>
-            Apply
-          </Button>
-        </div>
-        <Button style={{ backgroundColor:Theme.colors.secondary, color: "white" }}>
-          Pay
-        </Button>
-        <ClearButtonsContainer>
-          {selectedItems?.length ? (
-            <Button
-              onClick={handleDeleteSelectedItems}
-              disabled={!selectedItems?.length}
-            >
-              <DeleteOutlineIcon />
-              Remove selected items
-            </Button>
-          ) : (
-            <></>
-          )}
-          <Button
-            onClick={handleClearCart}
-            style={{ width: !selectedItems?.length ? "100%" : "50%" }}
-          >
-            <DeleteForeverIcon />
-            Clear my cart
-          </Button>
-        </ClearButtonsContainer>
-        
-      </CheckoutContainer>
-      
-    </CartContainer>
-  );
-};
+`;

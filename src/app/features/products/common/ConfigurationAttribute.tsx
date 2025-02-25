@@ -1,63 +1,106 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Choice, ConfigurationAttribute } from "../../../types";
+import {
+  Choice,
+  ConfigurationAttribute,
+  ConfigurationInstance,
+} from "../../../types";
 
 interface ProductConfigurationProps {
   attribute: ConfigurationAttribute;
-  setConfigPriceImpact: React.Dispatch<React.SetStateAction<number>>;
+  value?: string;
+  handlePriceImpact: (priceImpact: number) => void;
+  enableButtons: boolean;
+  setSelectedChoices?: React.Dispatch<
+    React.SetStateAction<ConfigurationInstance[]>
+  >;
+  instanceId?: number;
 }
-export const ConfigurationAttributeComponent: React.FC<ProductConfigurationProps> = ({
+export const ConfigurationAttributeComponent: React.FC<
+  ProductConfigurationProps
+> = ({
   attribute,
-  setConfigPriceImpact,
+  handlePriceImpact,
+  value,
+  enableButtons,
+  setSelectedChoices,
+  instanceId,
 }) => {
-  const [selectedChoice, setSelectedChoice] = React.useState<number>(0);
+  const [selectedChoice, setSelectedChoice] = React.useState<number>(
+    value ? attribute.choices.findIndex((choice) => choice.name === value) : 0
+  );
+
   const handleChoice = (index: number) => {
-    setConfigPriceImpact(
+    if (!enableButtons) return;
+    const priceImpactChange =
       attribute.choices[index].priceImpact -
-        attribute.choices[selectedChoice].priceImpact
-    );
+      attribute.choices[selectedChoice].priceImpact;
+    handlePriceImpact(priceImpactChange);
     setSelectedChoice(index);
+    if (setSelectedChoices) {
+      setSelectedChoices((prev) =>
+        prev.map((instance) => {
+          if (instance.id === instanceId) {
+            return {
+              ...instance,
+              choices: instance.choices.map((choice) =>
+                choice.attributeId === attribute.id
+                  ? { ...choice, choiceName: attribute.choices[index].name }
+                  : choice
+              ),
+            };
+          }
+          return instance;
+        })
+      );
+    }
   };
+
   useEffect(() => {
-    setConfigPriceImpact(attribute.choices[selectedChoice].priceImpact);
+    handlePriceImpact(attribute.choices[selectedChoice].priceImpact);
+    return () => {
+      handlePriceImpact(-attribute.choices[selectedChoice].priceImpact);
+    };
   }, []);
+
   return (
     <Container>
       <p>{attribute.name}</p>
       <Choices>
         {attribute.choices.map((choice: Choice, index: number) => (
-          <div  key={choice.name}>
+          <div
+            key={choice.name}
+            style={{
+              borderRadius: "0.5rem",
+              border:
+                selectedChoice === index
+                  ? "1px solid rgb(200, 200, 200)"
+                  : "none",
+              backgroundColor:
+                selectedChoice === index
+                  ? "rgba(240, 230, 220, 1)"
+                  : "rgb(230, 230, 230)",
+            }}
+            onClick={() => handleChoice(index)}
+          >
             {attribute.type === "COLOR" ? (
-              <div>
-                <ColorButton
-                  style={{
-                    backgroundColor: choice.name,
-                    border:
-                      selectedChoice === index ? "1px solid black" : "none",
-                  }}
-                  onClick={() => handleChoice(index)}
-                />
+              <ChoiceContainer enable={enableButtons}>
+                <ColorButton color={choice.name} />
                 {choice.priceImpact ? (
-                  <span className="colorSpan">+{choice.priceImpact}$</span>
+                  <span className="price">+{choice.priceImpact}$</span>
                 ) : (
                   <> </>
                 )}
-              </div>
+              </ChoiceContainer>
             ) : (
-              <button
-                key={choice.name}
-                style={{
-                  border: selectedChoice === index ? "1px solid black" : "none",
-                }}
-                onClick={() => handleChoice(index)}
-              >
-                {choice.name}
+              <ChoiceContainer enable={enableButtons}>
+                <p>{choice.name}</p>
                 {choice.priceImpact ? (
-                  <span>+{choice.priceImpact}$</span>
+                  <span className="price">+{choice.priceImpact}$</span>
                 ) : (
                   <> </>
                 )}
-              </button>
+              </ChoiceContainer>
             )}
           </div>
         ))}
@@ -77,10 +120,15 @@ const Container = styled.div`
       font-weight: 600;
     }
   }
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
 `;
 
 const Choices = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: flex-start;
   margin-bottom: 0.5rem;
@@ -89,17 +137,30 @@ const Choices = styled.div`
     justify-content: center;
     align-items: center;
   }
-  .colorSpan {
-    font-size: 0.8rem;
-    margin-right: 0.5rem;
-    font-weight: 600;
-  }
 `;
 
-const ColorButton = styled.button`
-  background-color: red;
-  width: 22px;
-  height: 22px;
+const ColorButton = styled.div<{ color: string }>`
+  background-color: ${(props) => props.color};
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+`;
+
+const ChoiceContainer = styled.div<{ enable?: boolean }>`
+  gap: 0.5rem;
+  display: flex;
+  cursor: ${(props) => (props.enable ? "pointer" : "not-allowed")};
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  p {
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .price {
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
 `;

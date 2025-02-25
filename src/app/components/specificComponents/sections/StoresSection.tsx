@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import img from "../../../../assets/characters/loginChar.png";
 import { Theme } from "../../../utils/Theme";
 import { Divider } from "antd";
+import { Loader } from "../../common";
 
 interface StoresSectionProps {
   categories?: Category[];
@@ -17,24 +18,19 @@ export const StoresSection: React.FC<StoresSectionProps> = ({ categories }) => {
     number | undefined
   >(undefined);
 
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const {
     data: stores,
     isLoading,
-    error,
   } = useQuery(
     ["stores", selectedCategory],
     () => StoreService.getStoresByStoreCategoryId(selectedCategory),
     {
       keepPreviousData: true,
-      onSuccess: (data) => {
-        console.log(data);
-      },
     }
   );
 
-  // Filter out the "General" category
   const filteredCategories = categories?.filter(
     (category) => category.name !== "General"
   );
@@ -42,9 +38,9 @@ export const StoresSection: React.FC<StoresSectionProps> = ({ categories }) => {
   return (
     <Container>
       <div style={{ width: "80%", margin: "0 auto" }}>
-      <Divider style={{ borderColor: "#1a1a19b3" }}>
-      <Title>Explore Stores</Title>
-      </Divider>
+        <Divider style={{ borderColor: "#1a1a19b3" }}>
+          <Title>Explore Stores</Title>
+        </Divider>
       </div>
       <CategoryTabs>
         <CategoryTab
@@ -64,23 +60,19 @@ export const StoresSection: React.FC<StoresSectionProps> = ({ categories }) => {
         ))}
       </CategoryTabs>
 
-      {isLoading && <Message>Loading...</Message>}
-      {/* {error && <Message>Error loading stores</Message>} */}
+      {isLoading && <Loader type="wave" />}
 
       <StoresContainer>
         {stores?.map((store) => (
           <StoreCard key={store.id}>
-            <div>
-            <StoreImage>
-              <img src={store.logoURL || img} alt={store.name} />
-            </StoreImage>
-            <StoreName>{store.name}</StoreName>
-            <StoreDetails>{store.description}</StoreDetails>
+            <div className="store-info">
+              <StoreImage src={store.logoURL || img} alt={store.name} />
+              <StoreName>{store.name}</StoreName>
             </div>
-            <div>
+            <StoreDetails>{store.description}</StoreDetails>
             <VisitButton onClick={() => navigate(`/store/${store.id}`)}>
               Visit
-            </VisitButton></div>
+            </VisitButton>
           </StoreCard>
         ))}
       </StoresContainer>
@@ -92,41 +84,46 @@ export const StoresSection: React.FC<StoresSectionProps> = ({ categories }) => {
 const Container = styled.div`
   padding: 2rem;
   background-color: #ffffff;
-  
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 const Title = styled.h2`
   font-size: 3.7rem;
   font-weight: 400;
-  color: ${({theme}) => theme.colors.secondary_dark};
+  color: ${({ theme }) => theme.colors.secondary_dark};
   text-align: center;
-  margin-bottom: 1.5rem;
   font-family: "DynaPuff";
-
+  @media (max-width: 780px) {
+    font-size: 2.5rem;
+  }
 `;
 
 const CategoryTabs = styled.div`
+  max-width: 80%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin: 0 auto;
 `;
 
 const CategoryTab = styled.button<{ active: boolean }>`
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 20px;
+  border-radius: 1rem;
   font-size: 1.1rem;
   font-weight: ${(props) => (props.active ? "bold" : "normal")};
-  background-color: ${(props) => (props.active ? Theme.colors.secondary : "#e0e0e0")};
+  background-color: ${(props) =>
+    props.active ? Theme.colors.secondary : "#e0e0e0"};
   color: ${(props) => (props.active ? "#fff" : "#333")};
   cursor: pointer;
   transition: all 0.3s;
-  font-family: "Delius Swash Caps", serif;
-  /* background-color: ${({ theme }) => theme.colors.primary}; */
-      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+  font-family: "Delius",  serif;
+  box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),
+    0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,
+    0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
 
   &:hover {
     background-color: ${(props) =>
@@ -134,88 +131,109 @@ const CategoryTab = styled.button<{ active: boolean }>`
   }
 `;
 
-
 const StoresContainer = styled.div`
- display: flex;
+  display: flex;
   justify-content: center;
   gap: 1rem;
-  
+  @media (max-width: 780px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const StoreCard = styled.div`
-  background: white;
   padding: 1.5rem;
-  border-radius: 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   text-align: center;
   transition: transform 0.3s;
   width: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Ensures consistent spacing between elements */
-  height: 350px; /* Makes all cards the same height */
-
+  height: 325px;
+  align-items: center;
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  .store-info {
+    gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  @media (max-width: 780px) {
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+    height: 200px;
+    .store-info {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+    }
   }
 `;
 
 const StoreName = styled.h3`
   font-size: 1.5rem;
   font-weight: bold;
-  color: ${({theme})=> theme.colors.primary_dark};
+  color: ${({ theme }) => theme.colors.primary_dark};
   margin: 0.5rem 0;
   font-family: "Overlock", serif;
 `;
 
 const StoreDetails = styled.p`
+  width: 100%;
+  flex: 1;
   font-size: 1rem;
   color: #666;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @media (max-width: 780px) {
+    text-align: left;
+  }
 `;
 
-const StoreImage = styled.div`
-  margin: 0 auto 1rem;
+const StoreImage = styled.img`
   width: 120px;
   height: 120px;
   border-radius: 50%;
   border: 5px solid #fff;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  @media (max-width: 780px) {
+    width: 70px;
+    height: 70px;
   }
 `;
 
 const VisitButton = styled.button`
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #6a437c;
+  width: 100%;
+  height: fit-content;
+  padding: 0.5rem 2rem;
   color: white;
   border: none;
-  border-radius: 15px;
-  //bottom: 200px;
-  cursor: pointer;
-  font-size: 1rem;
-  background-color: ${({ theme }) => theme.colors.primary};
-      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+  border-radius: 0.5rem;
+  font-family: "Delius", serif;
+  background-color: ${({ theme }) => theme.colors.primary_dark};
 
-      &:hover {
-        transform: scale(1.05);
-        box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                    0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                    0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
-        background-color: ${({ theme }) => theme.colors.secondary_light};
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),
+      0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,
+      0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
+    background-color: ${({ theme }) => theme.colors.secondary};
   }
-`;
-
-const Message = styled.p`
-  text-align: center;
-  color: #6a437c;
-  font-size: 1.2rem;
-  margin: 2rem 0;
+  @media (max-width: 780px) {
+    padding: 0.2rem 1rem;
+    margin-left: auto;
+    width: fit-content;
+    font-size: 0.9rem;
+  }
 `;

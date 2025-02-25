@@ -1,11 +1,10 @@
-import { RoleEnum } from "..";
 
 export type User = {
   id: number;
   username: string;
   firstName: string;
   lastName: string;
-  roles: RoleEnum[];
+  roles: string[];
   userImageURL: string | null;
   signUpDate: Date;
   numberOfStores: number;
@@ -14,3 +13,11 @@ export type User = {
   accountNonExpired: boolean;
   credentialsNonExpired: boolean;
 };
+
+export interface UserBasicInfo{
+  id: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+  imageurl: string | null;
+}

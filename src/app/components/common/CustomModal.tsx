@@ -16,6 +16,10 @@ export const CustomModal = ({ open, onClose, children }: CustomModalProps) => {
     bgcolor: "background.paper",
     boxShadow: 24,
     borderRadius: "1rem",
+    outline: "none",
+    "&:focus": {
+      outline: "none",
+    },
   };
 
   return (

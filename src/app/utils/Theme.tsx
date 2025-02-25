@@ -1,6 +1,6 @@
 export const Theme = {
   colors: {
-    primary_extra_dark: "rgb(73, 25, 34)", // extra dark pink
+    primary_extra_dark: "rgb(189, 51, 76)", // extra dark pink
     primary_dark: "rgb(215, 126, 143)", // dark pink
     primary: "rgba(225, 160, 172, 1)", // pink
     primary_light: "rgba(251, 216, 226, 1)", // rose
@@ -19,7 +19,8 @@ export const Theme = {
     success: "rgb(50, 156, 50)",
     orange: "rgb(255, 140, 0)",
     orange_light: "rgb(242, 209, 165)",
-    lightGray: "rgb(212, 212, 212)",
+    lightGray: "rgb(200, 200, 200)",
+    golden:"#f5db49",
   },
   fonts: {
     family: "Delius",

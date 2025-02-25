@@ -47,7 +47,7 @@ export const StoreProductsSection: React.FC<StoreProductsSectionProps> = ({
 
   const { data } = useQuery(
     ["products", filters],
-    () => ProductService.fetchProducts(filters),
+    () => ProductService.filterProducts(filters),
     {
       keepPreviousData: true,
       onSuccess: () => {
@@ -130,7 +130,7 @@ export const StoreProductsSection: React.FC<StoreProductsSectionProps> = ({
           {products.length === 0 ? (
             <Message>No products found for the selected category.</Message>
           ) : (
-            products.map((product) => <ProductCard key={product.id} {...product} />)
+            products.map((product) => <ProductCard key={product.product.id} {...product} />)
           )}
         </ProductsGrid>
       )}
@@ -154,7 +154,7 @@ const Container = styled.div`
  // padding: 0 1rem;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 1100px;
+  width: 1150px;
   margin: 0 auto;
 `;
 const Title = styled.h2`

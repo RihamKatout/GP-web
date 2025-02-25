@@ -6,11 +6,10 @@ export const StyledCategoryCard = styled(Card)<{
   type?: string;
   imageurl?: string;
 }>(({ theme, type, imageurl }) => ({
-  width: type === "STORE" ? "140px" : "70px",
-  height: type === "STORE" ? "130px" : "70px",
+  width: type === "STORE" ? "140px" : "60px",
+  height: type === "STORE" ? "130px" : "60px",
   textAlign: "center",
-  borderRadius: type === "STORE" ? "25px" : "15px",
-  border: type === "STORE" ? "" : "1px solid rgba(217, 217, 217, 0.5)",
+  borderRadius: type === "STORE" ? "25px" : "50%",
   background:
     type === "STORE"
       ? "linear-gradient(45deg,rgb(255, 193, 197),rgb(195, 215, 255))"
@@ -23,7 +22,7 @@ export const StyledCategoryCard = styled(Card)<{
   transformStyle: "preserve-3d",
   boxShadow: type === "STORE"?
     "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),	0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,	0 0.25rem 0.5rem 0 rgba(145, 171, 210, 0.55) inset"
-    : "0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5),	0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset,	0 0.25rem 0.5rem 0 rgba(145, 171, 210, 0.55) inset", 
+    : "2px 2px 25px rgba(0, 0, 0, 0.17)", 
   "&.visible": {
     opacity: 1,
     transform: "translateY(0) perspective(1000px)",

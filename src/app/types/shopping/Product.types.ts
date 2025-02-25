@@ -1,3 +1,5 @@
+import { StoreBasicInfoDto } from "..";
+
 // for listing data - showcase
 export interface ProductWithStoreDto {
   product: {
@@ -65,7 +67,7 @@ export interface Product {
   id: number;
   name: string;
   description: string;
-  mainImageURL: string;
+  mainImageURL?: string;
   basePrice: number;
   stock: number;
   stockEdge: number;
@@ -76,7 +78,7 @@ export interface Product {
   defaultFeatures: boolean;
   rating: number;
   numberOfReviews: number;
-  categoryId: number;
+  categoryId?: number;
 }
 
 export interface ProductFilters {
@@ -95,25 +97,9 @@ export interface ProductFilters {
   size: number | 20;
 }
 
-export interface CartItem {
+export interface ProductBasicInfo{
   id: number;
-  product: Product;
-  size: "S" | "M" | "L" | "XL" | "XXL";
-  quantity: number;
-  storeId: number;
-  details: string;
-  storeName: string;
-}
-
-export interface CartItemAdd {
-  product: Product;
-  size: "S" | "M" | "L" | "XL" | "XXL";
-  quantity: number;
-  details: string;
-}
-
-export interface StoreBasicInfoDto {
-  storeId: number;
-  storeName: string;
-  storeLogoURL: string | null;
+  name?: string;
+  mainImageURL?: string;
+  isAvailable?: boolean;
 }

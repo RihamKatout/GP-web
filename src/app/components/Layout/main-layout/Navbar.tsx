@@ -20,6 +20,7 @@ import {
   NavigationItems,
   UserMenuIcons,
 } from "../../specificComponents";
+import styled from "styled-components";
 
 // TODO: handle notifications
 export const Navbar = () => {
@@ -51,6 +52,12 @@ export const Navbar = () => {
       onClick={() => {
         if (location.pathname !== "/") {
           navigate("/");
+          setTimeout(() => {
+            const section = document.getElementById(to);
+            if (section) {
+              section.scrollIntoView({ behavior: "smooth" });
+            }
+          }, 200);
         } else {
           const section = document.getElementById(to);
           if (section) {
@@ -67,7 +74,6 @@ export const Navbar = () => {
     <IconButton
       edge="end"
       aria-label="user menu"
-      sx={{ color: "black" }}
       key={index}
       onClick={() => {
         if (path === "/logout") {
@@ -82,26 +88,18 @@ export const Navbar = () => {
   ));
 
   const mappedAuthenticationButtons = AuthenticationButtons.map(
-    ({ text, Path, borderColor }) => (
-      <Button
+    ({ text, Path }) => (
+      <AuthButtons
+        type={Path === "/login" ? "primary" : "black"}
         key={Path}
-        color="inherit"
-        size="large"
         onClick={() =>
           navigate(Path, {
             state: { from: window.location.pathname },
           })
         }
-        sx={{
-          border: "3px solid",
-          borderRadius: "25px",
-          borderColor: borderColor,
-          color: "black",
-          padding: "5px 20px",
-        }}
       >
-        {text}
-      </Button>
+        <p>{text}</p>
+      </AuthButtons>
     )
   );
 
@@ -110,8 +108,7 @@ export const Navbar = () => {
       position="fixed"
       sx={{
         backgroundColor: "white",
-        borderBottom: "1px solid black",
-        boxShadow: "none",
+        boxShadow: " 0px 2px 4px rgba(0, 15, 53, 0.2)",
       }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -124,7 +121,7 @@ export const Navbar = () => {
 
         {/* User menu icons or register/login buttons */}
         {!isMobile && (
-          <Box component="div" sx={{ display: "flex", gap: 2 }}>
+          <Box component="div" sx={{ display: "flex", gap: 1 }}>
             {isLoggedIn ? mappedUserIcons : mappedAuthenticationButtons}
           </Box>
         )}
@@ -181,3 +178,23 @@ export const Navbar = () => {
     </AppBar>
   );
 };
+
+const AuthButtons = styled.div<{ type: "primary" | "black" }>`
+  width: 90px;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  height: fit-content;
+  padding: 0.2rem 1rem;
+  color: ${({ theme, type }) =>
+    type === "black" ? theme.colors.white : theme.colors.black};
+  background-color: ${({ theme, type }) =>
+    type === "primary" ? "transparent" : theme.colors.secondary};
+  border: ${({ theme, type }) =>
+    type === "primary"
+      ? `3px solid ${theme.colors.secondary}`
+      : `3px solid ${theme.colors.secondary}`};
+  p {
+    margin: 0;
+  }
+`;

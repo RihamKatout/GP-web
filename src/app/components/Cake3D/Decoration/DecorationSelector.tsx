@@ -51,6 +51,34 @@ const CakeButton = styled.button<{ active: boolean }>`
     margin-right: 8px;
     margin-top: 5px;
   }
+  
+  @media (max-width: 600px) {
+    width: 40%; /* Full width for smaller screens */
+    height: 4.3rem; /* Adjust height */
+    font-size: 0.9rem; /* Adjust font size */
+    img {
+    width: 55px;
+    height: 55px;
+    margin-right: 8px;
+    margin-top: 5px;
+  }
+  }
+`;
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  // Small screen styles
+  @media (max-width: 768px) {
+    flex-direction: column; /* Stack buttons vertically */
+    height: 100px; /* Set a fixed height */
+    padding: 10px;
+    padding-bottom: 35px;
+    overflow-y: auto; /* Enable scrolling for overflow content */
+  }
 `;
 
 interface DecorationSelectorProps {
@@ -81,7 +109,7 @@ const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecorat
       <div style={{ width: '100%' , margin: '0 auto' , justifyContent: 'center' , alignItems: 'center' }}>
         <div style={{ width: '100%', margin: '0 auto' }}>
                 <Divider style={{ borderColor: '#1a1a19b3' }}>
-                  <ColorLabel>Select The Decoration:</ColorLabel>
+                  <ColorLabel style={{ marginTop:"10px"}}>Select The Decoration (+2$):</ColorLabel>
                 </Divider>
                </div>
         <CakeButton
@@ -106,9 +134,10 @@ const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecorat
       <div>
         <div style={{ width: '100%', margin: '0 auto' }}>
                 <Divider style={{ borderColor: '#1a1a19b3' }}>
-                  <ColorLabel>Select The Mid Decoration:</ColorLabel>
+                  <ColorLabel>Select The Mid Decoration (+2$):</ColorLabel>
                 </Divider>
          </div>
+      <ButtonContainer>   
         <CakeButton
           onClick={() => handleMidDecorationClick('choco')}
           active={selectedDecoration === 'choco'}
@@ -137,7 +166,7 @@ const DecorationSelector: React.FC<DecorationSelectorProps> = ({ onSelectDecorat
           <img src={rose}  />
           <div style={{marginTop: '8px' , textAlign: 'center' }}>Rose</div>
         </CakeButton>
-
+       </ButtonContainer> 
       </div>
      
     </ColumnContainer>

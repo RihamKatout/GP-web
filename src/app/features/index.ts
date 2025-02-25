@@ -4,11 +4,11 @@ export * from "./authentication/RegisterForm";
 
 // offers
 export * from "./offers/OffersSection";
-export * from "./showcase/ShowcaseHeader";
-// showcase
-export * from "./showcase/FilterSidebar";
-export * from "./showcase/ProductsShowcaseSection";
 
+// showcase
+export * from "./showcase/ShowcaseFilter";
+export * from "./showcase/ProductsShowcaseSection";
+export * from "./showcase/PremiumStoresSection";
 // stores
 export * from "../components/specificComponents/sections/StoreCategoriesSection";
 
@@ -18,7 +18,6 @@ export * from "./cart/EmptyCart";
 export * from "./cart/CartItemCard";
 
 // products
-export * from "./products/ProductPreview";
 export * from "./products/product-details/ProductDetailsSection";
 export * from "./products/product-details/ProductDetailsCard";
 export * from "./products/product-details/StoreCard";
@@ -34,16 +33,14 @@ export * from "./stores/StoreOffersSection";
 export * from "./stores/StoreProductsSection";
 
 // profile
-export * from "./profile/ProfileActivity";
-export * from "./profile/ProfileForm";
-export * from "./profile/ProfileShopping";
 export * from "./profile/SidebarItems";
 export * from "./profile/Sidebar";
 export * from "./profile/ProfileInfoSection";
-
+export * from "./profile/AddStoreSection";
+export * from "./profile/MyOrdersSection";
 // store manager
-export * from "./store-manager/MyStoresSection";
-export * from "./store-manager/ManagerStoreCard";
+export * from "./profile/MyStoresSection";
+export * from "./profile/ManagerStoreCard";
 export * from "./store-manager/dashboard/components/StoreDashboardSidebar";
 export * from "./store-manager/dashboard/sections/StoreAnalyticsSection";
 export * from "./store-manager/dashboard/sections/ProductsManagementSection";

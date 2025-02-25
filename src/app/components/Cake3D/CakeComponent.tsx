@@ -138,6 +138,7 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
 
   const handleSaveMessage = (id: string, message: string) => {
     setMessages((prev) => ({ ...prev, [id]: message }));
+    setCardMessage(message);
   };
 
 ///////////////Cake Sizing & Price////////////////
@@ -187,7 +188,7 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
       //   return null;
     }
   };
-
+  const finalPrice =cakePrice + (selectedDecoration ? 2 : 0) + (selectedMidDecoration ? 2 : 0);
   const renderRightColumn = () => {
     switch (currentStage) {
       case 1:
@@ -222,6 +223,15 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
       case 2:
         return (
         <ColumnContainer style={{width:'100%'}}>
+          <div style={{ width: '100%', margin: '0 auto' }}>
+        <Divider style={{ borderColor: '#1a1a19b3' }}>
+          <ColorLabel>Topping Color:</ColorLabel>
+        </Divider>
+      </div>
+        <ColorPicker
+        selectedColor={toppingColor}
+        onColorChange={(color) => setToppingColor(color)}
+      />
         <div style={{ width: '100%', margin: '0 auto' }}>
         <Divider style={{ borderColor: '#1a1a19b3' }}>
           <ColorLabel>Enter a Text:</ColorLabel>
@@ -234,15 +244,7 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
           onColorChange={setSelectedColor}
           color={selectedColor}
         />
-        <div style={{ width: '100%', margin: '0 auto' }}>
-        <Divider style={{ borderColor: '#1a1a19b3' }}>
-          <ColorLabel>Topping Color:</ColorLabel>
-        </Divider>
-      </div>
-        <ColorPicker
-        selectedColor={toppingColor}
-        onColorChange={(color) => setToppingColor(color)}
-      />
+        
       
         </ColumnContainer>);
       case 3:
@@ -258,6 +260,7 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
       </CakeButton>
       <CakeButton
         onClick={handleOpenPopup} style={{ border: '2px solid #6a66667a' }}>Review</CakeButton>
+        
      </div >
       {showReviewPopup && (
   <ReviewCake
@@ -265,9 +268,10 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
     onConfirm={handleConfirmPopup}
     cardMessage={cardMessage} // Pass the card message
     cakeSize={cakeSize}
-    cakePrice={cakePrice}
+    cakePrice={finalPrice}
     cakeDescription={cakeDescription}
   />
+  
 )}
 
         </ColumnContainer >;
@@ -276,7 +280,7 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
         return null;
     }
   };
-  
+  console.log("the",cardMessage);
   
 
   const [cart, setCart] = useState<string[]>([]); // Store captured images
@@ -387,7 +391,7 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
        ]}
        
         style={{ width: '100%' ,margin: '0 auto'}}/></ConfigProvider>
-       <div ref={containerRef} style={{ width: '100%', margin: '0 auto' , justifyContent: 'center' , alignItems: 'center' , height: '80%'}}>
+       <ResponsiveContainer ref={containerRef} >
         <Canvas  camera={{ position: [0, 16, -22], fov: 18 }} 
         gl={{ preserveDrawingBuffer: true }}
         onCreated={({ gl }) => {
@@ -632,27 +636,32 @@ const [messages, setMessages] = useState<{ [key: string]: string }>({});
           </group>
           </RotatingCake>
           <>
-          <MiniCharacter position={[4.5, 2.3, 0]} scale={0.55} rotation={[0, Math.PI / 2, 0.2]} />
+          {/* <MiniCharacter position={[4.4, 1.8, 0]} scale={0.55} rotation={[0, Math.PI / 2, 0.2]} />
           <SpeechBubble
              texts={[...(currentStage === 1 ? ['"Hello There!😀"'] : []), ...(currentStage === 1 ? ['"Lets Make a Cake!"'] : []),...(currentStage === 1 ? ['"Show me Your Art"'] : []),
               ...(currentStage === 2 ? ['"Thats cool!"'] : []), ...(currentStage === 2 ? ['"Nice Coloring"'] : []),...(currentStage === 2? ['"Keep Going.."'] : []),...(currentStage === 2 ? ['"You are Talented"'] : []),
              ...(currentStage === 3 ? ['"Do Your Final Touch"'] : []),...(currentStage === 3 ? ['"Almost There!"'] : []),...(currentStage === 3 ? ['"Your cake is ready!"'] : []),]}
-             position={[4.5, 4, 0]}
+             position={[4.4, 3.6, 0]}
              interval={4000} // Change text every 3 seconds
              rotation={[0, 3.2, 0]}
-          />
+          /> */}
          </>
         </Canvas>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' , marginTop:'0 auto'}}>
-          <CakeButton onClick={prevStage} disabled={currentStage === 1} style={{height: '60px' }}>
-           <img src={next} style={{ width: '50px', height: '50px' ,transform: 'rotate(180deg)'}}/>
-          </CakeButton>
-          <CakeButton onClick={nextStage} disabled={currentStage === 3} style={{height: '60px' }}>
-            <img src={next} style={{ width: '50px', height: '50px'}}/>
-          </CakeButton>
-        </div>
-        
+        </ResponsiveContainer>
+        <ButtonContainer>
+      <ResponsiveCakeButton onClick={prevStage} disabled={currentStage === 1}>
+        <img
+          src={next}
+          alt="Previous"
+          style={{ transform: "rotate(180deg)" }}
+        />
+      </ResponsiveCakeButton>
+      {currentStage !== 3 && (
+  <ResponsiveCakeButton onClick={nextStage}>
+    <img src={next} alt="Next" />
+  </ResponsiveCakeButton>
+)}
+    </ButtonContainer>
         </GradientContainer>
       </MiddleColumn>
       
@@ -665,6 +674,66 @@ import styled from 'styled-components';
 
 import { ReviewCake } from './ReviewCake';
 import CakeSize from './CakeSize';
+import EnhanceCakeImage from './EnhanceCakeImage';
 export default CakeScene;
-import { useEffect } from 'react';
+
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 10px;
+  margin-top: -60px;
+  @media (max-width: 600px) {
+    /* flex-direction: row;
+    align-items: center;
+    justify-content: center; */
+    width: 70%;
+    top:500;
+    right:-200;
+    gap: 140px;
+    position: relative;
+    margin-top: -180px !important;
+    //z-index:10000;
+  }
+`;
+
+// Responsive button
+const ResponsiveCakeButton = styled(CakeButton)`
+  height: 60px;
+  margin-top: 120px;
+  border: 2px solid rgba(244, 228, 228, 0.687);
+
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  @media (max-width: 600px) {
+    height: 50px;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+`;
+const ResponsiveContainer = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+
+  @media (max-width: 768px) {
+    height: 70%; /* Adjust height for smaller screens */
+  }
+
+  @media (max-width: 480px) {
+    height: 70%; /* Further adjust for very small screens */
+    flex-direction: column; /* Stack content vertically if needed */
+    margin-top: -80px;
+  }
+`;
 

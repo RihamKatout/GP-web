@@ -20,8 +20,17 @@ export const ProductService = {
     const response = await clientAxios.get(`/product/${id}`);
     return response.data;
   },
-  createProduct: async (product: ProductManagementDto): Promise<number> => {
-    const response = await clientAxios.post(`/product`, product);
+  createProduct: async (product: ProductManagementDto, imageFile: File | null): Promise<number> => {
+    const formData = new FormData();
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+    formData.append("request", new Blob([JSON.stringify(product)], { type: "application/json" }));
+    const response = await clientAxios.post(`/product`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   },
   updateProduct: async (product: ProductManagementDto): Promise<ProductManagementDto> => {

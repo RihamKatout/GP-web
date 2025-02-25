@@ -1,15 +1,30 @@
 import { Divider } from "antd";
 import Contact from "../../../SweetTouches/component/Contact";
-import { Theme } from "../../../utils/Theme";
+import styled from "styled-components";
 
 // TODO: fix
 export const HelpCenterSection = () => {
   return (
-      <div style={{ width: "80%", margin: "0 auto" }}>
-        <Divider style={{ borderColor: "#1a1a19b3" }}>
-          <h1 style={{ fontFamily: "DynaPuff" ,  color: Theme.colors.secondary_dark , fontWeight: 400 , fontSize: '3.7rem'}}>Contact Us</h1>
-        </Divider>
-        <Contact />
-      </div>
+    <Container>
+      <Divider style={{ borderColor: "#1a1a19b3" }}>
+        <h1>Contact Us</h1>
+      </Divider>
+      <Contact />
+    </Container>
   );
 };
+
+const Container = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  h1 {
+    margin: 0;
+    font-family: "DynaPuff";
+    font-weight: 400;
+    font-size: 3.7rem;
+    color: rgb(27, 26, 52);
+    @media (max-width: 768px) {
+      font-size: 2.5rem;
+    }
+  }
+`;

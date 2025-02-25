@@ -3,13 +3,14 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { StoreService } from "../../api/StoreService";
 import { MainLayout, SectionContainer } from "../../components/Layout";
-import { SectionIdEnum, Store } from "../../types";
+import { SectionIdEnum } from "../../types";
 import {
   StoreInformationSection,
   StoreOffersSection,
   StoreProductsSection,
 } from "../../features";
 import styled from "styled-components";
+import { OffersService, ReviewService } from "../../api";
 
 export const StorePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,16 +19,36 @@ export const StorePage = () => {
     scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const {
-    data: store,
-    isLoading,
-    error,
-  } = useQuery(["store", id], () => StoreService.getStoreById(Number(id)), {
-    enabled: !!id,
-    cacheTime: 0,
-  });
+  const { data: store } = useQuery(
+    ["store", id],
+    () => StoreService.getStoreById(Number(id)),
+    {
+      enabled: !!id,
+      cacheTime: 0,
+    }
+  );
 
-  console.log("store", store);
+  const { data: reviews } = useQuery(
+    ["reviews", id],
+    () => ReviewService.getReviewsForStore(Number(id)),
+    {
+      enabled: !!id,
+      cacheTime: 0,
+    }
+  );
+
+  const {
+    data: offers,
+    isLoading: offersLoading,
+    error: offersError,
+  } = useQuery(
+    ["offers", id],
+    () => OffersService.getOffersForStore(Number(id)),
+    {
+      enabled: !!id,
+      cacheTime: 0,
+    }
+  );
 
   return (
     <MainLayout>
@@ -36,7 +57,13 @@ export const StorePage = () => {
         {store && (
           <StoreContainer>
             <StoreInformationSection store={store} />
-            <StoreOffersSection />
+            <StoreOffersSection
+              store={store}
+              offers={offers ?? []}
+              isLoading={offersLoading}
+              errors={offersError}
+              reviews={reviews}
+            />
             <StoreProductsSection
               storeId={store?.id}
               productCategories={store?.productCategories ?? []}
@@ -49,11 +76,11 @@ export const StorePage = () => {
 };
 
 const StoreContainer = styled.div`
-  margin: 2rem;
+  margin: 1rem;
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 3fr 1fr; /* Products take 3 columns, offers take 1 column */
-  grid-template-rows: auto 1fr; /* Auto height for info section, equal height for products and offers */
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: auto 1fr;
   grid-gap: 1rem;
   grid-template-areas:
     "storeInfo storeInfo"

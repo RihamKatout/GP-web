@@ -1,13 +1,25 @@
-import  { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import z from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router-dom";
 import { message } from "antd";
-import home from "../../../assets/home.png";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import emailjs from "emailjs-com";
 
+import {
+  ButtonContainer,
+  FormContainer,
+  LinkToRegister,
+  MainContainer,
+  StyledButton,
+  StyledInput,
+  StyledLink,
+  WelcomeText,
+} from "./StyledComponents";
+
+// Validation schema
 const schema = z.object({
   username: z
     .string()
@@ -37,8 +49,10 @@ export type registrationFormFields = z.infer<typeof schema>;
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { registerUserContext } = useAuth();
   const [messageApi, contextHolder] = message.useMessage();
+
   const {
     register,
     handleSubmit,
@@ -57,7 +71,6 @@ const RegisterForm = () => {
     resolver: zodResolver(schema),
   });
 
-  // Track displayed error messages
   const displayedErrors = useRef<Set<string>>(new Set());
 
   useEffect(() => {
@@ -65,15 +78,38 @@ const RegisterForm = () => {
       const errorMessage = errors[key as keyof registrationFormFields]?.message;
       if (errorMessage && !displayedErrors.current.has(errorMessage)) {
         messageApi.error(errorMessage);
-        displayedErrors.current.add(errorMessage); // Mark the message as displayed
+        displayedErrors.current.add(errorMessage);
       }
     });
 
-    // Clear the error messages when errors object is cleared
     if (Object.keys(errors).length === 0) {
       displayedErrors.current.clear();
     }
   }, [errors, messageApi]);
+
+  // Function to send verification email using EmailJS
+  const sendVerificationEmail = (email: string) => {
+    const templateParams = {
+      user_email: email,
+      reset_link: "http://localhost:5173/", // Change this to your actual home URL
+    };
+
+    emailjs
+      .send(
+        "service_4mswwre", // Replace with your actual EmailJS Service ID
+        "template_tjxhrls", // Replace with your actual EmailJS Template ID
+        templateParams,
+        "3utpEi5L2w2bw-lZn" // Replace with your actual EmailJS Public Key
+      )
+      .then(
+        () => {
+          messageApi.success("Verification email sent! Check your inbox.");
+        },
+        () => {
+          messageApi.error("Failed to send verification email. Please try again.");
+        }
+      );
+  };
 
   const onSubmit: SubmitHandler<registrationFormFields> = async (data) => {
     try {
@@ -86,192 +122,66 @@ const RegisterForm = () => {
         return;
       }
 
+      // Register user
       await registerUserContext(data);
-      messageApi.success("Registration successful!");
-      navigate("/");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+      // Send verification email
+      sendVerificationEmail(data.email);
+
+      messageApi.success("Registration successful! Check your email to verify.");
+      // navigate("/", { state: { showWelcome: true } });
     } catch (error: any) {
-      messageApi.error(error.response?.data?.errors[0] || "Registration failed.");
+      messageApi.error(
+        error.response?.data?.errors[0] || "Registration failed."
+      );
       setError("root", {
         type: "manual",
-        message: error.response?.data?.errors[0] || "An unexpected error occurred.",
+        message:
+          error.response?.data?.errors[0] || "An unexpected error occurred.",
       });
     }
   };
 
   return (
-    <MainContainer>
+    <MainContainer style={{ height: "600px" }}>
       {contextHolder}
       <WelcomeText>Register</WelcomeText>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <InputContainer>
-          <StyledInput {...register("username")} placeholder="Username" />
-          <StyledInput {...register("email")} placeholder="Email" />
-          <StyledInput {...register("password")} type="password" placeholder="Password" />
-          <StyledInput {...register("confirmPassword")} type="password" placeholder="Confirm Password" />
+      <FormContainer onSubmit={handleSubmit(onSubmit)}>
+        <StyledInput {...register("email")} placeholder="Email" />
+
+        <StyledInput
+          {...register("password")}
+          type="password"
+          placeholder="Password"
+        />
+        <StyledInput
+          {...register("confirmPassword")}
+          type="password"
+          placeholder="Confirm Password"
+        />
+        <div style={{ display: "flex", gap: "1rem", width: "100%" }}>
           <StyledInput {...register("firstName")} placeholder="First Name" />
           <StyledInput {...register("lastName")} placeholder="Last Name" />
+        </div>
+        <div style={{ display: "flex", gap: "1rem", width: "100%" }}>
+          <StyledInput {...register("username")} placeholder="Username" />
           <StyledInput {...register("phoneNumber")} placeholder="Phone Number" />
-        </InputContainer>
-
+        </div>
         <ButtonContainer>
+          <StyledButton onClick={() => navigate("/")} style={{ width: "25%" }}>
+            <HomeRoundedIcon style={{ fontSize: "2rem" }} />
+          </StyledButton>
           <StyledButton type="submit" disabled={isSubmitting}>
             Register
           </StyledButton>
         </ButtonContainer>
-      </form>
-      {/* Create Account link */}
-      <BakeHomeButton onClick={() => navigate("/")} ><img src={home} style={{ width: "25px", height: "25px" }} /></BakeHomeButton>
+      </FormContainer>
 
       <LinkToRegister>
-           Have an account? <StyledLink to="/login">Login</StyledLink>
-        </LinkToRegister>
+        Have an account? <StyledLink to="/login">Login</StyledLink>
+      </LinkToRegister>
     </MainContainer>
   );
 };
 
 export default RegisterForm;
-
-
-
-/////////Style Section ///////////
-const StyledInput = styled.input `
-  background: #f0f4ff;
-  box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5);
-  border:1px solid rgba(217, 217, 217, 0.5);
-  border-radius: 10px;
-  width: 100%; /* Adjust width to fit the grid layout */
-  height: 3.5rem;
-  padding: 0 1.5rem;
-  //border: none;
-  outline: none;
-  color: #3c354e;
-  font-size: 1rem;
-  font-weight: 600;
-  font-family: "Overlock", serif;
-  margin: 0; /* Remove default margins */
-  &:focus {
-    box-shadow: 0px 0px 8px #a3b8ff;
-  }
-  &::placeholder {
-    color: #b3b3b3;
-    font-size: 0.9rem;
-  }
-;
-`
-const StyledButton = styled.button `
-  color: #191818;
-  text-transform: uppercase;
-  letter-spacing: 0.15rem;
-  width: 70%;
-  height: 3.5rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  margin-top: 1.5rem;
-  font-family: "Delius Swash Caps";
-  //margin-top: 1.5rem;
-  background-color: ${({ theme }) => theme.colors.primary};
-      box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
-  transition: transform 0.2s, box-shadow 0.2s;
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                    0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                    0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
-  }
-;
-`
-
-const WelcomeText = styled.h2 `
-  margin: 2rem 0 1rem 0;
-  font-size: 2rem;
-  color: #eb977d;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.3rem;
-;
-`
-
-const MainContainer = styled.div `
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  width: 400px;
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 2px 10px 30px rgba(7, 7, 7, 0.1);
-  border-radius: 20px;
-  backdrop-filter: blur(8.5px);
-  -webkit-backdrop-filter: blur(8.5px);
-;
-`
-const InputContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two columns */
-  gap: 1rem; /* Spacing between inputs */
-  width: 100%;
-  padding: 1rem;
-
-  @media (max-width: 768px) {
-    grid-template-columns:  repeat(2, 1fr); /* Stack inputs vertically on smaller screens */
-    gap: 0.5rem; /* Reduce gap for smaller screens */
-  }
-
-  @media (max-width: 480px) {
-    grid-template-columns:  repeat(2, 1fr);
-    //padding: 0.5rem; /* Adjust padding for very small screens */
-  }
-`;
-
-
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: 1.5rem 0;
-;
-`
-const LinkToRegister = styled.div`
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 1rem;
-`;
-
-const StyledLink = styled(Link)`
-  color: #ffc2af;
-  text-decoration: none;
-  font-weight: bold;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-const BakeHomeButton = styled.button`
-  
-  color: #191818d3;
-  font-size: 1rem;
-  font-weight: bold;
-  margin-top: 1rem;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  background-color: ${({ theme }) => theme.colors.primary};
-  box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
-  &:hover {
-    box-shadow: 0 1rem 1.25rem 0 rgba(217, 217, 217, 0.5), 
-                  0 0.75rem 0.5rem rgba(255, 255, 255, 0.52) inset, 
-                  0 0.25rem 0.5rem 0 rgba(135, 149, 178, 0.362) inset;
-    transform: scale(1.05);
-  }
-`;

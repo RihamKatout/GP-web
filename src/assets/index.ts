@@ -1,4 +1,4 @@
-import logo from "./device.png";
+import logo from "../assets/Icons/logo2.png";
 export const logoImg = logo;
 
 import Unauthorized from "./errors/unauthorized.svg";
@@ -28,3 +28,9 @@ export const RihamImg = riham;
 // default
 import defaultStore from "./default/default-store-icon.png";
 export const DefaultStoreImg = defaultStore;
+
+import defaultCategoryIcon from "./default/default-category-icon.png";
+export const DefaultCategoryIcon = defaultCategoryIcon;
+
+import defaultProfilePicture from "./default/default-profile-picture.png";
+export const DefaultProfilePicture = defaultProfilePicture;
